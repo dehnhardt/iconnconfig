@@ -25,10 +25,11 @@ DEFINES += __LINUX_ALSA__
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 
-SOURCES += main.cpp\
-        miomain.cpp \
+SOURCES +=\
         RtMidi.cpp \
-    sysex/sysexevent.cpp
+    sysex/sysexevent.cpp \
+    src/main.cpp \
+    src/miomain.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
