@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include "libusb.h"
 #include "RtMidi.h"
+#include "device.h"
 
 
 namespace Ui {
@@ -28,6 +29,7 @@ public:
     void printUSBDevs( );
     void sentSysexMessage(std::vector<unsigned char> message);
 
+    Device * device;
 
 private slots:
     void on_actionQuit_triggered();
