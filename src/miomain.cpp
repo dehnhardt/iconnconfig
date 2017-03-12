@@ -9,7 +9,7 @@ void mycallback( double deltatime, std::vector< unsigned char > *message, void *
 {
   unsigned int nBytes = message->size();
   for ( unsigned int i=0; i<nBytes; i++ )
-    std::cout << "Byte " << i << " = " << (int)message->at(i) << ", ";
+    std::cout << "Byte " << i << " = " << std::hex << (int)message->at(i) << ", ";
   if ( nBytes > 0 )
     std::cout << "stamp = " << deltatime << std::endl;
 }
@@ -80,18 +80,35 @@ void MioMain::setupMidiPorts(){
     createMidiIn();
     createMidiOut();
 
-    midiin->openPort(2);
-    midiout->openPort(2);
-    std::vector<unsigned char> message;
 
-    sentSysexMessage(message);
+    unsigned int nPorts = midiin->getPortCount();
+
+    std::vector<unsigned char> message;
+    std::string portName;
+    for ( unsigned int i=0; i<nPorts; i++ ) {
+        midiin->openPort(i);
+        midiout->openPort(i);
+        try {
+          portName = midiout->getPortName(i);
+          std::cout << std::endl << "op: " << portName;
+          portName = midiin->getPortName(i);
+          std::cout << " / ip: " << portName << ": ";
+        }
+        catch (RtMidiError &error) {
+          error.printMessage();
+        }
+        sentSysexMessage(message);
+        midiin->closePort();
+        midiout->closePort();
+    }
+
 }
 
 void MioMain::mmcallback( double deltatime, std::vector< unsigned char > *message, void * /*userData*/ )
 {
   unsigned int nBytes = message->size();
   for ( unsigned int i=0; i<nBytes; i++ )
-    std::cout << "Byte " << i << " = " << (int)message->at(i) << ", ";
+    std::cout << std::hex << (int)message->at(i) << " ";
   if ( nBytes > 0 )
     std::cout << "stamp = " << deltatime << std::endl;
 }
@@ -150,12 +167,21 @@ void MioMain::createMidiOut(){
       }
       qDebug() << "  Output Port #" << i+1 << ": " << portName.c_str() << "\n";
     }
-    std::cout << '\n';
+    qDebug() << "\n";
 }
 
 void MioMain::sentSysexMessage( std::vector<unsigned char> message ){
     std::vector<unsigned char> message1;
-
+    /*
+    public static byte[] encodeAsSysExUnsigned(int value, final int maxValue) {
+        if (value > maxValue || value < 0)
+            throw new IllegalArgumentException(String.format("Value %d out of range [0 .. %d]", value, maxValue));
+        final int dataLength = getDataLengthUnsigned(maxValue);
+        final byte[] sysExData = new byte[dataLength];
+        for (int i = 0; i < dataLength; i++, value >>>= 7)
+            sysExData[i] = (byte) (value & 0x7F);
+        return sysExData;
+    }   */
 //    message1.push_back( 0xF6 );
 //    midiout->sendMessage( &message1 );
 //    usleep( 500 ); // pause a little
@@ -167,22 +193,19 @@ void MioMain::sentSysexMessage( std::vector<unsigned char> message ){
     message1.push_back( 0x73 );
     message1.push_back( 0x7e );
     message1.push_back( 0x00 );
-    message1.push_back( 0x02 );
     message1.push_back( 0x00 );
     message1.push_back( 0x00 );
-    message1.push_back( 0x06 );
-    message1.push_back( 0x5d );
     message1.push_back( 0x00 );
-    message1.push_back( 0x01 );
+    message1.push_back( 0x00 );
+    message1.push_back( 0x00 );
+    message1.push_back( 0x00 );
+    message1.push_back( 0x00 );
+    message1.push_back( 0x00 );
     message1.push_back( 0x40 );
-    message1.push_back( 0x22 );
-    message1.push_back( 0x00 );
-    message1.push_back( 0x02 );
-    message1.push_back( 0x00 );
     message1.push_back( 0x01 );
-    message1.push_back( 0x35 );
+    message1.push_back( 0x3F );
     message1.push_back( 0xF7 );
     midiout->sendMessage( &message1 );
-    usleep( 500 ); // pause a little
+    usleep( 3500 ); // pause a little
 
 }

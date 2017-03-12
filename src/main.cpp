@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
     MioMain w;
     w.setupUSB();
     w.printUSBDevs();
+    w.setupMidiPorts();
     w.show();
-    //w.setupMidiPorts();
     return a.exec();
 }
