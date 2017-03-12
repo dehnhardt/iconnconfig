@@ -131,7 +131,7 @@ OP 20 = ?
   Q:  00 02 00 00 00 06 5d 00 01 40 20 00 00 3a
 
 OP 21 = ?
-                                    OP                                  Port Anzahl?
+                                    OP    BT PV    CP                   Port Anzahl?
   A:  00 02 00 00 00 06 5d 00 01 00 21 00 0f 01 00 38 00 0b 0a 02 01 01 10 0a 04 01 00 01 78
 
 OP = 22 // Anfrage Portinfo
@@ -147,6 +147,8 @@ OP = 23
 TP = 01 ^ Physical Port, 02 ^ USB-Device, 03 ^ HUSB Host, 04 ^ Ethernet
 LN = Local Number - > lfd Nummer in der Device-Klasse
 BT = Anzahl Bytes
+PV = Protocol Version
+CP = Communication Port
 
                                 DR OP    BT       P  TP LN             AC  D  I  N  _  1 CS
   1: 00 02 00 00 00 06 5d 00 01 00 23 00 0f 01 00 01 01 01 00 00 00 0f 03 44 49 4e 20 31 26
