@@ -26,18 +26,18 @@ DEFINES += __LINUX_ALSA__
 
 
 SOURCES +=\
-        RtMidi.cpp \
-    sysex/sysexevent.cpp \
+        src/RtMidi.cpp \
+    src/sysex/sysexevent.cpp \
     src/main.cpp \
     src/miomain.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
-HEADERS  += miomain.h \
-    RtMidi.h \
-    sysex/sysexevent.h
+HEADERS  += src/miomain.h \
+    src/RtMidi.h \
+    src/sysex/sysexevent.h
 
-FORMS    += miomain.ui
+FORMS    += src/miomain.ui
 
 unix:!macx: LIBS += -lasound \
                     -lpthread \

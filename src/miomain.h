@@ -1,6 +1,7 @@
 #ifndef MIOMAIN_H
 #define MIOMAIN_H
 
+
 #include <QMainWindow>
 #include "libusb.h"
 #include "RtMidi.h"

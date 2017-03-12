@@ -1,6 +1,7 @@
 #ifndef SYSEXEVENT_H
 #define SYSEXEVENT_H
 
+#include <vector>
 
 class SysExEvent
 {
@@ -17,7 +18,6 @@ private:
     unsigned char header[];
     unsigned char operation;
     unsigned char length[2];
-    unsigned char header[];
     std::vector<unsigned char> midiSysExMessage;
 };
 

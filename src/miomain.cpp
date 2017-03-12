@@ -1,8 +1,9 @@
 #include "miomain.h"
 #include "ui_miomain.h"
 
-#include <unistd.h>
 #include <QtDebug>
+#include <unistd.h>
+
 
 void mycallback( double deltatime, std::vector< unsigned char > *message, void * /*userData*/ )
 {
