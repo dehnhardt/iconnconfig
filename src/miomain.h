@@ -29,7 +29,7 @@ public:
     void printUSBDevs( );
     void sentSysexMessage(std::vector<unsigned char> message);
 
-    Device * device;
+    static std::map<long, Device*> devices;
 
 private slots:
     void on_actionQuit_triggered();

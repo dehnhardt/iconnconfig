@@ -30,14 +30,16 @@ SOURCES +=\
     src/sysex/sysexevent.cpp \
     src/main.cpp \
     src/miomain.cpp \
-    src/device.cpp
+    src/device.cpp \
+    src/sysex/midi.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
 HEADERS  += src/miomain.h \
     src/RtMidi.h \
     src/sysex/sysexevent.h \
-    src/device.h
+    src/device.h \
+    src/sysex/midi.h
 
 FORMS    += src/miomain.ui
 
