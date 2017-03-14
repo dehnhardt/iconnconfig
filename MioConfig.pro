@@ -31,7 +31,9 @@ SOURCES +=\
     src/main.cpp \
     src/miomain.cpp \
     src/device.cpp \
-    src/sysex/midi.cpp
+    src/sysex/midi.cpp \
+    src/devicedetection.cpp \
+    src/config/configuration.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
@@ -39,9 +41,12 @@ HEADERS  += src/miomain.h \
     src/RtMidi.h \
     src/sysex/sysexevent.h \
     src/device.h \
-    src/sysex/midi.h
+    src/sysex/midi.h \
+    src/devicedetection.h \
+    src/config/configuration.h
 
-FORMS    += src/miomain.ui
+FORMS    += src/miomain.ui \
+    src/devicedetection.ui
 
 unix:!macx: LIBS += -lasound \
                     -lpthread \

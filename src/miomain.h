@@ -1,44 +1,28 @@
 #ifndef MIOMAIN_H
 #define MIOMAIN_H
 
-
+#include "devicedetection.h"
 #include <QMainWindow>
-#include "libusb.h"
-#include "RtMidi.h"
-#include "device.h"
-
 
 namespace Ui {
 class MioMain;
 }
 
-class MioMain : public QMainWindow
-{
-    Q_OBJECT
+class MioMain : public QMainWindow {
+  Q_OBJECT
 
 public:
-    RtMidiIn  *midiin = 0;
-    RtMidiOut *midiout = 0;
-    libusb_device **devs;
-
-    explicit MioMain(QWidget *parent = 0);
-    ~MioMain();
-
-    void setupMidiPorts();
-    bool setupUSB();
-    void printUSBDevs( );
-    void sentSysexMessage(std::vector<unsigned char> message);
-
-    static std::map<long, Device*> devices;
+  explicit MioMain(QWidget *parent = 0);
+  ~MioMain();
 
 private slots:
-    void on_actionQuit_triggered();
+  void on_actionQuit_triggered();
+  void openDetectionWindow();
 
 private:
-    Ui::MioMain *ui;
-    void createMidiIn();
-    void createMidiOut();
-    static void mmcallback( double deltatime, std::vector< unsigned char > *message, void * /*userData*/ );
+  // Members
+  Ui::MioMain *ui;
+  DeviceDetection *deviceDetectionWindow;
 };
 
 #endif // MIOMAIN_H
