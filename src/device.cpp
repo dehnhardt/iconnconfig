@@ -1,10 +1,52 @@
 #include "device.h"
-#include <cstring>
-#include <unistd.h>
-#include <iostream>
+#include "sysex/midi.h"
+
 #include <array>
+#include <cstring>
+#include <iostream>
+#include <unistd.h>
 
-Device::Device( long serialNumber, std::vector<unsigned char> * initString ):serialNumber(serialNumber), initString(initString)
-{
+Device::Device(int inPortNumber, int outPortNumber, long serialNumber,
+               int productId) {
+  this->inPortNumber = inPortNumber;
+  this->outPortNumber = outPortNumber;
+  this->serialNumber = new MIDISysexValue(serialNumber);
+  this->productId = new MIDISysexValue(productId);
+}
 
+BYTE_VECTOR *Device::getManufacturerHeader() {
+  BYTE_VECTOR *mfh = new BYTE_VECTOR();
+  mfh->push_back(MANUFACTURER_SYSEX_ID[0]);
+  mfh->push_back(MANUFACTURER_SYSEX_ID[1]);
+  mfh->push_back(MANUFACTURER_SYSEX_ID[2]);
+  return mfh;
+}
+
+BYTE_VECTOR *Device::getDeviceHeader() {
+  if (deviceHeader == 0) {
+    deviceHeader = new BYTE_VECTOR();
+    deviceHeader->reserve(productId->getByteValue()->size() +
+                          serialNumber->getByteValue()->size());
+    deviceHeader->insert(deviceHeader->end(),
+                         productId->getByteValue()->begin(),
+                         productId->getByteValue()->end());
+    deviceHeader->insert(deviceHeader->end(),
+                         serialNumber->getByteValue()->begin(),
+                         serialNumber->getByteValue()->end());
+  }
+  return deviceHeader;
+}
+
+BYTE_VECTOR *Device::getFullHeader() {
+  if (fullHeader == 0) {
+    fullHeader = new BYTE_VECTOR();
+    fullHeader->reserve(Device::getManufacturerHeader()->size() +
+                        getDeviceHeader()->size());
+    fullHeader->insert(fullHeader->end(),
+                       Device::getManufacturerHeader()->begin(),
+                       Device::getManufacturerHeader()->end());
+    fullHeader->insert(fullHeader->end(), getDeviceHeader()->begin(),
+                       getDeviceHeader()->end());
+  }
+  return fullHeader;
 }

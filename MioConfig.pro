@@ -27,23 +27,27 @@ DEFINES += __LINUX_ALSA__
 
 SOURCES +=\
         src/RtMidi.cpp \
-    src/sysex/sysexevent.cpp \
     src/main.cpp \
     src/miomain.cpp \
     src/device.cpp \
     src/sysex/midi.cpp \
     src/devicedetection.cpp \
-    src/config/configuration.cpp
+    src/config/configuration.cpp \
+    src/devicedetectionprocessor.cpp \
+    src/sysex/sysexmessage.cpp \
+    src/sysex/devicedetectionquery.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
 HEADERS  += src/miomain.h \
     src/RtMidi.h \
-    src/sysex/sysexevent.h \
     src/device.h \
     src/sysex/midi.h \
     src/devicedetection.h \
-    src/config/configuration.h
+    src/config/configuration.h \
+    src/devicedetectionprocessor.h \
+    src/sysex/sysexmessage.h \
+    src/sysex/devicedetectionquery.h
 
 FORMS    += src/miomain.ui \
     src/devicedetection.ui
