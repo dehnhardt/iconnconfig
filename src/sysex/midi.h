@@ -9,7 +9,7 @@
 #endif //__LINUX_ALSA__
 
 #define SYSEX_START 0xf0
-#define SYSEX_END 0xff
+#define SYSEX_END 0xf7
 
 #define BYTE_VECTOR std::vector<unsigned char>
 #ifdef __LINUX_ALSA__

@@ -23,7 +23,6 @@ private:
   void createMidiOut();
   void setupMidiPorts();
   int detectDevices();
-  void sentSysexMessage();
   double getMessage(BYTE_VECTOR *message);
 
   // USB-methods

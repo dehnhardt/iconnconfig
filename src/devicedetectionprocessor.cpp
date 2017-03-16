@@ -33,27 +33,26 @@ void DeviceDetectionProcessor::startDeviceDetection() {
   }
   if (Configuration::getInstance().getUsbDeviceDetection()) {
     setupUSB();
-    detectDevices();
   }
 }
 
 void DeviceDetectionProcessor::setupMidiPorts() {
   createMidiIn();
   createMidiOut();
-  DeviceDetectionQuery *q = new DeviceDetectionQuery();
-  q->getMIDISysExMessage();
 }
 
 int DeviceDetectionProcessor::detectDevices() {
   int nOutPortCount = midiout->getPortCount();
   int nInPortCount = midiin->getPortCount();
+  DeviceDetectionQuery *q = new DeviceDetectionQuery();
   long serialNumber;
+  BYTE_VECTOR *qMessage = q->getMIDISysExMessage();
   std::map<long, Device *> *devices = Configuration::getInstance().getDevices();
   for (int i = 0; i < nOutPortCount; i++) {
     midiout->openPort(i);
     for (int j = 0; j < nInPortCount; j++) {
       midiin->openPort(j);
-      sentSysexMessage();
+      midiout->sendMessage(qMessage);
       usleep(1000); // pause a little
       BYTE_VECTOR *message = new std::vector<unsigned char>;
       midiin->getMessage(message);
@@ -110,7 +109,7 @@ void DeviceDetectionProcessor::createMidiIn() {
     error.printMessage();
   }
   midiin->ignoreTypes(false, true, true);
-  // midiin->setCallback(&mmcallback, this);
+#ifdef DEBUG
   unsigned int nPorts = midiin->getPortCount();
   std::cout << "\nThere are " << nPorts << " MIDI input sources available.\n";
   std::string portName;
@@ -122,6 +121,7 @@ void DeviceDetectionProcessor::createMidiIn() {
     }
     std::cout << "  Input Port #" << i + 1 << ": " << portName.c_str() << "\n";
   }
+#endif
 }
 
 void DeviceDetectionProcessor::createMidiOut() {
@@ -132,7 +132,8 @@ void DeviceDetectionProcessor::createMidiOut() {
     error.printMessage();
     exit(EXIT_FAILURE);
   }
-  // Check outputs.
+// Check outputs.
+#ifdef DEBUG
   unsigned int nPorts = midiout->getPortCount();
   std::cout << "\nThere are " << nPorts << " MIDI output ports available.\n";
   std::string portName;
@@ -144,33 +145,7 @@ void DeviceDetectionProcessor::createMidiOut() {
     }
     std::cout << "  Output Port #" << i + 1 << ": " << portName.c_str() << "\n";
   }
-  std::cout << "\n";
-}
-
-void DeviceDetectionProcessor::sentSysexMessage() {
-  std::vector<unsigned char> message;
-  message.clear();
-  message.push_back(0xF0);
-  message.push_back(0x00);
-  message.push_back(0x01);
-  message.push_back(0x73);
-  message.push_back(0x7e);
-  message.push_back(0x00);
-  message.push_back(0x00);
-  message.push_back(0x00);
-  message.push_back(0x00);
-  message.push_back(0x00);
-  message.push_back(0x00);
-  message.push_back(0x00);
-  message.push_back(0x00);
-  message.push_back(0x01);
-  message.push_back(0x40);
-  message.push_back(0x01);
-  message.push_back(0x00);
-  message.push_back(0x00);
-  message.push_back(0x3E);
-  message.push_back(0xF7);
-  midiout->sendMessage(&message);
+#endif
 }
 
 /* USB methods - currently not used */
