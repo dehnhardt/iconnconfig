@@ -92,7 +92,14 @@ int DeviceDetectionProcessor::detectDevices() {
     }
     midiout->closePort();
   }
-  return 0;
+#ifdef __MIO_SIMULATE__
+  devices->insert(std::pair<long, Device *>(
+      0x01, new Device(0x01, 0x0101, 1, 1, "Mio10", "Lala")));
+  devices->insert(std::pair<long, Device *>(
+      0x02, new Device(0x02, 0x0201, 2, 2, "Mio4", "Lolo")));
+#endif //__MIO_SIMULATE__
+  Configuration::getInstance().setDevices(devices);
+  return devices->size();
 }
 
 double DeviceDetectionProcessor::getMessage(BYTE_VECTOR *message) {

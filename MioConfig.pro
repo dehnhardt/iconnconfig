@@ -19,6 +19,7 @@ CONFIG += c++11
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
 DEFINES += __LINUX_ALSA__
+DEFINES += __MIO_SIMULATE__
 # DEFINES += __RTMIDI_DEBUG__
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -36,7 +37,8 @@ SOURCES +=\
     src/config/configuration.cpp \
     src/devicedetectionprocessor.cpp \
     src/sysex/sysexmessage.cpp \
-    src/sysex/devicedetectionquery.cpp
+    src/sysex/devicedetectionquery.cpp \
+    src/deviceselectiontablemodel.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
@@ -48,7 +50,8 @@ HEADERS  += src/miomain.h \
     src/config/configuration.h \
     src/devicedetectionprocessor.h \
     src/sysex/sysexmessage.h \
-    src/sysex/devicedetectionquery.h
+    src/sysex/devicedetectionquery.h \
+    src/deviceselectiontablemodel.h
 
 FORMS    += src/miomain.ui \
     src/devicedetection.ui

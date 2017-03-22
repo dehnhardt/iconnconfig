@@ -4,6 +4,8 @@
 #include "../device.h"
 #include <map>
 
+typedef std::map<long, Device *> Devices;
+
 class Configuration {
 
   // start singleton
@@ -22,9 +24,15 @@ public:
   // end singleton
 
 public:
-  std::map<long, Device *> *getDevices();
+  // getter
+  Devices *getDevices();
+  // std::map<long, Device *> *getDevices();
   bool getUsbDeviceDetection() { return enableUsbDetection; }
   bool getMidiDeviceDetection() { return enableMidiDeviceDetection; }
+  // setter
+  void setDevices(std::map<long, Device *> *devices) {
+    this->devices = devices;
+  }
 
 private:
   std::map<long, Device *> *devices;

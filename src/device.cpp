@@ -14,6 +14,18 @@ Device::Device(int inPortNumber, int outPortNumber, long serialNumber,
   this->productId = new MIDISysexValue(productId);
 }
 
+#ifdef __MIO_SIMULATE__
+Device::Device(int inPortNumber, int outPortNumber, long serialNumber,
+               int productId, std::string modelName, std::string deviceName) {
+  this->inPortNumber = inPortNumber;
+  this->outPortNumber = outPortNumber;
+  this->serialNumber = new MIDISysexValue(serialNumber);
+  this->productId = new MIDISysexValue(productId);
+  this->modelName = modelName;
+  this->deviceName = deviceName;
+}
+#endif //__MIO_DEBUG__
+
 BYTE_VECTOR *Device::getManufacturerHeader() {
   BYTE_VECTOR *mfh = new BYTE_VECTOR();
   mfh->push_back(MANUFACTURER_SYSEX_ID[0]);
