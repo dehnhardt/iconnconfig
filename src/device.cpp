@@ -1,4 +1,5 @@
 #include "device.h"
+#include "sysex/commands.h"
 #include "sysex/midi.h"
 
 #include <array>
@@ -10,8 +11,8 @@ Device::Device(int inPortNumber, int outPortNumber, long serialNumber,
                int productId) {
   this->inPortNumber = inPortNumber;
   this->outPortNumber = outPortNumber;
-  this->serialNumber = new MIDISysexValue(serialNumber);
-  this->productId = new MIDISysexValue(productId);
+  this->serialNumber = new MIDISysexValue(serialNumber, 5);
+  this->productId = new MIDISysexValue(productId, 2);
 }
 
 #ifdef __MIO_SIMULATE__
@@ -61,4 +62,9 @@ BYTE_VECTOR *Device::getFullHeader() {
                        getDeviceHeader()->end());
   }
   return fullHeader;
+}
+
+void Device::queryDeviceInfo() {
+  Commands *c = new Commands(getDeviceHeader());
+  c->getMIDISysExMessage();
 }

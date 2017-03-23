@@ -78,8 +78,8 @@ int DeviceDetectionProcessor::detectDevices() {
 
           if (devices->find(serialNumber) == devices->end()) {
             int productId = MIDI::byteJoin(message, 5, 2);
-            devices->insert(std::pair<long, Device *>(
-                serialNumber, new Device(serialNumber, productId, j, i)));
+            Device *device = new Device(j, i, serialNumber, productId);
+            devices->insert(std::pair<long, Device *>(serialNumber, device));
             qDebug() << "... and added to list of devices";
           } else {
             qDebug() << "but it's already recognized";
@@ -98,6 +98,10 @@ int DeviceDetectionProcessor::detectDevices() {
   devices->insert(std::pair<long, Device *>(
       0x02, new Device(0x02, 0x0201, 2, 2, "Mio4", "Lolo")));
 #endif //__MIO_SIMULATE__
+  for (Devices::iterator it = devices->begin(); it != devices->end(); it++) {
+    Device *d = it->second;
+    d->queryDeviceInfo();
+  }
   Configuration::getInstance().setDevices(devices);
   return devices->size();
 }

@@ -32,21 +32,25 @@ public:
 
 class MIDISysexValue {
 public:
+  MIDISysexValue(long val, int length) : longValue(val), byteLength(length) {}
   MIDISysexValue(long val) : longValue(val) {}
-  MIDISysexValue(BYTE_VECTOR *val) : byteValue(val) {
+  // TODO setting the byte value does not set the correct long value
+  MIDISysexValue(BYTE_VECTOR *val) {
+    byteValue = val;
     longValue = MIDI::byteJoin(byteValue);
   }
 
   long getLongValue() { return longValue; }
   BYTE_VECTOR *getByteValue() {
     if (byteValue == 0)
-      byteValue = MIDI::byteSplit(longValue);
+      byteValue = MIDI::byteSplit(longValue, byteLength);
     return byteValue;
   }
 
 private:
   long longValue;
   BYTE_VECTOR *byteValue = 0;
+  int byteLength;
 };
 
 #endif // MIDI_H

@@ -23,6 +23,7 @@ public:
   static BYTE_VECTOR *getManufacturerHeader();
   BYTE_VECTOR *getDeviceHeader();
   BYTE_VECTOR *getFullHeader();
+  void queryDeviceInfo();
   std::string getModelName() { return modelName; }
   std::string getDeviceName() { return deviceName; }
   MIDISysexValue *getSerialNumber() { return serialNumber; }
