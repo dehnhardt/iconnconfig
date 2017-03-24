@@ -112,14 +112,7 @@ double DeviceDetectionProcessor::getMessage(BYTE_VECTOR *message) {
 }
 
 void DeviceDetectionProcessor::createMidiIn() {
-  // RtMidiIn constructor
-  try {
-    midiin = new RtMidiIn(RtMidi::LINUX_ALSA);
-  } catch (RtMidiError &error) {
-    // Handle the exception here
-    error.printMessage();
-  }
-  midiin->ignoreTypes(false, true, true);
+  midiin = MIDI::createMidiIn();
 #ifdef DEBUG
   unsigned int nPorts = midiin->getPortCount();
   std::cout << "\nThere are " << nPorts << " MIDI input sources available.\n";
@@ -137,12 +130,7 @@ void DeviceDetectionProcessor::createMidiIn() {
 
 void DeviceDetectionProcessor::createMidiOut() {
   // RtMidiOut constructor
-  try {
-    midiout = new RtMidiOut(RtMidi::LINUX_ALSA);
-  } catch (RtMidiError &error) {
-    error.printMessage();
-    exit(EXIT_FAILURE);
-  }
+  midiout = MIDI::createMidiOut();
 // Check outputs.
 #ifdef DEBUG
   unsigned int nPorts = midiout->getPortCount();

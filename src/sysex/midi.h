@@ -4,6 +4,8 @@
 #include <cstring>
 #include <vector>
 
+#include "../RtMidi.h"
+
 #ifdef __LINUX_ALSA__
 #include <alsa/seq_event.h>
 #endif //__LINUX_ALSA__
@@ -28,6 +30,8 @@ public:
   static long byteJoin(BYTE_VECTOR *message);
   static long byteJoin(BYTE_VECTOR *message, unsigned int start,
                        unsigned int end);
+  static RtMidiIn *createMidiIn();
+  static RtMidiOut *createMidiOut();
 };
 
 class MIDISysexValue {

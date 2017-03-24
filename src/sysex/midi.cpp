@@ -4,6 +4,30 @@
 
 MIDI::MIDI() {}
 
+RtMidiIn *MIDI::createMidiIn() {
+  // RtMidiIn constructor
+  RtMidiIn *midiin = 0;
+  try {
+    midiin = new RtMidiIn(RtMidi::LINUX_ALSA);
+  } catch (RtMidiError &error) {
+    // Handle the exception here
+    error.printMessage();
+  }
+  midiin->ignoreTypes(false, true, true);
+  return midiin;
+}
+
+RtMidiOut *MIDI::createMidiOut() { // RtMidiIn constructor
+  RtMidiOut *midiout = 0;
+  try {
+    midiout = new RtMidiOut(RtMidi::LINUX_ALSA);
+  } catch (RtMidiError &error) {
+    // Handle the exception here
+    error.printMessage();
+  }
+  return midiout;
+}
+
 unsigned char MIDI::RolandChecksum(std::vector<unsigned char> *message) {
   unsigned int nBytes = message->size();
   unsigned int sum = 0;
