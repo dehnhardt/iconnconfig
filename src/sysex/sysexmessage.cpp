@@ -5,8 +5,12 @@
 
 SysExMessage::SysExMessage(Command cmd, CommandFlags flags, Device *device)
     : cmd(cmd), cmdflags(flags), device(device) {
-  this->deviceHeader = this->device->getDeviceHeader();
-  command = new BYTE_VECTOR;
+  if (this->device != 0)
+    this->deviceHeader = this->device->getDeviceHeader();
+  else {
+    deviceHeader = new BYTE_VECTOR();
+  }
+  command = new BYTE_VECTOR();
   command->push_back(flags);
   command->push_back(cmd);
 }
