@@ -3,10 +3,9 @@
 #include <iostream>
 #include <unistd.h>
 
-SysExMessage::SysExMessage(Command cmd, CommandFlags flags,
-                           BYTE_VECTOR *deviceHeader)
-    : cmd(cmd), cmdflags(flags) {
-  this->deviceHeader = deviceHeader;
+SysExMessage::SysExMessage(Command cmd, CommandFlags flags, Device device)
+    : cmd(cmd), cmdflags(flags), device(device) {
+  this->deviceHeader = this->device->getDeviceHeader();
   command = new BYTE_VECTOR;
   command->push_back(flags);
   command->push_back(cmd);
@@ -47,13 +46,13 @@ BYTE_VECTOR *SysExMessage::getMIDISysExMessage() {
                getTransactionId()->end());
   body->insert(body->end(), getCommand()->begin(), getCommand()->end());
   body->insert(body->end(), bodyLength->begin(), bodyLength->end());
-  if (getMessageData()->size() > 0) {
+  if (mdSize > 0) {
     body->insert(body->end(), md->begin(), md->end());
   }
   unsigned char cs = MIDI::RolandChecksum(body);
 
-  message->reserve(manufacturerHeader->size() + deviceHeader->size() +
-                   getMessageData()->size() + 4);
+  message->reserve(manufacturerHeader->size() + deviceHeader->size() + mdSize +
+                   4);
   message->push_back(SYSEX_START);
   message->insert(message->end(), manufacturerHeader->begin(),
                   manufacturerHeader->end());

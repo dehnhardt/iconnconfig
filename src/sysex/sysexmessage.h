@@ -28,7 +28,7 @@ public:
     QUERY = 0x40   /*!< Query from device */
   };
 
-  SysExMessage(Command command, CommandFlags flags, BYTE_VECTOR *deviceHeader);
+  SysExMessage(Command command, CommandFlags flags, Device *device);
   ~SysExMessage();
 
   virtual BYTE_VECTOR *getCommand() { return command; }
@@ -44,6 +44,7 @@ public:
   virtual BYTE_VECTOR *getMIDISysExMessage();
 
 protected:
+  Device *device = 0;
   unsigned char cmd;
   unsigned char cmdflags;
   BYTE_VECTOR *command = 0;
