@@ -1,6 +1,7 @@
 #ifndef DEVICE_H
 #define DEVICE_H
 
+#include "RtMidi.h"
 #include "sysex/midi.h"
 
 #include <string>
@@ -13,6 +14,7 @@ public:
   Device(int inPortNumber, int outPortNumber, long serialNumber, int productId,
          std::string modelName, std::string deviceName);
 #endif //__MIO_DEBUG__
+  ~Device();
 
 public:
   static const long MANUFACTURER_USB_ID = 0x2321;
@@ -28,6 +30,8 @@ public:
   std::string getDeviceName() { return deviceName; }
   MIDISysexValue *getSerialNumber() { return serialNumber; }
   MIDISysexValue *getProductId() { return productId; }
+  void sentSysex(BYTE_VECTOR *data);
+  BYTE_VECTOR *retrieveSysex();
 
   // setter
   void setDeviceInformation(std::string modelName, std::string deviceName) {
@@ -38,6 +42,11 @@ public:
 private:
   int inPortNumber;
   int outPortNumber;
+
+  RtMidiIn *midiin = 0;
+  RtMidiOut *midiout = 0;
+  int sysexWaitTime = 1000;
+
   MIDISysexValue *serialNumber;
   MIDISysexValue *productId;
 
@@ -46,6 +55,8 @@ private:
 
   BYTE_VECTOR *deviceHeader = 0;
   BYTE_VECTOR *fullHeader = 0;
+
+  void setupMidi();
 };
 
 #endif // DEVICE_H

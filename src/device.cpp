@@ -1,10 +1,12 @@
 #include "device.h"
 #include "sysex/commands.h"
+#include "sysex/infos.h"
 #include "sysex/midi.h"
 
 #include <array>
 #include <cstring>
 #include <iostream>
+#include <sstream>
 #include <unistd.h>
 
 Device::Device(int inPortNumber, int outPortNumber, long serialNumber,
@@ -13,6 +15,7 @@ Device::Device(int inPortNumber, int outPortNumber, long serialNumber,
   this->outPortNumber = outPortNumber;
   this->serialNumber = new MIDISysexValue(serialNumber, 5);
   this->productId = new MIDISysexValue(productId, 2);
+  setupMidi();
 }
 
 #ifdef __MIO_SIMULATE__
@@ -26,6 +29,19 @@ Device::Device(int inPortNumber, int outPortNumber, long serialNumber,
   this->deviceName = deviceName;
 }
 #endif //__MIO_DEBUG__
+
+Device::~Device() {
+  if (midiin) {
+    if (midiin->isPortOpen())
+      midiin->closePort();
+    delete midiin;
+  }
+  if (midiout) {
+    if (midiout->isPortOpen())
+      midiout->closePort();
+    delete midiout;
+  }
+}
 
 BYTE_VECTOR *Device::getManufacturerHeader() {
   BYTE_VECTOR *mfh = new BYTE_VECTOR();
@@ -64,7 +80,40 @@ BYTE_VECTOR *Device::getFullHeader() {
   return fullHeader;
 }
 
+void Device::setupMidi() {
+  std::stringstream name;
+  name << "MioConfig In " << serialNumber->getLongValue();
+  midiin = MIDI::createMidiIn(name.str());
+  midiin->openPort(inPortNumber);
+  name << "MioConfig Out " << serialNumber->getLongValue();
+  midiout = MIDI::createMidiOut(name.str());
+  midiout->openPort(outPortNumber);
+}
+
+void Device::sentSysex(BYTE_VECTOR *data) {
+  usleep(sysexWaitTime);
+  midiout->sendMessage(data);
+}
+
+BYTE_VECTOR *Device::retrieveSysex() {
+  usleep(sysexWaitTime);
+  BYTE_VECTOR *data = new BYTE_VECTOR();
+  midiin->getMessage(data);
+  return data;
+}
+
 void Device::queryDeviceInfo() {
   Commands *c = new Commands(this);
-  c->getMIDISysExMessage();
+  BYTE_VECTOR *query = c->getMIDISysExMessage();
+  MIDI::printMessage(query);
+  sentSysex(query);
+  BYTE_VECTOR *answer = retrieveSysex();
+  MIDI::printMessage(answer);
+  std::cout << "next\n";
+  Infos *i = new Infos(this);
+  query = i->getMIDISysExMessage();
+  MIDI::printMessage(query);
+  sentSysex(query);
+  answer = retrieveSysex();
+  MIDI::printMessage(answer);
 }
