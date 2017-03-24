@@ -4,7 +4,8 @@
 
 MIDI::MIDI() {}
 
-RtMidiIn *MIDI::createMidiIn() {
+RtMidiIn *MIDI::createMidiIn(
+    const std::string clientName = std::string("RtMidi Input Client")) {
   // RtMidiIn constructor
   RtMidiIn *midiin = 0;
   try {
@@ -17,7 +18,9 @@ RtMidiIn *MIDI::createMidiIn() {
   return midiin;
 }
 
-RtMidiOut *MIDI::createMidiOut() { // RtMidiIn constructor
+RtMidiOut *
+MIDI::createMidiOut(const std::string clientName = std::string(
+                        "RtMidi Output Client")) { // RtMidiOut constructor
   RtMidiOut *midiout = 0;
   try {
     midiout = new RtMidiOut(RtMidi::LINUX_ALSA);

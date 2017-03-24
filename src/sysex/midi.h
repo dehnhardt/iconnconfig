@@ -30,8 +30,10 @@ public:
   static long byteJoin(BYTE_VECTOR *message);
   static long byteJoin(BYTE_VECTOR *message, unsigned int start,
                        unsigned int end);
-  static RtMidiIn *createMidiIn();
-  static RtMidiOut *createMidiOut();
+  static RtMidiIn *createMidiIn(
+      const std::string clientName = std::string("RtMidi Input Client"));
+  static RtMidiOut *createMidiOut(
+      const std::string clientName = std::string("RtMidi Input Client"));
 };
 
 class MIDISysexValue {
