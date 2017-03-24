@@ -4,12 +4,11 @@
 
 MIDI::MIDI() {}
 
-RtMidiIn *MIDI::createMidiIn(
-    const std::string clientName = std::string("RtMidi Input Client")) {
+RtMidiIn *MIDI::createMidiIn(const std::string clientName) {
   // RtMidiIn constructor
   RtMidiIn *midiin = 0;
   try {
-    midiin = new RtMidiIn(RtMidi::LINUX_ALSA);
+    midiin = new RtMidiIn(RtMidi::LINUX_ALSA, clientName);
   } catch (RtMidiError &error) {
     // Handle the exception here
     error.printMessage();
@@ -19,11 +18,10 @@ RtMidiIn *MIDI::createMidiIn(
 }
 
 RtMidiOut *
-MIDI::createMidiOut(const std::string clientName = std::string(
-                        "RtMidi Output Client")) { // RtMidiOut constructor
+MIDI::createMidiOut(const std::string clientName) { // RtMidiOut constructor
   RtMidiOut *midiout = 0;
   try {
-    midiout = new RtMidiOut(RtMidi::LINUX_ALSA);
+    midiout = new RtMidiOut(RtMidi::LINUX_ALSA, clientName);
   } catch (RtMidiError &error) {
     // Handle the exception here
     error.printMessage();
@@ -81,4 +79,11 @@ long MIDI::byteJoin(std::vector<unsigned char> *message, unsigned int start,
     current += message->at(cnt);
   }
   return current;
+}
+
+void MIDI::printMessage(BYTE_VECTOR *message) {
+  unsigned int nMessageSize = message->size();
+  for (unsigned int i = 0; i < nMessageSize; i++)
+    std::cout << std::hex << (int)message->at(i) << " ";
+  std::cout << "\n" << std::flush;
 }
