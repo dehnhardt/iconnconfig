@@ -54,7 +54,7 @@ int DeviceDetectionProcessor::detectDevices() {
       midiin->openPort(j);
       midiout->sendMessage(qMessage);
       usleep(1000); // pause a little
-      BYTE_VECTOR *message = new std::vector<unsigned char>;
+      BYTE_VECTOR *message = new BYTE_VECTOR;
       midiin->getMessage(message);
       unsigned int nMessageSize = message->size();
       if (nMessageSize > 0) {
