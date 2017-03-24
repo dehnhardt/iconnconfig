@@ -64,9 +64,5 @@ BYTE_VECTOR *SysExMessage::getMIDISysExMessage() {
   message->insert(message->end(), body->begin(), body->end());
   message->push_back(cs);
   message->push_back(SYSEX_END);
-  unsigned int nMessageSize = message->size();
-  for (unsigned int i = 0; i < nMessageSize; i++)
-    std::cout << std::hex << (int)message->at(i) << " ";
-  std::cout << "\n";
   return message;
 }
