@@ -65,6 +65,6 @@ BYTE_VECTOR *Device::getFullHeader() {
 }
 
 void Device::queryDeviceInfo() {
-  Commands *c = new Commands(getDeviceHeader());
+  Commands *c = new Commands(this);
   c->getMIDISysExMessage();
 }

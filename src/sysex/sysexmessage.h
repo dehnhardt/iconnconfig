@@ -44,9 +44,9 @@ public:
   virtual BYTE_VECTOR *getMIDISysExMessage();
 
 protected:
-  Device *device = 0;
   unsigned char cmd;
   unsigned char cmdflags;
+  Device *device = 0;
   BYTE_VECTOR *command = 0;
   BYTE_VECTOR *transactionId = 0;
   BYTE_VECTOR *deviceHeader = 0;

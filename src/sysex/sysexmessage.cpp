@@ -3,7 +3,7 @@
 #include <iostream>
 #include <unistd.h>
 
-SysExMessage::SysExMessage(Command cmd, CommandFlags flags, Device device)
+SysExMessage::SysExMessage(Command cmd, CommandFlags flags, Device *device)
     : cmd(cmd), cmdflags(flags), device(device) {
   this->deviceHeader = this->device->getDeviceHeader();
   command = new BYTE_VECTOR;

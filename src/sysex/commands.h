@@ -6,7 +6,7 @@
 
 class Commands : public SysExMessage {
 public:
-  Commands(BYTE_VECTOR *deviceHeader);
+  Commands(Device *devices);
 };
 
 #endif // GETCOMMANDS_H
