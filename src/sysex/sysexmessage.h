@@ -13,6 +13,8 @@ public:
     RET_DEVICE,        /*!< Answer from device to GET_DEVICE query*/
     GET_COMMAND_LIST,  /*!< Query devices command list. */
     RET_COMMAND_LIST,  /*!< List of commands supported by device. */
+    GET_INFO_LIST,     /*!< Query list of infos, whch can be retrieved */
+    RET_INFO_LIST,     /*!< List of infos supported by this device */
     /* ... */
     INVALID_DEVICE,    /*!< An invalid device ID was specified. */
     MEMORY_ERROR,      /*!< An error occured during memory allocation. */
