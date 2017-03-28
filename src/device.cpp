@@ -1,5 +1,6 @@
 #include "device.h"
 #include "sysex/commands.h"
+#include "sysex/deviceinfo.h"
 #include "sysex/infos.h"
 #include "sysex/midi.h"
 
@@ -110,10 +111,48 @@ void Device::queryDeviceInfo() {
   BYTE_VECTOR *answer = retrieveSysex();
   MIDI::printMessage(answer);
   std::cout << "next\n";
+  query->clear();
+
   Infos *i = new Infos(this);
   query = i->getMIDISysExMessage();
   MIDI::printMessage(query);
   sentSysex(query);
   answer = retrieveSysex();
   MIDI::printMessage(answer);
+  std::cout << "next\n";
+  query->clear();
+
+  DeviceInfo *di = new DeviceInfo(this);
+  query = di->getMIDISysExMessage();
+  MIDI::printMessage(query);
+  sentSysex(query);
+  answer = retrieveSysex();
+  MIDI::printMessage(answer);
+  std::cout << "next\n";
+  query->clear();
+
+  di->setInfoItem(DeviceInfo::ACESSORY_NAME);
+  query = di->getMIDISysExMessage();
+  MIDI::printMessage(query);
+  sentSysex(query);
+  answer = retrieveSysex();
+  MIDI::printMessage(answer);
+  std::cout << "next\n";
+  query->clear();
+
+  di->setInfoItem(DeviceInfo::SERIAL_NUMBER);
+  query = di->getMIDISysExMessage();
+  MIDI::printMessage(query);
+  sentSysex(query);
+  answer = retrieveSysex();
+  MIDI::printMessage(answer);
+  std::cout << "next\n";
+  query->clear();
+}
+
+BYTE_VECTOR *Device::getTransactionId() {
+  if (transactionId > 16000)
+    transactionId = 0;
+  BYTE_VECTOR *v = MIDI::byteSplit(++transactionId, 2);
+  return v;
 }
