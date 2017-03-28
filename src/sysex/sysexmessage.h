@@ -38,7 +38,7 @@ public:
   virtual BYTE_VECTOR *getTransactionId() {
     if (transactionId == 0) {
       if (device != 0)
-        return this->device->getTransactionId();
+        return this->device->nextTransactionId();
       transactionId = new BYTE_VECTOR();
       transactionId->push_back(0x00);
       transactionId->push_back(0x01);

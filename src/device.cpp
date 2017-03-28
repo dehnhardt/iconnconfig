@@ -150,7 +150,7 @@ void Device::queryDeviceInfo() {
   query->clear();
 }
 
-BYTE_VECTOR *Device::getTransactionId() {
+BYTE_VECTOR *Device::nextTransactionId() {
   if (transactionId > 16000)
     transactionId = 0;
   BYTE_VECTOR *v = MIDI::byteSplit(++transactionId, 2);
