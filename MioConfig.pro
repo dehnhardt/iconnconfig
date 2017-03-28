@@ -41,7 +41,8 @@ SOURCES +=\
     src/sysex/devicedetectionquery.cpp \
     src/deviceselectiontablemodel.cpp \
     src/sysex/commands.cpp \
-    src/sysex/infos.cpp
+    src/sysex/infos.cpp \
+    src/sysex/deviceinfo.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
@@ -56,7 +57,8 @@ HEADERS  += src/miomain.h \
     src/sysex/devicedetectionquery.h \
     src/deviceselectiontablemodel.h \
     src/sysex/commands.h \
-    src/sysex/infos.h
+    src/sysex/infos.h \
+    src/sysex/deviceinfo.h
 
 FORMS    += src/miomain.ui \
     src/devicedetection.ui
