@@ -46,6 +46,7 @@ std::vector<unsigned char> *MIDI::byteSplit(long val) {
 
 std::vector<unsigned char> *MIDI::byteSplit(long val, int size) {
   std::vector<unsigned char> *bytes = new std::vector<unsigned char>();
+  bytes->reserve(size);
   while (val > 0) {
     unsigned char c = val & 0x7f;
     val >>= 7;
