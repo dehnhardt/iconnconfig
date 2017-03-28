@@ -32,6 +32,7 @@ public:
   MIDISysexValue *getProductId() { return productId; }
   void sentSysex(BYTE_VECTOR *data);
   BYTE_VECTOR *retrieveSysex();
+  BYTE_VECTOR *nextTransactionId();
 
   // setter
   void setDeviceInformation(std::string modelName, std::string deviceName) {
@@ -43,9 +44,11 @@ private:
   int inPortNumber;
   int outPortNumber;
 
+  int transactionId = 0;
+
   RtMidiIn *midiin = 0;
   RtMidiOut *midiout = 0;
-  int sysexWaitTime = 1000;
+  int sysexWaitTime = 3000;
 
   MIDISysexValue *serialNumber;
   MIDISysexValue *productId;
