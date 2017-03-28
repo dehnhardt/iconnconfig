@@ -43,11 +43,11 @@ BYTE_VECTOR *SysExMessage::getMIDISysExMessage() {
   BYTE_VECTOR *md = getMessageData();
   int mdSize = md->size();
   BYTE_VECTOR *bodyLength = MIDI::byteSplit(mdSize, 2);
+  BYTE_VECTOR *transactionId = getTransactionId();
 
   body->reserve(deviceHeader->size() + 6 + mdSize);
   body->insert(body->end(), deviceHeader->begin(), deviceHeader->end());
-  body->insert(body->end(), getTransactionId()->begin(),
-               getTransactionId()->end());
+  body->insert(body->end(), transactionId->begin(), transactionId->end());
   body->insert(body->end(), getCommand()->begin(), getCommand()->end());
   body->insert(body->end(), bodyLength->begin(), bodyLength->end());
   if (mdSize > 0) {
