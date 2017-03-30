@@ -66,3 +66,7 @@ BYTE_VECTOR *SysExMessage::getMIDISysExMessage() {
   message->push_back(SYSEX_END);
   return message;
 }
+
+void SysExMessage::parseAnswer(BYTE_VECTOR *answer) {
+  std::cout << "Answer: " << answer->size();
+}

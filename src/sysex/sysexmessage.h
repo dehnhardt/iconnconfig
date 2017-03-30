@@ -32,7 +32,12 @@ public:
 
   SysExMessage(Command command, CommandFlags flags, Device *device);
   ~SysExMessage();
+  virtual BYTE_VECTOR *getMIDISysExMessage();
+  std::string getAnswerDataAsString();
+  long getAnswerDataAsLong();
+  virtual void parseAnswer(BYTE_VECTOR *answer);
 
+protected:
   virtual BYTE_VECTOR *getCommand() { return command; }
   virtual BYTE_VECTOR *getMessageData() { return new BYTE_VECTOR(); }
   virtual BYTE_VECTOR *getTransactionId() {
@@ -45,7 +50,6 @@ public:
     }
     return transactionId;
   }
-  virtual BYTE_VECTOR *getMIDISysExMessage();
 
 protected:
   unsigned char cmd;
@@ -54,6 +58,7 @@ protected:
   BYTE_VECTOR *command = 0;
   BYTE_VECTOR *transactionId = 0;
   BYTE_VECTOR *deviceHeader = 0;
+  BYTE_VECTOR *answer = 0;
 };
 
 #endif // SYSEXMESSAGE_H
