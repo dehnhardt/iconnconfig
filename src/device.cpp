@@ -45,11 +45,13 @@ Device::~Device() {
 }
 
 BYTE_VECTOR *Device::getManufacturerHeader() {
-  BYTE_VECTOR *mfh = new BYTE_VECTOR();
-  mfh->push_back(MANUFACTURER_SYSEX_ID[0]);
-  mfh->push_back(MANUFACTURER_SYSEX_ID[1]);
-  mfh->push_back(MANUFACTURER_SYSEX_ID[2]);
-  return mfh;
+  if (Device::manufacturerHeader == 0) {
+    manufacturerHeader = new BYTE_VECTOR();
+    manufacturerHeader->push_back(MANUFACTURER_SYSEX_ID[0]);
+    manufacturerHeader->push_back(MANUFACTURER_SYSEX_ID[1]);
+    manufacturerHeader->push_back(MANUFACTURER_SYSEX_ID[2]);
+  }
+  return manufacturerHeader;
 }
 
 BYTE_VECTOR *Device::getDeviceHeader() {
@@ -71,10 +73,11 @@ BYTE_VECTOR *Device::getFullHeader() {
   if (fullHeader == 0) {
     fullHeader = new BYTE_VECTOR();
     fullHeader->reserve(Device::getManufacturerHeader()->size() +
-                        getDeviceHeader()->size());
+                        getDeviceHeader()->size() + 1);
     fullHeader->insert(fullHeader->end(),
                        Device::getManufacturerHeader()->begin(),
                        Device::getManufacturerHeader()->end());
+    fullHeader->push_back(Device::MESSAGE_CLASS);
     fullHeader->insert(fullHeader->end(), getDeviceHeader()->begin(),
                        getDeviceHeader()->end());
   }
@@ -100,7 +103,16 @@ BYTE_VECTOR *Device::retrieveSysex() {
   usleep(sysexWaitTime);
   BYTE_VECTOR *data = new BYTE_VECTOR();
   midiin->getMessage(data);
-  return data;
+  if (checkSysex(data))
+    return data;
+  return 0;
+}
+
+bool Device::checkSysex(BYTE_VECTOR *data) {
+  BYTE_VECTOR *dataHeader =
+      new BYTE_VECTOR(data->begin() + 1, data->begin() + 12);
+  BYTE_VECTOR *localHeader = getFullHeader();
+  return MIDI::compareByteVector(dataHeader, localHeader);
 }
 
 void Device::queryDeviceInfo() {
@@ -156,3 +168,5 @@ BYTE_VECTOR *Device::nextTransactionId() {
   BYTE_VECTOR *v = MIDI::byteSplit(++transactionId, 2);
   return v;
 }
+
+BYTE_VECTOR *Device::manufacturerHeader = 0;

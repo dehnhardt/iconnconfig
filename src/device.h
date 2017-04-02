@@ -18,8 +18,9 @@ public:
 
 public:
   static const long MANUFACTURER_USB_ID = 0x2321;
-  static const int MESSAGE_CLASS = 0x7e;
+  static const char MESSAGE_CLASS = 0x7e;
   static constexpr char MANUFACTURER_SYSEX_ID[3] = {0x00, 0x01, 0x73};
+  static BYTE_VECTOR *manufacturerHeader;
 
   // getter
   static BYTE_VECTOR *getManufacturerHeader();
@@ -60,6 +61,7 @@ private:
   BYTE_VECTOR *fullHeader = 0;
 
   void setupMidi();
+  bool checkSysex(BYTE_VECTOR *data);
 };
 
 #endif // DEVICE_H
