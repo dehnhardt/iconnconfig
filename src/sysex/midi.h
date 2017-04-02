@@ -31,6 +31,17 @@ public:
   static long byteJoin(BYTE_VECTOR *message, unsigned int start,
                        unsigned int end);
   static void printMessage(BYTE_VECTOR *v);
+  static bool compareByteVector(BYTE_VECTOR *v1, BYTE_VECTOR *v2) {
+    if (v1->size() != v2->size())
+      return false;
+    int size = v1->size();
+    for (int i = 0; i < size; i++) {
+      if ((*v1)[i] != (*v2)[i])
+        return false;
+    }
+    return true;
+  }
+
   static RtMidiIn *createMidiIn(
       const std::string clientName = std::string("MioConfig Input Client"));
   static RtMidiOut *createMidiOut(
