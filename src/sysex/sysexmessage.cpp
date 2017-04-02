@@ -7,15 +7,17 @@ SysExMessage::SysExMessage(Command cmd, CommandFlags flags, Device *device)
     : cmd(cmd), cmdflags(flags), device(device) {
   if (this->device != 0)
     this->deviceHeader = this->device->getDeviceHeader();
-  else {
+  else
     deviceHeader = new BYTE_VECTOR();
-  }
   command = new BYTE_VECTOR();
   command->push_back(flags);
   command->push_back(cmd);
 }
 
-SysExMessage::~SysExMessage() { delete command; }
+SysExMessage::~SysExMessage() {
+  delete command;
+  delete deviceHeader;
+}
 
 BYTE_VECTOR *SysExMessage::getMIDISysExMessage() {
   BYTE_VECTOR *body = new BYTE_VECTOR();
