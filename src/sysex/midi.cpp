@@ -72,7 +72,7 @@ long MIDI::byteJoin(std::vector<unsigned char> *message, unsigned int start,
   unsigned int cnt;
   int current = 0;
 
-  if (start + length >= message->size())
+  if (start + length > message->size())
     return -1;
 
   for (cnt = start; cnt < start + length; cnt++) {
