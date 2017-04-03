@@ -51,6 +51,9 @@ SysExMessage::SysExMessage(Command cmd, std::vector<unsigned char> *message,
   command->push_back(cmdflags);
   command->push_back(cmd);
   acceptedAnswers = commandAcceptedAnswers[cmd];
+  long dataLength = MIDI::byteJoin(
+      new BYTE_VECTOR(message->begin() + 16, message->begin() + 18));
+  data = new BYTE_VECTOR(message->begin() + 18, message->begin() + dataLength);
 }
 
 SysExMessage::~SysExMessage() {

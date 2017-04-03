@@ -63,6 +63,7 @@ public:
   std::string getDataAsString();
   long getDataAsLong();
   void parseAnswer(BYTE_VECTOR *answer);
+  SysExMessage *getAnswer();
 
   // methods
 protected:
@@ -79,6 +80,9 @@ protected:
     return transactionId;
   }
   bool checkAnswerValid(long answerCommandId);
+  virtual void createAnswer(SysExMessage::Command cmd __attribute__((unused)),
+                            BYTE_VECTOR *message __attribute__((unused)),
+                            Device *device __attribute__((unused))) {}
 
   // members
 protected:
@@ -86,10 +90,12 @@ protected:
   unsigned char cmdflags;
   AcceptedAnswers acceptedAnswers;
   Device *device = 0;
+  SysExMessage *answer;
   BYTE_VECTOR *command = 0;
   BYTE_VECTOR *transactionId = 0;
   BYTE_VECTOR *deviceHeader = 0;
-  BYTE_VECTOR *answer = 0;
+  // BYTE_VECTOR *answer = 0;
+  BYTE_VECTOR *data = 0;
 };
 
 #endif // SYSEXMESSAGE_H
