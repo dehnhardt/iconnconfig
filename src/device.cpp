@@ -121,6 +121,7 @@ void Device::queryDeviceInfo() {
   MIDI::printMessage(query);
   sentSysex(query);
   BYTE_VECTOR *answer = retrieveSysex();
+  c->parseAnswer(answer);
   MIDI::printMessage(answer);
   std::cout << "next\n";
   query->clear();
@@ -130,6 +131,7 @@ void Device::queryDeviceInfo() {
   MIDI::printMessage(query);
   sentSysex(query);
   answer = retrieveSysex();
+  i->parseAnswer(answer);
   MIDI::printMessage(answer);
   std::cout << "next\n";
   query->clear();
@@ -139,6 +141,7 @@ void Device::queryDeviceInfo() {
   MIDI::printMessage(query);
   sentSysex(query);
   answer = retrieveSysex();
+  di->parseAnswer(answer);
   MIDI::printMessage(answer);
   std::cout << "next\n";
   query->clear();
@@ -148,6 +151,7 @@ void Device::queryDeviceInfo() {
   MIDI::printMessage(query);
   sentSysex(query);
   answer = retrieveSysex();
+  di->parseAnswer(answer);
   MIDI::printMessage(answer);
   std::cout << "next\n";
   query->clear();
@@ -157,6 +161,7 @@ void Device::queryDeviceInfo() {
   MIDI::printMessage(query);
   sentSysex(query);
   answer = retrieveSysex();
+  di->parseAnswer(answer);
   MIDI::printMessage(answer);
   std::cout << "next\n";
   query->clear();
