@@ -14,12 +14,21 @@ public:
     HARDWARE_VERSION,     /*!< Hardware version of device */
     DEVICE_NAME = 0x10    /*!< Name of device (writable) */
   };
+
+  // methods
+public:
   DeviceInfo(Device *device);
+  DeviceInfo(SysExMessage::Command cmd, BYTE_VECTOR *message, Device *device)
+      : SysExMessage(cmd, message, device) {}
+
   void setInfoItem(DeviceInfoItem infoItem) { this->infoItem = infoItem; }
   BYTE_VECTOR *getMessageData();
 
 private:
   DeviceInfoItem infoItem = DEVICE_NAME;
+
+  void createAnswer(SysExMessage::Command cmd, BYTE_VECTOR *message,
+                    Device *device);
 };
 
 #endif // DEVICEINFO_H
