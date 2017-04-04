@@ -7,4 +7,5 @@ Status
 * (2017-03-12) nothing relevant done so far
 * (2017-03-15) base structure done
 * (2017-03-17) device recognition works
-+ (2017-03-24) initiate device communication
+* (2017-03-24) initiate device communication
+* (2017-04-03) start with parser for returned messages
