@@ -5,16 +5,6 @@
 
 class DeviceInfo : public SysExMessage {
 public:
-  enum DeviceInfoItem {
-    ACESSORY_NAME = 0x01, /*!< Name of acessory */
-    MANUFACTURER_NAME,    /*!< Name of device manufacturer manufacturer */
-    MODEL_NUMBER,         /*!< Devices modelnumber */
-    SERIAL_NUMBER,        /*!< Devices serial number */
-    FIRMWARE_VERSION,     /*!< Installed firmware version */
-    HARDWARE_VERSION,     /*!< Hardware version of device */
-    DEVICE_NAME = 0x10    /*!< Name of device (writable) */
-  };
-
   // methods
 public:
   DeviceInfo(Device *device);
@@ -23,12 +13,16 @@ public:
 
   void setInfoItem(DeviceInfoItem infoItem) { this->infoItem = infoItem; }
   BYTE_VECTOR *getMessageData();
+  std::string getDataAsString();
+  DeviceInfoItem getDeviceInfoItem();
 
 private:
   DeviceInfoItem infoItem = DEVICE_NAME;
 
   void createAnswer(SysExMessage::Command cmd, BYTE_VECTOR *message,
-                    Device *device);
+                    Device *device) {
+    answer = new DeviceInfo(cmd, message, device);
+  }
 };
 
 #endif // DEVICEINFO_H

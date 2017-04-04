@@ -52,8 +52,11 @@ SysExMessage::SysExMessage(Command cmd, std::vector<unsigned char> *message,
   command->push_back(cmd);
   acceptedAnswers = commandAcceptedAnswers[cmd];
   long dataLength = MIDI::byteJoin(
-      new BYTE_VECTOR(message->begin() + 16, message->begin() + 18));
-  data = new BYTE_VECTOR(message->begin() + 18, message->begin() + dataLength);
+      new BYTE_VECTOR(message->begin() + Device::DATA_LENGTH_OFFSET,
+                      message->begin() + Device::DATA_LENGTH_OFFSET +
+                          Device::DATA_LENGTH_LENGTH));
+  data = new BYTE_VECTOR(message->begin() + Device::DATA_OFFSET,
+                         message->begin() + Device::DATA_OFFSET + dataLength);
 }
 
 SysExMessage::~SysExMessage() {
@@ -93,23 +96,54 @@ BYTE_VECTOR *SysExMessage::getMIDISysExMessage() {
   return message;
 }
 
-void SysExMessage::parseAnswer(BYTE_VECTOR *answer) {
+SysExMessage::Command SysExMessage::parseAnswer(BYTE_VECTOR *answer) {
   std::cout << "Answer: " << answer->size() << std::endl;
   BYTE_VECTOR *commandBytes =
       new BYTE_VECTOR(answer->begin() + 14, answer->begin() + 16);
   MIDISysexValue command = MIDISysexValue(commandBytes);
   if (checkAnswerValid(command.getLongValue())) {
+#ifdef __RTMIDI_DEBUG__
     std::cout << "Answer (command: " << command.getLongValue() << ") accepted "
               << std::endl;
-  } else {
-    std::cout << "Answer (command: " << command.getLongValue()
-              << ") not accepted " << std::endl;
+#endif //__RTMIDI_DEBUG__
+    return (SysExMessage::Command)command.getLongValue();
   }
+#ifdef __RTMIDI_DEBUG__
+  std::cout << "Answer (command: " << command.getLongValue()
+            << ") not accepted " << std::endl;
+#endif //__RTMIDI_DEBUG__
+  return CMD_ERROR;
 }
 
 bool SysExMessage::checkAnswerValid(long answerCommandId) {
   return std::find(acceptedAnswers.begin(), acceptedAnswers.end(),
                    answerCommandId) != acceptedAnswers.end();
+}
+
+int SysExMessage::execute() {
+  if (device == 0)
+    return -1;
+  BYTE_VECTOR *message = getMIDISysExMessage();
+  device->sentSysex(message);
+  BYTE_VECTOR *answerMessage = device->retrieveSysex();
+  Command cmd = parseAnswer(answerMessage);
+  createAnswer(cmd, answerMessage, device);
+  return 0;
+}
+
+SysExMessage *SysExMessage::getAnswer() { return answer; }
+
+std::string SysExMessage::getDataAsString() {
+  std::string string2(data->begin(), data->end());
+  return string2;
+}
+
+long SysExMessage::getDataAsLong() {
+  long result = -1;
+  if (data->size() < 11) {
+    result = MIDI::byteJoin(data);
+  }
+  return result;
 }
 
 CommandAcceptedAnswers SysExMessage::commandAcceptedAnswers = {

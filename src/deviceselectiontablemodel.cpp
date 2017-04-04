@@ -24,20 +24,43 @@ QVariant DeviceSelectionTableModel::data(const QModelIndex &index,
     case 0:
       break;
     case 1:
-      return QString::number(current->getSerialNumber()->getLongValue());
-    case 2:
       return QString(current->getDeviceName().c_str());
-    case 3:
+    case 2:
       return QString(current->getModelName().c_str());
+    case 3:
+      return current->getSerialNumberString() != ""
+                 ? QString(current->getSerialNumberString().c_str())
+                 : QString::number(current->getSerialNumber()->getLongValue());
     default:
       return QVariant::Invalid;
       break;
     }
   }
   if ((role == Qt::CheckStateRole) && (index.column() == 0)) {
-    return Qt::Unchecked;
+    Device *current = tableData.at(index.row());
+    return current->getDefault() ? Qt::Checked : Qt::Unchecked;
   }
   return QVariant::Invalid;
+}
+
+bool DeviceSelectionTableModel::setData(const QModelIndex &index,
+                                        const QVariant &value, int role) {
+  bool success = true;
+
+  if (index.isValid()) {
+    Device *current = tableData.at(index.row());
+    if (role == Qt::CheckStateRole) {
+      if (index.column() == 0) {
+        current->setDefault(value.toBool());
+        QModelIndex topLeft = index;
+        QModelIndex bottomRight = index;
+        emit dataChanged(topLeft, bottomRight);
+        success = true;
+      } else
+        success = false;
+    }
+  }
+  return success;
 }
 
 QVariant DeviceSelectionTableModel::headerData(int section,
@@ -49,11 +72,11 @@ QVariant DeviceSelectionTableModel::headerData(int section,
       return QString("Default");
       break;
     case 1:
-      return QString("Serial Number");
-    case 2:
       return QString("Device Name");
-    case 3:
+    case 2:
       return QString("Device Model");
+    case 3:
+      return QString("Serial Number");
     default:
       return QVariant::Invalid;
     }
@@ -63,7 +86,8 @@ QVariant DeviceSelectionTableModel::headerData(int section,
 
 Qt::ItemFlags DeviceSelectionTableModel::flags(const QModelIndex &index) const {
   if (index.column() == 0) {
-    return QAbstractTableModel::flags(index) | Qt::ItemIsUserCheckable;
+    return QAbstractTableModel::flags(index) | Qt::ItemIsUserCheckable |
+           Qt::ItemIsEditable;
   }
   return QAbstractTableModel::flags(index);
 }

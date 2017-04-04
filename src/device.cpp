@@ -117,54 +117,27 @@ bool Device::checkSysex(BYTE_VECTOR *data) {
 
 void Device::queryDeviceInfo() {
   Commands *c = new Commands(this);
-  BYTE_VECTOR *query = c->getMIDISysExMessage();
-  MIDI::printMessage(query);
-  sentSysex(query);
-  BYTE_VECTOR *answer = retrieveSysex();
-  c->parseAnswer(answer);
-  MIDI::printMessage(answer);
-  std::cout << "next\n";
-  query->clear();
+  c->execute();
+  Commands *ca = (Commands *)c->getAnswer();
 
   Infos *i = new Infos(this);
-  query = i->getMIDISysExMessage();
-  MIDI::printMessage(query);
-  sentSysex(query);
-  answer = retrieveSysex();
-  i->parseAnswer(answer);
-  MIDI::printMessage(answer);
-  std::cout << "next\n";
-  query->clear();
+  i->execute();
+  Infos *ia = (Infos *)i->getAnswer();
 
   DeviceInfo *di = new DeviceInfo(this);
-  query = di->getMIDISysExMessage();
-  MIDI::printMessage(query);
-  sentSysex(query);
-  answer = retrieveSysex();
-  di->parseAnswer(answer);
-  MIDI::printMessage(answer);
-  std::cout << "next\n";
-  query->clear();
+  di->execute();
+  DeviceInfo *dia = (DeviceInfo *)di->getAnswer();
+  deviceName = dia->getDataAsString();
 
   di->setInfoItem(DeviceInfo::ACESSORY_NAME);
-  query = di->getMIDISysExMessage();
-  MIDI::printMessage(query);
-  sentSysex(query);
-  answer = retrieveSysex();
-  di->parseAnswer(answer);
-  MIDI::printMessage(answer);
-  std::cout << "next\n";
-  query->clear();
+  di->execute();
+  dia = (DeviceInfo *)di->getAnswer();
+  modelName = dia->getDataAsString();
 
   di->setInfoItem(DeviceInfo::SERIAL_NUMBER);
-  query = di->getMIDISysExMessage();
-  MIDI::printMessage(query);
-  sentSysex(query);
-  answer = retrieveSysex();
-  di->parseAnswer(answer);
-  MIDI::printMessage(answer);
-  std::cout << "next\n";
-  query->clear();
+  di->execute();
+  dia = (DeviceInfo *)di->getAnswer();
+  serialNumberString = dia->getDataAsString();
 }
 
 BYTE_VECTOR *Device::nextTransactionId() {

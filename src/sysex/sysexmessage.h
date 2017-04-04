@@ -21,6 +21,7 @@ public:
  * @brief The Command enum
  */
   enum Command {
+    CMD_ERROR = -1,      /*!< Return if command is not valid */
     GET_DEVICE = 0x01,   /*!< Query for devices  */
     RET_DEVICE,          /*!< Answer from device to GET_DEVICE query*/
     GET_COMMAND_LIST,    /*!< Request devices command list. */
@@ -46,9 +47,24 @@ public:
 
   };
 
+  enum DeviceInfoItem {
+    ACESSORY_NAME = 0x01, /*!< Name of acessory */
+    MANUFACTURER_NAME,    /*!< Name of device manufacturer manufacturer */
+    MODEL_NUMBER,         /*!< Devices modelnumber */
+    SERIAL_NUMBER,        /*!< Devices serial number */
+    FIRMWARE_VERSION,     /*!< Installed firmware version */
+    HARDWARE_VERSION,     /*!< Hardware version of device */
+    DEVICE_NAME = 0x10    /*!< Name of device (writable) */
+  };
+
   enum CommandFlags {
     ANSWER = 0x00, /*!< Answer from device */
     QUERY = 0x40   /*!< Query from device */
+  };
+
+  enum Errors {
+    NO_DEVICE = -1, /*!< No device found or assigned */
+    OK = 0          /*!< No error */
   };
 
   static CommandAcceptedAnswers commandAcceptedAnswers;
@@ -62,8 +78,9 @@ public:
   virtual BYTE_VECTOR *getMIDISysExMessage();
   std::string getDataAsString();
   long getDataAsLong();
-  void parseAnswer(BYTE_VECTOR *answer);
+  Command parseAnswer(BYTE_VECTOR *answer);
   SysExMessage *getAnswer();
+  int execute();
 
   // methods
 protected:

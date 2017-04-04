@@ -4,8 +4,11 @@
 #include "RtMidi.h"
 #include "sysex/midi.h"
 
+#include <map>
 #include <string>
 #include <vector>
+
+class SysExMessage;
 
 class Device {
 public:
@@ -13,7 +16,7 @@ public:
 #ifdef __MIO_SIMULATE__
   Device(int inPortNumber, int outPortNumber, long serialNumber, int productId,
          std::string modelName, std::string deviceName);
-#endif //__MIO_DEBUG__
+#endif //__MIO_SIMULATE__
   ~Device();
 
 public:
@@ -22,6 +25,10 @@ public:
   static constexpr char MANUFACTURER_SYSEX_ID[3] = {0x00, 0x01, 0x73};
   static BYTE_VECTOR *manufacturerHeader;
 
+  static const int DATA_LENGTH_OFFSET = 16;
+  static const int DATA_LENGTH_LENGTH = 2;
+  static const int DATA_OFFSET = 18;
+
   // getter
   static BYTE_VECTOR *getManufacturerHeader();
   BYTE_VECTOR *getDeviceHeader();
@@ -29,8 +36,11 @@ public:
   void queryDeviceInfo();
   std::string getModelName() { return modelName; }
   std::string getDeviceName() { return deviceName; }
+  std::string getSerialNumberString() { return serialNumberString; }
   MIDISysexValue *getSerialNumber() { return serialNumber; }
   MIDISysexValue *getProductId() { return productId; }
+  bool getDefault() { return isDefault; }
+
   void sentSysex(BYTE_VECTOR *data);
   BYTE_VECTOR *retrieveSysex();
   BYTE_VECTOR *nextTransactionId();
@@ -41,11 +51,15 @@ public:
     this->deviceName = deviceName;
   }
 
+  void setDefault(bool isDefault) { this->isDefault = isDefault; }
+
 private:
   int inPortNumber;
   int outPortNumber;
 
   int transactionId = 0;
+
+  bool isDefault = false;
 
   RtMidiIn *midiin = 0;
   RtMidiOut *midiout = 0;
@@ -56,6 +70,9 @@ private:
 
   std::string modelName;
   std::string deviceName;
+  std::string serialNumberString;
+
+  // std::vector<SysExMessage::DeviceInfoItem> *lala = 0;
 
   BYTE_VECTOR *deviceHeader = 0;
   BYTE_VECTOR *fullHeader = 0;

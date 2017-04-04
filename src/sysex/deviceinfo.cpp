@@ -10,7 +10,11 @@ BYTE_VECTOR *DeviceInfo::getMessageData() {
   return messageData;
 }
 
-void DeviceInfo::createAnswer(SysExMessage::Command cmd, BYTE_VECTOR *message,
-                              Device *device) {
-  answer = new DeviceInfo(cmd, message, device);
+std::string DeviceInfo::getDataAsString() {
+  std::string result(data->begin() + 1, data->end());
+  return result;
+}
+
+DeviceInfo::DeviceInfoItem DeviceInfo::getDeviceInfoItem() {
+  return (DeviceInfoItem)(*data)[0];
 }
