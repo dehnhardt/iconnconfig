@@ -4,6 +4,7 @@
 #include "sysex/midi.h"
 
 #include <QDebug>
+#include <QSettings>
 #include <unistd.h>
 
 DeviceDetectionProcessor::DeviceDetectionProcessor() {
@@ -42,6 +43,9 @@ void DeviceDetectionProcessor::setupMidiPorts() {
 }
 
 int DeviceDetectionProcessor::detectDevices() {
+
+  int defaultDeviceSerialNumber =
+      Configuration::getInstance().getDefaultDevice();
   int nOutPortCount = midiout->getPortCount();
   int nInPortCount = midiin->getPortCount();
   DeviceDetectionQuery *q = new DeviceDetectionQuery();
@@ -79,6 +83,15 @@ int DeviceDetectionProcessor::detectDevices() {
           if (devices->find(serialNumber) == devices->end()) {
             int productId = MIDI::byteJoin(message, 5, 2);
             Device *device = new Device(j, i, serialNumber, productId);
+            if (defaultDeviceSerialNumber == 0 ||
+                serialNumber == defaultDeviceSerialNumber) {
+              device->setDefault(true);
+              if (defaultDeviceSerialNumber == 0) {
+                defaultDeviceSerialNumber = serialNumber;
+                Configuration::getInstance().setDefaultDevice(
+                    defaultDeviceSerialNumber);
+              }
+            }
             devices->insert(std::pair<long, Device *>(serialNumber, device));
             qDebug() << "... and added to list of devices";
           } else {
@@ -93,10 +106,10 @@ int DeviceDetectionProcessor::detectDevices() {
     midiout->closePort();
   }
 #ifdef __MIO_SIMULATE__
-  devices->insert(std::pair<long, Device *>(
-      0x01, new Device(0x01, 0x0101, 1, 1, "Mio10", "Lala")));
-  devices->insert(std::pair<long, Device *>(
-      0x02, new Device(0x02, 0x0201, 2, 2, "Mio4", "Lolo")));
+  devices->insert(
+      std::pair<long, Device *>(0x11, new Device(1, 1, 0x11, 0x0101)));
+  devices->insert(
+      std::pair<long, Device *>(0x12, new Device(2, 2, 0x12, 0x0201)));
 #endif //__MIO_SIMULATE__
   for (Devices::iterator it = devices->begin(); it != devices->end(); it++) {
     Device *d = it->second;
