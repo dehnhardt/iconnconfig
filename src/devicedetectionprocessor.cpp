@@ -83,15 +83,6 @@ int DeviceDetectionProcessor::detectDevices() {
           if (devices->find(serialNumber) == devices->end()) {
             int productId = MIDI::byteJoin(message, 5, 2);
             Device *device = new Device(j, i, serialNumber, productId);
-            if (defaultDeviceSerialNumber == 0 ||
-                serialNumber == defaultDeviceSerialNumber) {
-              device->setDefault(true);
-              if (defaultDeviceSerialNumber == 0) {
-                defaultDeviceSerialNumber = serialNumber;
-                Configuration::getInstance().setDefaultDevice(
-                    defaultDeviceSerialNumber);
-              }
-            }
             devices->insert(std::pair<long, Device *>(serialNumber, device));
             qDebug() << "... and added to list of devices";
           } else {
@@ -106,13 +97,24 @@ int DeviceDetectionProcessor::detectDevices() {
     midiout->closePort();
   }
 #ifdef __MIO_SIMULATE__
-  devices->insert(
-      std::pair<long, Device *>(0x11, new Device(1, 1, 0x11, 0x0101)));
-  devices->insert(
-      std::pair<long, Device *>(0x12, new Device(2, 2, 0x12, 0x0201)));
+  Device *ds = new Device(1, 1, 0x11, 0x0101, "mio10", "Device 1");
+  devices->insert(std::pair<long, Device *>(0x11, ds));
+  ds = new Device(2, 2, 0x12, 0x0201, "mio2", "Device 2");
+  devices->insert(std::pair<long, Device *>(0x12, ds));
 #endif //__MIO_SIMULATE__
+  Device *d = 0;
+  try {
+    d = devices->at(defaultDeviceSerialNumber);
+    d->setDefault(true);
+  } catch (std::out_of_range) {
+    d = devices->begin()->second;
+    d->setDefault(true);
+    defaultDeviceSerialNumber = d->getSerialNumber()->getLongValue();
+    Configuration::getInstance().setDefaultDevice(defaultDeviceSerialNumber);
+  }
+
   for (Devices::iterator it = devices->begin(); it != devices->end(); it++) {
-    Device *d = it->second;
+    d = it->second;
     d->queryDeviceInfo();
   }
   Configuration::getInstance().setDevices(devices);

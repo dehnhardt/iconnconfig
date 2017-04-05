@@ -1,4 +1,6 @@
 #include "deviceselectiontablemodel.h"
+#include "config/configuration.h"
+
 #include <QStandardItem>
 #include <QString>
 #include <QtGui>
@@ -13,7 +15,7 @@ int DeviceSelectionTableModel::rowCount(const QModelIndex &parent) const {
 }
 
 int DeviceSelectionTableModel::columnCount(const QModelIndex &parent) const {
-  return 4;
+  return 3;
 }
 
 QVariant DeviceSelectionTableModel::data(const QModelIndex &index,
@@ -22,12 +24,10 @@ QVariant DeviceSelectionTableModel::data(const QModelIndex &index,
     Device *current = tableData.at(index.row());
     switch (index.column()) {
     case 0:
-      break;
-    case 1:
       return QString(current->getDeviceName().c_str());
-    case 2:
+    case 1:
       return QString(current->getModelName().c_str());
-    case 3:
+    case 2:
       return current->getSerialNumberString() != ""
                  ? QString(current->getSerialNumberString().c_str())
                  : QString::number(current->getSerialNumber()->getLongValue());
@@ -51,11 +51,26 @@ bool DeviceSelectionTableModel::setData(const QModelIndex &index,
     Device *current = tableData.at(index.row());
     if (role == Qt::CheckStateRole) {
       if (index.column() == 0) {
-        current->setDefault(value.toBool());
-        QModelIndex topLeft = index;
-        QModelIndex bottomRight = index;
-        emit dataChanged(topLeft, bottomRight);
-        success = true;
+        if (current->getDefault()) {
+          success = false;
+        } else {
+          current->setDefault(value.toBool());
+          Configuration::getInstance().setDefaultDevice(
+              current->getSerialNumber()->getLongValue());
+          for (int i = 0; i < tableData.size(); i++) {
+            if (i != index.row()) {
+              if (tableData.at(i)->getDefault()) {
+                tableData.at(i)->setDefault(false);
+                QModelIndex upd = createIndex(i, 0);
+                emit dataChanged(upd, upd);
+              }
+            }
+          }
+          QModelIndex topLeft = index;
+          QModelIndex bottomRight = index;
+          emit dataChanged(topLeft, bottomRight);
+          success = true;
+        }
       } else
         success = false;
     }

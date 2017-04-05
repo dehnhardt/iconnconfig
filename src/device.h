@@ -29,6 +29,10 @@ public:
   static const int DATA_LENGTH_LENGTH = 2;
   static const int DATA_OFFSET = 18;
 
+  void sentSysex(BYTE_VECTOR *data);
+  BYTE_VECTOR *retrieveSysex();
+  BYTE_VECTOR *nextTransactionId();
+
   // getter
   static BYTE_VECTOR *getManufacturerHeader();
   BYTE_VECTOR *getDeviceHeader();
@@ -40,20 +44,24 @@ public:
   MIDISysexValue *getSerialNumber() { return serialNumber; }
   MIDISysexValue *getProductId() { return productId; }
   bool getDefault() { return isDefault; }
-
-  void sentSysex(BYTE_VECTOR *data);
-  BYTE_VECTOR *retrieveSysex();
-  BYTE_VECTOR *nextTransactionId();
+#ifdef __MIO_SIMULATE__
+  bool getSimulate() { return simulate; }
+#endif
 
   // setter
   void setDeviceInformation(std::string modelName, std::string deviceName) {
     this->modelName = modelName;
     this->deviceName = deviceName;
   }
-
   void setDefault(bool isDefault) { this->isDefault = isDefault; }
+#ifdef __MIO_SIMULATE__
+  void setSimulate() { simulate = true; }
+#endif
 
 private:
+#ifdef __MIO_SIMULATE__
+  bool simulate = false;
+#endif
   int inPortNumber;
   int outPortNumber;
 
@@ -71,8 +79,6 @@ private:
   std::string modelName;
   std::string deviceName;
   std::string serialNumberString;
-
-  // std::vector<SysExMessage::DeviceInfoItem> *lala = 0;
 
   BYTE_VECTOR *deviceHeader = 0;
   BYTE_VECTOR *fullHeader = 0;

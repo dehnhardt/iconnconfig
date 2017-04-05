@@ -23,6 +23,11 @@ private:
   // Members
   Ui::MioMain *ui;
   DeviceDetection *deviceDetectionWindow;
+  void readSettings();
+  void writeSettings();
+
+protected:
+  void closeEvent(QCloseEvent *event);
 };
 
 #endif // MIOMAIN_H

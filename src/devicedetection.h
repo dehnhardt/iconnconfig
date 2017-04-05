@@ -3,6 +3,8 @@
 
 #include "devicedetectionprocessor.h"
 
+#include <QAbstractButton>
+#include <QCloseEvent>
 #include <QDialog>
 
 namespace Ui {
@@ -19,9 +21,15 @@ public:
 private:
   Ui::DeviceDetection *ui = 0;
   DeviceDetectionProcessor *detectionProcessor = 0;
+  void writeSettings();
+  void readSettings();
+
+protected:
+  void closeEvent(QCloseEvent *event);
 
 private slots:
   void startDeviceDetection();
+  void on_buttonBox_accepted();
 };
 
 #endif // DEVICEDETECTION_H

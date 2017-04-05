@@ -28,6 +28,7 @@ Device::Device(int inPortNumber, int outPortNumber, long serialNumber,
   this->productId = new MIDISysexValue(productId);
   this->modelName = modelName;
   this->deviceName = deviceName;
+  this->simulate = true;
 }
 #endif //__MIO_DEBUG__
 
@@ -116,28 +117,34 @@ bool Device::checkSysex(BYTE_VECTOR *data) {
 }
 
 void Device::queryDeviceInfo() {
-  Commands *c = new Commands(this);
-  c->execute();
-  Commands *ca = (Commands *)c->getAnswer();
+#ifdef __MIO_SIMULATE__
+  if (!simulate) {
+#endif
+    Commands *c = new Commands(this);
+    c->execute();
+    Commands *ca = (Commands *)c->getAnswer();
 
-  Infos *i = new Infos(this);
-  i->execute();
-  Infos *ia = (Infos *)i->getAnswer();
+    Infos *i = new Infos(this);
+    i->execute();
+    Infos *ia = (Infos *)i->getAnswer();
 
-  DeviceInfo *di = new DeviceInfo(this);
-  di->execute();
-  DeviceInfo *dia = (DeviceInfo *)di->getAnswer();
-  deviceName = dia->getDataAsString();
+    DeviceInfo *di = new DeviceInfo(this);
+    di->execute();
+    DeviceInfo *dia = (DeviceInfo *)di->getAnswer();
+    deviceName = dia->getDataAsString();
 
-  di->setInfoItem(DeviceInfo::ACESSORY_NAME);
-  di->execute();
-  dia = (DeviceInfo *)di->getAnswer();
-  modelName = dia->getDataAsString();
+    di->setInfoItem(DeviceInfo::ACESSORY_NAME);
+    di->execute();
+    dia = (DeviceInfo *)di->getAnswer();
+    modelName = dia->getDataAsString();
 
-  di->setInfoItem(DeviceInfo::SERIAL_NUMBER);
-  di->execute();
-  dia = (DeviceInfo *)di->getAnswer();
-  serialNumberString = dia->getDataAsString();
+    di->setInfoItem(DeviceInfo::SERIAL_NUMBER);
+    di->execute();
+    dia = (DeviceInfo *)di->getAnswer();
+    serialNumberString = dia->getDataAsString();
+#ifdef __MIO_SIMULATE__
+  }
+#endif
 }
 
 BYTE_VECTOR *Device::nextTransactionId() {
