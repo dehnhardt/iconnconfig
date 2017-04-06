@@ -1,13 +1,15 @@
 #include "devicedetectionprocessor.h"
 #include "config/configuration.h"
+#include "events/events.h"
 #include "sysex/devicedetectionquery.h"
 #include "sysex/midi.h"
 
+#include <QApplication>
 #include <QDebug>
 #include <QSettings>
 #include <unistd.h>
 
-DeviceDetectionProcessor::DeviceDetectionProcessor() {
+DeviceDetectionProcessor::DeviceDetectionProcessor(QWidget *gui) : gui(gui) {
   if (Configuration::getInstance().getMidiDeviceDetection()) {
     setupMidiPorts();
   }
@@ -67,6 +69,9 @@ int DeviceDetectionProcessor::detectDevices() {
   for (int i = 0; i < nOutPortCount; i++) {
     midiout->openPort(i);
     for (int j = 0; j < nInPortCount; j++) {
+      ProgressEvent *e = new ProgressEvent();
+      e->setValue(i * nInPortCount + i);
+      QApplication::sendEvent(gui, e);
       midiin->openPort(j);
       midiout->sendMessage(qMessage);
       usleep(1000); // pause a little
@@ -107,6 +112,13 @@ int DeviceDetectionProcessor::detectDevices() {
     midiout->closePort();
   }
 #ifdef __MIO_SIMULATE__
+  int base = midiin->getPortCount() * midiout->getPortCount();
+  for (int i = 0; i <= 27; i++) {
+    ProgressEvent *e = new ProgressEvent();
+    e->setValue(base + i);
+    QApplication::sendEvent(gui, e);
+    usleep(100000);
+  }
   Device *ds = new Device(1, 1, 0x11, 0x0101, "mio10", "Device 1");
   devices->insert(std::pair<long, Device *>(0x11, ds));
   ds = new Device(2, 2, 0x12, 0x0201, "mio2", "Device 2");

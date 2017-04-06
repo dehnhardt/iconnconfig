@@ -17,7 +17,7 @@ class DeviceDetection : public QDialog {
 public:
   explicit DeviceDetection(QWidget *parent = 0);
   ~DeviceDetection();
-  void customEvent(QEvent e);
+  void customEvent(QEvent *e);
 
 private:
   Ui::DeviceDetection *ui = 0;

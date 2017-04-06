@@ -2,6 +2,7 @@
 #include "config/configuration.h"
 #include "devicedetectionprocessor.h"
 #include "deviceselectiontablemodel.h"
+#include "events/events.h"
 #include "miomain.h"
 #include "ui_devicedetection.h"
 
@@ -12,21 +13,26 @@ DeviceDetection::DeviceDetection(QWidget *parent)
     : QDialog(parent), ui(new Ui::DeviceDetection) {
   ui->setupUi(this);
   readSettings();
-  detectionProcessor = new DeviceDetectionProcessor();
+  detectionProcessor = new DeviceDetectionProcessor(this);
   QTimer::singleShot(1000, this, SLOT(startDeviceDetection()));
 }
 
 DeviceDetection::~DeviceDetection() { delete ui; }
 
 void DeviceDetection::customEvent(QEvent *e) {
-  if (e->type() == (QEvent::Type)1001) {
+  if (e->type() == (QEvent::Type)PROGRESS_EVENT_TYPE) {
+    ui->progressBar->setValue(((ProgressEvent *)e)->getValue());
   }
 }
 
 void DeviceDetection::startDeviceDetection() {
   int portCount = detectionProcessor->getMddiOutPortCount() *
                   detectionProcessor->getMidiInPortCount();
+#ifdef __MIO_SIMULATE__
+  ui->progressBar->setMaximum(portCount + 27);
+#else
   ui->progressBar->setMaximum(portCount);
+#endif
   ui->progressBar->setMinimum(0);
   ui->progressBar->setValue(0);
   detectionProcessor->startDeviceDetection();

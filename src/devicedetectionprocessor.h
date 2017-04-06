@@ -6,10 +6,11 @@
 #include "libusb.h"
 
 #include <QEvent>
+#include <QWidget>
 
 class DeviceDetectionProcessor {
 public:
-  DeviceDetectionProcessor();
+  DeviceDetectionProcessor(QWidget *gui);
   ~DeviceDetectionProcessor();
   int getMidiInPortCount();
   int getMddiOutPortCount();
@@ -33,10 +34,10 @@ private:
   bool setupUSB();
   void printUSBDevs();
 
+  QWidget *gui;
+
 signals:
   void detectionProcess(int value);
 };
-
-class ProgressBarEvent : public QEvent {};
 
 #endif // DEVICEDETECTIONPROCESSOR_H
