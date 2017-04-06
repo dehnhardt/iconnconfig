@@ -18,7 +18,17 @@ DeviceDetection::DeviceDetection(QWidget *parent)
 
 DeviceDetection::~DeviceDetection() { delete ui; }
 
+void DeviceDetection::customEvent(QEvent *e) {
+  if (e->type() == (QEvent::Type)1001) {
+  }
+}
+
 void DeviceDetection::startDeviceDetection() {
+  int portCount = detectionProcessor->getMddiOutPortCount() *
+                  detectionProcessor->getMidiInPortCount();
+  ui->progressBar->setMaximum(portCount);
+  ui->progressBar->setMinimum(0);
+  ui->progressBar->setValue(0);
   detectionProcessor->startDeviceDetection();
   Devices *devices = Configuration::getInstance().getDevices();
   DeviceSelectionTableModel *deviceModel =
@@ -31,6 +41,10 @@ void DeviceDetection::on_buttonBox_accepted() {
   writeSettings();
   MioMain *m = (MioMain *)parentWidget();
   m->geometry();
+}
+
+void DeviceDetection::setProgressBar(int value) {
+  ui->progressBar->setValue(value);
 }
 
 void DeviceDetection::writeSettings() {

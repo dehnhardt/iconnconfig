@@ -25,6 +25,18 @@ DeviceDetectionProcessor::~DeviceDetectionProcessor() {
   }
 }
 
+int DeviceDetectionProcessor::getMidiInPortCount() {
+  if (midiin)
+    return midiin->getPortCount();
+  return 0;
+}
+
+int DeviceDetectionProcessor::getMddiOutPortCount() {
+  if (midiout)
+    return midiout->getPortCount();
+  return 0;
+}
+
 /* MIDI-methods */
 
 void DeviceDetectionProcessor::startDeviceDetection() {
@@ -62,12 +74,10 @@ int DeviceDetectionProcessor::detectDevices() {
       midiin->getMessage(message);
       unsigned int nMessageSize = message->size();
       if (nMessageSize > 0) {
-#ifdef DEBUG
+#ifdef __MIO_DEBUG__
         for (unsigned int i = 0; i < nMessageSize; i++)
           std::cout << std::hex << (int)message->at(i) << " ";
-        if (nMessageSize > 0)
-          std::cout << "stamp = " << deltatime << std::endl;
-#endif
+#endif //__MIO_DEBUG__
         // test for iConnectivity device
         if ((nMessageSize >= 16) && (message->at(0) == SYSEX_START) &&
             (message->at(1) == Device::MANUFACTURER_SYSEX_ID[0]) &&
@@ -128,7 +138,7 @@ double DeviceDetectionProcessor::getMessage(BYTE_VECTOR *message) {
 
 void DeviceDetectionProcessor::createMidiIn() {
   midiin = MIDI::createMidiIn();
-#ifdef DEBUG
+#ifdef __MIO_DEBUG__
   unsigned int nPorts = midiin->getPortCount();
   std::cout << "\nThere are " << nPorts << " MIDI input sources available.\n";
   std::string portName;
@@ -140,14 +150,14 @@ void DeviceDetectionProcessor::createMidiIn() {
     }
     std::cout << "  Input Port #" << i + 1 << ": " << portName.c_str() << "\n";
   }
-#endif
+#endif //__MIO_DEBUG_
 }
 
 void DeviceDetectionProcessor::createMidiOut() {
   // RtMidiOut constructor
   midiout = MIDI::createMidiOut();
 // Check outputs.
-#ifdef DEBUG
+#ifdef __MIO_DEBUG__
   unsigned int nPorts = midiout->getPortCount();
   std::cout << "\nThere are " << nPorts << " MIDI output ports available.\n";
   std::string portName;
@@ -159,7 +169,7 @@ void DeviceDetectionProcessor::createMidiOut() {
     }
     std::cout << "  Output Port #" << i + 1 << ": " << portName.c_str() << "\n";
   }
-#endif
+#endif //__MIO_DEBUG__
 }
 
 /* USB methods - currently not used */
