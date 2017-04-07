@@ -11,6 +11,7 @@
 
 DeviceDetection::DeviceDetection(QWidget *parent)
     : QDialog(parent), ui(new Ui::DeviceDetection) {
+  connect(this, SIGNAL(openDeviceGUI()), parent, SLOT(openDeviceGUI()));
   ui->setupUi(this);
   readSettings();
   detectionProcessor = new DeviceDetectionProcessor(this);
@@ -45,8 +46,9 @@ void DeviceDetection::startDeviceDetection() {
 
 void DeviceDetection::on_buttonBox_accepted() {
   writeSettings();
-  MioMain *m = (MioMain *)parentWidget();
-  m->geometry();
+  emit openDeviceGUI();
+  // MioMain *m = (MioMain *)parentWidget();
+  // m->openDeviceGUI();
 }
 
 void DeviceDetection::setProgressBar(int value) {

@@ -15,6 +15,9 @@ public:
   explicit MioMain(QWidget *parent = 0);
   ~MioMain();
 
+public slots:
+  void openDeviceGUI();
+
 private slots:
   void on_actionQuit_triggered();
   void openDetectionWindow();

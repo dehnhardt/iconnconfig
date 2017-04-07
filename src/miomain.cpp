@@ -1,6 +1,7 @@
 #include "miomain.h"
 #include "config/configuration.h"
 #include "devicedetection.h"
+#include "devicewidget.h"
 #include "sysex/midi.h"
 #include "ui_miomain.h"
 
@@ -17,6 +18,13 @@ MioMain::MioMain(QWidget *parent) : QMainWindow(parent), ui(new Ui::MioMain) {
 MioMain::~MioMain() {
   delete deviceDetectionWindow;
   delete ui;
+}
+
+void MioMain::openDeviceGUI() {
+  long defaultDeviceSN = Configuration::getInstance().getDefaultDevice();
+  Device *d = Configuration::getInstance().getDevices()->at(defaultDeviceSN);
+  DeviceWidget *deviceWidget = new DeviceWidget(this, d);
+  setCentralWidget(deviceWidget);
 }
 
 void MioMain::closeEvent(QCloseEvent *event) {

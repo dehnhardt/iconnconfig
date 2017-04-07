@@ -32,6 +32,9 @@ private slots:
   void startDeviceDetection();
   void on_buttonBox_accepted();
   void setProgressBar(int value);
+
+signals:
+  void openDeviceGUI();
 };
 
 #endif // DEVICEDETECTION_H
