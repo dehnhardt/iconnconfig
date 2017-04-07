@@ -6,9 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>600</width>
+    <height>400</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>600</width>
+    <height>400</height>
+   </size>
+  </property>
+  <property name="baseSize">
+   <size>
+    <width>600</width>
+    <height>400</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>MioMain</string>
@@ -19,17 +31,18 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>400</width>
-     <height>22</height>
+     <width>600</width>
+     <height>19</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuMio10_Congig">
+   <widget class="QMenu" name="menuMio10_Config">
     <property name="title">
      <string>Datei</string>
     </property>
     <addaction name="actionQuit"/>
+    <addaction name="actionopen_device"/>
    </widget>
-   <addaction name="menuMio10_Congig"/>
+   <addaction name="menuMio10_Config"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -43,6 +56,11 @@
   <action name="actionQuit">
    <property name="text">
     <string>Quit</string>
+   </property>
+  </action>
+  <action name="actionopen_device">
+   <property name="text">
+    <string>open device</string>
    </property>
   </action>
  </widget>

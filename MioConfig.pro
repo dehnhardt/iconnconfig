@@ -19,7 +19,7 @@ CONFIG += c++11
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
 DEFINES += __LINUX_ALSA__
-DEFINES += __MIO_SIMULATE__
+#DEFINES += __MIO_SIMULATE__
 DEFINES += __MIO_DEBUG__
 
 DEFINES += __RTMIDI_DEBUG__
@@ -44,6 +44,7 @@ SOURCES +=\
     src/sysex/commands.cpp \
     src/sysex/infos.cpp \
     src/sysex/deviceinfo.cpp \
+    src/devicegui.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
@@ -60,10 +61,12 @@ HEADERS  += src/miomain.h \
     src/sysex/commands.h \
     src/sysex/infos.h \
     src/sysex/deviceinfo.h \
-    src/events/events.h
+    src/events/events.h \
+    src/devicegui.h
 
 FORMS    += src/miomain.ui \
-    src/devicedetection.ui
+    src/devicedetection.ui \
+    src/devicegui.ui
 
 unix:!macx: LIBS += -lasound \
                     -lpthread \

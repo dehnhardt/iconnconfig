@@ -7,6 +7,7 @@
 #include <QApplication>
 #include <QDebug>
 #include <QSettings>
+#include <iomanip>
 #include <unistd.h>
 
 DeviceDetectionProcessor::DeviceDetectionProcessor(QWidget *gui) : gui(gui) {
@@ -62,6 +63,12 @@ int DeviceDetectionProcessor::detectDevices() {
       Configuration::getInstance().getDefaultDevice();
   int nOutPortCount = midiout->getPortCount();
   int nInPortCount = midiin->getPortCount();
+#ifdef __MIO_DEBUG__
+  std::cout << "Out ports: " << std::dec << nOutPortCount
+            << ", in ports: " << nInPortCount
+            << " - combinations to probe:  " << nOutPortCount * nInPortCount
+            << std::endl;
+#endif //__MIO_DEBUG__
   DeviceDetectionQuery *q = new DeviceDetectionQuery();
   long serialNumber;
   BYTE_VECTOR *qMessage = q->getMIDISysExMessage();
@@ -70,7 +77,8 @@ int DeviceDetectionProcessor::detectDevices() {
     midiout->openPort(i);
     for (int j = 0; j < nInPortCount; j++) {
       ProgressEvent *e = new ProgressEvent();
-      e->setValue(i * nInPortCount + i);
+      int progress = (i * nInPortCount) + j + 1;
+      e->setValue(progress);
       QApplication::sendEvent(gui, e);
       midiin->openPort(j);
       midiout->sendMessage(qMessage);
@@ -82,6 +90,7 @@ int DeviceDetectionProcessor::detectDevices() {
 #ifdef __MIO_DEBUG__
         for (unsigned int i = 0; i < nMessageSize; i++)
           std::cout << std::hex << (int)message->at(i) << " ";
+        std::cout << std::endl;
 #endif //__MIO_DEBUG__
         // test for iConnectivity device
         if ((nMessageSize >= 16) && (message->at(0) == SYSEX_START) &&
