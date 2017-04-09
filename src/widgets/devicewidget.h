@@ -1,7 +1,7 @@
 #ifndef DEVICEWIDGET_H
 #define DEVICEWIDGET_H
 
-#include "device.h"
+#include "../device.h"
 
 #include <QDockWidget>
 
