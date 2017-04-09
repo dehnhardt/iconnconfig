@@ -44,7 +44,10 @@ SOURCES +=\
     src/sysex/commands.cpp \
     src/sysex/infos.cpp \
     src/sysex/deviceinfo.cpp \
-    src/devicewidget.cpp
+    src/widgets/devicewidget.cpp \
+    src/widgets/portsettingwidget.cpp \
+    src/widgets/devicedockwidget.cpp \
+    src/widgets/deviceinfowidget.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
@@ -62,11 +65,17 @@ HEADERS  += src/miomain.h \
     src/sysex/infos.h \
     src/sysex/deviceinfo.h \
     src/events/events.h \
-    src/devicewidget.h
+    src/widgets/devicewidget.h \
+    src/device.h \
+    src/widgets/portsettingwidget.h \
+    src/widgets/devicedockwidget.h \
+    src/widgets/deviceinfowidget.h
 
 FORMS    += src/miomain.ui \
     src/devicedetection.ui \
-    src/devicewidget.ui
+    src/widgets/devicewidget.ui \
+    src/widgets/portsettingwidget.ui \
+    src/widgets/deviceinfowidget.ui
 
 unix:!macx: LIBS += -lasound \
                     -lpthread \

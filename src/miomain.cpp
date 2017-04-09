@@ -1,9 +1,11 @@
 #include "miomain.h"
 #include "config/configuration.h"
 #include "devicedetection.h"
-#include "devicewidget.h"
 #include "sysex/midi.h"
 #include "ui_miomain.h"
+#include "widgets/deviceinfowidget.h"
+#include "widgets/devicewidget.h"
+#include "widgets/portsettingwidget.h"
 
 #include <QCloseEvent>
 #include <QTimer>
@@ -20,11 +22,28 @@ MioMain::~MioMain() {
   delete ui;
 }
 
-void MioMain::openDeviceGUI() {
+void MioMain::openDefaultDevice() {
   long defaultDeviceSN = Configuration::getInstance().getDefaultDevice();
   Device *d = Configuration::getInstance().getDevices()->at(defaultDeviceSN);
+  openDeviceGUI(d);
+}
+
+void MioMain::openDeviceGUI(Device *d) {
+  setWindowTitle(this->windowTitle() + QString(": ") +
+                 QString::fromStdString(d->getDeviceName()));
   DeviceWidget *deviceWidget = new DeviceWidget(this, d);
   setCentralWidget(deviceWidget);
+  DeviceInfoWidget *deviceInfoWidget = new DeviceInfoWidget(this, d);
+  this->addDockWidget(Qt::LeftDockWidgetArea, deviceInfoWidget);
+  PortSettingWidget *portSettingWidget = new PortSettingWidget(this, d);
+  this->addDockWidget(Qt::LeftDockWidgetArea, portSettingWidget);
+
+  QSettings *settings = Configuration::getInstance().getSettings();
+  settings->beginGroup("MainWindow");
+  settings->beginGroup("Docks");
+  settings->setValue("DockWindows", saveState());
+  settings->endGroup();
+  settings->endGroup();
 }
 
 void MioMain::closeEvent(QCloseEvent *event) {
@@ -42,6 +61,9 @@ void MioMain::writeSettings() {
   settings->beginGroup("MainWindow");
   settings->setValue("size", size());
   settings->setValue("pos", pos());
+  settings->beginGroup("Docks");
+  settings->setValue("DockWindows", saveState());
+  settings->endGroup();
   settings->endGroup();
 }
 

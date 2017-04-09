@@ -16,7 +16,7 @@ public:
   ~MioMain();
 
 public slots:
-  void openDeviceGUI();
+  void openDefaultDevice();
 
 private slots:
   void on_actionQuit_triggered();
@@ -26,6 +26,7 @@ private:
   // Members
   Ui::MioMain *ui;
   DeviceDetection *deviceDetectionWindow;
+  void openDeviceGUI(Device *d);
   void readSettings();
   void writeSettings();
 

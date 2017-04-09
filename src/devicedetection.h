@@ -34,7 +34,7 @@ private slots:
   void setProgressBar(int value);
 
 signals:
-  void openDeviceGUI();
+  void openDefaultDevice();
 };
 
 #endif // DEVICEDETECTION_H
