@@ -47,7 +47,8 @@ SOURCES +=\
     src/widgets/devicewidget.cpp \
     src/widgets/portsettingwidget.cpp \
     src/widgets/devicedockwidget.cpp \
-    src/widgets/deviceinfowidget.cpp
+    src/widgets/deviceinfowidget.cpp \
+    src/widgets/portswidget.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
@@ -69,13 +70,15 @@ HEADERS  += src/miomain.h \
     src/device.h \
     src/widgets/portsettingwidget.h \
     src/widgets/devicedockwidget.h \
-    src/widgets/deviceinfowidget.h
+    src/widgets/deviceinfowidget.h \
+    src/widgets/portswidget.h
 
 FORMS    += src/miomain.ui \
     src/devicedetection.ui \
     src/widgets/devicewidget.ui \
     src/widgets/portsettingwidget.ui \
-    src/widgets/deviceinfowidget.ui
+    src/widgets/deviceinfowidget.ui \
+    src/widgets/portswidget.ui
 
 unix:!macx: LIBS += -lasound \
                     -lpthread \

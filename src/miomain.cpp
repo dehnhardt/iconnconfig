@@ -5,7 +5,7 @@
 #include "ui_miomain.h"
 #include "widgets/deviceinfowidget.h"
 #include "widgets/devicewidget.h"
-#include "widgets/portsettingwidget.h"
+#include "widgets/portswidget.h"
 
 #include <QCloseEvent>
 #include <QTimer>
@@ -35,8 +35,9 @@ void MioMain::openDeviceGUI(Device *d) {
   setCentralWidget(deviceWidget);
   DeviceInfoWidget *deviceInfoWidget = new DeviceInfoWidget(this, d);
   this->addDockWidget(Qt::LeftDockWidgetArea, deviceInfoWidget);
-  PortSettingWidget *portSettingWidget = new PortSettingWidget(this, d);
-  this->addDockWidget(Qt::LeftDockWidgetArea, portSettingWidget);
+  PortsWidget *portsWidget = new PortsWidget(this, d);
+  this->addDockWidget(Qt::LeftDockWidgetArea, portsWidget);
+  tabifyDockWidget(deviceInfoWidget, portsWidget);
 
   QSettings *settings = Configuration::getInstance().getSettings();
   settings->beginGroup("MainWindow");
