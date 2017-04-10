@@ -18,7 +18,12 @@ CONFIG += c++11
 # depend on your compiler). Please consult the documentation of the
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
-DEFINES += __LINUX_ALSA__
+
+# RTMidi defines
+unix:!macx: DEFINES += __LINUX_ALSA__
+macx: DEFINES += __MACOSX_CORE__
+win32: DEFINES += __WINDOWS_MM__
+
 DEFINES += __MIO_SIMULATE__
 DEFINES += __MIO_DEBUG__
 
