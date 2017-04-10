@@ -83,3 +83,6 @@ FORMS    += src/miomain.ui \
 unix:!macx: LIBS += -lasound \
                     -lpthread \
                     -lusb-1.0
+
+RESOURCES += \
+    src/mio.qrc
