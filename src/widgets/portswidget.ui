@@ -6,30 +6,44 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>251</width>
+    <width>150</width>
     <height>490</height>
    </rect>
   </property>
+  <property name="baseSize">
+   <size>
+    <width>150</width>
+    <height>0</height>
+   </size>
+  </property>
   <property name="features">
-   <set>QDockWidget::AllDockWidgetFeatures</set>
+   <set>QDockWidget::NoDockWidgetFeatures</set>
   </property>
   <property name="allowedAreas">
-   <set>Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea</set>
+   <set>Qt::LeftDockWidgetArea</set>
   </property>
   <property name="windowTitle">
    <string>Ports</string>
   </property>
   <widget class="QWidget" name="dockWidgetContents">
-   <widget class="QTableView" name="tableView">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>251</width>
-      <height>192</height>
-     </rect>
-    </property>
-   </widget>
+   <property name="baseSize">
+    <size>
+     <width>150</width>
+     <height>0</height>
+    </size>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QTableView" name="tableView">
+      <property name="baseSize">
+       <size>
+        <width>150</width>
+        <height>0</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>
