@@ -9,15 +9,18 @@ int main(int argc, char *argv[]) {
   QCoreApplication::setOrganizationDomain("www.punkt-k.de");
   QCoreApplication::setApplicationName("Mio Config");
 
-  QTranslator qtTranslator;
+  /*QTranslator qtTranslator;
   qtTranslator.load("qt_" + QLocale::system().name(),
                     QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-  app.installTranslator(&qtTranslator);
+  app.installTranslator(&qtTranslator);*/
 
-  QTranslator myappTranslator;
-  myappTranslator.load("myapp_" + QLocale::system().name());
-  app.installTranslator(&myappTranslator);
-
+  QTranslator mioConfigTranslator;
+  QString l = "mioconfig_" + QLocale::system().name();
+  if (mioConfigTranslator.load(QLocale(), QLatin1String("mioconfig"),
+                               QLatin1String("_"),
+                               QLatin1String(":/translations/tr"))) {
+    app.installTranslator(&mioConfigTranslator);
+  }
   MioMain w;
   w.show();
   return app.exec();
