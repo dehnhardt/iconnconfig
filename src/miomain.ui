@@ -35,12 +35,12 @@
      <x>0</x>
      <y>0</y>
      <width>610</width>
-     <height>22</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMio10_Config">
     <property name="title">
-     <string>Datei</string>
+     <string>File</string>
     </property>
     <addaction name="actionQuit"/>
     <addaction name="actionopen_device"/>
@@ -74,7 +74,7 @@
   </action>
   <action name="actionopen_device">
    <property name="text">
-    <string>open device</string>
+    <string>Open Device</string>
    </property>
   </action>
  </widget>
