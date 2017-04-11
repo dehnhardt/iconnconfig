@@ -13,6 +13,8 @@
 
 MioMain::MioMain(QWidget *parent) : QMainWindow(parent), ui(new Ui::MioMain) {
   ui->setupUi(this);
+  setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::ForceTabbedDocks |
+                 QMainWindow::VerticalTabs);
   readSettings();
   QTimer::singleShot(100, this, SLOT(openDetectionWindow()));
 }
