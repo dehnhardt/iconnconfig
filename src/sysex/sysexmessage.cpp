@@ -97,7 +97,7 @@ BYTE_VECTOR *SysExMessage::getMIDISysExMessage() {
 }
 
 SysExMessage::Command SysExMessage::parseAnswer(BYTE_VECTOR *answer) {
-  std::cout << "Answer: " << answer->size() << std::endl;
+  std::cout << "Answer: " << std::dec << answer->size() << std::endl;
   BYTE_VECTOR *commandBytes =
       new BYTE_VECTOR(answer->begin() + 14, answer->begin() + 16);
   MIDISysexValue command = MIDISysexValue(commandBytes);
@@ -127,11 +127,23 @@ int SysExMessage::execute() {
   device->sentSysex(message);
   BYTE_VECTOR *answerMessage = device->retrieveSysex();
   Command cmd = parseAnswer(answerMessage);
-  createAnswer(cmd, answerMessage, device);
+  if (debug)
+    MIDI::printMessage(answerMessage);
+  if (cmd != this->cmd)
+    createAnswer(cmd, answerMessage, device);
   return 0;
 }
 
+void SysExMessage::setDebug(bool debug) { this->debug = debug; }
+
+void SysExMessage::printRawData() { MIDI::printMessage(data); }
+
 SysExMessage *SysExMessage::getAnswer() { return answer; }
+
+SysExMessage *SysExMessage::query() {
+  execute();
+  return answer;
+}
 
 std::string SysExMessage::getDataAsString() {
   std::string string2(data->begin(), data->end());

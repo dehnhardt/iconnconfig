@@ -80,7 +80,11 @@ public:
   long getDataAsLong();
   Command parseAnswer(BYTE_VECTOR *answer);
   SysExMessage *getAnswer();
+  SysExMessage *query();
   int execute();
+  void setDebug(bool debug);
+  void printRawData();
+  virtual void parseAnswerData() {}
 
   // methods
 protected:
@@ -111,8 +115,9 @@ protected:
   BYTE_VECTOR *command = 0;
   BYTE_VECTOR *transactionId = 0;
   BYTE_VECTOR *deviceHeader = 0;
-  // BYTE_VECTOR *answer = 0;
+  BYTE_VECTOR *resultData = 0;
   BYTE_VECTOR *data = 0;
+  bool debug = false;
 };
 
 #endif // SYSEXMESSAGE_H
