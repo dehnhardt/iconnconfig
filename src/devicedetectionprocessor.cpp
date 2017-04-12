@@ -119,6 +119,9 @@ int DeviceDetectionProcessor::detectDevices() {
       midiin->closePort();
     }
     midiout->closePort();
+    ProgressEvent *e = new ProgressEvent();
+    e->setValue(getMidiInPortCount() * getMddiOutPortCount());
+    QApplication::sendEvent(gui, e);
   }
 #ifdef __MIO_SIMULATE__
   int base = midiin->getPortCount() * midiout->getPortCount();
@@ -126,7 +129,7 @@ int DeviceDetectionProcessor::detectDevices() {
     ProgressEvent *e = new ProgressEvent();
     e->setValue(base + i);
     QApplication::sendEvent(gui, e);
-    usleep(100000);
+    usleep(10000);
   }
   Device *ds = new Device(1, 1, 0x11, 0x0101, "mio10", "Device 1");
   devices->insert(std::pair<long, Device *>(0x11, ds));

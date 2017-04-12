@@ -10,11 +10,13 @@ DeviceSelectionTableModel::DeviceSelectionTableModel(Devices *devices) {
     tableData.push_back(it->second);
 }
 
-int DeviceSelectionTableModel::rowCount(const QModelIndex &parent) const {
+int DeviceSelectionTableModel::rowCount(const QModelIndex &parent
+                                        __attribute__((unused))) const {
   return tableData.size();
 }
 
-int DeviceSelectionTableModel::columnCount(const QModelIndex &parent) const {
+int DeviceSelectionTableModel::columnCount(const QModelIndex &parent
+                                           __attribute__((unused))) const {
   return 3;
 }
 
