@@ -9,6 +9,7 @@
 #include <vector>
 
 class SysExMessage;
+class Commands;
 
 class Device {
 public:
@@ -79,6 +80,8 @@ private:
   std::string modelName;
   std::string deviceName;
   std::string serialNumberString;
+
+  Commands *commands = 0;
 
   BYTE_VECTOR *deviceHeader = 0;
   BYTE_VECTOR *fullHeader = 0;

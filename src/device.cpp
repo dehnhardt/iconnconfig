@@ -1,6 +1,7 @@
 #include "device.h"
 #include "sysex/commands.h"
 #include "sysex/deviceinfo.h"
+#include "sysex/getcommands.h"
 #include "sysex/infos.h"
 #include "sysex/midi.h"
 
@@ -120,13 +121,20 @@ void Device::queryDeviceInfo() {
 #ifdef __MIO_SIMULATE__
   if (!simulate) {
 #endif
-    Commands *c = new Commands(this);
-    c->execute();
-    Commands *ca = (Commands *)c->getAnswer();
+    GetCommands *c = new GetCommands(this);
+    c->setDebug(true);
+    commands = (Commands *)c->query();
 
-    Infos *i = new Infos(this);
-    i->execute();
-    Infos *ia = (Infos *)i->getAnswer();
+    if (commands == 0) {
+      std::cerr << "can not query supported commands";
+      return;
+    }
+
+    if (commands->isCommandSupported(SysExMessage::GET_INFO_LIST)) {
+      Infos *i = new Infos(this);
+      i->execute();
+      Infos *ia = (Infos *)i->getAnswer();
+    }
 
     DeviceInfo *di = new DeviceInfo(this);
     di->execute();
