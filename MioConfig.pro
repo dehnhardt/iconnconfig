@@ -54,7 +54,8 @@ SOURCES +=\
     src/widgets/portsettingwidget.cpp \
     src/widgets/devicedockwidget.cpp \
     src/widgets/deviceinfowidget.cpp \
-    src/widgets/portswidget.cpp
+    src/widgets/portswidget.cpp \
+    src/sysex/getcommands.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
@@ -77,7 +78,8 @@ HEADERS  += src/miomain.h \
     src/widgets/portsettingwidget.h \
     src/widgets/devicedockwidget.h \
     src/widgets/deviceinfowidget.h \
-    src/widgets/portswidget.h
+    src/widgets/portswidget.h \
+    src/sysex/getcommands.h
 
 FORMS    += src/miomain.ui \
     src/devicedetection.ui \
