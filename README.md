@@ -9,5 +9,5 @@ Status
 * (2017-03-17) device recognition works
 * (2017-03-24) initiate device communication
 * (2017-04-03) start with parser for returned messages
-* (2017-04-09) decision for docket layout as main GUI 
+* (2017-04-09) decision for docked layout as main GUI 
 * (2017-04-12) implemented method to check if commands are available for specific device before trying to execute them
