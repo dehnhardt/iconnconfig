@@ -29,6 +29,7 @@ private:
   void openDeviceGUI(Device *d);
   void readSettings();
   void writeSettings();
+  void connectSlots();
 
 protected:
   void closeEvent(QCloseEvent *event);
