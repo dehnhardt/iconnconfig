@@ -9,3 +9,5 @@ DeviceWidget::DeviceWidget(QWidget *parent, Device *device)
 }
 
 DeviceWidget::~DeviceWidget() { delete ui; }
+
+void DeviceWidget::infoTypeChanged(int type) {}

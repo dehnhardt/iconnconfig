@@ -16,6 +16,9 @@ public:
   explicit DeviceWidget(QWidget *parent = 0, Device *device = nullptr);
   ~DeviceWidget();
 
+public slots:
+  void infoTypeChanged(int type);
+
 private:
   Ui::DeviceWidget *ui;
   Device *device = 0;
