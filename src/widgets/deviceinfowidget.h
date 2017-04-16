@@ -16,9 +16,15 @@ public:
   explicit DeviceInfoWidget(QWidget *parent = 0, Device *device = 0);
   ~DeviceInfoWidget();
 
+private slots:
+  void on_infoList_currentRowChanged(int currentRow);
+
 private:
   Ui::DeviceInfoWidget *ui;
   Device *device;
+
+signals:
+  void infoChanged(int row);
 };
 
 #endif // DEVICEINFOWIDGET_H
