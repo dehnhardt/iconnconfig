@@ -45,6 +45,8 @@ public:
   MIDISysexValue *getSerialNumber() { return serialNumber; }
   MIDISysexValue *getProductId() { return productId; }
   bool getDefault() { return isDefault; }
+  Commands *getCommands() { return commands; }
+
 #ifdef __MIO_SIMULATE__
   bool getSimulate() { return simulate; }
 #endif
