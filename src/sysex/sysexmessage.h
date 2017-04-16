@@ -21,7 +21,8 @@ public:
  * @brief The Command enum
  */
   enum Command {
-    CMD_ERROR = -1,      /*!< Return if command is not valid */
+    CMD_ERROR = -1, /*!< Return if command is not valid */
+    /* device commands */
     GET_DEVICE = 0x01,   /*!< Query for devices  */
     RET_DEVICE,          /*!< Answer from device to GET_DEVICE query*/
     GET_COMMAND_LIST,    /*!< Request devices command list. */
@@ -43,8 +44,23 @@ public:
     RET_SET_ETHERNET_PORT_INFO, /*!< Returns the information about a specifoc
                                    ethernet port or sets some values for a
                                    specifoc ethernet port */
-    ACK /*!< Returns a sucess code (0x00) or an error code (0x01 - 0x03) */
-
+    ACK,   /*!< Returns a sucess code (0x00) or an error code (0x01 - 0x03) */
+    RESET, /*!< Resets the device */
+    SAVE_RESTORE, /*!< Used to save or restore the current device configuration
+                     */
+    GET_GIZMO_COUNT, /*!< Number of other devices connected to this device */
+    RET_GIZMO_COUNT, /*!< Returns the number of devices that are connected to
+                        this device */
+    GET_GIZMO_INFO,  /*!< Queueries information about a connected device */
+    RET_GIZMO_INFO,  /*!< Returns information about a connected device */
+    /* MIDI Commands */
+    GET_MIDI_INFO =
+        0x20,           /*!< Queueries information about the midi parameters */
+    RET_SET_MIDI_INFO,  /*!< Returns information about the midi parameters */
+    GET_MIDI_PORT_INFO, /*!< Queuery the information about a specific MIDI Port
+                           */
+    RET_SET_MIDI_PORT_INFO, /*!< Returns or set the MIDI-Information for a
+                               specific port */
   };
 
   enum DeviceInfoItem {

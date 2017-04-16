@@ -163,4 +163,14 @@ CommandAcceptedAnswers SysExMessage::commandAcceptedAnswers = {
     {GET_COMMAND_LIST, AcceptedAnswers{RET_COMMAND_LIST}},
     {GET_INFO_LIST, AcceptedAnswers{RET_INFO_LIST}},
     {GET_DEVICE_INFO, AcceptedAnswers{RET_SET_DEVICE_INFO}},
-    {RET_SET_DEVICE_INFO, AcceptedAnswers{ACK}}};
+    {RET_SET_DEVICE_INFO, AcceptedAnswers{ACK}},
+    {GET_RESET_LIST, AcceptedAnswers{RET_RESET_LIST, ACK}},
+    {GET_SAVE_RESTORE_LIST, AcceptedAnswers{RET_SAVE_RESTORE_LIST, ACK}},
+    {GET_ETHERNET_PORT_INFO, AcceptedAnswers{RET_SET_ETHERNET_PORT_INFO, ACK}},
+    {RESET, AcceptedAnswers{ACK}},
+    {SAVE_RESTORE, AcceptedAnswers{ACK}},
+    {GET_GIZMO_COUNT, AcceptedAnswers{RET_GIZMO_COUNT, ACK}},
+    {GET_GIZMO_INFO, AcceptedAnswers{RET_GIZMO_INFO, ACK}},
+    {GET_MIDI_INFO, AcceptedAnswers{RET_SET_MIDI_INFO, ACK}},
+    {GET_MIDI_PORT_INFO, AcceptedAnswers{RET_SET_MIDI_PORT_INFO}},
+    {RET_SET_MIDI_PORT_INFO, AcceptedAnswers{ACK}}};
