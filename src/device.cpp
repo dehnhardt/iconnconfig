@@ -25,11 +25,11 @@ Device::Device(int inPortNumber, int outPortNumber, long serialNumber,
                int productId, std::string modelName, std::string deviceName) {
   this->inPortNumber = inPortNumber;
   this->outPortNumber = outPortNumber;
-  this->serialNumber = new MIDISysexValue(serialNumber);
-  this->productId = new MIDISysexValue(productId);
+  this->serialNumber = new MIDISysexValue(serialNumber, 5);
+  this->productId = new MIDISysexValue(productId, 2);
   this->modelName = modelName;
   this->deviceName = deviceName;
-  this->simulate = true;
+  this->deviceIsSimulated = true;
 }
 #endif //__MIO_DEBUG__
 
@@ -118,18 +118,32 @@ bool Device::checkSysex(BYTE_VECTOR *data) {
 }
 
 void Device::queryDeviceInfo() {
+  GetCommands *c = new GetCommands(this);
+  c->setDebug(true);
 #ifdef __MIO_SIMULATE__
-  if (!simulate) {
+  BYTE_VECTOR *message = new BYTE_VECTOR({0xF0});
+  message->insert(message->end(), getFullHeader()->begin(),
+                  getFullHeader()->end());
+  message->push_back(0x00);
+  message->push_back(0x01);
+  message->push_back(0x00);
+  message->push_back(SysExMessage::RET_COMMAND_LIST);
+  message->push_back(0x00);
+  message->push_back(0x06);
+  message->insert(message->end(), {0x05, 0x07, 0x08, 0x09, 0x0b, 0x0c});
+  commands = new Commands(SysExMessage::RET_COMMAND_LIST, message, this);
+  commands->parseAnswerData();
+#else
+  commands = (Commands *)c->query();
 #endif
-    GetCommands *c = new GetCommands(this);
-    c->setDebug(true);
-    commands = (Commands *)c->query();
+  if (commands == 0) {
+    std::cerr << "can not query supported commands";
+    return;
+  }
 
-    if (commands == 0) {
-      std::cerr << "can not query supported commands";
-      return;
-    }
-
+#if __MIO_SIMULATE__
+  if (!deviceIsSimulated) {
+#endif //__MIO_SIMULATE
     if (commands->isCommandSupported(SysExMessage::GET_INFO_LIST)) {
       Infos *i = new Infos(this);
       i->execute();
@@ -152,7 +166,7 @@ void Device::queryDeviceInfo() {
     serialNumberString = dia->getDataAsString();
 #ifdef __MIO_SIMULATE__
   }
-#endif
+#endif //__MIO_SIMULATE__
 }
 
 BYTE_VECTOR *Device::nextTransactionId() {
