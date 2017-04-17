@@ -48,7 +48,7 @@ public:
   Commands *getCommands() { return commands; }
 
 #ifdef __MIO_SIMULATE__
-  bool getSimulate() { return simulate; }
+  bool getSimulate() { return deviceIsSimulated; }
 #endif
 
   // setter
@@ -58,12 +58,12 @@ public:
   }
   void setDefault(bool isDefault) { this->isDefault = isDefault; }
 #ifdef __MIO_SIMULATE__
-  void setSimulate() { simulate = true; }
+  void setSimulate() { deviceIsSimulated = true; }
 #endif
 
 private:
 #ifdef __MIO_SIMULATE__
-  bool simulate = false;
+  bool deviceIsSimulated = false;
 #endif
   int inPortNumber;
   int outPortNumber;
