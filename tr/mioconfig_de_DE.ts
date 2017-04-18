@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/devicedetection.ui" line="26"/>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -17,12 +17,12 @@
         <translation>Informationen zum Gerät</translation>
     </message>
     <message>
-        <location filename="../src/widgets/deviceinfowidget.cpp" line="7"/>
+        <location filename="../src/widgets/deviceinfowidget.cpp" line="12"/>
         <source>Global</source>
         <translation>Allgemein</translation>
     </message>
     <message>
-        <location filename="../src/widgets/deviceinfowidget.cpp" line="8"/>
+        <location filename="../src/widgets/deviceinfowidget.cpp" line="13"/>
         <source>Networking</source>
         <translation>Netzwerk</translation>
     </message>
@@ -30,14 +30,14 @@
 <context>
     <name>DeviceWidget</name>
     <message>
-        <location filename="../src/widgets/devicewidget.ui" line="14"/>
-        <source>DockWidget</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/widgets/devicewidget.ui" line="20"/>
+        <source>Information</source>
+        <translation>Information</translation>
     </message>
     <message>
-        <location filename="../src/widgets/devicewidget.ui" line="27"/>
+        <location filename="../src/widgets/devicewidget.ui" line="33"/>
         <source>Hello</source>
-        <translation type="unfinished"></translation>
+        <translation>Hallo</translation>
     </message>
 </context>
 <context>
@@ -45,7 +45,7 @@
     <message>
         <location filename="../src/miomain.ui" line="26"/>
         <source>MioMain</source>
-        <translation type="unfinished"></translation>
+        <translation>Mio Konfiguration</translation>
     </message>
     <message>
         <location filename="../src/miomain.ui" line="43"/>
@@ -53,19 +53,29 @@
         <translation>Datei</translation>
     </message>
     <message>
-        <location filename="../src/miomain.ui" line="61"/>
+        <location filename="../src/miomain.ui" line="49"/>
+        <source>Device</source>
+        <translation>Gerät</translation>
+    </message>
+    <message>
+        <location filename="../src/miomain.ui" line="67"/>
         <source>toolBar</source>
         <translation>Werkzeugleiste</translation>
     </message>
     <message>
-        <location filename="../src/miomain.ui" line="72"/>
+        <location filename="../src/miomain.ui" line="78"/>
         <source>Quit</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="../src/miomain.ui" line="77"/>
+        <location filename="../src/miomain.ui" line="83"/>
         <source>Open Device</source>
         <translation>Gerät öffnen</translation>
+    </message>
+    <message>
+        <location filename="../src/miomain.ui" line="88"/>
+        <source>Select</source>
+        <translation>Auswählen</translation>
     </message>
     <message>
         <source>open device</source>
