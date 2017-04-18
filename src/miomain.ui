@@ -43,9 +43,21 @@
      <string>File</string>
     </property>
     <addaction name="actionQuit"/>
-    <addaction name="actionopen_device"/>
+   </widget>
+   <widget class="QMenu" name="menuDevice">
+    <property name="title">
+     <string>Device</string>
+    </property>
+    <widget class="QMenu" name="menuSelect">
+     <property name="title">
+      <string>Select</string>
+     </property>
+     <addaction name="actionDevice1"/>
+    </widget>
+    <addaction name="menuSelect"/>
    </widget>
    <addaction name="menuMio10_Config"/>
+   <addaction name="menuDevice"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -75,6 +87,17 @@
   <action name="actionopen_device">
    <property name="text">
     <string>Open Device</string>
+   </property>
+  </action>
+  <action name="actionDevice1">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Device1</string>
    </property>
   </action>
  </widget>

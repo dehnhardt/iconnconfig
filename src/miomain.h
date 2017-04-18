@@ -21,18 +21,22 @@ public slots:
 private slots:
   void on_actionQuit_triggered();
   void openDetectionWindow();
+  void openDeviceGUI(Device *d);
 
 private:
   // Members
   Ui::MioMain *ui;
   DeviceDetection *deviceDetectionWindow;
-  void openDeviceGUI(Device *d);
   void readSettings();
   void writeSettings();
   void connectSlots();
+  void addDevicesToSelectionMenu(long defaultDeviceSN);
 
 protected:
   void closeEvent(QCloseEvent *event);
+
+signals:
+  void deviceSelected(Device *d);
 };
 
 #endif // MIOMAIN_H

@@ -28,7 +28,25 @@ MioMain::~MioMain() {
 void MioMain::openDefaultDevice() {
   long defaultDeviceSN = Configuration::getInstance().getDefaultDevice();
   Device *d = Configuration::getInstance().getDevices()->at(defaultDeviceSN);
+  addDevicesToSelectionMenu(defaultDeviceSN);
   openDeviceGUI(d);
+}
+
+void MioMain::addDevicesToSelectionMenu(long defaultDeviceSN) {
+  Devices *devices = Configuration::getInstance().getDevices();
+  QActionGroup *devicesGroup = new QActionGroup(this);
+  devicesGroup->setExclusive(true);
+  for (Devices::iterator it = devices->begin(); it != devices->end(); it++) {
+    Device *d = it->second;
+    QAction *a =
+        ui->menuSelect->addAction(QString::fromStdString(d->getDeviceName()));
+    a->connect(this, SIGNAL(deviceSelected(d)), SLOT(openDeviceGui(d)));
+    devicesGroup->addAction(a);
+    a->setCheckable(true);
+    long l = it->first;
+    if (it->first == defaultDeviceSN)
+      a->setChecked(true);
+  }
 }
 
 void MioMain::openDeviceGUI(Device *d) {
