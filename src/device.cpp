@@ -21,6 +21,7 @@ Device::Device(int inPortNumber, int outPortNumber, long serialNumber,
 }
 
 #ifdef __MIO_SIMULATE__
+
 Device::Device(int inPortNumber, int outPortNumber, long serialNumber,
                int productId, std::string modelName, std::string deviceName) {
   this->inPortNumber = inPortNumber;
@@ -31,7 +32,24 @@ Device::Device(int inPortNumber, int outPortNumber, long serialNumber,
   this->deviceName = deviceName;
   this->deviceIsSimulated = true;
 }
-#endif //__MIO_DEBUG__
+
+Commands *Device::simulateCommands(Commands *command) {
+  BYTE_VECTOR *message = new BYTE_VECTOR({0xF0});
+  message->insert(message->end(), getFullHeader()->begin(),
+                  getFullHeader()->end());
+  message->push_back(0x00);
+  message->push_back(0x01);
+  message->push_back(0x00);
+  message->push_back(SysExMessage::RET_COMMAND_LIST);
+  message->push_back(0x00);
+  message->push_back(0x06);
+  message->insert(message->end(), {0x05, 0x07, 0x08, 0x09, 0x0b, 0x0c});
+  commands = new Commands(SysExMessage::RET_COMMAND_LIST, message, this);
+  commands->parseAnswerData();
+  return commands;
+}
+
+#endif //__MIO_SIMULATE__
 
 Device::~Device() {
   if (midiin) {
@@ -121,18 +139,7 @@ void Device::queryDeviceInfo() {
   GetCommands *c = new GetCommands(this);
   c->setDebug(true);
 #ifdef __MIO_SIMULATE__
-  BYTE_VECTOR *message = new BYTE_VECTOR({0xF0});
-  message->insert(message->end(), getFullHeader()->begin(),
-                  getFullHeader()->end());
-  message->push_back(0x00);
-  message->push_back(0x01);
-  message->push_back(0x00);
-  message->push_back(SysExMessage::RET_COMMAND_LIST);
-  message->push_back(0x00);
-  message->push_back(0x06);
-  message->insert(message->end(), {0x05, 0x07, 0x08, 0x09, 0x0b, 0x0c});
-  commands = new Commands(SysExMessage::RET_COMMAND_LIST, message, this);
-  commands->parseAnswerData();
+  commands = simulateCommands(commands);
 #else
   commands = (Commands *)c->query();
 #endif

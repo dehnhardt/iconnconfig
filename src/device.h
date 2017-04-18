@@ -14,10 +14,6 @@ class Commands;
 class Device {
 public:
   Device(int inPortNumber, int outPortNumber, long serialNumber, int productId);
-#ifdef __MIO_SIMULATE__
-  Device(int inPortNumber, int outPortNumber, long serialNumber, int productId,
-         std::string modelName, std::string deviceName);
-#endif //__MIO_SIMULATE__
   ~Device();
 
 public:
@@ -48,7 +44,10 @@ public:
   Commands *getCommands() { return commands; }
 
 #ifdef __MIO_SIMULATE__
+  Device(int inPortNumber, int outPortNumber, long serialNumber, int productId,
+         std::string modelName, std::string deviceName);
   bool getSimulate() { return deviceIsSimulated; }
+  Commands *simulateCommands(Commands *command);
 #endif
 
   // setter
