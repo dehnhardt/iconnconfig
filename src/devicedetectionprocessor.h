@@ -23,6 +23,9 @@ private:
 
   libusb_device **devs;
 
+  // methods
+  bool isIconnectivityDevice(BYTE_VECTOR *message);
+
   // MIDI-methods
   void createMidiIn();
   void createMidiOut();
@@ -35,6 +38,8 @@ private:
   void printUSBDevs();
 
   QWidget *gui;
+
+  void sendProgressEvent(int progress);
 
 signals:
   void detectionProcess(int value);

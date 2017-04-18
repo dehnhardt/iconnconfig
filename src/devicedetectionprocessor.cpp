@@ -52,9 +52,25 @@ void DeviceDetectionProcessor::startDeviceDetection() {
   }
 }
 
+bool DeviceDetectionProcessor::isIconnectivityDevice(
+    std::vector<unsigned char> *message) {
+  int nMessageSize = message->size();
+  return ((nMessageSize >= 16) && (message->at(0) == SYSEX_START) &&
+          (message->at(1) == Device::MANUFACTURER_SYSEX_ID[0]) &&
+          (message->at(2) == Device::MANUFACTURER_SYSEX_ID[1]) &&
+          (message->at(3) == Device::MANUFACTURER_SYSEX_ID[2]) &&
+          (message->at(15) == 0x02));
+}
+
 void DeviceDetectionProcessor::setupMidiPorts() {
   createMidiIn();
   createMidiOut();
+}
+
+void DeviceDetectionProcessor::sendProgressEvent(int progress) {
+  ProgressEvent *e = new ProgressEvent();
+  e->setValue(progress);
+  QApplication::sendEvent(gui, e);
 }
 
 int DeviceDetectionProcessor::detectDevices() {
@@ -73,31 +89,26 @@ int DeviceDetectionProcessor::detectDevices() {
   long serialNumber;
   BYTE_VECTOR *qMessage = q->getMIDISysExMessage();
   std::map<long, Device *> *devices = Configuration::getInstance().getDevices();
+  // for each output signal
   for (int i = 0; i < nOutPortCount; i++) {
     midiout->openPort(i);
+    // and each input signal
     for (int j = 0; j < nInPortCount; j++) {
-      ProgressEvent *e = new ProgressEvent();
       int progress = (i * nInPortCount) + j + 1;
-      e->setValue(progress);
-      QApplication::sendEvent(gui, e);
+      sendProgressEvent(progress);
       midiin->openPort(j);
       midiout->sendMessage(qMessage);
-      usleep(1000); // pause a little
+      // pause a little
+      usleep(1000);
       BYTE_VECTOR *message = new BYTE_VECTOR;
       midiin->getMessage(message);
       unsigned int nMessageSize = message->size();
       if (nMessageSize > 0) {
 #ifdef __MIO_DEBUG__
-        for (unsigned int i = 0; i < nMessageSize; i++)
-          std::cout << std::hex << (int)message->at(i) << " ";
-        std::cout << std::endl;
+        MIDI::printMessage(message);
 #endif //__MIO_DEBUG__
         // test for iConnectivity device
-        if ((nMessageSize >= 16) && (message->at(0) == SYSEX_START) &&
-            (message->at(1) == Device::MANUFACTURER_SYSEX_ID[0]) &&
-            (message->at(2) == Device::MANUFACTURER_SYSEX_ID[1]) &&
-            (message->at(3) == Device::MANUFACTURER_SYSEX_ID[2]) &&
-            (message->at(15) == 0x02)) {
+        if (isIconnectivityDevice(message)) {
           serialNumber =
               MIDI::byteJoin(message, (unsigned int)7, (unsigned int)5);
           qDebug() << "device with serial number " << serialNumber
@@ -112,7 +123,6 @@ int DeviceDetectionProcessor::detectDevices() {
           } else {
             qDebug() << "but it's already recognized";
           }
-
           break;
         }
       }
@@ -124,13 +134,13 @@ int DeviceDetectionProcessor::detectDevices() {
     QApplication::sendEvent(gui, e);
   }
 #ifdef __MIO_SIMULATE__
+  // if simulation is enabled, send some events to progress bar...
   int base = midiin->getPortCount() * midiout->getPortCount();
   for (int i = 0; i <= 27; i++) {
-    ProgressEvent *e = new ProgressEvent();
-    e->setValue(base + i);
-    QApplication::sendEvent(gui, e);
+    sendProgressEvent(base + i);
     usleep(10000);
   }
+  //... and create two devices
   Device *ds = new Device(1, 1, 0x11, 0x0101, "mio10", "Device 1");
   devices->insert(std::pair<long, Device *>(0x11, ds));
   ds = new Device(2, 2, 0x12, 0x0201, "mio2", "Device 2");
