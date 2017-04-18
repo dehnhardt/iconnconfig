@@ -47,7 +47,7 @@ public:
   Device(int inPortNumber, int outPortNumber, long serialNumber, int productId,
          std::string modelName, std::string deviceName);
   bool getSimulate() { return deviceIsSimulated; }
-  Commands *simulateCommands(Commands *command);
+  Commands *simulateCommands();
 #endif
 
   // setter

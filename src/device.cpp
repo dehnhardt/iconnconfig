@@ -33,7 +33,7 @@ Device::Device(int inPortNumber, int outPortNumber, long serialNumber,
   this->deviceIsSimulated = true;
 }
 
-Commands *Device::simulateCommands(Commands *command) {
+Commands *Device::simulateCommands() {
   BYTE_VECTOR *message = new BYTE_VECTOR({0xF0});
   message->insert(message->end(), getFullHeader()->begin(),
                   getFullHeader()->end());
@@ -139,7 +139,7 @@ void Device::queryDeviceInfo() {
   GetCommands *c = new GetCommands(this);
   c->setDebug(true);
 #ifdef __MIO_SIMULATE__
-  commands = simulateCommands(commands);
+  commands = simulateCommands();
 #else
   commands = (Commands *)c->query();
 #endif
