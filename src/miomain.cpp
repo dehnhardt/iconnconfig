@@ -9,6 +9,7 @@
 #include "widgets/portswidget.h"
 
 #include <QCloseEvent>
+#include <QSignalMapper>
 #include <QTimer>
 #include <QtDebug>
 
@@ -33,6 +34,7 @@ void MioMain::openDefaultDevice() {
 }
 
 void MioMain::addDevicesToSelectionMenu(long defaultDeviceSN) {
+  QSignalMapper *signalMapper = new QSignalMapper();
   Devices *devices = Configuration::getInstance().getDevices();
   QActionGroup *devicesGroup = new QActionGroup(this);
   devicesGroup->setExclusive(true);
@@ -40,13 +42,22 @@ void MioMain::addDevicesToSelectionMenu(long defaultDeviceSN) {
     Device *d = it->second;
     QAction *a =
         ui->menuSelect->addAction(QString::fromStdString(d->getDeviceName()));
-    a->connect(this, SIGNAL(deviceSelected(d)), SLOT(openDeviceGui(d)));
-    devicesGroup->addAction(a);
     a->setCheckable(true);
+    devicesGroup->addAction(a);
+    connect(a, SIGNAL(triggered()), signalMapper, SLOT(map()));
+    signalMapper->setMapping(a, new DeviceMenuMapper(d));
     long l = it->first;
     if (it->first == defaultDeviceSN)
       a->setChecked(true);
   }
+  connect(signalMapper, SIGNAL(mapped(QObject *)), this,
+          SLOT(openDeviceGUI(QObject *)));
+}
+
+void MioMain::openDeviceGUI(QObject *o) {
+  DeviceMenuMapper *m = (DeviceMenuMapper *)o;
+  std::cout << "open device GUI: " << m->device->getDeviceName() << std::endl;
+  openDeviceGUI(m->device);
 }
 
 void MioMain::openDeviceGUI(Device *d) {

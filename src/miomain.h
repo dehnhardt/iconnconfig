@@ -8,6 +8,12 @@ namespace Ui {
 class MioMain;
 }
 
+class DeviceMenuMapper : public QObject {
+public:
+  DeviceMenuMapper(Device *device) : device(device) {}
+  Device *device;
+};
+
 class MioMain : public QMainWindow {
   Q_OBJECT
 
@@ -21,6 +27,7 @@ public slots:
 private slots:
   void on_actionQuit_triggered();
   void openDetectionWindow();
+  void openDeviceGUI(QObject *m);
   void openDeviceGUI(Device *d);
 
 private:
