@@ -34,10 +34,17 @@ private:
   // Members
   Ui::MioMain *ui;
   DeviceDetection *deviceDetectionWindow;
+  std::map<Qt::DockWidgetArea, std::vector<QDockWidget *>> dockWidgetAreas;
+  QString title;
+
+  // methods
   void readSettings();
   void writeSettings();
   void connectSlots();
   void addDevicesToSelectionMenu(long defaultDeviceSN);
+
+  void addDock(QDockWidget *widget,
+               Qt::DockWidgetArea area = Qt::NoDockWidgetArea);
 
 protected:
   void closeEvent(QCloseEvent *event);

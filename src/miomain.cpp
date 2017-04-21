@@ -46,7 +46,6 @@ void MioMain::addDevicesToSelectionMenu(long defaultDeviceSN) {
     devicesGroup->addAction(a);
     connect(a, SIGNAL(triggered()), signalMapper, SLOT(map()));
     signalMapper->setMapping(a, new DeviceMenuMapper(d));
-    long l = it->first;
     if (it->first == defaultDeviceSN)
       a->setChecked(true);
   }
@@ -60,29 +59,60 @@ void MioMain::openDeviceGUI(QObject *o) {
   openDeviceGUI(m->device);
 }
 
+void MioMain::addDock(QDockWidget *dockWidget, Qt::DockWidgetArea area)
+{
+    switch(area){
+     case Qt::NoDockWidgetArea:
+        setCentralWidget(dockWidget);
+        break;
+    case Qt::LeftDockWidgetArea:
+        this->addDockWidget(Qt::LeftDockWidgetArea, dockWidget);
+        break;
+    default:
+        break;
+    }
+    std::vector<QDockWidget *> v = dockWidgetAreas[area];
+    if(v.size() > 0){
+        tabifyDockWidget(v[v.size()-1], dockWidget);
+    }
+    std::cout << "lala" << std::endl;
+    dockWidgetAreas[area].push_back(dockWidget);
+}
+
 void MioMain::openDeviceGUI(Device *d) {
+  for(std::map<Qt::DockWidgetArea, std::vector<QDockWidget*>>::iterator it = dockWidgetAreas.begin();
+      it != dockWidgetAreas.end(); ++it){
+      std::vector<QDockWidget*> v = it->second;
+      for( unsigned int j = 0; j < v.size(); j++ ){
+        QWidget *w = v.at(j);
+        delete w;
+      }
+      v.clear();
+  }
+  dockWidgetAreas.clear();
   Commands *c = d->getCommands();
   if (c == 0) {
     // TODO throw error
     exit(2);
   }
-  setWindowTitle(this->windowTitle() + QString(": ") +
+  setWindowTitle(this->title + QString(": ") +
                  QString::fromStdString(d->getDeviceName()));
   DeviceWidget *deviceWidget = new DeviceWidget(this, d);
-  setCentralWidget(deviceWidget);
+  addDock(deviceWidget);
 
   DeviceInfoWidget *deviceInfoWidget = new DeviceInfoWidget(this, d);
-  this->addDockWidget(Qt::LeftDockWidgetArea, deviceInfoWidget);
+  this->addDock(deviceInfoWidget, Qt::LeftDockWidgetArea);
 
   PortsWidget *portsWidget = new PortsWidget(this, d);
-  this->addDockWidget(Qt::LeftDockWidgetArea, portsWidget);
-  tabifyDockWidget(deviceInfoWidget, portsWidget);
+  this->addDock(portsWidget, Qt::LeftDockWidgetArea);
+  //tabifyDockWidget(deviceInfoWidget, portsWidget);
   if (c->isCommandSupported(SysExMessage::GET_ETHERNET_PORT_INFO)) {
     std::cout << "EthernetPortsAvailable";
   }
 
   QSettings *settings = Configuration::getInstance().getSettings();
   settings->beginGroup("MainWindow");
+  restoreGeometry(settings->value("geometry").toByteArray());
   settings->beginGroup("Docks");
   restoreState(settings->value("DockWindows").toByteArray());
   settings->endGroup();
@@ -102,6 +132,7 @@ void MioMain::openDetectionWindow() {
 void MioMain::writeSettings() {
   QSettings *settings = Configuration::getInstance().getSettings();
   settings->beginGroup("MainWindow");
+  settings->setValue("geometry", saveGeometry());
   settings->setValue("size", size());
   settings->setValue("pos", pos());
   settings->beginGroup("Docks");
@@ -115,6 +146,7 @@ void MioMain::connectSlots() {
 }
 
 void MioMain::readSettings() {
+    this->title = windowTitle();
   QSettings *settings = Configuration::getInstance().getSettings();
   settings->beginGroup("MainWindow");
   resize(settings->value("size", QSize(400, 400)).toSize());
