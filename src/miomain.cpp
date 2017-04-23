@@ -6,6 +6,7 @@
 #include "ui_miomain.h"
 #include "widgets/deviceinfowidget.h"
 #include "widgets/devicewidget.h"
+#include "widgets/multiinfowidget.h"
 #include "widgets/portswidget.h"
 
 #include <QCloseEvent>
@@ -101,6 +102,9 @@ void MioMain::openDeviceGUI(Device *d) {
 
   DeviceInfoWidget *deviceInfoWidget = new DeviceInfoWidget(this, d);
   this->addDock(deviceInfoWidget, Qt::LeftDockWidgetArea);
+
+  MultiInfoWidget *mi = new MultiInfoWidget(this, d);
+  this->addDock(mi, Qt::LeftDockWidgetArea);
 
   PortsWidget *portsWidget = new PortsWidget(this, d);
   this->addDock(portsWidget, Qt::LeftDockWidgetArea);

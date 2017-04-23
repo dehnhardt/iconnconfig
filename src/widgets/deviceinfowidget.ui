@@ -45,6 +45,9 @@
     </size>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="rightMargin">
+     <number>9</number>
+    </property>
     <item>
      <widget class="QListWidget" name="infoList">
       <property name="sizePolicy">
