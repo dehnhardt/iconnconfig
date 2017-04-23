@@ -2,6 +2,7 @@
 #define DEVICEINFOWIDGET_H
 
 #include "../device.h"
+#include "multiinfo.h"
 
 #include <QDockWidget>
 
@@ -9,7 +10,7 @@ namespace Ui {
 class DeviceInfoWidget;
 }
 
-class DeviceInfoWidget : public QDockWidget {
+class DeviceInfoWidget : public QDockWidget, MultiInfo {
   Q_OBJECT
 
 public:
