@@ -1,4 +1,5 @@
 #include "multiinfowidget.h"
+#include "../miomain.h"
 #include "ui_multiinfowidget.h"
 
 MultiInfoWidget::MultiInfoWidget(QWidget *parent, Device *device)
@@ -15,13 +16,21 @@ MultiInfoWidget::MultiInfoWidget(QWidget *parent, Device *device)
 MultiInfoWidget::~MultiInfoWidget() { delete ui; }
 
 void MultiInfoWidget::on_infoList_currentRowChanged(int currentRow) {
-  std::string selectedInfo;
+  std::string selectedInfo = infoSections[currentRow];
   QListWidgetItem *item = ui->infoList->item(currentRow);
   selectedInfo = item->text().toStdString();
   std::cout << "Current row " << currentRow << " Text: " << std::endl;
-  QWidget *w = infoWidgets[selectedInfo];
-  if (w == 0) {
-    std::cout << "www" << currentRow << " Text: " << std::endl;
-  }
+  QWidget *w = getWidget(selectedInfo);
+  ((MioMain *)this->parentWidget())->setCentralWidget(w);
   infoChanged(currentRow);
+}
+
+QWidget *MultiInfoWidget::getWidget(std::string infoName) {
+  QWidget *w = this->infoWidgets[infoName];
+  if (w == 0) {
+    w = createWidget(infoName);
+    // this->infoWidgets.insert(std::pair<std::string, QWidget *>(infoName, w));
+    this->infoWidgets[infoName] = w;
+  }
+  return w;
 }
