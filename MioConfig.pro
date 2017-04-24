@@ -50,7 +50,6 @@ SOURCES +=\
     src/sysex/commands.cpp \
     src/sysex/infos.cpp \
     src/sysex/deviceinfo.cpp \
-    src/widgets/devicewidget.cpp \
     src/widgets/portsettingwidget.cpp \
     src/widgets/devicedockwidget.cpp \
     src/widgets/deviceinfowidget.cpp \
@@ -75,7 +74,6 @@ HEADERS  += src/miomain.h \
     src/sysex/infos.h \
     src/sysex/deviceinfo.h \
     src/events/events.h \
-    src/widgets/devicewidget.h \
     src/device.h \
     src/widgets/portsettingwidget.h \
     src/widgets/devicedockwidget.h \
