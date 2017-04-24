@@ -2,6 +2,8 @@
 #define MIOMAIN_H
 
 #include "devicedetection.h"
+#include "widgets/centralwidget.h"
+
 #include <QMainWindow>
 
 namespace Ui {
@@ -20,6 +22,7 @@ class MioMain : public QMainWindow {
 public:
   explicit MioMain(QWidget *parent = 0);
   ~MioMain();
+  void replacePanel(QWidget *w);
 
 public slots:
   void openDefaultDevice();
@@ -45,6 +48,8 @@ private:
 
   void addDock(QDockWidget *widget,
                Qt::DockWidgetArea area = Qt::NoDockWidgetArea);
+
+  void clearDocWidgets();
 
 protected:
   void closeEvent(QCloseEvent *event);

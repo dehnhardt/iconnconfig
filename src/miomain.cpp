@@ -4,6 +4,7 @@
 #include "sysex/commands.h"
 #include "sysex/midi.h"
 #include "ui_miomain.h"
+#include "widgets/centralwidget.h"
 #include "widgets/deviceinfowidget.h"
 #include "widgets/devicewidget.h"
 #include "widgets/multiinfowidget.h"
@@ -78,7 +79,7 @@ void MioMain::addDock(QDockWidget *dockWidget, Qt::DockWidgetArea area) {
   dockWidgetAreas[area].push_back(dockWidget);
 }
 
-void MioMain::openDeviceGUI(Device *d) {
+void MioMain::clearDocWidgets() {
   for (std::map<Qt::DockWidgetArea, std::vector<QDockWidget *>>::iterator it =
            dockWidgetAreas.begin();
        it != dockWidgetAreas.end(); ++it) {
@@ -90,6 +91,15 @@ void MioMain::openDeviceGUI(Device *d) {
     v.clear();
   }
   dockWidgetAreas.clear();
+}
+
+void MioMain::replacePanel(QWidget *w) {
+  CentralWidget *cw = (CentralWidget *)centralWidget();
+  cw->replacePanel(w);
+}
+
+void MioMain::openDeviceGUI(Device *d) {
+  clearDocWidgets();
   Commands *c = d->getCommands();
   if (c == 0) {
     // TODO throw error
@@ -97,8 +107,8 @@ void MioMain::openDeviceGUI(Device *d) {
   }
   setWindowTitle(this->title + QString(": ") +
                  QString::fromStdString(d->getDeviceName()));
-  DeviceWidget *deviceWidget = new DeviceWidget(this, d);
-  addDock(deviceWidget);
+  CentralWidget *centralWidget = new CentralWidget(this, d);
+  this->addDock(centralWidget);
 
   DeviceInfoWidget *deviceInfoWidget = new DeviceInfoWidget(this, d);
   this->addDock(deviceInfoWidget, Qt::LeftDockWidgetArea);
