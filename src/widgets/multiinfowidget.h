@@ -7,6 +7,7 @@
 #include <QLabel>
 #include <QLayout>
 #include <QMap>
+#include <QPalette>
 #include <QWidget>
 
 namespace Ui {
@@ -37,6 +38,9 @@ protected:
   QWidget *getWidget(std::string infoName);
   virtual QWidget *createWidget(std::string infoName) {
     QWidget *w = new QWidget(this->parentWidget());
+    QPalette pal;
+    pal.setColor(QPalette::Background, Qt::yellow);
+    w->setPalette(pal);
     QGridLayout *lo = new QGridLayout();
     w->setLayout(lo);
     QLabel *l = new QLabel(w);
