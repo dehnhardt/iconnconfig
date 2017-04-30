@@ -2,23 +2,13 @@
 #define PORTSETTINGWIDGET_H
 
 #include "../device.h"
+#include "multiinfowidget.h"
 
-#include <QDockWidget>
-
-namespace Ui {
-class PortSettingWidget;
-}
-
-class PortSettingWidget : public QDockWidget {
-  Q_OBJECT
+class PortSettingWidget : public MultiInfoWidget {
 
 public:
-  explicit PortSettingWidget(QWidget *parent = 0, Device *device = nullptr);
+  explicit PortSettingWidget(QWidget *parent = 0, Device *device = nullptr, QString windowTitle = "PortSettings");
   ~PortSettingWidget();
-
-private:
-  Ui::PortSettingWidget *ui;
-  Device *device;
 };
 
 #endif // PORTSETTINGWIDGET_H

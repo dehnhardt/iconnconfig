@@ -6,7 +6,6 @@
 #include "ui_miomain.h"
 #include "widgets/centralwidget.h"
 #include "widgets/deviceinfowidget.h"
-#include "widgets/devicewidget.h"
 #include "widgets/multiinfowidget.h"
 #include "widgets/portswidget.h"
 
@@ -57,11 +56,16 @@ void MioMain::addDevicesToSelectionMenu(long defaultDeviceSN) {
 
 void MioMain::openDeviceGUI(QObject *o) {
   DeviceMenuMapper *m = (DeviceMenuMapper *)o;
+#ifdef __MIO_DEBUG__
   std::cout << "open device GUI: " << m->device->getDeviceName() << std::endl;
+#endif //__MIO_DEBUG__
   openDeviceGUI(m->device);
 }
 
 void MioMain::addDock(QDockWidget *dockWidget, Qt::DockWidgetArea area) {
+  if (MultiInfoWidget *miw = dynamic_cast<MultiInfoWidget *>(dockWidget)) {
+    miw->createInfoSections();
+  }
   switch (area) {
   case Qt::NoDockWidgetArea:
     setCentralWidget(dockWidget);

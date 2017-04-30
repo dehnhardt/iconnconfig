@@ -4,17 +4,15 @@
 #include "../device.h"
 #include "multiinfowidget.h"
 
-#include <QDockWidget>
-
-namespace Ui {
-class DeviceInfoWidget;
-}
-
 class DeviceInfoWidget : public MultiInfoWidget {
 
 public:
-  explicit DeviceInfoWidget(QWidget *parent = 0, Device *device = 0);
+  explicit DeviceInfoWidget(QWidget *parent = 0, Device *device = 0,
+                            QString windowTitle = "Device Information");
   ~DeviceInfoWidget();
+
+protected:
+  void setInfoSections();
 };
 
 #endif // DEVICEINFOWIDGET_H
