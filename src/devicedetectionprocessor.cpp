@@ -125,7 +125,20 @@ int DeviceDetectionProcessor::detectDevices() {
           }
           break;
         }
+#ifdef __MIO_DEBUG__
+        else {
+          std::cout << "there is an answer from a device but no iConnectivity: "
+                    << midiout->getPortName(i) << " - "
+                    << midiin->getPortName(j) << std::endl;
+        }
+#endif // __MIO_DEBUG__
       }
+#ifdef __MIO_DEBUG__
+      else {
+        std::cout << "no answer from any device: " << midiout->getPortName(i)
+                  << " - " << midiin->getPortName(j) << std::endl;
+      }
+#endif //__MIO_DEBUG__
       midiin->closePort();
     }
     midiout->closePort();
