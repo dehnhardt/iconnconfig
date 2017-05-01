@@ -8,7 +8,7 @@ class DeviceInfoWidget : public MultiInfoWidget {
 
 public:
   explicit DeviceInfoWidget(QWidget *parent = 0, Device *device = 0,
-                            QString windowTitle = "Device Information");
+                            QString windowTitle = tr("Device Information"));
   ~DeviceInfoWidget();
 
 protected:

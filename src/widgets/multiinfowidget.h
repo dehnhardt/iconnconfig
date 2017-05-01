@@ -21,7 +21,7 @@ class MultiInfoWidget : public QDockWidget {
 
 public:
   explicit MultiInfoWidget(QWidget *parent = 0, Device *device = 0,
-                           QString windowTitle = "MultiInfoWidget");
+                           QString windowTitle = tr("MultiInfoWidget"));
   ~MultiInfoWidget();
 
 protected slots:
