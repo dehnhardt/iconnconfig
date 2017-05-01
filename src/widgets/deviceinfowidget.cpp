@@ -1,12 +1,18 @@
 #include "deviceinfowidget.h"
+#include "../sysex/commands.h"
 #include "ui_deviceinfowidget.h"
 
 #include <QListWidgetItem>
 
-DeviceInfoWidget::DeviceInfoWidget(QWidget *parent, Device *device,
+DeviceInfoWidget::DeviceInfoWidget(MioMain *parent, Device *device,
                                    QString windowTitle)
     : MultiInfoWidget(parent, device, windowTitle) {
-  infoSections = std::vector<std::string>{"Device", "Network"};
+	infoSections = std::vector<std::string>();
+	if (device->getCommands()->isCommandSupported(SysExMessage::GET_INFO_LIST))
+		infoSections.push_back("Global");
+	if (device->getCommands()->isCommandSupported(
+					SysExMessage::GET_ETHERNET_PORT_INFO))
+		infoSections.push_back("Network");
 }
 
 DeviceInfoWidget::~DeviceInfoWidget() {}

@@ -7,8 +7,8 @@
 class DeviceInfoWidget : public MultiInfoWidget {
 
 public:
-  explicit DeviceInfoWidget(QWidget *parent = 0, Device *device = 0,
-                            QString windowTitle = tr("Device Information"));
+	explicit DeviceInfoWidget(MioMain *parent = 0, Device *device = 0,
+														QString windowTitle = tr("Device Information"));
   ~DeviceInfoWidget();
 
 protected:
