@@ -2,6 +2,7 @@
 #define MULTIINFOWIDGET_H
 
 #include "../device.h"
+#include "../miomain.h"
 
 #include <QDockWidget>
 #include <QLabel>
@@ -20,7 +21,7 @@ class MultiInfoWidget : public QDockWidget {
   Q_OBJECT
 
 public:
-  explicit MultiInfoWidget(QWidget *parent = 0, Device *device = 0,
+	explicit MultiInfoWidget(MioMain *parent = 0, Device *device = 0,
                            QString windowTitle = tr("MultiInfoWidget"));
   ~MultiInfoWidget();
 

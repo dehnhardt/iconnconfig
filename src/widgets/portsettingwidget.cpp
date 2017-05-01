@@ -2,7 +2,7 @@
 #include "../device.h"
 #include "ui_portsettingwidget.h"
 
-PortSettingWidget::PortSettingWidget(QWidget *parent, Device *device,
+PortSettingWidget::PortSettingWidget(MioMain *parent, Device *device,
                                      QString windowTitle)
     : MultiInfoWidget(parent, device, windowTitle) {
   infoSections =

@@ -9,7 +9,7 @@
 class PortsWidget : public MultiInfoWidget {
 
 public:
-  explicit PortsWidget(QWidget *parent = 0, Device *device = 0,
+  explicit PortsWidget(MioMain *parent = 0, Device *device = 0,
                        QString windowTitle = tr("Ports"));
   ~PortsWidget();
 };

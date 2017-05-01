@@ -2,7 +2,7 @@
 #include "../miomain.h"
 #include "ui_multiinfowidget.h"
 
-MultiInfoWidget::MultiInfoWidget(QWidget *parent, Device *device,
+MultiInfoWidget::MultiInfoWidget(MioMain *parent, Device *device,
                                  QString windowTitle)
     : QDockWidget(parent), ui(new Ui::MultiInfoWidget), device(device) {
   ui->setupUi(this);

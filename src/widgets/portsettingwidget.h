@@ -7,7 +7,7 @@
 class PortSettingWidget : public MultiInfoWidget {
 
 public:
-  explicit PortSettingWidget(QWidget *parent = 0, Device *device = nullptr, QString windowTitle = "PortSettings");
+  explicit PortSettingWidget(MioMain *parent = 0, Device *device = nullptr, QString windowTitle = "PortSettings");
   ~PortSettingWidget();
 };
 
