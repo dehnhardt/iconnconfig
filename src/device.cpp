@@ -42,9 +42,18 @@ Commands *Device::simulateCommands() {
   message->push_back(0x00);
   message->push_back(SysExMessage::RET_COMMAND_LIST);
   message->push_back(0x00);
-  message->push_back(0x06);
-  message->insert(message->end(), {0x05, 0x07, 0x08, 0x09, 0x0b, 0x0c});
-  commands = new Commands(SysExMessage::RET_COMMAND_LIST, message, this);
+	BYTE_VECTOR *allowedCommands = new BYTE_VECTOR();
+	allowedCommands->insert(
+			allowedCommands->end(),
+			{SysExMessage::GET_INFO_LIST, SysExMessage::GET_DEVICE_INFO,
+			 SysExMessage::RET_SET_DEVICE_INFO, SysExMessage::GET_RESET_LIST,
+			 SysExMessage::GET_SAVE_RESTORE_LIST,
+			 SysExMessage::GET_ETHERNET_PORT_INFO});
+	message->push_back(allowedCommands->size());
+	message->insert(message->end(), allowedCommands->begin(),
+									allowedCommands->end());
+	Commands *commands =
+			new Commands(SysExMessage::RET_COMMAND_LIST, message, this);
   commands->parseAnswerData();
   return commands;
 }
