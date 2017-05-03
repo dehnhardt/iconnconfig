@@ -141,16 +141,19 @@ bool Device::checkSysex(BYTE_VECTOR *data) {
   BYTE_VECTOR *dataHeader =
       new BYTE_VECTOR(data->begin() + 1, data->begin() + 12);
   BYTE_VECTOR *localHeader = getFullHeader();
-  return MIDI::compareByteVector(dataHeader, localHeader);
+	return MIDI::compareByteVector(dataHeader, localHeader);
 }
 
 void Device::queryDeviceInfo() {
   GetCommands *c = new GetCommands(this);
   c->setDebug(true);
 #ifdef __MIO_SIMULATE__
-  commands = simulateCommands();
+  if (deviceIsSimulated)
+    commands = simulateCommands();
+  else
+    commands = (Commands *)c->query();
 #else
-  commands = (Commands *)c->query();
+	commands = (Commands *)c->query();
 #endif
   if (commands == 0) {
     std::cerr << "can not query supported commands";
