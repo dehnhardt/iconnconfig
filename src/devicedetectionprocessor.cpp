@@ -99,7 +99,7 @@ int DeviceDetectionProcessor::detectDevices() {
       midiin->openPort(j);
       midiout->sendMessage(qMessage);
       // pause a little
-      usleep(1000);
+			usleep(100000);
       BYTE_VECTOR *message = new BYTE_VECTOR;
       midiin->getMessage(message);
       unsigned int nMessageSize = message->size();
@@ -111,17 +111,18 @@ int DeviceDetectionProcessor::detectDevices() {
         if (isIconnectivityDevice(message)) {
           serialNumber =
               MIDI::byteJoin(message, (unsigned int)7, (unsigned int)5);
-          qDebug() << "device with serial number " << serialNumber
-                   << "detected...";
+					std::cout << "device with serial number " << serialNumber
+										<< " detected... (" << midiout->getPortName(i) << "- "
+										<< midiin->getPortName(j) << ") ";
           midiin->closePort();
 
           if (devices->find(serialNumber) == devices->end()) {
             int productId = MIDI::byteJoin(message, 5, 2);
             Device *device = new Device(j, i, serialNumber, productId);
             devices->insert(std::pair<long, Device *>(serialNumber, device));
-            qDebug() << "... and added to list of devices";
+						std::cout << "... and added to list of devices" << std::endl;
           } else {
-            qDebug() << "but it's already recognized";
+						std::cout << "... but it's already recognized" << std::endl;
           }
           break;
         }
@@ -170,7 +171,7 @@ int DeviceDetectionProcessor::detectDevices() {
     Configuration::getInstance().setDefaultDevice(defaultDeviceSerialNumber);
   }
 
-  for (Devices::iterator it = devices->begin(); it != devices->end(); it++) {
+	for (Devices::iterator it = devices->begin(); it != devices->end(); ++it) {
     d = it->second;
     d->queryDeviceInfo();
   }
