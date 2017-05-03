@@ -11,8 +11,12 @@ BYTE_VECTOR *DeviceInfo::getMessageData() {
 }
 
 std::string DeviceInfo::getDataAsString() {
-  std::string result(data->begin() + 1, data->end());
-  return result;
+	if (data->size() > 0) {
+		std::string result(data->begin() + 1, data->end());
+		return result;
+	} else {
+		return std::string();
+	}
 }
 
 DeviceInfo::DeviceInfoItem DeviceInfo::getDeviceInfoItem() {
