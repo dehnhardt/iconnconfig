@@ -20,8 +20,10 @@ private:
   Configuration() { settings = new QSettings(); }
   ~Configuration() {
     delete settings;
-    if (devices != 0)
-      delete devices;
+		if (devices != 0) {
+			devices->clear();
+			delete devices;
+		}
   }
 
 public:
