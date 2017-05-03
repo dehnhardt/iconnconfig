@@ -23,7 +23,7 @@ MioMain::MioMain(QWidget *parent) : QMainWindow(parent), ui(new Ui::MioMain) {
 }
 
 MioMain::~MioMain() {
-  delete deviceDetectionWindow;
+	delete deviceDetectionWindow;
   delete ui;
 }
 
@@ -39,7 +39,7 @@ void MioMain::addDevicesToSelectionMenu(long defaultDeviceSN) {
   Devices *devices = Configuration::getInstance().getDevices();
   QActionGroup *devicesGroup = new QActionGroup(this);
   devicesGroup->setExclusive(true);
-  for (Devices::iterator it = devices->begin(); it != devices->end(); it++) {
+	for (Devices::iterator it = devices->begin(); it != devices->end(); ++it) {
     Device *d = it->second;
     QAction *a =
         ui->menuSelect->addAction(QString::fromStdString(d->getDeviceName()));
