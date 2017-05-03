@@ -51,7 +51,6 @@ SOURCES +=\
     src/sysex/infos.cpp \
     src/sysex/deviceinfo.cpp \
     src/widgets/portsettingwidget.cpp \
-    src/widgets/devicedockwidget.cpp \
     src/widgets/deviceinfowidget.cpp \
     src/widgets/portswidget.cpp \
     src/sysex/getcommands.cpp \
@@ -76,7 +75,6 @@ HEADERS  += src/miomain.h \
     src/events/events.h \
     src/device.h \
     src/widgets/portsettingwidget.h \
-    src/widgets/devicedockwidget.h \
     src/widgets/deviceinfowidget.h \
     src/widgets/portswidget.h \
     src/sysex/getcommands.h \
@@ -85,9 +83,6 @@ HEADERS  += src/miomain.h \
 
 FORMS    += src/miomain.ui \
     src/devicedetection.ui \
-    src/widgets/portsettingwidget.ui \
-    src/widgets/deviceinfowidget.ui \
-    src/widgets/portswidget.ui \
     src/widgets/multiinfowidget.ui
 
 unix:!macx: LIBS += -lasound \
