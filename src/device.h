@@ -73,7 +73,7 @@ private:
 
   RtMidiIn *midiin = 0;
   RtMidiOut *midiout = 0;
-  int sysexWaitTime = 3000;
+	int sysexWaitTime = 100000;
 
   MIDISysexValue *serialNumber;
   MIDISysexValue *productId;
