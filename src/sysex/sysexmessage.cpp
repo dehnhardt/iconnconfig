@@ -126,11 +126,13 @@ int SysExMessage::execute() {
   BYTE_VECTOR *message = getMIDISysExMessage();
   device->sentSysex(message);
   BYTE_VECTOR *answerMessage = device->retrieveSysex();
-  Command cmd = parseAnswer(answerMessage);
-  if (debug)
-    MIDI::printMessage(answerMessage);
-  if (cmd != this->cmd)
-    createAnswer(cmd, answerMessage, device);
+  if( answerMessage != nullptr  ){
+    Command cmd = parseAnswer(answerMessage);
+    if (debug)
+      MIDI::printMessage(answerMessage);
+    if (cmd != this->cmd)
+      createAnswer(cmd, answerMessage, device);
+  }
   return 0;
 }
 
