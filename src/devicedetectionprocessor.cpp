@@ -11,7 +11,12 @@
 #include <unistd.h>
 
 DeviceDetectionProcessor::DeviceDetectionProcessor(QWidget *gui) : gui(gui) {
-	std::cout << "create DeviceDetectionProcessor" << std::endl;
+	if (Configuration::getInstance().getMidiDeviceDetection()) {
+		setupMidiPorts();
+	}
+	if (Configuration::getInstance().getUsbDeviceDetection()) {
+		setupUSB();
+	}
 }
 
 DeviceDetectionProcessor::~DeviceDetectionProcessor() {
@@ -39,11 +44,7 @@ int DeviceDetectionProcessor::getMddiOutPortCount() {
 
 void DeviceDetectionProcessor::startDeviceDetection() {
   if (Configuration::getInstance().getMidiDeviceDetection()) {
-    setupMidiPorts();
     detectDevices();
-  }
-  if (Configuration::getInstance().getUsbDeviceDetection()) {
-    setupUSB();
   }
 }
 
@@ -94,7 +95,7 @@ int DeviceDetectionProcessor::detectDevices() {
 			midiin->openPort(j);
 			midiout->sendMessage(qMessage);
       // pause a little
-			usleep(100000);
+			SLEEP(100);
 			BYTE_VECTOR *message = new BYTE_VECTOR;
       midiin->getMessage(message);
       unsigned int nMessageSize = message->size();
@@ -139,16 +140,15 @@ int DeviceDetectionProcessor::detectDevices() {
     }
 		if (midiout->isPortOpen())
 			midiout->closePort();
-    ProgressEvent *e = new ProgressEvent();
-    e->setValue(getMidiInPortCount() * getMddiOutPortCount());
-    QApplication::sendEvent(gui, e);
-  }
+	}
+	sendProgressEvent(getMidiInPortCount() * getMddiOutPortCount());
+
 #ifdef __MIO_SIMULATE__
   // if simulation is enabled, send some events to progress bar...
   int base = midiin->getPortCount() * midiout->getPortCount();
   for (int i = 0; i <= 27; i++) {
     sendProgressEvent(base + i);
-    usleep(10000);
+		SLEEP(10);
   }
   //... and create two devices
   Device *ds = new Device(1, 1, 0x11, 0x0101, "mio10", "Device 1");
