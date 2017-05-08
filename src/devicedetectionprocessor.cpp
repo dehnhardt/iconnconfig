@@ -11,12 +11,7 @@
 #include <unistd.h>
 
 DeviceDetectionProcessor::DeviceDetectionProcessor(QWidget *gui) : gui(gui) {
-  if (Configuration::getInstance().getMidiDeviceDetection()) {
-    setupMidiPorts();
-  }
-  if (Configuration::getInstance().getUsbDeviceDetection()) {
-    setupUSB();
-  }
+	std::cout << "create DeviceDetectionProcessor" << std::endl;
 }
 
 DeviceDetectionProcessor::~DeviceDetectionProcessor() {
@@ -96,11 +91,11 @@ int DeviceDetectionProcessor::detectDevices() {
     for (int j = 0; j < nInPortCount; j++) {
       int progress = (i * nInPortCount) + j + 1;
       sendProgressEvent(progress);
-      midiin->openPort(j);
-      midiout->sendMessage(qMessage);
+			midiin->openPort(j);
+			midiout->sendMessage(qMessage);
       // pause a little
 			usleep(100000);
-      BYTE_VECTOR *message = new BYTE_VECTOR;
+			BYTE_VECTOR *message = new BYTE_VECTOR;
       midiin->getMessage(message);
       unsigned int nMessageSize = message->size();
       if (nMessageSize > 0) {
@@ -115,7 +110,7 @@ int DeviceDetectionProcessor::detectDevices() {
 										<< " detected... (" << midiout->getPortName(i) << "- "
 										<< midiin->getPortName(j) << ") ";
           midiin->closePort();
-
+					midiout->closePort();
           if (devices->find(serialNumber) == devices->end()) {
             int productId = MIDI::byteJoin(message, 5, 2);
             Device *device = new Device(j, i, serialNumber, productId);
@@ -140,9 +135,10 @@ int DeviceDetectionProcessor::detectDevices() {
                   << " - " << midiin->getPortName(j) << std::endl;
       }
 #endif //__MIO_DEBUG__
-      midiin->closePort();
+			midiin->closePort();
     }
-    midiout->closePort();
+		if (midiout->isPortOpen())
+			midiout->closePort();
     ProgressEvent *e = new ProgressEvent();
     e->setValue(getMidiInPortCount() * getMddiOutPortCount());
     QApplication::sendEvent(gui, e);
