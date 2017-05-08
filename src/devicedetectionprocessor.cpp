@@ -34,7 +34,7 @@ int DeviceDetectionProcessor::getMidiInPortCount() {
   return 0;
 }
 
-int DeviceDetectionProcessor::getMddiOutPortCount() {
+int DeviceDetectionProcessor::getMidiOutPortCount() {
   if (midiout)
     return midiout->getPortCount();
   return 0;
@@ -141,7 +141,7 @@ int DeviceDetectionProcessor::detectDevices() {
 		if (midiout->isPortOpen())
 			midiout->closePort();
 	}
-	sendProgressEvent(getMidiInPortCount() * getMddiOutPortCount());
+	sendProgressEvent(getMidiInPortCount() * getMidiOutPortCount());
 
 #ifdef __MIO_SIMULATE__
   // if simulation is enabled, send some events to progress bar...

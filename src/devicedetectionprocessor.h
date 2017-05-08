@@ -13,7 +13,7 @@ public:
   DeviceDetectionProcessor(QWidget *gui);
   ~DeviceDetectionProcessor();
   int getMidiInPortCount();
-  int getMddiOutPortCount();
+	int getMidiOutPortCount();
   void startDeviceDetection();
 
 private:
