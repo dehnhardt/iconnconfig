@@ -124,12 +124,12 @@ void Device::setupMidi() {
 }
 
 void Device::sentSysex(BYTE_VECTOR *data) {
-  usleep(sysexWaitTime);
+	SLEEP(sysexWaitTime);
   midiout->sendMessage(data);
 }
 
 BYTE_VECTOR *Device::retrieveSysex() {
-  usleep(sysexWaitTime);
+	SLEEP(sysexWaitTime);
   BYTE_VECTOR *data = new BYTE_VECTOR();
   midiin->getMessage(data);
   if (checkSysex(data))
