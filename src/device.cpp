@@ -179,8 +179,8 @@ void Device::queryDeviceInfo() {
 			DeviceInfo *dia = (DeviceInfo *)di->getAnswer();
 			deviceName = dia->getDataAsString();
 
-			if (ii->isInfoSupported(DeviceInfo::ACESSORY_NAME)) {
-				di->setInfoItem(DeviceInfo::ACESSORY_NAME);
+                        if (ii->isInfoSupported(DeviceInfo::ACCESSORY_NAME)) {
+                                di->setInfoItem(DeviceInfo::ACCESSORY_NAME);
 				di->execute();
 				dia = (DeviceInfo *)di->getAnswer();
 				modelName = dia->getDataAsString();
@@ -213,7 +213,13 @@ void Device::queryDeviceInfo() {
 				dia = (DeviceInfo *)di->getAnswer();
 				manufacturerName = dia->getDataAsString();
 			}
-		}
+                        if (ii->isInfoSupported(DeviceInfo::MODEL_NUMBER)) {
+                                di->setInfoItem(DeviceInfo::MODEL_NUMBER);
+                                di->execute();
+                                dia = (DeviceInfo *)di->getAnswer();
+                                modelNumber = dia->getDataAsString();
+                        }
+                }
 #ifdef __MIO_SIMULATE__
 	}
 #endif //__MIO_SIMULATE__

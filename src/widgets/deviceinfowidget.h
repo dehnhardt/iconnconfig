@@ -12,7 +12,8 @@ public:
   ~DeviceInfoWidget();
 
 protected:
-  void setInfoSections();
+	void setInfoSections();
+	QWidget *createWidget(std::string infoName);
 };
 
 #endif // DEVICEINFOWIDGET_H

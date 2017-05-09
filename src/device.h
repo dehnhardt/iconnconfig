@@ -36,9 +36,15 @@ public:
   BYTE_VECTOR *getDeviceHeader();
   BYTE_VECTOR *getFullHeader();
   void queryDeviceInfo();
-  std::string getModelName() { return modelName; }
+
+	std::string getModelName() { return modelName; }
   std::string getDeviceName() { return deviceName; }
   std::string getSerialNumberString() { return serialNumberString; }
+	std::string getManufacturerName() { return manufacturerName; }
+	std::string getFirmwareVersion() { return firmwareVersion; }
+	std::string getHardwareVersion() { return hardwareVersion; }
+	std::string getModelNumber() { return modelNumber; }
+
   MIDISysexValue *getSerialNumber() { return serialNumber; }
   MIDISysexValue *getProductId() { return productId; }
   bool getDefault() { return isDefault; }
@@ -84,6 +90,7 @@ private:
 	std::string manufacturerName;
 	std::string firmwareVersion;
 	std::string hardwareVersion;
+	std::string modelNumber;
 
   Commands *commands = 0;
 	ImplementedInfos *ii = 0;
