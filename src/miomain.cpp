@@ -117,9 +117,6 @@ void MioMain::openDeviceGUI(Device *d) {
   DeviceInfoWidget *deviceInfoWidget = new DeviceInfoWidget(this, d);
   this->addDock(deviceInfoWidget, Qt::LeftDockWidgetArea);
 
-  MultiInfoWidget *mi = new MultiInfoWidget(this, d);
-  this->addDock(mi, Qt::LeftDockWidgetArea);
-
   PortsWidget *portsWidget = new PortsWidget(this, d);
   this->addDock(portsWidget, Qt::LeftDockWidgetArea);
   if (c->isCommandSupported(SysExMessage::GET_ETHERNET_PORT_INFO)) {
