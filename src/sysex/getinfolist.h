@@ -1,6 +1,7 @@
-#ifndef INFOS_H
-#define INFOS_H
+#ifndef GETINFOLIST_H
+#define GETINFOLIST_H
 
+#include "implementedinfos.h"
 #include "sysexmessage.h"
 
 class GetInfoList : public SysExMessage {
@@ -10,10 +11,11 @@ public:
       : SysExMessage(cmd, message, device) {}
 
 private:
-  void createAnswer(SysExMessage::Command cmd, BYTE_VECTOR *message,
-                    Device *device) {
-		answer = new GetInfoList(cmd, message, device);
-  }
+	void createAnswer(SysExMessage::Command cmd, BYTE_VECTOR *message,
+										Device *device) {
+		answer = new ImplementedInfos(cmd, message, device);
+		answer->parseAnswerData();
+	}
 };
 
-#endif // INFOS_H
+#endif // GETINFOLIST_H
