@@ -123,76 +123,77 @@ void Device::setupMidi() {
   midiout->openPort(outPortNumber);
 }
 
-void Device::sentSysex(BYTE_VECTOR *data) {
-	SLEEP(sysexWaitTime);
-  midiout->sendMessage(data);
-}
+void Device::sentSysex(BYTE_VECTOR *data) { midiout->sendMessage(data); }
 
 BYTE_VECTOR *Device::retrieveSysex() {
-	SLEEP(sysexWaitTime);
   BYTE_VECTOR *data = new BYTE_VECTOR();
-  midiin->getMessage(data);
-  if (checkSysex(data))
-    return data;
-  return 0;
+	int i = 0;
+	for (i = 0; i < WAIT_LOOPS && data->size() == 0; i++) {
+		SLEEP(WAIT_TIME);
+		midiin->getMessage(data);
+	}
+	std::cout << "delay: " << i << std::endl;
+	if (checkSysex(data))
+		return data;
+	return 0;
 }
 
 bool Device::checkSysex(BYTE_VECTOR *data) {
-  BYTE_VECTOR *dataHeader =
-      new BYTE_VECTOR(data->begin() + 1, data->begin() + 12);
-  BYTE_VECTOR *localHeader = getFullHeader();
+	BYTE_VECTOR *dataHeader =
+			new BYTE_VECTOR(data->begin() + 1, data->begin() + 12);
+	BYTE_VECTOR *localHeader = getFullHeader();
 	return MIDI::compareByteVector(dataHeader, localHeader);
 }
 
 void Device::queryDeviceInfo() {
-  GetCommands *c = new GetCommands(this);
-  c->setDebug(true);
+	GetCommands *c = new GetCommands(this);
+	c->setDebug(true);
 #ifdef __MIO_SIMULATE__
-  if (deviceIsSimulated)
-    commands = simulateCommands();
-  else
-    commands = (Commands *)c->query();
+	if (deviceIsSimulated)
+		commands = simulateCommands();
+	else
+		commands = (Commands *)c->query();
 #else
 	commands = (Commands *)c->query();
 #endif
-  if (commands == 0) {
-    std::cerr << "can not query supported commands";
-    return;
-  }
+	if (commands == 0) {
+		std::cerr << "can not query supported commands";
+		return;
+	}
 
 #if __MIO_SIMULATE__
-  if (!deviceIsSimulated) {
+	if (!deviceIsSimulated) {
 #endif //__MIO_SIMULATE
-    if (commands->isCommandSupported(SysExMessage::GET_INFO_LIST)) {
-      Infos *i = new Infos(this);
-      i->execute();
-      Infos *ia = (Infos *)i->getAnswer();
-    }
+		if (commands->isCommandSupported(SysExMessage::GET_INFO_LIST)) {
+			Infos *i = new Infos(this);
+			i->execute();
+			Infos *ia = (Infos *)i->getAnswer();
+		}
 
-    DeviceInfo *di = new DeviceInfo(this);
-    di->execute();
-    DeviceInfo *dia = (DeviceInfo *)di->getAnswer();
-    deviceName = dia->getDataAsString();
+		DeviceInfo *di = new DeviceInfo(this);
+		di->execute();
+		DeviceInfo *dia = (DeviceInfo *)di->getAnswer();
+		deviceName = dia->getDataAsString();
 
-    di->setInfoItem(DeviceInfo::ACESSORY_NAME);
-    di->execute();
-    dia = (DeviceInfo *)di->getAnswer();
-    modelName = dia->getDataAsString();
+		di->setInfoItem(DeviceInfo::ACESSORY_NAME);
+		di->execute();
+		dia = (DeviceInfo *)di->getAnswer();
+		modelName = dia->getDataAsString();
 
-    di->setInfoItem(DeviceInfo::SERIAL_NUMBER);
-    di->execute();
-    dia = (DeviceInfo *)di->getAnswer();
-    serialNumberString = dia->getDataAsString();
+		di->setInfoItem(DeviceInfo::SERIAL_NUMBER);
+		di->execute();
+		dia = (DeviceInfo *)di->getAnswer();
+		serialNumberString = dia->getDataAsString();
 #ifdef __MIO_SIMULATE__
-  }
+	}
 #endif //__MIO_SIMULATE__
 }
 
 BYTE_VECTOR *Device::nextTransactionId() {
-  if (transactionId > 16000)
-    transactionId = 0;
-  BYTE_VECTOR *v = MIDI::byteSplit(++transactionId, 2);
-  return v;
+	if (transactionId > 16000)
+		transactionId = 0;
+	BYTE_VECTOR *v = MIDI::byteSplit(++transactionId, 2);
+	return v;
 }
 
 BYTE_VECTOR *Device::manufacturerHeader = 0;

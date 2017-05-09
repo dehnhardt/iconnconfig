@@ -21,6 +21,8 @@
 
 #define SYSEX_START 0xf0
 #define SYSEX_END 0xf7
+#define WAIT_TIME 10
+#define WAIT_LOOPS 50
 
 #define BYTE_VECTOR std::vector<unsigned char>
 #ifdef __LINUX_ALSA__

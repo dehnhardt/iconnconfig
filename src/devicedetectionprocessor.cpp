@@ -95,10 +95,12 @@ int DeviceDetectionProcessor::detectDevices() {
 			midiin->openPort(j);
 			midiout->sendMessage(qMessage);
       // pause a little
-			SLEEP(100);
 			BYTE_VECTOR *message = new BYTE_VECTOR;
-      midiin->getMessage(message);
-      unsigned int nMessageSize = message->size();
+			for (int i = 0; i < WAIT_LOOPS && message->size() == 0; i++) {
+				SLEEP(WAIT_TIME);
+				midiin->getMessage(message);
+			}
+			unsigned int nMessageSize = message->size();
       if (nMessageSize > 0) {
 #ifdef __MIO_DEBUG__
         MIDI::printMessage(message);
@@ -148,7 +150,7 @@ int DeviceDetectionProcessor::detectDevices() {
   int base = midiin->getPortCount() * midiout->getPortCount();
   for (int i = 0; i <= 27; i++) {
     sendProgressEvent(base + i);
-		SLEEP(10);
+		SLEEP(WAIT_TIME);
   }
   //... and create two devices
   Device *ds = new Device(1, 1, 0x11, 0x0101, "mio10", "Device 1");
