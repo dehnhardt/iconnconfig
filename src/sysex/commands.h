@@ -8,7 +8,7 @@
 class Commands : public SysExMessage {
 public:
   Commands(Device *device);
-  Commands(SysExMessage::Command cmd, BYTE_VECTOR *message, Device *device)
+	Commands(SysExMessage::Command cmd, BYTE_VECTOR *message, Device *device)
       : SysExMessage(cmd, message, device) {}
   std::vector<int> getSupportedCommands();
   bool isCommandSupported(Command cmd);
