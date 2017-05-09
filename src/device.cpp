@@ -3,6 +3,7 @@
 #include "sysex/deviceinfo.h"
 #include "sysex/getcommands.h"
 #include "sysex/getinfolist.h"
+#include "sysex/implementedinfos.h"
 #include "sysex/midi.h"
 
 #include <array>
@@ -164,26 +165,55 @@ void Device::queryDeviceInfo() {
 #if __MIO_SIMULATE__
 	if (!deviceIsSimulated) {
 #endif //__MIO_SIMULATE
+
 		if (commands->isCommandSupported(SysExMessage::GET_INFO_LIST)) {
 			GetInfoList *i = new GetInfoList(this);
-			i->execute();
-			GetInfoList *ia = (GetInfoList *)i->getAnswer();
+			i->setDebug(true);
+			ii = (ImplementedInfos *)i->query();
 		}
 
-		DeviceInfo *di = new DeviceInfo(this);
-		di->execute();
-		DeviceInfo *dia = (DeviceInfo *)di->getAnswer();
-		deviceName = dia->getDataAsString();
+		if (ii->isInfoSupported(DeviceInfo::DEVICE_NAME)) {
 
-		di->setInfoItem(DeviceInfo::ACESSORY_NAME);
-		di->execute();
-		dia = (DeviceInfo *)di->getAnswer();
-		modelName = dia->getDataAsString();
+			DeviceInfo *di = new DeviceInfo(this);
+			di->execute();
+			DeviceInfo *dia = (DeviceInfo *)di->getAnswer();
+			deviceName = dia->getDataAsString();
 
-		di->setInfoItem(DeviceInfo::SERIAL_NUMBER);
-		di->execute();
-		dia = (DeviceInfo *)di->getAnswer();
-		serialNumberString = dia->getDataAsString();
+			if (ii->isInfoSupported(DeviceInfo::ACESSORY_NAME)) {
+				di->setInfoItem(DeviceInfo::ACESSORY_NAME);
+				di->execute();
+				dia = (DeviceInfo *)di->getAnswer();
+				modelName = dia->getDataAsString();
+			}
+
+			if (ii->isInfoSupported(DeviceInfo::SERIAL_NUMBER)) {
+				di->setInfoItem(DeviceInfo::SERIAL_NUMBER);
+				di->execute();
+				dia = (DeviceInfo *)di->getAnswer();
+				serialNumberString = dia->getDataAsString();
+			}
+
+			if (ii->isInfoSupported(DeviceInfo::FIRMWARE_VERSION)) {
+				di->setInfoItem(DeviceInfo::HARDWARE_VERSION);
+				di->execute();
+				dia = (DeviceInfo *)di->getAnswer();
+				firmwareVersion = dia->getDataAsString();
+			}
+
+			if (ii->isInfoSupported(DeviceInfo::HARDWARE_VERSION)) {
+				di->setInfoItem(DeviceInfo::HARDWARE_VERSION);
+				di->execute();
+				dia = (DeviceInfo *)di->getAnswer();
+				hardwareVersion = dia->getDataAsString();
+			}
+
+			if (ii->isInfoSupported(DeviceInfo::MANUFACTURER_NAME)) {
+				di->setInfoItem(DeviceInfo::MANUFACTURER_NAME);
+				di->execute();
+				dia = (DeviceInfo *)di->getAnswer();
+				manufacturerName = dia->getDataAsString();
+			}
+		}
 #ifdef __MIO_SIMULATE__
 	}
 #endif //__MIO_SIMULATE__

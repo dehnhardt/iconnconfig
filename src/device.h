@@ -10,6 +10,7 @@
 
 class SysExMessage;
 class Commands;
+class ImplementedInfos;
 
 class Device {
 public:
@@ -80,8 +81,12 @@ private:
   std::string modelName;
   std::string deviceName;
   std::string serialNumberString;
+	std::string manufacturerName;
+	std::string firmwareVersion;
+	std::string hardwareVersion;
 
   Commands *commands = 0;
+	ImplementedInfos *ii = 0;
 
   BYTE_VECTOR *deviceHeader = 0;
   BYTE_VECTOR *fullHeader = 0;
