@@ -48,14 +48,14 @@ SOURCES +=\
     src/sysex/devicedetectionquery.cpp \
     src/deviceselectiontablemodel.cpp \
     src/sysex/commands.cpp \
-    src/sysex/infos.cpp \
     src/sysex/deviceinfo.cpp \
     src/widgets/portsettingwidget.cpp \
     src/widgets/deviceinfowidget.cpp \
     src/widgets/portswidget.cpp \
     src/sysex/getcommands.cpp \
     src/widgets/multiinfowidget.cpp \
-    src/widgets/centralwidget.cpp
+    src/widgets/centralwidget.cpp \
+    src/sysex/getinfolist.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
@@ -70,7 +70,6 @@ HEADERS  += src/miomain.h \
     src/sysex/devicedetectionquery.h \
     src/deviceselectiontablemodel.h \
     src/sysex/commands.h \
-    src/sysex/infos.h \
     src/sysex/deviceinfo.h \
     src/events/events.h \
     src/device.h \
@@ -79,7 +78,8 @@ HEADERS  += src/miomain.h \
     src/widgets/portswidget.h \
     src/sysex/getcommands.h \
     src/widgets/multiinfowidget.h \
-    src/widgets/centralwidget.h
+    src/widgets/centralwidget.h \
+    src/sysex/getinfolist.h
 
 FORMS    += src/miomain.ui \
     src/devicedetection.ui \

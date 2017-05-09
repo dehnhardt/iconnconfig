@@ -3,16 +3,16 @@
 
 #include "sysexmessage.h"
 
-class Infos : public SysExMessage {
+class GetInfoList : public SysExMessage {
 public:
-  Infos(Device *device);
-  Infos(SysExMessage::Command cmd, BYTE_VECTOR *message, Device *device)
+	GetInfoList(Device *device);
+	GetInfoList(SysExMessage::Command cmd, BYTE_VECTOR *message, Device *device)
       : SysExMessage(cmd, message, device) {}
 
 private:
   void createAnswer(SysExMessage::Command cmd, BYTE_VECTOR *message,
                     Device *device) {
-    answer = new Infos(cmd, message, device);
+		answer = new GetInfoList(cmd, message, device);
   }
 };
 
