@@ -2,7 +2,7 @@
 #include "sysex/commands.h"
 #include "sysex/deviceinfo.h"
 #include "sysex/getcommands.h"
-#include "sysex/infos.h"
+#include "sysex/getinfolist.h"
 #include "sysex/midi.h"
 
 #include <array>
@@ -165,9 +165,9 @@ void Device::queryDeviceInfo() {
 	if (!deviceIsSimulated) {
 #endif //__MIO_SIMULATE
 		if (commands->isCommandSupported(SysExMessage::GET_INFO_LIST)) {
-			Infos *i = new Infos(this);
+			GetInfoList *i = new GetInfoList(this);
 			i->execute();
-			Infos *ia = (Infos *)i->getAnswer();
+			GetInfoList *ia = (GetInfoList *)i->getAnswer();
 		}
 
 		DeviceInfo *di = new DeviceInfo(this);

@@ -1,5 +1,5 @@
-#include "infos.h"
+#include "getinfolist.h"
 #include "midi.h"
 
-Infos::Infos(Device *device)
+GetInfoList::GetInfoList(Device *device)
     : SysExMessage(SysExMessage::GET_INFO_LIST, SysExMessage::QUERY, device) {}
