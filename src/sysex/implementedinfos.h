@@ -9,12 +9,15 @@ public:
 	ImplementedInfos(SysExMessage::Command cmd, BYTE_VECTOR *message,
 									 Device *device)
 			: SysExMessage(cmd, message, device) {}
-	std::vector<DeviceInfoItem> getSupportedInfos();
-	bool isInfoSupported(DeviceInfoItem info);
+
+	std::vector<DeviceInfoItem> *getImplementedInfos() {
+		return implementedInfos;
+	}
+	bool isInfoImplemented(DeviceInfoItem info);
 	void parseAnswerData();
 
 private:
-	std::vector<DeviceInfoItem> *supportedInfos = 0;
+	std::vector<DeviceInfoItem> *implementedInfos = 0;
 };
 
 #endif // IMPLEMENTEDINFOS_H
