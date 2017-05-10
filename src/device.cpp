@@ -172,54 +172,56 @@ void Device::queryDeviceInfo() {
 			ii = (ImplementedInfos *)i->query();
 		}
 
-		if (ii->isInfoSupported(DeviceInfo::DEVICE_NAME)) {
+		DeviceInfo *dinfo = new DeviceInfo(this, ii);
+
+		if (ii->isInfoImplemented(DeviceInfo::DEVICE_NAME)) {
 
 			DeviceInfo *di = new DeviceInfo(this);
 			di->execute();
 			DeviceInfo *dia = (DeviceInfo *)di->getAnswer();
 			deviceName = dia->getDataAsString();
 
-                        if (ii->isInfoSupported(DeviceInfo::ACCESSORY_NAME)) {
-                                di->setInfoItem(DeviceInfo::ACCESSORY_NAME);
+			if (ii->isInfoImplemented(DeviceInfo::ACCESSORY_NAME)) {
+				di->setInfoItem(DeviceInfo::ACCESSORY_NAME);
 				di->execute();
 				dia = (DeviceInfo *)di->getAnswer();
 				modelName = dia->getDataAsString();
 			}
 
-			if (ii->isInfoSupported(DeviceInfo::SERIAL_NUMBER)) {
+			if (ii->isInfoImplemented(DeviceInfo::SERIAL_NUMBER)) {
 				di->setInfoItem(DeviceInfo::SERIAL_NUMBER);
 				di->execute();
 				dia = (DeviceInfo *)di->getAnswer();
 				serialNumberString = dia->getDataAsString();
 			}
 
-			if (ii->isInfoSupported(DeviceInfo::FIRMWARE_VERSION)) {
+			if (ii->isInfoImplemented(DeviceInfo::FIRMWARE_VERSION)) {
 				di->setInfoItem(DeviceInfo::HARDWARE_VERSION);
 				di->execute();
 				dia = (DeviceInfo *)di->getAnswer();
 				firmwareVersion = dia->getDataAsString();
 			}
 
-			if (ii->isInfoSupported(DeviceInfo::HARDWARE_VERSION)) {
+			if (ii->isInfoImplemented(DeviceInfo::HARDWARE_VERSION)) {
 				di->setInfoItem(DeviceInfo::HARDWARE_VERSION);
 				di->execute();
 				dia = (DeviceInfo *)di->getAnswer();
 				hardwareVersion = dia->getDataAsString();
 			}
 
-			if (ii->isInfoSupported(DeviceInfo::MANUFACTURER_NAME)) {
+			if (ii->isInfoImplemented(DeviceInfo::MANUFACTURER_NAME)) {
 				di->setInfoItem(DeviceInfo::MANUFACTURER_NAME);
 				di->execute();
 				dia = (DeviceInfo *)di->getAnswer();
 				manufacturerName = dia->getDataAsString();
 			}
-                        if (ii->isInfoSupported(DeviceInfo::MODEL_NUMBER)) {
-                                di->setInfoItem(DeviceInfo::MODEL_NUMBER);
-                                di->execute();
-                                dia = (DeviceInfo *)di->getAnswer();
-                                modelNumber = dia->getDataAsString();
-                        }
-                }
+			if (ii->isInfoImplemented(DeviceInfo::MODEL_NUMBER)) {
+				di->setInfoItem(DeviceInfo::MODEL_NUMBER);
+				di->execute();
+				dia = (DeviceInfo *)di->getAnswer();
+				modelNumber = dia->getDataAsString();
+			}
+		}
 #ifdef __MIO_SIMULATE__
 	}
 #endif //__MIO_SIMULATE__
