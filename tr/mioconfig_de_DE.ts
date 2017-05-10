@@ -12,9 +12,8 @@
 <context>
     <name>DeviceInfoWidget</name>
     <message>
-        <location filename="../src/widgets/deviceinfowidget.ui" line="32"/>
         <source>Device Info</source>
-        <translation>Informationen zum Gerät</translation>
+        <translation type="vanished">Informationen zum Gerät</translation>
     </message>
     <message>
         <source>Global</source>
@@ -28,6 +27,11 @@
         <location filename="../src/widgets/deviceinfowidget.h" line="11"/>
         <source>Device Information</source>
         <translation>Geräteinformationen</translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/deviceinfowidget.cpp" line="27"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -96,23 +100,26 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/widgets/multiinfowidget.h" line="24"/>
+        <location filename="../src/widgets/multiinfowidget.h" line="25"/>
         <source>MultiInfoWidget</source>
         <translation>Informationen</translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/multiinfowidget.cpp" line="38"/>
+        <source>%1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>PortSettingWidget</name>
     <message>
-        <location filename="../src/widgets/portsettingwidget.ui" line="14"/>
         <source>PortSettings</source>
-        <translation>Anschlußeintellungen</translation>
+        <translation type="vanished">Anschlußeintellungen</translation>
     </message>
 </context>
 <context>
     <name>PortsWidget</name>
     <message>
-        <location filename="../src/widgets/portswidget.ui" line="26"/>
         <location filename="../src/widgets/portswidget.h" line="13"/>
         <source>Ports</source>
         <translation>Anschlüsse</translation>
