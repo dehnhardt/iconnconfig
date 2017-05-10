@@ -24,25 +24,25 @@ QWidget *DeviceInfoWidget::createWidget(std::string infoName) {
 		QGridLayout *lo = new QGridLayout();
 		w->setLayout(lo);
 		QTableWidget *tw = new QTableWidget(10, 2, this);
-		tw->setItem(0, 0, new QTableWidgetItem("Name"));
+		tw->setItem(0, 0, new QTableWidgetItem(tr("Name")));
 		tw->setItem(0, 1,
 								new QTableWidgetItem(this->device->getDeviceName().c_str()));
-		tw->setItem(1, 0, new QTableWidgetItem("Model"));
+		tw->setItem(1, 0, new QTableWidgetItem(tr("Model")));
 		tw->setItem(1, 1,
 								new QTableWidgetItem(this->device->getModelName().c_str()));
-		tw->setItem(2, 0, new QTableWidgetItem("SerialNumber"));
+		tw->setItem(2, 0, new QTableWidgetItem(tr("SerialNumber")));
 		tw->setItem(2, 1, new QTableWidgetItem(
 													this->device->getSerialNumberString().c_str()));
-		tw->setItem(3, 0, new QTableWidgetItem("Manufacturer"));
+		tw->setItem(3, 0, new QTableWidgetItem(tr("Manufacturer")));
 		tw->setItem(3, 1, new QTableWidgetItem(
 													this->device->getManufacturerName().c_str()));
-		tw->setItem(4, 0, new QTableWidgetItem("Firmware Version"));
+		tw->setItem(4, 0, new QTableWidgetItem(tr("Firmware Version")));
 		tw->setItem(
 				4, 1, new QTableWidgetItem(this->device->getFirmwareVersion().c_str()));
-		tw->setItem(5, 0, new QTableWidgetItem("Hardware Version"));
+		tw->setItem(5, 0, new QTableWidgetItem(tr("Hardware Version")));
 		tw->setItem(
 				5, 1, new QTableWidgetItem(this->device->getHardwareVersion().c_str()));
-		tw->setItem(6, 0, new QTableWidgetItem("Model Number"));
+		tw->setItem(6, 0, new QTableWidgetItem(tr("Model Number")));
 		tw->setItem(6, 1,
 								new QTableWidgetItem(this->device->getModelNumber().c_str()));
 
