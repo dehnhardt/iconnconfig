@@ -6,7 +6,7 @@
 #include <QtGui>
 
 DeviceSelectionTableModel::DeviceSelectionTableModel(Devices *devices) {
-  for (Devices::iterator it = devices->begin(); it != devices->end(); it++)
+	for (Devices::iterator it = devices->begin(); it != devices->end(); ++it)
     tableData.push_back(it->second);
 }
 
