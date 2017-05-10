@@ -39,6 +39,16 @@ SysExMessage::SysExMessage(Command cmd, CommandFlags flags, Device *device)
   acceptedAnswers = commandAcceptedAnswers[cmd];
 }
 
+void SysExMessage::extractData(std::vector<unsigned char> *message)
+{
+    long dataLength = MIDI::byteJoin(
+        new BYTE_VECTOR(message->begin() + Device::DATA_LENGTH_OFFSET,
+                        message->begin() + Device::DATA_LENGTH_OFFSET +
+                            Device::DATA_LENGTH_LENGTH));
+    data = new BYTE_VECTOR(message->begin() + Device::DATA_OFFSET,
+                           message->begin() + Device::DATA_OFFSET + dataLength);
+}
+
 SysExMessage::SysExMessage(Command cmd, std::vector<unsigned char> *message,
                            Device *device)
     : cmd(cmd), device(device) {
@@ -51,12 +61,7 @@ SysExMessage::SysExMessage(Command cmd, std::vector<unsigned char> *message,
   command->push_back(cmdflags);
   command->push_back(cmd);
   acceptedAnswers = commandAcceptedAnswers[cmd];
-  long dataLength = MIDI::byteJoin(
-      new BYTE_VECTOR(message->begin() + Device::DATA_LENGTH_OFFSET,
-                      message->begin() + Device::DATA_LENGTH_OFFSET +
-                          Device::DATA_LENGTH_LENGTH));
-  data = new BYTE_VECTOR(message->begin() + Device::DATA_OFFSET,
-                         message->begin() + Device::DATA_OFFSET + dataLength);
+  extractData(message);
 }
 
 SysExMessage::~SysExMessage() {
@@ -106,6 +111,7 @@ SysExMessage::Command SysExMessage::parseAnswer(BYTE_VECTOR *answer) {
     std::cout << "Answer (command: " << command.getLongValue() << ") accepted "
               << std::endl;
 #endif //__RTMIDI_DEBUG__
+    extractData(answer);
     return (SysExMessage::Command)command.getLongValue();
   }
 #ifdef __RTMIDI_DEBUG__

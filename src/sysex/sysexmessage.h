@@ -134,6 +134,7 @@ protected:
   BYTE_VECTOR *resultData = 0;
   BYTE_VECTOR *data = 0;
   bool debug = false;
+	void extractData(std::vector<unsigned char> *message);
 };
 
 #endif // SYSEXMESSAGE_H
