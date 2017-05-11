@@ -6,8 +6,8 @@
 #include <QTableWidget>
 
 DeviceInfoWidget::DeviceInfoWidget(MioMain *parent, Device *device,
-                                   QString windowTitle)
-    : MultiInfoWidget(parent, device, windowTitle) {
+																	 DeviceInfo *deviceInfo, QString windowTitle)
+		: MultiInfoWidget(parent, device, windowTitle), deviceInfo(deviceInfo) {
 	infoSections = std::vector<std::string>();
 	if (device->getCommands()->isCommandSupported(SysExMessage::GET_INFO_LIST))
 		infoSections.push_back("Global");
@@ -23,30 +23,17 @@ QWidget *DeviceInfoWidget::createWidget(std::string infoName) {
 		QWidget *w = new QWidget(this->parentWidget());
 		QGridLayout *lo = new QGridLayout();
 		w->setLayout(lo);
-		QTableWidget *tw = new QTableWidget(10, 2, this);
-		tw->setItem(0, 0, new QTableWidgetItem(tr("Name")));
-		tw->setItem(0, 1,
-								new QTableWidgetItem(this->device->getDeviceName().c_str()));
-		tw->setItem(1, 0, new QTableWidgetItem(tr("Model")));
-		tw->setItem(1, 1,
-								new QTableWidgetItem(this->device->getModelName().c_str()));
-		tw->setItem(2, 0, new QTableWidgetItem(tr("SerialNumber")));
-		tw->setItem(2, 1, new QTableWidgetItem(
-													this->device->getSerialNumberString().c_str()));
-		tw->setItem(3, 0, new QTableWidgetItem(tr("Manufacturer")));
-		tw->setItem(3, 1, new QTableWidgetItem(
-													this->device->getManufacturerName().c_str()));
-		tw->setItem(4, 0, new QTableWidgetItem(tr("Firmware Version")));
-		tw->setItem(
-				4, 1, new QTableWidgetItem(this->device->getFirmwareVersion().c_str()));
-		tw->setItem(5, 0, new QTableWidgetItem(tr("Hardware Version")));
-		tw->setItem(
-				5, 1, new QTableWidgetItem(this->device->getHardwareVersion().c_str()));
-		tw->setItem(6, 0, new QTableWidgetItem(tr("Model Number")));
-		tw->setItem(6, 1,
-								new QTableWidgetItem(this->device->getModelNumber().c_str()));
-
-		lo->addWidget(tw, 0, 0);
+		if (this->deviceInfo) {
+			std::vector<InfoItem> *infoItems = this->deviceInfo->getDeviceInfos();
+			QTableWidget *tw = new QTableWidget(infoItems->size(), 3, this);
+			for (unsigned int i = 0; i < infoItems->size(); i++) {
+				InfoItem infoItem = infoItems->at(i);
+				tw->setItem(i, 0, new QTableWidgetItem(infoItem.name.c_str()));
+				tw->setItem(i, 1, new QTableWidgetItem(infoItem.value.c_str()));
+				tw->setItem(i, 2, new QTableWidgetItem(infoItem.infoItem));
+			}
+			lo->addWidget(tw, 0, 0);
+		}
 		return w;
 	} else {
 		QWidget *w = new QWidget(this->parentWidget());

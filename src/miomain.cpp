@@ -114,7 +114,8 @@ void MioMain::openDeviceGUI(Device *d) {
   CentralWidget *centralWidget = new CentralWidget(this, d);
   this->addDock(centralWidget);
 
-  DeviceInfoWidget *deviceInfoWidget = new DeviceInfoWidget(this, d);
+	DeviceInfoWidget *deviceInfoWidget =
+			new DeviceInfoWidget(this, d, d->getDeviceInfo());
   this->addDock(deviceInfoWidget, Qt::LeftDockWidgetArea);
 
   PortsWidget *portsWidget = new PortsWidget(this, d);

@@ -4,7 +4,21 @@
 #include "implementedinfos.h"
 #include "sysexmessage.h"
 
+#include <QtCore/QCoreApplication>
+
+class InfoItem {
+
+public:
+	SysExMessage::DeviceInfoItem infoItem;
+	std::string name;
+	std::string value;
+	bool editable;
+};
+
 class DeviceInfo : public SysExMessage {
+
+	Q_DECLARE_TR_FUNCTIONS(InfoItem)
+
 public:
   // methods
 public:
@@ -12,16 +26,23 @@ public:
 	DeviceInfo(Device *device, ImplementedInfos *infoList);
 	DeviceInfo(SysExMessage::Command cmd, BYTE_VECTOR *message, Device *device)
       : SysExMessage(cmd, message, device) {}
+	~DeviceInfo();
 
   void setInfoItem(DeviceInfoItem infoItem) { this->infoItem = infoItem; }
   BYTE_VECTOR *getMessageData();
   std::string getDataAsString();
   DeviceInfoItem getDeviceInfoItem();
+	bool isItemEditable(DeviceInfoItem item);
+	std::string getItemName(DeviceInfoItem item);
+	std::string getItemValue(DeviceInfoItem item);
+	std::vector<InfoItem> *getDeviceInfos();
 
 	// members
 private:
   DeviceInfoItem infoItem = DEVICE_NAME;
 	ImplementedInfos *infoList = 0;
+	std::vector<InfoItem> *deviceInfos;
+	std::map<DeviceInfoItem, InfoItem> *mappedInfos;
 
 	// methods
 private:
@@ -29,13 +50,6 @@ private:
                     Device *device) {
     answer = new DeviceInfo(cmd, message, device);
   }
-};
-
-class InfoItem {
-public:
-	std::string name;
-	std::string value;
-	bool editable;
 };
 
 #endif // DEVICEINFO_H
