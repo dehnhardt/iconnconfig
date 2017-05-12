@@ -39,14 +39,13 @@ SysExMessage::SysExMessage(Command cmd, CommandFlags flags, Device *device)
   acceptedAnswers = commandAcceptedAnswers[cmd];
 }
 
-void SysExMessage::extractData(std::vector<unsigned char> *message)
-{
-    long dataLength = MIDI::byteJoin(
-        new BYTE_VECTOR(message->begin() + Device::DATA_LENGTH_OFFSET,
-                        message->begin() + Device::DATA_LENGTH_OFFSET +
-                            Device::DATA_LENGTH_LENGTH));
-    data = new BYTE_VECTOR(message->begin() + Device::DATA_OFFSET,
-                           message->begin() + Device::DATA_OFFSET + dataLength);
+void SysExMessage::extractData(std::vector<unsigned char> *message) {
+  long dataLength = MIDI::byteJoin(
+      new BYTE_VECTOR(message->begin() + Device::DATA_LENGTH_OFFSET,
+                      message->begin() + Device::DATA_LENGTH_OFFSET +
+                          Device::DATA_LENGTH_LENGTH));
+  data = new BYTE_VECTOR(message->begin() + Device::DATA_OFFSET,
+                         message->begin() + Device::DATA_OFFSET + dataLength);
 }
 
 SysExMessage::SysExMessage(Command cmd, std::vector<unsigned char> *message,
@@ -132,7 +131,7 @@ int SysExMessage::execute() {
   BYTE_VECTOR *message = getMIDISysExMessage();
   device->sentSysex(message);
   BYTE_VECTOR *answerMessage = device->retrieveSysex();
-  if( answerMessage != nullptr  ){
+  if (answerMessage != nullptr) {
     Command cmd = parseAnswer(answerMessage);
     if (debug)
       MIDI::printMessage(answerMessage);
