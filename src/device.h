@@ -36,21 +36,23 @@ public:
   static BYTE_VECTOR *getManufacturerHeader();
   BYTE_VECTOR *getDeviceHeader();
   BYTE_VECTOR *getFullHeader();
-  void queryDeviceInfo();
+  bool queryDeviceInfo();
 
-	std::string getModelName() { return modelName; }
+  std::string getModelName() { return modelName; }
   std::string getDeviceName() { return deviceName; }
   std::string getSerialNumberString() { return serialNumberString; }
-	std::string getManufacturerName() { return manufacturerName; }
-	std::string getFirmwareVersion() { return firmwareVersion; }
-	std::string getHardwareVersion() { return hardwareVersion; }
-	std::string getModelNumber() { return modelNumber; }
+  std::string getManufacturerName() { return manufacturerName; }
+  std::string getFirmwareVersion() { return firmwareVersion; }
+  std::string getHardwareVersion() { return hardwareVersion; }
+  std::string getModelNumber() { return modelNumber; }
+  int getInPortNumer() { return inPortNumber; }
+  int getOutPortNumer() { return outPortNumber; }
 
   MIDISysexValue *getSerialNumber() { return serialNumber; }
   MIDISysexValue *getProductId() { return productId; }
   bool getDefault() { return isDefault; }
   Commands *getCommands() { return commands; }
-	DeviceInfo *getDeviceInfo() { return deviceInfo; }
+  DeviceInfo *getDeviceInfo() { return deviceInfo; }
 
 #ifdef __MIO_SIMULATE__
   Device(int inPortNumber, int outPortNumber, long serialNumber, int productId,
@@ -89,14 +91,14 @@ private:
   std::string modelName;
   std::string deviceName;
   std::string serialNumberString;
-	std::string manufacturerName;
-	std::string firmwareVersion;
-	std::string hardwareVersion;
-	std::string modelNumber;
+  std::string manufacturerName;
+  std::string firmwareVersion;
+  std::string hardwareVersion;
+  std::string modelNumber;
 
   Commands *commands = 0;
-	ImplementedInfos *ii = 0;
-	DeviceInfo *deviceInfo = 0;
+  ImplementedInfos *ii = 0;
+  DeviceInfo *deviceInfo = 0;
 
   BYTE_VECTOR *deviceHeader = 0;
   BYTE_VECTOR *fullHeader = 0;

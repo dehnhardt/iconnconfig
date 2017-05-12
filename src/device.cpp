@@ -43,18 +43,18 @@ Commands *Device::simulateCommands() {
   message->push_back(0x00);
   message->push_back(SysExMessage::RET_COMMAND_LIST);
   message->push_back(0x00);
-	BYTE_VECTOR *allowedCommands = new BYTE_VECTOR();
-	allowedCommands->insert(
-			allowedCommands->end(),
-			{SysExMessage::GET_INFO_LIST, SysExMessage::GET_DEVICE_INFO,
-			 SysExMessage::RET_SET_DEVICE_INFO, SysExMessage::GET_RESET_LIST,
-			 SysExMessage::GET_SAVE_RESTORE_LIST,
-			 SysExMessage::GET_ETHERNET_PORT_INFO});
-	message->push_back(allowedCommands->size());
-	message->insert(message->end(), allowedCommands->begin(),
-									allowedCommands->end());
-	Commands *commands =
-			new Commands(SysExMessage::RET_COMMAND_LIST, message, this);
+  BYTE_VECTOR *allowedCommands = new BYTE_VECTOR();
+  allowedCommands->insert(
+      allowedCommands->end(),
+      {SysExMessage::GET_INFO_LIST, SysExMessage::GET_DEVICE_INFO,
+       SysExMessage::RET_SET_DEVICE_INFO, SysExMessage::GET_RESET_LIST,
+       SysExMessage::GET_SAVE_RESTORE_LIST,
+       SysExMessage::GET_ETHERNET_PORT_INFO});
+  message->push_back(allowedCommands->size());
+  message->insert(message->end(), allowedCommands->begin(),
+                  allowedCommands->end());
+  Commands *commands =
+      new Commands(SysExMessage::RET_COMMAND_LIST, message, this);
   commands->parseAnswerData();
   return commands;
 }
@@ -128,83 +128,84 @@ void Device::sentSysex(BYTE_VECTOR *data) { midiout->sendMessage(data); }
 
 BYTE_VECTOR *Device::retrieveSysex() {
   BYTE_VECTOR *data = new BYTE_VECTOR();
-	int i = 0;
-	for (i = 0; i < WAIT_LOOPS && data->size() == 0; i++) {
-		SLEEP(WAIT_TIME);
-		midiin->getMessage(data);
-	}
-	std::cout << "delay: " << i << std::endl;
-	if (checkSysex(data))
-		return data;
-	return 0;
+  int i = 0;
+  for (i = 0; i < WAIT_LOOPS && data->size() == 0; i++) {
+    SLEEP(WAIT_TIME);
+    midiin->getMessage(data);
+  }
+  std::cout << "delay: " << i << std::endl;
+  if (checkSysex(data))
+    return data;
+  return 0;
 }
 
 bool Device::checkSysex(BYTE_VECTOR *data) {
-	BYTE_VECTOR *dataHeader =
-			new BYTE_VECTOR(data->begin() + 1, data->begin() + 12);
-	BYTE_VECTOR *localHeader = getFullHeader();
-	return MIDI::compareByteVector(dataHeader, localHeader);
+  BYTE_VECTOR *dataHeader =
+      new BYTE_VECTOR(data->begin() + 1, data->begin() + 12);
+  BYTE_VECTOR *localHeader = getFullHeader();
+  return MIDI::compareByteVector(dataHeader, localHeader);
 }
 
-void Device::queryDeviceInfo() {
-	GetCommands *c = new GetCommands(this);
-	c->setDebug(true);
+bool Device::queryDeviceInfo() {
+  GetCommands *c = new GetCommands(this);
+  c->setDebug(true);
 #ifdef __MIO_SIMULATE__
-	if (deviceIsSimulated)
-		commands = simulateCommands();
-	else
-		commands = (Commands *)c->query();
+  if (deviceIsSimulated)
+    commands = simulateCommands();
+  else
+    commands = (Commands *)c->query();
 #else
-	commands = (Commands *)c->query();
+  commands = (Commands *)c->query();
 #endif
-	if (commands == 0) {
-		std::cerr << "can not query supported commands";
-		return;
-	}
+  if (commands == 0) {
+    std::cerr << "can not query supported commands";
+    return false;
+  }
 
 #if __MIO_SIMULATE__
-	if (!deviceIsSimulated) {
+  if (!deviceIsSimulated) {
 #endif //__MIO_SIMULATE
 
-		if (commands->isCommandSupported(SysExMessage::GET_INFO_LIST)) {
-			GetInfoList *i = new GetInfoList(this);
-			i->setDebug(true);
-			ii = (ImplementedInfos *)i->query();
-		}
+    if (commands->isCommandSupported(SysExMessage::GET_INFO_LIST)) {
+      GetInfoList *i = new GetInfoList(this);
+      i->setDebug(true);
+      ii = (ImplementedInfos *)i->query();
+    }
 
-		deviceInfo = new DeviceInfo(this, ii);
+    deviceInfo = new DeviceInfo(this, ii);
 
-		if (ii->isInfoImplemented(DeviceInfo::DEVICE_NAME))
-			deviceName = deviceInfo->getItemValue(DeviceInfo::DEVICE_NAME);
+    if (ii->isInfoImplemented(DeviceInfo::DEVICE_NAME))
+      deviceName = deviceInfo->getItemValue(DeviceInfo::DEVICE_NAME);
 
-		if (ii->isInfoImplemented(DeviceInfo::ACCESSORY_NAME))
-			modelName = deviceInfo->getItemValue(DeviceInfo::ACCESSORY_NAME);
+    if (ii->isInfoImplemented(DeviceInfo::ACCESSORY_NAME))
+      modelName = deviceInfo->getItemValue(DeviceInfo::ACCESSORY_NAME);
 
-		if (ii->isInfoImplemented(DeviceInfo::SERIAL_NUMBER))
-			serialNumberString = deviceInfo->getItemValue(DeviceInfo::SERIAL_NUMBER);
+    if (ii->isInfoImplemented(DeviceInfo::SERIAL_NUMBER))
+      serialNumberString = deviceInfo->getItemValue(DeviceInfo::SERIAL_NUMBER);
 
-		if (ii->isInfoImplemented(DeviceInfo::FIRMWARE_VERSION))
-			firmwareVersion = deviceInfo->getItemValue(DeviceInfo::FIRMWARE_VERSION);
+    if (ii->isInfoImplemented(DeviceInfo::FIRMWARE_VERSION))
+      firmwareVersion = deviceInfo->getItemValue(DeviceInfo::FIRMWARE_VERSION);
 
-		if (ii->isInfoImplemented(DeviceInfo::HARDWARE_VERSION))
-			hardwareVersion = deviceInfo->getItemValue(DeviceInfo::HARDWARE_VERSION);
+    if (ii->isInfoImplemented(DeviceInfo::HARDWARE_VERSION))
+      hardwareVersion = deviceInfo->getItemValue(DeviceInfo::HARDWARE_VERSION);
 
-		if (ii->isInfoImplemented(DeviceInfo::MANUFACTURER_NAME))
-			manufacturerName =
-					deviceInfo->getItemValue(DeviceInfo::MANUFACTURER_NAME);
+    if (ii->isInfoImplemented(DeviceInfo::MANUFACTURER_NAME))
+      manufacturerName =
+          deviceInfo->getItemValue(DeviceInfo::MANUFACTURER_NAME);
 
-		if (ii->isInfoImplemented(DeviceInfo::MODEL_NUMBER))
-			modelNumber = deviceInfo->getItemValue(DeviceInfo::MODEL_NUMBER);
+    if (ii->isInfoImplemented(DeviceInfo::MODEL_NUMBER))
+      modelNumber = deviceInfo->getItemValue(DeviceInfo::MODEL_NUMBER);
 #ifdef __MIO_SIMULATE__
-	}
+  }
 #endif //__MIO_SIMULATE__
+  return true;
 }
 
 BYTE_VECTOR *Device::nextTransactionId() {
-	if (transactionId > 16000)
-		transactionId = 0;
-	BYTE_VECTOR *v = MIDI::byteSplit(++transactionId, 2);
-	return v;
+  if (transactionId > 16000)
+    transactionId = 0;
+  BYTE_VECTOR *v = MIDI::byteSplit(++transactionId, 2);
+  return v;
 }
 
 BYTE_VECTOR *Device::manufacturerHeader = 0;
