@@ -10,7 +10,9 @@
 #include "widgets/portswidget.h"
 
 #include <QCloseEvent>
+#include <QDesktopWidget>
 #include <QSignalMapper>
+#include <QStyle>
 #include <QTimer>
 #include <QtDebug>
 
@@ -19,15 +21,20 @@ MioMain::MioMain(QWidget *parent) : QMainWindow(parent), ui(new Ui::MioMain) {
   setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::ForceTabbedDocks |
                  QMainWindow::VerticalTabs);
   readSettings();
-  QTimer::singleShot(100, this, SLOT(openDetectionWindow()));
+  if (readDevicesFromSettings())
+    openDefaultDevice();
+  else
+    QTimer::singleShot(100, this, SLOT(openDetectionWindow()));
 }
 
 MioMain::~MioMain() {
-	delete deviceDetectionWindow;
+  if (deviceDetectionWindow)
+    delete deviceDetectionWindow;
   delete ui;
 }
 
 void MioMain::openDefaultDevice() {
+  writeDevicesToSettings();
   long defaultDeviceSN = Configuration::getInstance().getDefaultDevice();
   Device *d = Configuration::getInstance().getDevices()->at(defaultDeviceSN);
   addDevicesToSelectionMenu(defaultDeviceSN);
@@ -39,7 +46,7 @@ void MioMain::addDevicesToSelectionMenu(long defaultDeviceSN) {
   Devices *devices = Configuration::getInstance().getDevices();
   QActionGroup *devicesGroup = new QActionGroup(this);
   devicesGroup->setExclusive(true);
-	for (Devices::iterator it = devices->begin(); it != devices->end(); ++it) {
+  for (Devices::iterator it = devices->begin(); it != devices->end(); ++it) {
     Device *d = it->second;
     QAction *a =
         ui->menuSelect->addAction(QString::fromStdString(d->getDeviceName()));
@@ -114,8 +121,8 @@ void MioMain::openDeviceGUI(Device *d) {
   CentralWidget *centralWidget = new CentralWidget(this, d);
   this->addDock(centralWidget);
 
-	DeviceInfoWidget *deviceInfoWidget =
-			new DeviceInfoWidget(this, d, d->getDeviceInfo());
+  DeviceInfoWidget *deviceInfoWidget =
+      new DeviceInfoWidget(this, d, d->getDeviceInfo());
   this->addDock(deviceInfoWidget, Qt::LeftDockWidgetArea);
 
   PortsWidget *portsWidget = new PortsWidget(this, d);
@@ -127,9 +134,9 @@ void MioMain::openDeviceGUI(Device *d) {
   QSettings *settings = Configuration::getInstance().getSettings();
   settings->beginGroup("MainWindow");
   restoreGeometry(settings->value("geometry").toByteArray());
+  settings->endGroup();
   settings->beginGroup("Docks");
   // restoreState(settings->value("DockWindows").toByteArray());
-  settings->endGroup();
   settings->endGroup();
 }
 
@@ -149,10 +156,38 @@ void MioMain::writeSettings() {
   settings->setValue("geometry", saveGeometry());
   settings->setValue("size", size());
   settings->setValue("pos", pos());
+  settings->endGroup();
   settings->beginGroup("Docks");
   settings->setValue("DockWindows", saveState());
   settings->endGroup();
-  settings->endGroup();
+}
+
+void MioMain::writeDevicesToSettings() {
+  QSettings *settings = Configuration::getInstance().getSettings();
+  Devices *devices = Configuration::getInstance().getDevices();
+  settings->beginWriteArray("Devices");
+  int i = 0;
+  for (Devices::iterator it = devices->begin(); it != devices->end(); ++it) {
+    settings->setArrayIndex(i);
+    Device *d = it->second;
+    settings->setValue("Device Name",
+                       QString::fromStdString(d->getDeviceName()));
+    settings->setValue("Serial Number",
+                       (qlonglong)(d->getSerialNumber()->getLongValue()));
+    settings->setValue("Input Port", d->getInPortNumer());
+    settings->setValue("Output Port", d->getOutPortNumer());
+    settings->setValue("Product Id",
+                       (qlonglong)d->getProductId()->getLongValue());
+#ifdef __MIO_SIMULATE__
+    if (d->getSimulate()) {
+      settings->setValue("Simulate", true);
+      settings->setValue("Model Name",
+                         QString::fromStdString(d->getModelName()));
+    }
+#endif
+    ++i;
+  }
+  settings->endArray();
 }
 
 void MioMain::connectSlots() {
@@ -166,5 +201,43 @@ void MioMain::readSettings() {
   resize(settings->value("size", QSize(400, 400)).toSize());
   move(settings->value("pos", QPoint(200, 200)).toPoint());
   settings->endGroup();
+}
+
+bool MioMain::readDevicesFromSettings() {
+  Devices *devices = Configuration::getInstance().getDevices();
+  devices->clear();
+  QSettings *settings = Configuration::getInstance().getSettings();
+  int size = settings->beginReadArray("Devices");
+  if (size == 0)
+    return false;
+  for (int i = 0; i < size; ++i) {
+    settings->setArrayIndex(i);
+    int productId = settings->value("Product Id").toInt();
+    long serialNumber =
+        (qlonglong)settings->value("Serial Number").toLongLong();
+    int inputPort = (qlonglong)settings->value("Input Port").toInt();
+    int outputPort = (qlonglong)settings->value("Output Port").toInt();
+#ifdef __MIO_SIMULATE__
+    Device *device = 0;
+    if (settings->value("Simulate").toBool()) {
+      std::string modelName =
+          settings->value("Model Name").toString().toStdString();
+      std::string deviceName =
+          settings->value("Device Name").toString().toStdString();
+      device = new Device(inputPort, outputPort, serialNumber, productId,
+                          modelName, deviceName);
+    } else {
+      device = new Device(inputPort, outputPort, serialNumber, productId);
+    }
+#else
+    Device *device = new Device(inputPort, outputPort, serialNumber, productId);
+#endif
+    if (device->queryDeviceInfo())
+      devices->insert(std::pair<long, Device *>(serialNumber, device));
+  }
+  settings->endArray();
+  if (devices->size() == 0)
+    return false;
+  return true;
 }
 void MioMain::on_actionQuit_triggered() { close(); }

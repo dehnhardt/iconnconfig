@@ -36,13 +36,15 @@ private slots:
 private:
   // Members
   Ui::MioMain *ui;
-  DeviceDetection *deviceDetectionWindow;
+  DeviceDetection *deviceDetectionWindow = 0;
   std::map<Qt::DockWidgetArea, std::vector<QDockWidget *>> dockWidgetAreas;
   QString title;
 
   // methods
   void readSettings();
+  bool readDevicesFromSettings();
   void writeSettings();
+  void writeDevicesToSettings();
   void connectSlots();
   void addDevicesToSelectionMenu(long defaultDeviceSN);
 
