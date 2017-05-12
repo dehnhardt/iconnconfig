@@ -11,12 +11,12 @@
 #include <unistd.h>
 
 DeviceDetectionProcessor::DeviceDetectionProcessor(QWidget *gui) : gui(gui) {
-	if (Configuration::getInstance().getMidiDeviceDetection()) {
-		setupMidiPorts();
-	}
-	if (Configuration::getInstance().getUsbDeviceDetection()) {
-		setupUSB();
-	}
+  if (Configuration::getInstance().getMidiDeviceDetection()) {
+    setupMidiPorts();
+  }
+  if (Configuration::getInstance().getUsbDeviceDetection()) {
+    setupUSB();
+  }
 }
 
 DeviceDetectionProcessor::~DeviceDetectionProcessor() {
@@ -92,15 +92,15 @@ int DeviceDetectionProcessor::detectDevices() {
     for (int j = 0; j < nInPortCount; j++) {
       int progress = (i * nInPortCount) + j + 1;
       sendProgressEvent(progress);
-			midiin->openPort(j);
-			midiout->sendMessage(qMessage);
+      midiin->openPort(j);
+      midiout->sendMessage(qMessage);
       // pause a little
-			BYTE_VECTOR *message = new BYTE_VECTOR;
-			for (int i = 0; i < WAIT_LOOPS && message->size() == 0; i++) {
-				SLEEP(WAIT_TIME);
-				midiin->getMessage(message);
-			}
-			unsigned int nMessageSize = message->size();
+      BYTE_VECTOR *message = new BYTE_VECTOR;
+      for (int i = 0; i < WAIT_LOOPS && message->size() == 0; i++) {
+        SLEEP(WAIT_TIME);
+        midiin->getMessage(message);
+      }
+      unsigned int nMessageSize = message->size();
       if (nMessageSize > 0) {
 #ifdef __MIO_DEBUG__
         MIDI::printMessage(message);
@@ -109,18 +109,18 @@ int DeviceDetectionProcessor::detectDevices() {
         if (isIconnectivityDevice(message)) {
           serialNumber =
               MIDI::byteJoin(message, (unsigned int)7, (unsigned int)5);
-					std::cout << "device with serial number " << serialNumber
-										<< " detected... (" << midiout->getPortName(i) << "- "
-										<< midiin->getPortName(j) << ") ";
+          std::cout << "device with serial number " << serialNumber
+                    << " detected... (" << midiout->getPortName(i) << ":" << i
+                    << " - " << midiin->getPortName(j) << ":" << j << ") ";
           midiin->closePort();
-					midiout->closePort();
+          midiout->closePort();
           if (devices->find(serialNumber) == devices->end()) {
             int productId = MIDI::byteJoin(message, 5, 2);
             Device *device = new Device(j, i, serialNumber, productId);
             devices->insert(std::pair<long, Device *>(serialNumber, device));
-						std::cout << "... and added to list of devices" << std::endl;
+            std::cout << "... and added to list of devices" << std::endl;
           } else {
-						std::cout << "... but it's already recognized" << std::endl;
+            std::cout << "... but it's already recognized" << std::endl;
           }
           break;
         }
@@ -138,19 +138,19 @@ int DeviceDetectionProcessor::detectDevices() {
                   << " - " << midiin->getPortName(j) << std::endl;
       }
 #endif //__MIO_DEBUG__
-			midiin->closePort();
+      midiin->closePort();
     }
-		if (midiout->isPortOpen())
-			midiout->closePort();
-	}
-	sendProgressEvent(getMidiInPortCount() * getMidiOutPortCount());
+    if (midiout->isPortOpen())
+      midiout->closePort();
+  }
+  sendProgressEvent(getMidiInPortCount() * getMidiOutPortCount());
 
 #ifdef __MIO_SIMULATE__
   // if simulation is enabled, send some events to progress bar...
   int base = midiin->getPortCount() * midiout->getPortCount();
   for (int i = 0; i <= 27; i++) {
     sendProgressEvent(base + i);
-		SLEEP(WAIT_TIME);
+    SLEEP(WAIT_TIME);
   }
   //... and create two devices
   Device *ds = new Device(1, 1, 0x11, 0x0101, "mio10", "Device 1");
@@ -169,7 +169,7 @@ int DeviceDetectionProcessor::detectDevices() {
     Configuration::getInstance().setDefaultDevice(defaultDeviceSerialNumber);
   }
 
-	for (Devices::iterator it = devices->begin(); it != devices->end(); ++it) {
+  for (Devices::iterator it = devices->begin(); it != devices->end(); ++it) {
     d = it->second;
     d->queryDeviceInfo();
   }
