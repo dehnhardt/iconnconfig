@@ -6,7 +6,7 @@
 #include <QtGui>
 
 DeviceSelectionTableModel::DeviceSelectionTableModel(Devices *devices) {
-	for (Devices::iterator it = devices->begin(); it != devices->end(); ++it)
+  for (Devices::iterator it = devices->begin(); it != devices->end(); ++it)
     tableData.push_back(it->second);
 }
 
@@ -59,7 +59,7 @@ bool DeviceSelectionTableModel::setData(const QModelIndex &index,
           current->setDefault(value.toBool());
           Configuration::getInstance().setDefaultDevice(
               current->getSerialNumber()->getLongValue());
-          for (int i = 0; i < tableData.size(); i++) {
+          for (unsigned int i = 0; i < tableData.size(); i++) {
             if (i != index.row()) {
               if (tableData.at(i)->getDefault()) {
                 tableData.at(i)->setDefault(false);

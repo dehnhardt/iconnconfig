@@ -27,12 +27,12 @@ void DeviceDetection::customEvent(QEvent *e) {
 }
 
 void DeviceDetection::startDeviceDetection() {
-	int maximum = detectionProcessor->getMidiOutPortCount() *
-								detectionProcessor->getMidiInPortCount();
+  int maximum = detectionProcessor->getMidiOutPortCount() *
+                detectionProcessor->getMidiInPortCount();
 #ifdef __MIO_SIMULATE__
-	maximum += 27;
+  maximum += 27;
 #endif
-	ui->progressBar->setMaximum(maximum);
+  ui->progressBar->setMaximum(maximum);
   ui->progressBar->setMinimum(0);
   ui->progressBar->setValue(0);
   detectionProcessor->startDeviceDetection();
