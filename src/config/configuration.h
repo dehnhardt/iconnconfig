@@ -17,13 +17,14 @@ public:
   }
 
 private:
-  Configuration() { settings = new QSettings(); }
+  Configuration() {}
   ~Configuration() {
-    delete settings;
-		if (devices != 0) {
-			devices->clear();
-			delete devices;
-		}
+    /*if (settings)
+      delete settings;*/
+    if (devices != 0) {
+      devices->clear();
+      delete devices;
+    }
   }
 
 public:
@@ -38,10 +39,14 @@ public:
       devices = new std::map<long, Device *>;
     return devices;
   }
-  QSettings *getSettings() { return settings; }
+  QSettings *getSettings() { return new QSettings(); }
 
   long getDefaultDevice() {
-    return settings->value("/devices/defaultDevice/serialNumber", 0).toInt();
+    QSettings *settings = new QSettings();
+    settings->beginGroup("Default Device");
+    return settings->value("serialNumber", 0).toInt();
+    settings->endGroup();
+    delete settings;
   }
 
   bool getUsbDeviceDetection() { return enableUsbDetection; }
@@ -52,14 +57,18 @@ public:
     this->devices = devices;
   }
   void setDefaultDevice(int serialNumber) {
-    settings->setValue("/devices/defaultDevice/serialNumber", serialNumber);
+    QSettings *settings = new QSettings();
+    settings->beginGroup("Default Device");
+    settings->setValue("serialNumber", serialNumber);
+    settings->endGroup();
+    delete settings;
   }
 
 private:
   std::map<long, Device *> *devices;
   bool enableUsbDetection = false;
   bool enableMidiDeviceDetection = true;
-  QSettings *settings = 0;
+  // QSettings *settings = 0;
 };
 
 #endif // CONFIGURATION_H
