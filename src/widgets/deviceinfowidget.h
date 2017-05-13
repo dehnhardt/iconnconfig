@@ -13,15 +13,15 @@ public:
                             QString windowTitle = tr("Device Information"));
   ~DeviceInfoWidget();
 
+public slots:
+	void deviceInfoChanged(SysExMessage::DeviceInfoItem, std::string value);
+
 protected:
   void setInfoSections();
   QWidget *createWidget(std::string infoName);
 
 private:
-  DeviceInfo *deviceInfo = 0;
-
-private slots:
-  void deviceInfoChanged(int row, int column);
+	DeviceInfo *deviceInfo = 0;
 };
 
 #endif // DEVICEINFOWIDGET_H

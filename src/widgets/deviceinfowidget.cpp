@@ -1,5 +1,6 @@
 #include "deviceinfowidget.h"
 #include "../sysex/commands.h"
+#include "infotablewidget.h"
 #include "ui_deviceinfowidget.h"
 
 #include <QHeaderView>
@@ -19,37 +20,18 @@ DeviceInfoWidget::DeviceInfoWidget(MioMain *parent, Device *device,
 
 DeviceInfoWidget::~DeviceInfoWidget() {}
 
+void DeviceInfoWidget::deviceInfoChanged(SysExMessage::DeviceInfoItem,
+																				 std::string value) {
+	std::cout << "deviceInfoChanged " << value << std::endl;
+}
+
 QWidget *DeviceInfoWidget::createWidget(std::string infoName) {
   if (infoName == "Global") {
-    QWidget *w = new QWidget(this->parentWidget());
-    QGridLayout *lo = new QGridLayout();
-    QPalette qp;
-    QTableWidget *tw = 0;
-    w->setLayout(lo);
-    if (this->deviceInfo) {
-      std::vector<InfoItem> *infoItems = this->deviceInfo->getDeviceInfos();
-      tw = new QTableWidget(infoItems->size(), 2, this);
-      tw->setHorizontalHeaderItem(0, new QTableWidgetItem(tr("Name")));
-      tw->setHorizontalHeaderItem(1, new QTableWidgetItem(tr("Value")));
-      tw->verticalHeader()->hide();
-      tw->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-      for (unsigned int i = 0; i < infoItems->size(); i++) {
-        InfoItem infoItem = infoItems->at(i);
-        QTableWidgetItem *name = new QTableWidgetItem(infoItem.name.c_str());
-        name->setForeground(qp.dark());
-        QTableWidgetItem *value = new QTableWidgetItem(infoItem.value.c_str());
-        name->setFlags(name->flags() & ~Qt::ItemIsEditable);
-        if (!infoItem.editable) {
-          value->setFlags(value->flags() & ~Qt::ItemIsEditable);
-          value->setForeground(qp.dark());
-        }
-        tw->setItem(i, 0, name);
-        tw->setItem(i, 1, value);
-      }
-      lo->addWidget(tw, 0, 0);
-      connect(tw, SIGNAL(cellChanged), this, SLOT(deviceInfoChanged));
-    }
-    return w;
+		InfoTableWidget *w =
+				new InfoTableWidget(this->parentWidget(), this->deviceInfo);
+		connect(w, &InfoTableWidget::deviceInfoChanged, this,
+						&DeviceInfoWidget::deviceInfoChanged);
+		return w;
   } else {
     QWidget *w = new QWidget(this->parentWidget());
     QGridLayout *lo = new QGridLayout();
@@ -59,9 +41,4 @@ QWidget *DeviceInfoWidget::createWidget(std::string infoName) {
     lo->addWidget(l, 0, 0);
     return w;
   }
-}
-
-void DeviceInfoWidget::deviceInfoChanged(int row, int column) {
-  std::cout << "Item changed: row " << row << ", column: " << column
-            << std::endl;
 }
