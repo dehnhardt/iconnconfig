@@ -20,9 +20,10 @@ DeviceInfoWidget::DeviceInfoWidget(MioMain *parent, Device *device,
 
 DeviceInfoWidget::~DeviceInfoWidget() {}
 
-void DeviceInfoWidget::deviceInfoChanged(SysExMessage::DeviceInfoItem,
+void DeviceInfoWidget::deviceInfoChanged(SysExMessage::DeviceInfoItem item,
 																				 std::string value) {
-	std::cout << "deviceInfoChanged " << value << std::endl;
+	std::cout << "DeviceInfoWidget: deviceInfoChanged " << item << " value "
+						<< value << std::endl;
 }
 
 QWidget *DeviceInfoWidget::createWidget(std::string infoName) {

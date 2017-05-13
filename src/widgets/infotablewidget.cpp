@@ -28,8 +28,6 @@ InfoTableWidget::InfoTableWidget(QWidget *parent, DeviceInfo *deviceInfo)
 		lo->addWidget(tw, 0, 0);
 		connect(tw, &QTableWidget::cellChanged, this,
 						&InfoTableWidget::onDeviceInfoChanged);
-		connect(this, &InfoTableWidget::deviceInfoChanged,
-						((DeviceInfoWidget *)parent), &DeviceInfoWidget::deviceInfoChanged);
 	}
 }
 
@@ -41,7 +39,7 @@ void InfoTableWidget::setupTable() {
 }
 
 void InfoTableWidget::onDeviceInfoChanged(int row, int column) {
-	std::cout << "Item changed: row " << row << ", column: " << column
+	std::cout << "InfoTableWidget: Row " << row << " column " << column
 						<< std::endl;
 	if (column == 1) {
 		std::string val;
@@ -49,7 +47,6 @@ void InfoTableWidget::onDeviceInfoChanged(int row, int column) {
 		std::vector<InfoItem> *infoItems = this->deviceInfo->getDeviceInfos();
 		InfoItem item = infoItems->at(row);
 		SysExMessage::DeviceInfoItem i = item.infoItem;
-		std::cout << "Item " << i << " changed to value " << val << std::endl;
-		this->deviceInfoChanged(i, val);
+		deviceInfoChanged(i, val);
 	}
 }

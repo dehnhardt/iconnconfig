@@ -90,6 +90,6 @@ std::vector<InfoItem> *DeviceInfo::getDeviceInfos() { return deviceInfos; }
 
 void DeviceInfo::deviceInfoChanged(SysExMessage::DeviceInfoItem item,
 																	 std::string value) {
-  std::cout << "Item " << item << " in DeviceInfoTable changed to value "
-						<< value << std::endl;
+	std::cout << "DeviceInfo: Item " << item
+						<< " in DeviceInfoTable changed to value " << value << std::endl;
 }
