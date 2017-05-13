@@ -28,7 +28,7 @@
  */
 
 SysExMessage::SysExMessage(Command cmd, CommandFlags flags, Device *device)
-    : cmd(cmd), cmdflags(flags), device(device) {
+		: cmd(cmd), cmdflags(flags), device(device) {
   if (this->device != 0)
     this->deviceHeader = this->device->getDeviceHeader();
   else

@@ -4,6 +4,7 @@
 #include "../device.h"
 #include "midi.h"
 
+#include <QObject>
 #include <map>
 #include <vector>
 

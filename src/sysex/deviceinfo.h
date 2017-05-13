@@ -4,6 +4,7 @@
 #include "implementedinfos.h"
 #include "sysexmessage.h"
 
+#include <QObject>
 #include <QtCore/QCoreApplication>
 
 class InfoItem {
@@ -16,8 +17,7 @@ public:
 };
 
 class DeviceInfo : public SysExMessage {
-
-  Q_DECLARE_TR_FUNCTIONS(InfoItem)
+	Q_DECLARE_TR_FUNCTIONS(InfoItem)
 
 public:
   // methods
@@ -38,7 +38,8 @@ public:
   std::vector<InfoItem> *getDeviceInfos();
 
 public slots:
-  void infoItemChanged(DeviceInfoItem item, std::string value);
+	void deviceInfoChanged(DeviceInfoItem item, std::string value);
+
   // members
 private:
   DeviceInfoItem infoItem = DEVICE_NAME;
