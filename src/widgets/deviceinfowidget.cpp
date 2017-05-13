@@ -23,15 +23,28 @@ QWidget *DeviceInfoWidget::createWidget(std::string infoName) {
   if (infoName == "Global") {
     QWidget *w = new QWidget(this->parentWidget());
     QGridLayout *lo = new QGridLayout();
+    QPalette qp;
+
     w->setLayout(lo);
     if (this->deviceInfo) {
       std::vector<InfoItem> *infoItems = this->deviceInfo->getDeviceInfos();
       QTableWidget *tw = new QTableWidget(infoItems->size(), 2, this);
+      tw->setHorizontalHeaderItem(0, new QTableWidgetItem(tr("Name")));
+      tw->setHorizontalHeaderItem(1, new QTableWidgetItem(tr("Value")));
+      tw->verticalHeader()->hide();
       tw->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
       for (unsigned int i = 0; i < infoItems->size(); i++) {
         InfoItem infoItem = infoItems->at(i);
-        tw->setItem(i, 0, new QTableWidgetItem(infoItem.name.c_str()));
-        tw->setItem(i, 1, new QTableWidgetItem(infoItem.value.c_str()));
+        QTableWidgetItem *name = new QTableWidgetItem(infoItem.name.c_str());
+        name->setForeground(qp.dark());
+        QTableWidgetItem *value = new QTableWidgetItem(infoItem.value.c_str());
+        name->setFlags(name->flags() & ~Qt::ItemIsEditable);
+        if (!infoItem.editable) {
+          value->setFlags(value->flags() & ~Qt::ItemIsEditable);
+          value->setForeground(qp.dark());
+        }
+        tw->setItem(i, 0, name);
+        tw->setItem(i, 1, value);
       }
       lo->addWidget(tw, 0, 0);
     }
