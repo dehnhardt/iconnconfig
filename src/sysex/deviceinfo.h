@@ -9,42 +9,44 @@
 class InfoItem {
 
 public:
-	SysExMessage::DeviceInfoItem infoItem;
-	std::string name;
-	std::string value;
-	bool editable;
+  SysExMessage::DeviceInfoItem infoItem;
+  std::string name;
+  std::string value;
+  bool editable;
 };
 
 class DeviceInfo : public SysExMessage {
 
-	Q_DECLARE_TR_FUNCTIONS(InfoItem)
+  Q_DECLARE_TR_FUNCTIONS(InfoItem)
 
 public:
   // methods
 public:
   DeviceInfo(Device *device);
-	DeviceInfo(Device *device, ImplementedInfos *infoList);
-	DeviceInfo(SysExMessage::Command cmd, BYTE_VECTOR *message, Device *device)
+  DeviceInfo(Device *device, ImplementedInfos *infoList);
+  DeviceInfo(SysExMessage::Command cmd, BYTE_VECTOR *message, Device *device)
       : SysExMessage(cmd, message, device) {}
-	~DeviceInfo();
+  ~DeviceInfo();
 
   void setInfoItem(DeviceInfoItem infoItem) { this->infoItem = infoItem; }
   BYTE_VECTOR *getMessageData();
   std::string getDataAsString();
   DeviceInfoItem getDeviceInfoItem();
-	bool isItemEditable(DeviceInfoItem item);
-	std::string getItemName(DeviceInfoItem item);
-	std::string getItemValue(DeviceInfoItem item);
-	std::vector<InfoItem> *getDeviceInfos();
+  bool isItemEditable(DeviceInfoItem item);
+  std::string getItemName(DeviceInfoItem item);
+  std::string getItemValue(DeviceInfoItem item);
+  std::vector<InfoItem> *getDeviceInfos();
 
-	// members
+public slots:
+  void infoItemChanged(DeviceInfoItem item, std::string value);
+  // members
 private:
   DeviceInfoItem infoItem = DEVICE_NAME;
-	ImplementedInfos *infoList = 0;
-	std::vector<InfoItem> *deviceInfos;
-	std::map<DeviceInfoItem, InfoItem> *mappedInfos;
+  ImplementedInfos *infoList = 0;
+  std::vector<InfoItem> *deviceInfos;
+  std::map<DeviceInfoItem, InfoItem> *mappedInfos;
 
-	// methods
+  // methods
 private:
   void createAnswer(SysExMessage::Command cmd, BYTE_VECTOR *message,
                     Device *device) {

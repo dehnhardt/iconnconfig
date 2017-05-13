@@ -8,17 +8,20 @@
 class DeviceInfoWidget : public MultiInfoWidget {
 
 public:
-	explicit DeviceInfoWidget(MioMain *parent = 0, Device *device = 0,
-														DeviceInfo *deviceInfo = 0,
-														QString windowTitle = tr("Device Information"));
+  explicit DeviceInfoWidget(MioMain *parent = 0, Device *device = 0,
+                            DeviceInfo *deviceInfo = 0,
+                            QString windowTitle = tr("Device Information"));
   ~DeviceInfoWidget();
 
 protected:
-	void setInfoSections();
-	QWidget *createWidget(std::string infoName);
+  void setInfoSections();
+  QWidget *createWidget(std::string infoName);
 
 private:
-	DeviceInfo *deviceInfo = 0;
+  DeviceInfo *deviceInfo = 0;
+
+private slots:
+  void deviceInfoChanged(int row, int column);
 };
 
 #endif // DEVICEINFOWIDGET_H

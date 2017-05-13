@@ -24,11 +24,11 @@ QWidget *DeviceInfoWidget::createWidget(std::string infoName) {
     QWidget *w = new QWidget(this->parentWidget());
     QGridLayout *lo = new QGridLayout();
     QPalette qp;
-
+    QTableWidget *tw = 0;
     w->setLayout(lo);
     if (this->deviceInfo) {
       std::vector<InfoItem> *infoItems = this->deviceInfo->getDeviceInfos();
-      QTableWidget *tw = new QTableWidget(infoItems->size(), 2, this);
+      tw = new QTableWidget(infoItems->size(), 2, this);
       tw->setHorizontalHeaderItem(0, new QTableWidgetItem(tr("Name")));
       tw->setHorizontalHeaderItem(1, new QTableWidgetItem(tr("Value")));
       tw->verticalHeader()->hide();
@@ -47,6 +47,7 @@ QWidget *DeviceInfoWidget::createWidget(std::string infoName) {
         tw->setItem(i, 1, value);
       }
       lo->addWidget(tw, 0, 0);
+      connect(tw, SIGNAL(cellChanged), this, SLOT(deviceInfoChanged));
     }
     return w;
   } else {
@@ -58,4 +59,9 @@ QWidget *DeviceInfoWidget::createWidget(std::string infoName) {
     lo->addWidget(l, 0, 0);
     return w;
   }
+}
+
+void DeviceInfoWidget::deviceInfoChanged(int row, int column) {
+  std::cout << "Item changed: row " << row << ", column: " << column
+            << std::endl;
 }
