@@ -138,6 +138,8 @@ void MioMain::openDeviceGUI(Device *d) {
   settings->beginGroup("Docks");
   // restoreState(settings->value("DockWindows").toByteArray());
   settings->endGroup();
+  deviceInfoWidget->show();
+  deviceInfoWidget->raise();
 }
 
 void MioMain::closeEvent(QCloseEvent *event) {
