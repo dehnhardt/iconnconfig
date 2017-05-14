@@ -10,6 +10,9 @@ public:
                       Device *device)
       : SysExMessage(cmd, message, device) {}
 
+	void createAnswer(SysExMessage::Command cmd,
+										std::vector<unsigned char> *message, Device *device);
+
 protected:
   std::vector<unsigned char> *getMessageData();
 };
