@@ -140,6 +140,8 @@ BYTE_VECTOR *Device::retrieveSysex() {
 }
 
 bool Device::checkSysex(BYTE_VECTOR *data) {
+    if(!data || data->size() <= 0 )
+        return false;
   BYTE_VECTOR *dataHeader =
       new BYTE_VECTOR(data->begin() + 1, data->begin() + 12);
   BYTE_VECTOR *localHeader = getFullHeader();
