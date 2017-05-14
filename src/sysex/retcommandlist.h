@@ -5,10 +5,10 @@
 
 #include <vector>
 
-class Commands : public SysExMessage {
+class RetCommandList : public SysExMessage {
 public:
-  Commands(Device *device);
-  Commands(SysExMessage::Command cmd, BYTE_VECTOR *message, Device *device)
+  RetCommandList(Device *device);
+  RetCommandList(SysExMessage::Command cmd, BYTE_VECTOR *message, Device *device)
       : SysExMessage(cmd, message, device) {}
   std::vector<int> getSupportedCommands();
   bool isCommandSupported(Command cmd);

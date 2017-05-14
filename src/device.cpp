@@ -1,5 +1,5 @@
 #include "device.h"
-#include "sysex/commands.h"
+#include "sysex/retcommandlist.h"
 #include "sysex/getinfo.h"
 #include "sysex/getcommands.h"
 #include "sysex/getinfolist.h"
@@ -34,7 +34,7 @@ Device::Device(int inPortNumber, int outPortNumber, long serialNumber,
   this->deviceIsSimulated = true;
 }
 
-Commands *Device::simulateCommands() {
+RetCommandList *Device::simulateCommands() {
   BYTE_VECTOR *message = new BYTE_VECTOR({0xF0});
   message->insert(message->end(), getFullHeader()->begin(),
                   getFullHeader()->end());
@@ -53,8 +53,8 @@ Commands *Device::simulateCommands() {
   message->push_back(allowedCommands->size());
   message->insert(message->end(), allowedCommands->begin(),
                   allowedCommands->end());
-  Commands *commands =
-      new Commands(SysExMessage::RET_COMMAND_LIST, message, this);
+  RetCommandList *commands =
+      new RetCommandList(SysExMessage::RET_COMMAND_LIST, message, this);
   commands->parseAnswerData();
   return commands;
 }
@@ -153,7 +153,7 @@ bool Device::queryDeviceInfo() {
   if (deviceIsSimulated)
     commands = simulateCommands();
   else
-    commands = (Commands *)c->query();
+    commands = (RetCommandList *)c->query();
 #else
   commands = (Commands *)c->query();
 #endif

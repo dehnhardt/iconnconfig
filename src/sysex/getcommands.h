@@ -1,7 +1,7 @@
 #ifndef GETCOMMANDS_H
 #define GETCOMMANDS_H
 
-#include "commands.h"
+#include "retcommandlist.h"
 #include "sysexmessage.h"
 
 class GetCommands : public SysExMessage {
@@ -13,7 +13,7 @@ public:
 private:
   void createAnswer(SysExMessage::Command cmd, BYTE_VECTOR *message,
                     Device *device) {
-    answer = new Commands(cmd, message, device);
+    answer = new RetCommandList(cmd, message, device);
     answer->parseAnswerData();
   }
 };

@@ -9,7 +9,7 @@
 #include <vector>
 
 class SysExMessage;
-class Commands;
+class RetCommandList;
 class ImplementedInfos;
 class GetInfo;
 
@@ -51,14 +51,14 @@ public:
   MIDISysexValue *getSerialNumber() { return serialNumber; }
   MIDISysexValue *getProductId() { return productId; }
   bool getDefault() { return isDefault; }
-  Commands *getCommands() { return commands; }
+  RetCommandList *getCommands() { return commands; }
   GetInfo *getDeviceInfo() { return deviceInfo; }
 
 #ifdef __MIO_SIMULATE__
   Device(int inPortNumber, int outPortNumber, long serialNumber, int productId,
          std::string modelName, std::string deviceName);
   bool getSimulate() { return deviceIsSimulated; }
-  Commands *simulateCommands();
+  RetCommandList *simulateCommands();
 #endif
 
   // setter
@@ -96,7 +96,7 @@ private:
   std::string hardwareVersion;
   std::string modelNumber;
 
-  Commands *commands = 0;
+  RetCommandList *commands = 0;
   ImplementedInfos *ii = 0;
   GetInfo *deviceInfo = 0;
 

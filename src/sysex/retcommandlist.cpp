@@ -1,11 +1,11 @@
-#include "commands.h"
+#include "retcommandlist.h"
 #include "midi.h"
 
-Commands::Commands(Device *device)
+RetCommandList::RetCommandList(Device *device)
     : SysExMessage(SysExMessage::RET_COMMAND_LIST, SysExMessage::QUERY,
                    device) {}
 
-bool Commands::isCommandSupported(const Command cmd) {
+bool RetCommandList::isCommandSupported(const Command cmd) {
   if (!supportedCommands)
     return false;
   std::vector<Command>::iterator it;
@@ -16,7 +16,7 @@ bool Commands::isCommandSupported(const Command cmd) {
   return false;
 }
 
-void Commands::parseAnswerData() {
+void RetCommandList::parseAnswerData() {
   supportedCommands = new std::vector<Command>();
   unsigned int nCommandsSize = data->size();
   Command c;

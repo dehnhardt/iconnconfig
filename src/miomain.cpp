@@ -1,7 +1,7 @@
 #include "miomain.h"
 #include "config/configuration.h"
 #include "devicedetection.h"
-#include "sysex/commands.h"
+#include "sysex/retcommandlist.h"
 #include "sysex/midi.h"
 #include "ui_miomain.h"
 #include "widgets/centralwidget.h"
@@ -111,7 +111,7 @@ void MioMain::replacePanel(QWidget *w) {
 
 void MioMain::openDeviceGUI(Device *d) {
   clearDocWidgets();
-  Commands *c = d->getCommands();
+  RetCommandList *c = d->getCommands();
   if (c == 0) {
     // TODO throw error
     exit(2);

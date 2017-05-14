@@ -1,5 +1,5 @@
 #include "deviceinfowidget.h"
-#include "../sysex/commands.h"
+#include "../sysex/retcommandlist.h"
 #include "infotablewidget.h"
 #include "ui_deviceinfowidget.h"
 
