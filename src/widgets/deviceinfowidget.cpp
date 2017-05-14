@@ -26,12 +26,13 @@ void DeviceInfoWidget::deviceInfoChanged(SysExMessage::DeviceInfoItem item,
                                          std::string value) {
   std::cout << "DeviceInfoWidget: deviceInfoChanged " << item << " value "
             << value << std::endl;
+  this->deviceInfo->deviceInfoChanged(item, value);
 }
 
 QWidget *DeviceInfoWidget::createWidget(std::string infoName) {
   if (infoName == "Global") {
-    InfoTableWidget *w =
-        new InfoTableWidget(this->parentWidget(), this->deviceInfo);
+    InfoTableWidget *w = new InfoTableWidget(
+        this->parentWidget(), this->deviceInfo->getRetSetInfos());
     connect(w, &InfoTableWidget::deviceInfoChanged, this,
             &DeviceInfoWidget::deviceInfoChanged);
     return w;

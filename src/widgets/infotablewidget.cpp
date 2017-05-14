@@ -3,27 +3,38 @@
 #include <QGridLayout>
 #include <QHeaderView>
 
-InfoTableWidget::InfoTableWidget(QWidget *parent, DeviceInfo *deviceInfo)
-    : QWidget(parent), deviceInfo(deviceInfo) {
+InfoTableWidget::InfoTableWidget(
+    QWidget *parent,
+    std::map<SysExMessage::DeviceInfoItem, RetSetInfo *> *retSetInfos)
+    : QWidget(parent), retSetInfos(retSetInfos) {
   QGridLayout *lo = new QGridLayout();
   QPalette qp;
   setLayout(lo);
-  if (this->deviceInfo) {
-    std::vector<InfoItem> *infoItems = this->deviceInfo->getDeviceInfos();
-    tw = new QTableWidget(infoItems->size(), 2, this);
+  int i = 0;
+  if (this->retSetInfos) {
+    tw = new QTableWidget(retSetInfos->size(), 3, this);
+    tw->setColumnHidden(2, true);
     setupTable();
-    for (unsigned int i = 0; i < infoItems->size(); i++) {
-      InfoItem infoItem = infoItems->at(i);
-      QTableWidgetItem *name = new QTableWidgetItem(infoItem.name.c_str());
+    for (std::map<SysExMessage::DeviceInfoItem, RetSetInfo *>::iterator it =
+             retSetInfos->begin();
+         it != retSetInfos->end(); ++it) {
+      SysExMessage::DeviceInfoItem infoItem = it->first;
+      RetSetInfo *info = it->second;
+      QTableWidgetItem *name =
+          new QTableWidgetItem(info->getItemName().c_str());
       name->setForeground(qp.dark());
-      QTableWidgetItem *value = new QTableWidgetItem(infoItem.value.c_str());
+      QTableWidgetItem *value = new QTableWidgetItem(info->getValue().c_str());
       name->setFlags(name->flags() & ~Qt::ItemIsEditable);
-      if (!infoItem.editable) {
+      QTableWidgetItem *itemType =
+          new QTableWidgetItem(QString::number((int)infoItem));
+      if (!info->isItemEditable()) {
         value->setFlags(value->flags() & ~Qt::ItemIsEditable);
         value->setForeground(qp.dark());
       }
       tw->setItem(i, 0, name);
       tw->setItem(i, 1, value);
+      tw->setItem(i, 2, itemType);
+      ++i;
     }
     lo->addWidget(tw, 0, 0);
     connect(tw, &QTableWidget::cellChanged, this,
@@ -49,10 +60,11 @@ void InfoTableWidget::onDeviceInfoChanged(int row, int column) {
             << std::endl;
   if (column == 1) {
     std::string val;
+    int i = -1;
     val = tw->item(row, column)->text().toStdString();
-    std::vector<InfoItem> *infoItems = this->deviceInfo->getDeviceInfos();
-    InfoItem item = infoItems->at(row);
-    SysExMessage::DeviceInfoItem i = item.infoItem;
-    emit deviceInfoChanged(i, val);
+    i = tw->item(row, 2)->text().toInt();
+    SysExMessage::DeviceInfoItem item = (SysExMessage::DeviceInfoItem)i;
+    if (i > 0)
+      emit deviceInfoChanged(item, val);
   }
 }

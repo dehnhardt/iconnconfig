@@ -9,20 +9,22 @@
 #include <QWidget>
 
 class InfoTableWidget : public QWidget {
-	Q_OBJECT
+  Q_OBJECT
 public:
-	explicit InfoTableWidget(QWidget *parent, DeviceInfo *deviceInfo);
+  explicit InfoTableWidget(
+      QWidget *parent,
+      std::map<SysExMessage::DeviceInfoItem, RetSetInfo *> *retSetInfos);
 
 signals:
-	void deviceInfoChanged(SysExMessage::DeviceInfoItem item, std::string value);
+  void deviceInfoChanged(SysExMessage::DeviceInfoItem item, std::string value);
 
 public slots:
-	void onDeviceInfoChanged(int row, int column);
+  void onDeviceInfoChanged(int row, int column);
 
 private:
-	DeviceInfo *deviceInfo = 0;
-	QTableWidget *tw = 0;
-	void setupTable();
+  std::map<SysExMessage::DeviceInfoItem, RetSetInfo *> *retSetInfos = 0;
+  QTableWidget *tw = 0;
+  void setupTable();
 };
 
 #endif // INFOTABLEWIDGET_H
