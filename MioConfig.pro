@@ -58,7 +58,8 @@ SOURCES +=\
     src/sysex/retcommandlist.cpp \
     src/sysex/getdevice.cpp \
     src/sysex/retinfolist.cpp \
-    src/sysex/getcommandlist.cpp
+    src/sysex/getcommandlist.cpp \
+    src/sysex/ack.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
@@ -85,7 +86,8 @@ HEADERS  += src/miomain.h \
     src/sysex/retcommandlist.h \
     src/sysex/getdevice.h \
     src/sysex/retinfolist.h \
-    src/sysex/getcommandlist.h
+    src/sysex/getcommandlist.h \
+    src/sysex/ack.h
 
 FORMS    += src/miomain.ui \
     src/devicedetection.ui \
