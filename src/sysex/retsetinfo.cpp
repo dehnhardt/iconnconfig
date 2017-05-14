@@ -15,6 +15,13 @@ void RetSetInfo::parseAnswerData() {
   this->value = std::string(data->begin() + 1, data->end());
 }
 
+std::vector<unsigned char> *RetSetInfo::getMessageData() {
+  BYTE_VECTOR *messageData = new BYTE_VECTOR();
+  messageData->push_back(this->infoItem);
+  messageData->insert(messageData->end(), value.begin(), value.end());
+  return messageData;
+}
+
 bool RetSetInfo::isItemEditable() {
   switch (infoItem) {
   case DEVICE_NAME:
@@ -43,4 +50,11 @@ std::string RetSetInfo::getItemName() {
   default:
     return tr("unknown").toStdString();
   }
+}
+
+bool RetSetInfo::setValue(std::string value) {
+  this->value = value;
+  this->command->at(0) = 0x40;
+  execute();
+  return true;
 }

@@ -22,8 +22,12 @@ public:
   bool isItemEditable();
   std::string getItemName();
 
+  // setter
+  bool setValue(std::string value);
+
 protected:
   void parseAnswerData();
+  BYTE_VECTOR *getMessageData();
 
 private:
   // variables
