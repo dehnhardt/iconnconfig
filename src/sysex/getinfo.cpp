@@ -5,7 +5,7 @@ GetInfo::GetInfo(Device *device)
   retSetInfos = new std::map<DeviceInfoItem, RetSetInfo *>();
 }
 
-GetInfo::GetInfo(Device *device, ImplementedInfos *infoList)
+GetInfo::GetInfo(Device *device, RetInfoList *infoList)
     : SysExMessage(SysExMessage::GET_INFO, SysExMessage::QUERY, device),
       infoList(infoList) {
   retSetInfos = new std::map<DeviceInfoItem, RetSetInfo *>();

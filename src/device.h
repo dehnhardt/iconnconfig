@@ -10,7 +10,7 @@
 
 class SysExMessage;
 class RetCommandList;
-class ImplementedInfos;
+class RetInfoList;
 class GetInfo;
 
 class Device {
@@ -97,7 +97,7 @@ private:
   std::string modelNumber;
 
   RetCommandList *commands = 0;
-  ImplementedInfos *ii = 0;
+  RetInfoList *ii = 0;
   GetInfo *deviceInfo = 0;
 
   BYTE_VECTOR *deviceHeader = 0;

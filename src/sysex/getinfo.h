@@ -1,7 +1,7 @@
 #ifndef DEVICEINFO_H
 #define DEVICEINFO_H
 
-#include "implementedinfos.h"
+#include "retinfolist.h"
 #include "retsetinfo.h"
 #include "sysexmessage.h"
 
@@ -12,7 +12,7 @@ class GetInfo : public SysExMessage {
 
 public:
   GetInfo(Device *device);
-  GetInfo(Device *device, ImplementedInfos *infoList);
+  GetInfo(Device *device, RetInfoList *infoList);
   GetInfo(SysExMessage::Command cmd, BYTE_VECTOR *message, Device *device)
       : SysExMessage(cmd, message, device) {}
   ~GetInfo();
@@ -28,7 +28,7 @@ public:
 
 private:
   DeviceInfoItem infoItem = DEVICE_NAME;
-  ImplementedInfos *infoList = 0;
+  RetInfoList *infoList = 0;
   std::map<DeviceInfoItem, RetSetInfo *> *retSetInfos;
 
   // methods

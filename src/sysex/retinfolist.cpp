@@ -1,9 +1,9 @@
-#include "implementedinfos.h"
+#include "retinfolist.h"
 
-ImplementedInfos::ImplementedInfos(Device *device)
+RetInfoList::RetInfoList(Device *device)
     : SysExMessage(SysExMessage::RET_INFO_LIST, SysExMessage::QUERY, device) {}
 
-void ImplementedInfos::parseAnswerData() {
+void RetInfoList::parseAnswerData() {
   implementedInfos = new std::vector<DeviceInfoItem>();
   unsigned int nInfosSize = data->size();
   DeviceInfoItem info;
@@ -16,7 +16,7 @@ void ImplementedInfos::parseAnswerData() {
   }
 }
 
-bool ImplementedInfos::isInfoImplemented(SysExMessage::DeviceInfoItem info) {
+bool RetInfoList::isInfoImplemented(SysExMessage::DeviceInfoItem info) {
   if (!implementedInfos)
     return false;
   std::vector<DeviceInfoItem>::iterator it;

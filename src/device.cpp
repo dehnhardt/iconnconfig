@@ -3,7 +3,7 @@
 #include "sysex/getinfo.h"
 #include "sysex/getcommands.h"
 #include "sysex/getinfolist.h"
-#include "sysex/implementedinfos.h"
+#include "sysex/retinfolist.h"
 #include "sysex/midi.h"
 
 #include <array>
@@ -169,7 +169,7 @@ bool Device::queryDeviceInfo() {
     if (commands->isCommandSupported(SysExMessage::GET_INFO_LIST)) {
       GetInfoList *i = new GetInfoList(this);
       i->setDebug(true);
-      ii = (ImplementedInfos *)i->query();
+      ii = (RetInfoList *)i->query();
     }
 
     deviceInfo = new GetInfo(this, ii);
