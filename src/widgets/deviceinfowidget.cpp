@@ -1,5 +1,8 @@
 #include "deviceinfowidget.h"
+#include "../sysex/getethernetportinfo.h"
 #include "../sysex/retcommandlist.h"
+#include "../sysex/retsetethernetportinfo.h"
+#include "ethernetinfowidget.h"
 #include "infotablewidget.h"
 #include "ui_deviceinfowidget.h"
 
@@ -32,7 +35,6 @@ void DeviceInfoWidget::deviceInfoChanged(SysExMessage::DeviceInfoItem item,
     RetSetInfo *info = (*retSetInfos)[item];
     info->setValue(value);
   }
-  // this->deviceInfo->deviceInfoChanged(item, value);
 }
 
 QWidget *DeviceInfoWidget::createWidget(std::string infoName) {
@@ -42,6 +44,17 @@ QWidget *DeviceInfoWidget::createWidget(std::string infoName) {
     connect(w, &InfoTableWidget::deviceInfoChanged, this,
             &DeviceInfoWidget::deviceInfoChanged);
     return w;
+  } else if (infoName == "Network") {
+    GetEthernetPortInfo *getEthernetPortInfo =
+        new GetEthernetPortInfo(this->device);
+    getEthernetPortInfo->setDebug(true);
+    RetSetEthernetPortInfo *retSetEthernetPortInfo =
+        (RetSetEthernetPortInfo *)getEthernetPortInfo->query();
+    retSetEthernetPortInfo->setDebug(true);
+    EthernetInfoWidget *w =
+        new EthernetInfoWidget(this, retSetEthernetPortInfo);
+    return w;
+
   } else {
     QWidget *w = new QWidget(this->parentWidget());
     QGridLayout *lo = new QGridLayout();
