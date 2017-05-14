@@ -1,36 +1,26 @@
 #include "deviceinfo.h"
 
 DeviceInfo::DeviceInfo(Device *device)
-    : SysExMessage(SysExMessage::GET_DEVICE_INFO, SysExMessage::QUERY, device) {
-  deviceInfos = new std::vector<InfoItem>();
-  mappedInfos = new std::map<DeviceInfoItem, InfoItem>();
+    : SysExMessage(SysExMessage::GET_INFO, SysExMessage::QUERY, device) {
+  retSetInfos = new std::map<DeviceInfoItem, RetSetInfo *>();
 }
 
 DeviceInfo::DeviceInfo(Device *device, ImplementedInfos *infoList)
-    : SysExMessage(SysExMessage::GET_DEVICE_INFO, SysExMessage::QUERY, device),
+    : SysExMessage(SysExMessage::GET_INFO, SysExMessage::QUERY, device),
       infoList(infoList) {
-  deviceInfos = new std::vector<InfoItem>();
-  mappedInfos = new std::map<DeviceInfoItem, InfoItem>();
+  retSetInfos = new std::map<DeviceInfoItem, RetSetInfo *>();
   std::vector<DeviceInfoItem> *implementedInfos =
       infoList->getImplementedInfos();
   for (std::vector<DeviceInfoItem>::iterator it = implementedInfos->begin();
        it < implementedInfos->end(); ++it) {
     this->setInfoItem(*it);
     execute();
-    InfoItem i;
-    i.name = getItemName(*it);
-    i.infoItem = *it;
-    i.value = getDataAsString();
-    i.editable = isItemEditable(*it);
-    deviceInfos->push_back(i);
-    (*mappedInfos)[*it] = i;
+    RetSetInfo *info = (RetSetInfo *)getAnswer();
+    (*retSetInfos)[*it] = info;
   }
 }
 
-DeviceInfo::~DeviceInfo() {
-  delete deviceInfos;
-  delete mappedInfos;
-}
+DeviceInfo::~DeviceInfo() { delete retSetInfos; }
 
 BYTE_VECTOR *DeviceInfo::getMessageData() {
   BYTE_VECTOR *messageData = new BYTE_VECTOR();
@@ -39,7 +29,7 @@ BYTE_VECTOR *DeviceInfo::getMessageData() {
 }
 
 std::string DeviceInfo::getDataAsString() {
-  if (data->size() > 0) {
+  if (data && data->size() > 0) {
     std::string result(data->begin() + 1, data->end());
     return result;
   } else {
@@ -47,49 +37,25 @@ std::string DeviceInfo::getDataAsString() {
   }
 }
 
-DeviceInfo::DeviceInfoItem DeviceInfo::getDeviceInfoItem() {
-  return (DeviceInfoItem)(*data)[0];
-}
-
-bool DeviceInfo::isItemEditable(SysExMessage::DeviceInfoItem item) {
-  switch (item) {
-  case DEVICE_NAME:
-    return true;
-  default:
-    return false;
-  }
-}
-
-std::string DeviceInfo::getItemName(SysExMessage::DeviceInfoItem item) {
-  switch (item) {
-  case ACCESSORY_NAME:
-    return tr("Accessory Name").toStdString();
-  case MANUFACTURER_NAME:
-    return tr("Manufacturer Name").toStdString();
-  case MODEL_NUMBER:
-    return tr("Model Number").toStdString();
-  case SERIAL_NUMBER:
-    return tr("Serial Numer").toStdString();
-  case FIRMWARE_VERSION:
-    return tr("Firmware Version").toStdString();
-  case HARDWARE_VERSION:
-    return tr("Hardware Version").toStdString();
-  case DEVICE_NAME:
-    return tr("Name").toStdString();
-  default:
-    return tr("unknown").toStdString();
-  }
-}
-
 std::string DeviceInfo::getItemValue(SysExMessage::DeviceInfoItem item) {
-  InfoItem i = (*mappedInfos)[item];
-  return i.value;
+  RetSetInfo *i = (*retSetInfos)[item];
+  return i->getValue();
 }
 
-std::vector<InfoItem> *DeviceInfo::getDeviceInfos() { return deviceInfos; }
+std::map<SysExMessage::DeviceInfoItem, RetSetInfo *> *
+DeviceInfo::getRetSetInfos() {
+  return retSetInfos;
+}
 
 void DeviceInfo::deviceInfoChanged(SysExMessage::DeviceInfoItem item,
-																	 std::string value) {
-	std::cout << "DeviceInfo: Item " << item
-						<< " in DeviceInfoTable changed to value " << value << std::endl;
+                                   std::string value) {
+  std::cout << "DeviceInfo: Item " << item
+            << " in DeviceInfoTable changed to value " << value << std::endl;
+}
+
+void DeviceInfo::createAnswer(SysExMessage::Command cmd,
+                              std::vector<unsigned char> *message,
+                              Device *device) {
+  answer = new RetSetInfo(cmd, message, device);
+  answer->parseAnswerData();
 }

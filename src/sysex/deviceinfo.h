@@ -2,9 +2,9 @@
 #define DEVICEINFO_H
 
 #include "implementedinfos.h"
+#include "retsetinfo.h"
 #include "sysexmessage.h"
 
-#include <QObject>
 #include <QtCore/QCoreApplication>
 
 class InfoItem {
@@ -17,10 +17,8 @@ public:
 };
 
 class DeviceInfo : public SysExMessage {
-	Q_DECLARE_TR_FUNCTIONS(InfoItem)
+  Q_DECLARE_TR_FUNCTIONS(InfoItem)
 
-public:
-  // methods
 public:
   DeviceInfo(Device *device);
   DeviceInfo(Device *device, ImplementedInfos *infoList);
@@ -28,31 +26,25 @@ public:
       : SysExMessage(cmd, message, device) {}
   ~DeviceInfo();
 
+  // methods
   void setInfoItem(DeviceInfoItem infoItem) { this->infoItem = infoItem; }
   BYTE_VECTOR *getMessageData();
   std::string getDataAsString();
   DeviceInfoItem getDeviceInfoItem();
-  bool isItemEditable(DeviceInfoItem item);
-  std::string getItemName(DeviceInfoItem item);
-  std::string getItemValue(DeviceInfoItem item);
-  std::vector<InfoItem> *getDeviceInfos();
+  std::map<DeviceInfoItem, RetSetInfo *> *getRetSetInfos();
+  void deviceInfoChanged(DeviceInfoItem item, std::string value);
+  std::string getItemValue(SysExMessage::DeviceInfoItem item);
 
-public slots:
-	void deviceInfoChanged(DeviceInfoItem item, std::string value);
-
-  // members
 private:
   DeviceInfoItem infoItem = DEVICE_NAME;
   ImplementedInfos *infoList = 0;
-  std::vector<InfoItem> *deviceInfos;
-  std::map<DeviceInfoItem, InfoItem> *mappedInfos;
+  std::map<DeviceInfoItem, RetSetInfo *> *retSetInfos;
 
   // methods
 private:
   void createAnswer(SysExMessage::Command cmd, BYTE_VECTOR *message,
-                    Device *device) {
-    answer = new DeviceInfo(cmd, message, device);
-  }
+                    Device *device);
+  void setInfoData(DeviceInfoItem item, std::string value);
 };
 
 #endif // DEVICEINFO_H
