@@ -12,9 +12,9 @@ public:
 
 private:
 	void createAnswer(SysExMessage::Command cmd, BYTE_VECTOR *message,
-										Device *device) {
-		answer = new RetInfoList(cmd, message, device);
-		answer->parseAnswerData();
+                                        Device *device) {
+            answer = new RetInfoList(cmd, message, device);
+            answer->parseAnswerData();
 	}
 };
 
