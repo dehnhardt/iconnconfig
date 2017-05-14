@@ -1,4 +1,6 @@
 #include "sysexmessage.h"
+#include "ack.h"
+
 #include <algorithm>
 #include <iostream>
 #include <unistd.h>
@@ -123,6 +125,15 @@ SysExMessage::Command SysExMessage::parseAnswer(BYTE_VECTOR *answer) {
 bool SysExMessage::checkAnswerValid(long answerCommandId) {
   return std::find(acceptedAnswers.begin(), acceptedAnswers.end(),
                    answerCommandId) != acceptedAnswers.end();
+}
+
+void SysExMessage::createAnswer(SysExMessage::Command cmd,
+                                std::vector<unsigned char> *message,
+                                Device *device) {
+  if (cmd == ACK) {
+    answer = new Ack(cmd, message, device);
+    answer->parseAnswerData();
+  }
 }
 
 int SysExMessage::execute() {

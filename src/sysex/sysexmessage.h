@@ -80,8 +80,11 @@ public:
   };
 
   enum Errors {
-    NO_DEVICE = -1, /*!< No device found or assigned */
-    OK = 0          /*!< No error */
+    NO_DEVICE = -1,       /*!< No device found or assigned */
+    COMMAND_ACCEPTED = 0, /*!< No error */
+    UNKNOWN_COMMAND,      /*!< Command not known by device */
+    MALFORMED_MESSAGE,    /*!< Message format has errors */
+    COMMAND_FAILED        /*!< Command failed for unknown reasin */
   };
 
   static CommandAcceptedAnswers commandAcceptedAnswers;
@@ -120,8 +123,7 @@ protected:
   bool checkAnswerValid(long answerCommandId);
   virtual void createAnswer(SysExMessage::Command cmd __attribute__((unused)),
                             BYTE_VECTOR *message __attribute__((unused)),
-                            Device *device __attribute__((unused))) {}
-
+                            Device *device __attribute__((unused)));
   // members
 protected:
   unsigned char cmd;
