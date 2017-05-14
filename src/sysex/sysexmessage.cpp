@@ -28,7 +28,7 @@
  */
 
 SysExMessage::SysExMessage(Command cmd, CommandFlags flags, Device *device)
-		: cmd(cmd), cmdflags(flags), device(device) {
+    : cmd(cmd), cmdflags(flags), device(device) {
   if (this->device != 0)
     this->deviceHeader = this->device->getDeviceHeader();
   else
@@ -37,15 +37,6 @@ SysExMessage::SysExMessage(Command cmd, CommandFlags flags, Device *device)
   command->push_back(flags);
   command->push_back(cmd);
   acceptedAnswers = commandAcceptedAnswers[cmd];
-}
-
-void SysExMessage::extractData(std::vector<unsigned char> *message) {
-  long dataLength = MIDI::byteJoin(
-      new BYTE_VECTOR(message->begin() + Device::DATA_LENGTH_OFFSET,
-                      message->begin() + Device::DATA_LENGTH_OFFSET +
-                          Device::DATA_LENGTH_LENGTH));
-  data = new BYTE_VECTOR(message->begin() + Device::DATA_OFFSET,
-                         message->begin() + Device::DATA_OFFSET + dataLength);
 }
 
 SysExMessage::SysExMessage(Command cmd, std::vector<unsigned char> *message,
@@ -66,6 +57,15 @@ SysExMessage::SysExMessage(Command cmd, std::vector<unsigned char> *message,
 SysExMessage::~SysExMessage() {
   delete command;
   delete deviceHeader;
+}
+
+void SysExMessage::extractData(std::vector<unsigned char> *message) {
+  long dataLength = MIDI::byteJoin(
+      new BYTE_VECTOR(message->begin() + Device::DATA_LENGTH_OFFSET,
+                      message->begin() + Device::DATA_LENGTH_OFFSET +
+                          Device::DATA_LENGTH_LENGTH));
+  data = new BYTE_VECTOR(message->begin() + Device::DATA_OFFSET,
+                         message->begin() + Device::DATA_OFFSET + dataLength);
 }
 
 BYTE_VECTOR *SysExMessage::getMIDISysExMessage() {
@@ -169,8 +169,8 @@ CommandAcceptedAnswers SysExMessage::commandAcceptedAnswers = {
     {GET_DEVICE, AcceptedAnswers{RET_DEVICE}},
     {GET_COMMAND_LIST, AcceptedAnswers{RET_COMMAND_LIST}},
     {GET_INFO_LIST, AcceptedAnswers{RET_INFO_LIST}},
-    {GET_DEVICE_INFO, AcceptedAnswers{RET_SET_DEVICE_INFO}},
-    {RET_SET_DEVICE_INFO, AcceptedAnswers{ACK}},
+    {GET_INFO, AcceptedAnswers{RET_SET_INFO}},
+    {RET_SET_INFO, AcceptedAnswers{ACK}},
     {GET_RESET_LIST, AcceptedAnswers{RET_RESET_LIST, ACK}},
     {GET_SAVE_RESTORE_LIST, AcceptedAnswers{RET_SAVE_RESTORE_LIST, ACK}},
     {GET_ETHERNET_PORT_INFO, AcceptedAnswers{RET_SET_ETHERNET_PORT_INFO, ACK}},

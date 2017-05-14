@@ -24,15 +24,15 @@ public:
   enum Command {
     CMD_ERROR = -1, /*!< Return if command is not valid */
     /* device commands */
-    GET_DEVICE = 0x01,   /*!< Query for devices  */
-    RET_DEVICE,          /*!< Answer from device to GET_DEVICE query*/
-    GET_COMMAND_LIST,    /*!< Request devices command list. */
-    RET_COMMAND_LIST,    /*!< List of commands supported by device. */
-    GET_INFO_LIST,       /*!< Request list of infos, whch can be retrieved */
-    RET_INFO_LIST,       /*!< List of infos supported by this device */
-    GET_DEVICE_INFO,     /*!< Get a single information from device */
-    RET_SET_DEVICE_INFO, /*!< Retrun a single information from device see
-                     DeviceInfoItem enum in Info-Class*/
+    GET_DEVICE = 0x01, /*!< Query for devices  */
+    RET_DEVICE,        /*!< Answer from device to GET_DEVICE query*/
+    GET_COMMAND_LIST,  /*!< Request devices command list. */
+    RET_COMMAND_LIST,  /*!< List of commands supported by device. */
+    GET_INFO_LIST,     /*!< Request list of infos, whch can be retrieved */
+    RET_INFO_LIST,     /*!< List of infos supported by this device */
+    GET_INFO,          /*!< Get a single information from device */
+    RET_SET_INFO,      /*!< Retrun a single information from device see
+                          DeviceInfoItem enum in Info-Class*/
     GET_RESET_LIST, /*!< Request list of reset IDs or an ACK if no reset ids are
                        supported */
     RET_RESET_LIST, /*!< Return list of reset IDs see ResetListItem enum in
@@ -65,13 +65,13 @@ public:
   };
 
   enum DeviceInfoItem {
-		ACCESSORY_NAME = 0x01, /*!< Name of acessory */
-		MANUFACTURER_NAME,     /*!< Name of device manufacturer manufacturer */
-		MODEL_NUMBER,          /*!< Devices modelnumber */
-		SERIAL_NUMBER,         /*!< Devices serial number */
-		FIRMWARE_VERSION,      /*!< Installed firmware version */
-		HARDWARE_VERSION,      /*!< Hardware version of device */
-		DEVICE_NAME = 0x10     /*!< Name of device (writable) */
+    ACCESSORY_NAME = 0x01, /*!< Name of acessory */
+    MANUFACTURER_NAME,     /*!< Name of device manufacturer manufacturer */
+    MODEL_NUMBER,          /*!< Devices modelnumber */
+    SERIAL_NUMBER,         /*!< Devices serial number */
+    FIRMWARE_VERSION,      /*!< Installed firmware version */
+    HARDWARE_VERSION,      /*!< Hardware version of device */
+    DEVICE_NAME = 0x10     /*!< Name of device (writable) */
   };
 
   enum CommandFlags {
@@ -134,8 +134,9 @@ protected:
   BYTE_VECTOR *deviceHeader = 0;
   BYTE_VECTOR *resultData = 0;
   BYTE_VECTOR *data = 0;
+
   bool debug = false;
-	void extractData(std::vector<unsigned char> *message);
+  void extractData(std::vector<unsigned char> *message);
 };
 
 #endif // SYSEXMESSAGE_H
