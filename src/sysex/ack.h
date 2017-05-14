@@ -5,8 +5,14 @@
 
 class Ack : public SysExMessage {
 public:
-  Ack(Command cmd, BYTE_VECTOR *message, Device *device)
-      : SysExMessage(cmd, message, device) {}
+  Ack(Command cmd, BYTE_VECTOR *message, Device *device);
+  void checkResult();
+
+protected:
+  void parseAnswerData();
+
+private:
+  unsigned char result;
 };
 
 #endif // ACK_H
