@@ -10,7 +10,7 @@
 #include <QTableWidget>
 
 DeviceInfoWidget::DeviceInfoWidget(MioMain *parent, Device *device,
-                                   DeviceInfo *deviceInfo, QString windowTitle)
+                                   GetInfo *deviceInfo, QString windowTitle)
     : MultiInfoWidget(parent, device, windowTitle), deviceInfo(deviceInfo) {
   infoSections = std::vector<std::string>();
   if (device->getCommands()->isCommandSupported(SysExMessage::GET_INFO_LIST))

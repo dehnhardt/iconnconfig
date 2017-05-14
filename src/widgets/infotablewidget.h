@@ -1,7 +1,7 @@
 #ifndef INFOTABLEWIDGET_H
 #define INFOTABLEWIDGET_H
 
-#include "../sysex/deviceinfo.h"
+#include "../sysex/getinfo.h"
 #include "deviceinfowidget.h"
 
 #include <QObject>

@@ -7,24 +7,15 @@
 
 #include <QtCore/QCoreApplication>
 
-class InfoItem {
-
-public:
-  SysExMessage::DeviceInfoItem infoItem;
-  std::string name;
-  std::string value;
-  bool editable;
-};
-
-class DeviceInfo : public SysExMessage {
+class GetInfo : public SysExMessage {
   Q_DECLARE_TR_FUNCTIONS(InfoItem)
 
 public:
-  DeviceInfo(Device *device);
-  DeviceInfo(Device *device, ImplementedInfos *infoList);
-  DeviceInfo(SysExMessage::Command cmd, BYTE_VECTOR *message, Device *device)
+  GetInfo(Device *device);
+  GetInfo(Device *device, ImplementedInfos *infoList);
+  GetInfo(SysExMessage::Command cmd, BYTE_VECTOR *message, Device *device)
       : SysExMessage(cmd, message, device) {}
-  ~DeviceInfo();
+  ~GetInfo();
 
   // methods
   void setInfoItem(DeviceInfoItem infoItem) { this->infoItem = infoItem; }

@@ -1,6 +1,6 @@
 #include "device.h"
 #include "sysex/commands.h"
-#include "sysex/deviceinfo.h"
+#include "sysex/getinfo.h"
 #include "sysex/getcommands.h"
 #include "sysex/getinfolist.h"
 #include "sysex/implementedinfos.h"
@@ -172,29 +172,29 @@ bool Device::queryDeviceInfo() {
       ii = (ImplementedInfos *)i->query();
     }
 
-    deviceInfo = new DeviceInfo(this, ii);
+    deviceInfo = new GetInfo(this, ii);
 
-    if (ii->isInfoImplemented(DeviceInfo::DEVICE_NAME))
-      deviceName = deviceInfo->getItemValue(DeviceInfo::DEVICE_NAME);
+    if (ii->isInfoImplemented(GetInfo::DEVICE_NAME))
+      deviceName = deviceInfo->getItemValue(GetInfo::DEVICE_NAME);
 
-    if (ii->isInfoImplemented(DeviceInfo::ACCESSORY_NAME))
-      modelName = deviceInfo->getItemValue(DeviceInfo::ACCESSORY_NAME);
+    if (ii->isInfoImplemented(GetInfo::ACCESSORY_NAME))
+      modelName = deviceInfo->getItemValue(GetInfo::ACCESSORY_NAME);
 
-    if (ii->isInfoImplemented(DeviceInfo::SERIAL_NUMBER))
-      serialNumberString = deviceInfo->getItemValue(DeviceInfo::SERIAL_NUMBER);
+    if (ii->isInfoImplemented(GetInfo::SERIAL_NUMBER))
+      serialNumberString = deviceInfo->getItemValue(GetInfo::SERIAL_NUMBER);
 
-    if (ii->isInfoImplemented(DeviceInfo::FIRMWARE_VERSION))
-      firmwareVersion = deviceInfo->getItemValue(DeviceInfo::FIRMWARE_VERSION);
+    if (ii->isInfoImplemented(GetInfo::FIRMWARE_VERSION))
+      firmwareVersion = deviceInfo->getItemValue(GetInfo::FIRMWARE_VERSION);
 
-    if (ii->isInfoImplemented(DeviceInfo::HARDWARE_VERSION))
-      hardwareVersion = deviceInfo->getItemValue(DeviceInfo::HARDWARE_VERSION);
+    if (ii->isInfoImplemented(GetInfo::HARDWARE_VERSION))
+      hardwareVersion = deviceInfo->getItemValue(GetInfo::HARDWARE_VERSION);
 
-    if (ii->isInfoImplemented(DeviceInfo::MANUFACTURER_NAME))
+    if (ii->isInfoImplemented(GetInfo::MANUFACTURER_NAME))
       manufacturerName =
-          deviceInfo->getItemValue(DeviceInfo::MANUFACTURER_NAME);
+          deviceInfo->getItemValue(GetInfo::MANUFACTURER_NAME);
 
-    if (ii->isInfoImplemented(DeviceInfo::MODEL_NUMBER))
-      modelNumber = deviceInfo->getItemValue(DeviceInfo::MODEL_NUMBER);
+    if (ii->isInfoImplemented(GetInfo::MODEL_NUMBER))
+      modelNumber = deviceInfo->getItemValue(GetInfo::MODEL_NUMBER);
 #ifdef __MIO_SIMULATE__
   }
 #endif //__MIO_SIMULATE__

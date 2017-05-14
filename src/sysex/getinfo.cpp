@@ -1,11 +1,11 @@
-#include "deviceinfo.h"
+#include "getinfo.h"
 
-DeviceInfo::DeviceInfo(Device *device)
+GetInfo::GetInfo(Device *device)
     : SysExMessage(SysExMessage::GET_INFO, SysExMessage::QUERY, device) {
   retSetInfos = new std::map<DeviceInfoItem, RetSetInfo *>();
 }
 
-DeviceInfo::DeviceInfo(Device *device, ImplementedInfos *infoList)
+GetInfo::GetInfo(Device *device, ImplementedInfos *infoList)
     : SysExMessage(SysExMessage::GET_INFO, SysExMessage::QUERY, device),
       infoList(infoList) {
   retSetInfos = new std::map<DeviceInfoItem, RetSetInfo *>();
@@ -20,15 +20,15 @@ DeviceInfo::DeviceInfo(Device *device, ImplementedInfos *infoList)
   }
 }
 
-DeviceInfo::~DeviceInfo() { delete retSetInfos; }
+GetInfo::~GetInfo() { delete retSetInfos; }
 
-BYTE_VECTOR *DeviceInfo::getMessageData() {
+BYTE_VECTOR *GetInfo::getMessageData() {
   BYTE_VECTOR *messageData = new BYTE_VECTOR();
   messageData->push_back(this->infoItem);
   return messageData;
 }
 
-std::string DeviceInfo::getDataAsString() {
+std::string GetInfo::getDataAsString() {
   if (data && data->size() > 0) {
     std::string result(data->begin() + 1, data->end());
     return result;
@@ -37,23 +37,23 @@ std::string DeviceInfo::getDataAsString() {
   }
 }
 
-std::string DeviceInfo::getItemValue(SysExMessage::DeviceInfoItem item) {
+std::string GetInfo::getItemValue(SysExMessage::DeviceInfoItem item) {
   RetSetInfo *i = (*retSetInfos)[item];
   return i->getValue();
 }
 
 std::map<SysExMessage::DeviceInfoItem, RetSetInfo *> *
-DeviceInfo::getRetSetInfos() {
+GetInfo::getRetSetInfos() {
   return retSetInfos;
 }
 
-void DeviceInfo::deviceInfoChanged(SysExMessage::DeviceInfoItem item,
+void GetInfo::deviceInfoChanged(SysExMessage::DeviceInfoItem item,
                                    std::string value) {
   std::cout << "DeviceInfo: Item " << item
             << " in DeviceInfoTable changed to value " << value << std::endl;
 }
 
-void DeviceInfo::createAnswer(SysExMessage::Command cmd,
+void GetInfo::createAnswer(SysExMessage::Command cmd,
                               std::vector<unsigned char> *message,
                               Device *device) {
   answer = new RetSetInfo(cmd, message, device);

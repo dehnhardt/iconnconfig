@@ -11,7 +11,7 @@
 class SysExMessage;
 class Commands;
 class ImplementedInfos;
-class DeviceInfo;
+class GetInfo;
 
 class Device {
 public:
@@ -52,7 +52,7 @@ public:
   MIDISysexValue *getProductId() { return productId; }
   bool getDefault() { return isDefault; }
   Commands *getCommands() { return commands; }
-  DeviceInfo *getDeviceInfo() { return deviceInfo; }
+  GetInfo *getDeviceInfo() { return deviceInfo; }
 
 #ifdef __MIO_SIMULATE__
   Device(int inPortNumber, int outPortNumber, long serialNumber, int productId,
@@ -98,7 +98,7 @@ private:
 
   Commands *commands = 0;
   ImplementedInfos *ii = 0;
-  DeviceInfo *deviceInfo = 0;
+  GetInfo *deviceInfo = 0;
 
   BYTE_VECTOR *deviceHeader = 0;
   BYTE_VECTOR *fullHeader = 0;
