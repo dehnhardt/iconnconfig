@@ -4,7 +4,7 @@ RetSetInfo::RetSetInfo(Device *device)
     : RetSetInfo(SysExMessage::QUERY, device) {}
 
 RetSetInfo::RetSetInfo(CommandFlags flags, Device *device)
-    : SysExMessage(SysExMessage::GET_COMMAND_LIST, flags, device) {}
+    : SysExMessage(SysExMessage::RET_SET_INFO, flags, device) {}
 
 SysExMessage::DeviceInfoItem RetSetInfo::getInfoItem() { return infoItem; }
 
