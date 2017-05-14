@@ -49,7 +49,6 @@ SOURCES +=\
     src/widgets/portsettingwidget.cpp \
     src/widgets/deviceinfowidget.cpp \
     src/widgets/portswidget.cpp \
-    src/sysex/getcommands.cpp \
     src/widgets/multiinfowidget.cpp \
     src/widgets/centralwidget.cpp \
     src/sysex/getinfolist.cpp \
@@ -58,7 +57,8 @@ SOURCES +=\
     src/sysex/getinfo.cpp \
     src/sysex/retcommandlist.cpp \
     src/sysex/getdevice.cpp \
-    src/sysex/retinfolist.cpp
+    src/sysex/retinfolist.cpp \
+    src/sysex/getcommandlist.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
@@ -76,7 +76,6 @@ HEADERS  += src/miomain.h \
     src/widgets/portsettingwidget.h \
     src/widgets/deviceinfowidget.h \
     src/widgets/portswidget.h \
-    src/sysex/getcommands.h \
     src/widgets/multiinfowidget.h \
     src/widgets/centralwidget.h \
     src/sysex/getinfolist.h \
@@ -85,7 +84,8 @@ HEADERS  += src/miomain.h \
     src/sysex/getinfo.h \
     src/sysex/retcommandlist.h \
     src/sysex/getdevice.h \
-    src/sysex/retinfolist.h
+    src/sysex/retinfolist.h \
+    src/sysex/getcommandlist.h
 
 FORMS    += src/miomain.ui \
     src/devicedetection.ui \

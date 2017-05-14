@@ -1,7 +1,7 @@
 #include "device.h"
 #include "sysex/retcommandlist.h"
 #include "sysex/getinfo.h"
-#include "sysex/getcommands.h"
+#include "sysex/getcommandlist.h"
 #include "sysex/getinfolist.h"
 #include "sysex/retinfolist.h"
 #include "sysex/midi.h"
@@ -147,7 +147,7 @@ bool Device::checkSysex(BYTE_VECTOR *data) {
 }
 
 bool Device::queryDeviceInfo() {
-  GetCommands *c = new GetCommands(this);
+  GetCommandList *c = new GetCommandList(this);
   c->setDebug(true);
 #ifdef __MIO_SIMULATE__
   if (deviceIsSimulated)

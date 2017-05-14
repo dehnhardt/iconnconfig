@@ -4,10 +4,10 @@
 #include "retcommandlist.h"
 #include "sysexmessage.h"
 
-class GetCommands : public SysExMessage {
+class GetCommandList : public SysExMessage {
 public:
-  GetCommands(Device *device);
-  GetCommands(SysExMessage::Command cmd, BYTE_VECTOR *message, Device *device)
+  GetCommandList(Device *device);
+  GetCommandList(SysExMessage::Command cmd, BYTE_VECTOR *message, Device *device)
       : SysExMessage(cmd, message, device) {}
 
 private:
