@@ -23,7 +23,7 @@ void MultiInfoWidget::on_infoList_currentRowChanged(int currentRow) {
   std::cout << "Current row " << currentRow << " Text: " << std::endl;
   QWidget *w = getWidget(selectedInfo);
   ((MioMain *)this->parentWidget())->replacePanel(w);
-  infoChanged(currentRow);
+  emit infoTabChanged(currentRow);
 }
 
 void MultiInfoWidget::visible(bool visible) {
