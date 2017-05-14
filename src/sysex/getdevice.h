@@ -4,10 +4,10 @@
 #include "midi.h"
 #include "sysexmessage.h"
 
-class DeviceDetectionQuery : public SysExMessage {
+class GetDevice : public SysExMessage {
 public:
-  DeviceDetectionQuery();
-  ~DeviceDetectionQuery();
+  GetDevice();
+  ~GetDevice();
 };
 
 #endif // DEVICEDETECTIONQUERY_H

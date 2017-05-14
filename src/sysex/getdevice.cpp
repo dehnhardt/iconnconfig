@@ -1,6 +1,6 @@
-#include "devicedetectionquery.h"
+#include "getdevice.h"
 
-DeviceDetectionQuery::DeviceDetectionQuery()
+GetDevice::GetDevice()
     : SysExMessage(SysExMessage::GET_DEVICE, SysExMessage::QUERY, 0) {
 
   transactionId = new BYTE_VECTOR();
@@ -16,4 +16,4 @@ DeviceDetectionQuery::DeviceDetectionQuery()
   deviceHeader->push_back(0x00);
 }
 
-DeviceDetectionQuery::~DeviceDetectionQuery() { delete transactionId; }
+GetDevice::~GetDevice() { delete transactionId; }

@@ -1,7 +1,7 @@
 #include "devicedetectionprocessor.h"
 #include "config/configuration.h"
 #include "events/events.h"
-#include "sysex/devicedetectionquery.h"
+#include "sysex/getdevice.h"
 #include "sysex/midi.h"
 
 #include <QApplication>
@@ -81,7 +81,7 @@ int DeviceDetectionProcessor::detectDevices() {
             << " - combinations to probe:  " << nOutPortCount * nInPortCount
             << std::endl;
 #endif //__MIO_DEBUG__
-  DeviceDetectionQuery *q = new DeviceDetectionQuery();
+  GetDevice *q = new GetDevice();
   long serialNumber;
   BYTE_VECTOR *qMessage = q->getMIDISysExMessage();
   std::map<long, Device *> *devices = Configuration::getInstance().getDevices();
