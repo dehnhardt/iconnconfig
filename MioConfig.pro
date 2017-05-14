@@ -57,7 +57,8 @@ SOURCES +=\
     src/widgets/centralwidget.cpp \
     src/sysex/getinfolist.cpp \
     src/sysex/implementedinfos.cpp \
-    src/widgets/infotablewidget.cpp
+    src/widgets/infotablewidget.cpp \
+    src/sysex/retsetinfo.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
@@ -83,7 +84,8 @@ HEADERS  += src/miomain.h \
     src/widgets/centralwidget.h \
     src/sysex/getinfolist.h \
     src/sysex/implementedinfos.h \
-    src/widgets/infotablewidget.h
+    src/widgets/infotablewidget.h \
+    src/sysex/retsetinfo.h
 
 FORMS    += src/miomain.ui \
     src/devicedetection.ui \
