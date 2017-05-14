@@ -3,7 +3,9 @@
 #include "infotablewidget.h"
 #include "ui_deviceinfowidget.h"
 
+#include <QGridLayout>
 #include <QHeaderView>
+#include <QLabel>
 #include <QListWidgetItem>
 #include <QTableWidget>
 
@@ -21,18 +23,18 @@ DeviceInfoWidget::DeviceInfoWidget(MioMain *parent, Device *device,
 DeviceInfoWidget::~DeviceInfoWidget() {}
 
 void DeviceInfoWidget::deviceInfoChanged(SysExMessage::DeviceInfoItem item,
-																				 std::string value) {
-	std::cout << "DeviceInfoWidget: deviceInfoChanged " << item << " value "
-						<< value << std::endl;
+                                         std::string value) {
+  std::cout << "DeviceInfoWidget: deviceInfoChanged " << item << " value "
+            << value << std::endl;
 }
 
 QWidget *DeviceInfoWidget::createWidget(std::string infoName) {
   if (infoName == "Global") {
-		InfoTableWidget *w =
-				new InfoTableWidget(this->parentWidget(), this->deviceInfo);
-		connect(w, &InfoTableWidget::deviceInfoChanged, this,
-						&DeviceInfoWidget::deviceInfoChanged);
-		return w;
+    InfoTableWidget *w =
+        new InfoTableWidget(this->parentWidget(), this->deviceInfo);
+    connect(w, &InfoTableWidget::deviceInfoChanged, this,
+            &DeviceInfoWidget::deviceInfoChanged);
+    return w;
   } else {
     QWidget *w = new QWidget(this->parentWidget());
     QGridLayout *lo = new QGridLayout();

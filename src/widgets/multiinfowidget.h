@@ -5,9 +5,6 @@
 #include "../miomain.h"
 
 #include <QDockWidget>
-#include <QLabel>
-#include <QLayout>
-#include <QMap>
 #include <QPalette>
 #include <QShowEvent>
 #include <QString>
@@ -21,7 +18,7 @@ class MultiInfoWidget : public QDockWidget {
   Q_OBJECT
 
 public:
-	explicit MultiInfoWidget(MioMain *parent = 0, Device *device = 0,
+  explicit MultiInfoWidget(MioMain *parent = 0, Device *device = 0,
                            QString windowTitle = tr("MultiInfoWidget"));
   ~MultiInfoWidget();
 
@@ -44,10 +41,10 @@ public:
 protected:
   QWidget *getWidget(std::string infoName);
   void openLastSelectedSection();
-	virtual QWidget *createWidget(std::string infoName) = 0;
+  virtual QWidget *createWidget(std::string infoName) = 0;
 
 signals:
-  void infoChanged(int row);
+  void infoTabChanged(int row);
 };
 
 #endif // MULTIINFOWIDGET_H
