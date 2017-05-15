@@ -12,8 +12,10 @@ public:
                               RetSetEthernetPortInfo *retSetEthernetPortInfo);
 
 signals:
+  void staticBoxDisabled(bool disabled);
 
 public slots:
+  void comboboxSelected(int selected);
 
 private:
   RetSetEthernetPortInfo *retSetEthernetPortInfo = 0;

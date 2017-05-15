@@ -13,7 +13,7 @@ BYTE_VECTOR *GetEthernetPortInfo::getMessageData() {
 }
 
 void GetEthernetPortInfo::createAnswer(SysExMessage::Command cmd,
-																			 BYTE_VECTOR *message, Device *device) {
-	answer = new RetSetEthernetPortInfo(cmd, message, device);
-	answer->parseAnswerData();
+                                       BYTE_VECTOR *message, Device *device) {
+  answer = new RetSetEthernetPortInfo(cmd, message, device);
+  answer->parseAnswerData();
 }
