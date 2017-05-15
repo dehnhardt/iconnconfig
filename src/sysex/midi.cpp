@@ -1,6 +1,9 @@
 #include "midi.h"
+
 #include <algorithm>
+#include <arpa/inet.h>
 #include <iostream>
+#include <sstream>
 
 MIDI::MIDI() {}
 
@@ -29,7 +32,7 @@ MIDI::createMidiOut(const std::string clientName) { // RtMidiOut constructor
   return midiout;
 }
 
-unsigned char MIDI::RolandChecksum(std::vector<unsigned char> *message) {
+unsigned char MIDI::RolandChecksum(BYTE_VECTOR *message) {
   unsigned int nBytes = message->size();
   unsigned int sum = 0;
   for (unsigned int i = 0; i < nBytes; i++) {
@@ -40,12 +43,10 @@ unsigned char MIDI::RolandChecksum(std::vector<unsigned char> *message) {
   return 128 - sum;
 }
 
-std::vector<unsigned char> *MIDI::byteSplit(long val) {
-  return MIDI::byteSplit(val, 0);
-}
+BYTE_VECTOR *MIDI::byteSplit(long val) { return MIDI::byteSplit(val, 0); }
 
-std::vector<unsigned char> *MIDI::byteSplit(long val, int size) {
-  std::vector<unsigned char> *bytes = new std::vector<unsigned char>();
+BYTE_VECTOR *MIDI::byteSplit(long val, int size) {
+  BYTE_VECTOR *bytes = new BYTE_VECTOR();
   bytes->reserve(size);
   while (val > 0) {
     unsigned char c = val & 0x7f;
@@ -63,11 +64,11 @@ std::vector<unsigned char> *MIDI::byteSplit(long val, int size) {
   return bytes;
 }
 
-long MIDI::byteJoin(std::vector<unsigned char> *message) {
+long MIDI::byteJoin(BYTE_VECTOR *message) {
   return byteJoin(message, 0, message->size());
 }
 
-long MIDI::byteJoin(std::vector<unsigned char> *message, unsigned int start,
+long MIDI::byteJoin(BYTE_VECTOR *message, unsigned int start,
                     unsigned int length) {
   unsigned int cnt;
   int current = 0;
@@ -80,6 +81,31 @@ long MIDI::byteJoin(std::vector<unsigned char> *message, unsigned int start,
     current += message->at(cnt);
   }
   return current;
+}
+
+std::string MIDI::decodeIp(BYTE_VECTOR *data, int offset) {
+
+  long address = MIDI::byteJoin(data, offset, 5);
+  int a1 = address & 255;
+  address >>= 8;
+  int a2 = address & 255;
+  address >>= 8;
+  int a3 = address & 255;
+  address >>= 8;
+  int a4 = address & 255;
+  std::stringstream result;
+  result << std::dec << a4 << "." << a3 << "." << a2 << "." << a1;
+  std::string ad = result.str();
+#ifdef __MIO_DEBUG__
+  std::cout << ad << std::endl;
+#endif
+  return ad;
+}
+
+BYTE_VECTOR *MIDI::encodeIpAddress(std::string ipAddress) {
+  struct sockaddr_in sa;
+  inet_pton(AF_INET, ipAddress.c_str(), &(sa.sin_addr));
+  return new BYTE_VECTOR();
 }
 
 void MIDI::printMessage(BYTE_VECTOR *message) {

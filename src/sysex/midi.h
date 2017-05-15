@@ -41,6 +41,8 @@ public:
   static long byteJoin(BYTE_VECTOR *message);
   static long byteJoin(BYTE_VECTOR *message, unsigned int start,
                        unsigned int end);
+  static std::string decodeIp(BYTE_VECTOR *data, int offset);
+  static BYTE_VECTOR *encodeIpAddress(std::string ipAddress);
   static void printMessage(BYTE_VECTOR *v);
   static bool compareByteVector(BYTE_VECTOR *v1, BYTE_VECTOR *v2) {
     if (v1->size() != v2->size())
