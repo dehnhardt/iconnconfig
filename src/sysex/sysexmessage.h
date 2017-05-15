@@ -94,7 +94,7 @@ public:
   SysExMessage(Command cmd, CommandFlags flags, Device *device);
   SysExMessage(Command cmd, BYTE_VECTOR *message, Device *device);
 
-  ~SysExMessage();
+  virtual ~SysExMessage();
   virtual BYTE_VECTOR *getMIDISysExMessage();
   std::string getDataAsString();
   long getDataAsLong();
@@ -136,6 +136,8 @@ protected:
   BYTE_VECTOR *deviceHeader = 0;
   BYTE_VECTOR *resultData = 0;
   BYTE_VECTOR *data = 0;
+
+  unsigned char commandVersionNumber = 0;
 
   bool debug = false;
   void extractData(std::vector<unsigned char> *message);
