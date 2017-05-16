@@ -7,9 +7,12 @@ InfoTableWidget::InfoTableWidget(
     QWidget *parent,
     std::map<SysExMessage::DeviceInfoItem, RetSetInfo *> *retSetInfos)
     : QWidget(parent), retSetInfos(retSetInfos) {
+
   QGridLayout *lo = new QGridLayout();
   QPalette qp;
+
   setLayout(lo);
+
   int i = 0;
   if (this->retSetInfos) {
     setupTable();
@@ -19,6 +22,7 @@ InfoTableWidget::InfoTableWidget(
       SysExMessage::DeviceInfoItem infoItem = it->first;
 
       RetSetInfo *info = it->second;
+
       QTableWidgetItem *name =
           new QTableWidgetItem(info->getItemName().c_str());
       QTableWidgetItem *value = new QTableWidgetItem(info->getValue().c_str());
