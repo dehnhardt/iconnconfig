@@ -24,7 +24,10 @@ public slots:
 private:
   std::map<SysExMessage::DeviceInfoItem, RetSetInfo *> *retSetInfos = 0;
   QTableWidget *tw = 0;
+
+private:
   void setupTable();
+  void setUpTableItems();
 };
 
 #endif // INFOTABLEWIDGET_H

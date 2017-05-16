@@ -12,21 +12,22 @@ InfoTableWidget::InfoTableWidget(
   setLayout(lo);
   int i = 0;
   if (this->retSetInfos) {
-    tw = new QTableWidget(retSetInfos->size(), 3, this);
-    tw->setColumnHidden(2, true);
     setupTable();
     for (std::map<SysExMessage::DeviceInfoItem, RetSetInfo *>::iterator it =
              retSetInfos->begin();
          it != retSetInfos->end(); ++it) {
       SysExMessage::DeviceInfoItem infoItem = it->first;
+
       RetSetInfo *info = it->second;
       QTableWidgetItem *name =
           new QTableWidgetItem(info->getItemName().c_str());
-      name->setForeground(qp.dark());
       QTableWidgetItem *value = new QTableWidgetItem(info->getValue().c_str());
-      name->setFlags(name->flags() & ~Qt::ItemIsEditable);
       QTableWidgetItem *itemType =
           new QTableWidgetItem(QString::number((int)infoItem));
+
+      name->setForeground(qp.dark());
+      name->setFlags(name->flags() & ~Qt::ItemIsEditable);
+
       if (!info->isItemEditable()) {
         value->setFlags(value->flags() & ~Qt::ItemIsEditable);
         value->setForeground(qp.dark());
@@ -43,10 +44,12 @@ InfoTableWidget::InfoTableWidget(
 }
 
 void InfoTableWidget::setupTable() {
+  tw = new QTableWidget(retSetInfos->size(), 3, this);
   tw->setHorizontalHeaderItem(0, new QTableWidgetItem(tr("Name")));
   tw->setHorizontalHeaderItem(1, new QTableWidgetItem(tr("Value")));
   tw->verticalHeader()->hide();
   tw->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+  tw->setColumnHidden(2, true);
 }
 
 /**
