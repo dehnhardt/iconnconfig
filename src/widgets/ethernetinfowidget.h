@@ -16,6 +16,8 @@ public:
   explicit EthernetInfoWidget(QWidget *parent,
                               RetSetEthernetPortInfo *retSetEthernetPortInfo);
 
+  virtual ~EthernetInfoWidget();
+
 signals:
   void staticBoxDisabled(bool disabled);
 

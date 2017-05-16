@@ -25,6 +25,35 @@ EthernetInfoWidget::EthernetInfoWidget(
   setLayout(lo);
 }
 
+EthernetInfoWidget::~EthernetInfoWidget() {
+
+  delete methodBox;
+
+  delete tl;
+  delete ipl1;
+  delete sml1;
+  delete gwl1;
+  delete ipl2;
+  delete sml2;
+  delete gwl2;
+
+  delete ip1;
+  delete sm1;
+  delete gw1;
+  delete ip2;
+  delete sm2;
+  delete gw2;
+
+  delete empty;
+
+  delete lo;
+  delete staticLayout;
+  delete dhcpLayout;
+
+  delete staticBox;
+  delete dhcpBox;
+}
+
 void EthernetInfoWidget::createWidgets() {
 
   lo = new QGridLayout();
