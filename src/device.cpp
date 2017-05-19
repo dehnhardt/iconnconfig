@@ -1,10 +1,10 @@
 #include "device.h"
-#include "sysex/retcommandlist.h"
-#include "sysex/getinfo.h"
 #include "sysex/getcommandlist.h"
+#include "sysex/getinfo.h"
 #include "sysex/getinfolist.h"
-#include "sysex/retinfolist.h"
 #include "sysex/midi.h"
+#include "sysex/retcommandlist.h"
+#include "sysex/retinfolist.h"
 
 #include <array>
 #include <cstring>
@@ -140,8 +140,8 @@ BYTE_VECTOR *Device::retrieveSysex() {
 }
 
 bool Device::checkSysex(BYTE_VECTOR *data) {
-    if(!data || data->size() <= 0 )
-        return false;
+  if (!data || data->size() <= 0)
+    return false;
   BYTE_VECTOR *dataHeader =
       new BYTE_VECTOR(data->begin() + 1, data->begin() + 12);
   BYTE_VECTOR *localHeader = getFullHeader();
@@ -157,7 +157,7 @@ bool Device::queryDeviceInfo() {
   else
     commands = (RetCommandList *)c->query();
 #else
-  commands = (Commands *)c->query();
+  commands = (RetCommandList *)c->query();
 #endif
   if (commands == 0) {
     std::cerr << "can not query supported commands";
@@ -192,8 +192,7 @@ bool Device::queryDeviceInfo() {
       hardwareVersion = deviceInfo->getItemValue(GetInfo::HARDWARE_VERSION);
 
     if (ii->isInfoImplemented(GetInfo::MANUFACTURER_NAME))
-      manufacturerName =
-          deviceInfo->getItemValue(GetInfo::MANUFACTURER_NAME);
+      manufacturerName = deviceInfo->getItemValue(GetInfo::MANUFACTURER_NAME);
 
     if (ii->isInfoImplemented(GetInfo::MODEL_NUMBER))
       modelNumber = deviceInfo->getItemValue(GetInfo::MODEL_NUMBER);

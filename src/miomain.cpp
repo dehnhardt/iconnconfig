@@ -1,8 +1,8 @@
 #include "miomain.h"
 #include "config/configuration.h"
 #include "devicedetection.h"
-#include "sysex/retcommandlist.h"
 #include "sysex/midi.h"
+#include "sysex/retcommandlist.h"
 #include "ui_miomain.h"
 #include "widgets/centralwidget.h"
 #include "widgets/deviceinfowidget.h"
@@ -167,6 +167,7 @@ void MioMain::writeSettings() {
 void MioMain::writeDevicesToSettings() {
   QSettings *settings = Configuration::getInstance().getSettings();
   Devices *devices = Configuration::getInstance().getDevices();
+  settings->remove("Devices");
   settings->beginWriteArray("Devices");
   int i = 0;
   for (Devices::iterator it = devices->begin(); it != devices->end(); ++it) {
@@ -213,15 +214,16 @@ bool MioMain::readDevicesFromSettings() {
   if (size == 0)
     return false;
   for (int i = 0; i < size; ++i) {
+    Device *device = 0;
     settings->setArrayIndex(i);
     int productId = settings->value("Product Id").toInt();
     long serialNumber =
         (qlonglong)settings->value("Serial Number").toLongLong();
     int inputPort = (qlonglong)settings->value("Input Port").toInt();
     int outputPort = (qlonglong)settings->value("Output Port").toInt();
+    bool simulate = settings->value("Simulate").toBool();
 #ifdef __MIO_SIMULATE__
-    Device *device = 0;
-    if (settings->value("Simulate").toBool()) {
+    if (simulate) {
       std::string modelName =
           settings->value("Model Name").toString().toStdString();
       std::string deviceName =
@@ -232,9 +234,10 @@ bool MioMain::readDevicesFromSettings() {
       device = new Device(inputPort, outputPort, serialNumber, productId);
     }
 #else
-    Device *device = new Device(inputPort, outputPort, serialNumber, productId);
+    if (!simulate)
+      device = new Device(inputPort, outputPort, serialNumber, productId);
 #endif
-    if (device->queryDeviceInfo())
+    if (device && device->queryDeviceInfo())
       devices->insert(std::pair<long, Device *>(serialNumber, device));
   }
   settings->endArray();
