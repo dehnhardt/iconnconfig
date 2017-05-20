@@ -128,6 +128,9 @@ void MioMain::openDeviceGUI(Device *d) {
   PortsWidget *portsWidget = new PortsWidget(this, d);
   this->addDock(portsWidget, Qt::LeftDockWidgetArea);
   if (c->isCommandSupported(SysExMessage::GET_ETHERNET_PORT_INFO)) {
+		if (d->hasMidiSupport()) {
+			RetSetMidiInfo *midiInfo = d->getMidiInfo();
+		}
     std::cout << "EthernetPortsAvailable";
   }
 

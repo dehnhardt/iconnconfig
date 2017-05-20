@@ -10,6 +10,28 @@ public:
 	RetSetMidiInfo(Command cmd, BYTE_VECTOR *message, Device *device)
 			: SysExMessage(cmd, message, device) {}
 
+public:
+	// getters
+	int getMidiPorts() const;
+	int getCurrentCommunicationPort() const;
+	int getDinPorts() const;
+	int getUsbDeviceJacks() const;
+	int getUsbHostJacks() const;
+	int getEthernetJacks() const;
+	int getUsbMidiDevicePorts() const;
+	int getUsbMidiHostPorts() const;
+	int getRtpMidiSessions() const;
+	int getRtpMidiConnections() const;
+	int getMaximumSupportedUsbHostPorts() const;
+	bool getEnableRoutingBetweenHostJacks() const;
+	bool getEnableRunningStatusOnDin() const;
+
+public:
+	// setter
+	void setEnableRunningStatusOnDin(bool value);
+	void setEnableRoutingBetweenHostJacks(bool value);
+	void setMaximumSupportedUsbHostPorts(int value);
+
 protected:
 	void parseAnswerData();
 

@@ -34,7 +34,9 @@ public:
   BYTE_VECTOR *nextTransactionId();
 
   // getter
-  static BYTE_VECTOR *getManufacturerHeader();
+	bool hasMidiSupport();
+
+	static BYTE_VECTOR *getManufacturerHeader();
   BYTE_VECTOR *getDeviceHeader();
   BYTE_VECTOR *getFullHeader();
   bool queryDeviceInfo();
@@ -54,6 +56,7 @@ public:
   bool getDefault() { return isDefault; }
   RetCommandList *getCommands() { return commands; }
   GetInfo *getDeviceInfo() { return deviceInfo; }
+	RetSetMidiInfo *getMidiInfo() { return midiInfo; }
 
 #ifdef __MIO_SIMULATE__
   Device(int inPortNumber, int outPortNumber, long serialNumber, int productId,

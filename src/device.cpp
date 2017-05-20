@@ -201,7 +201,7 @@ bool Device::queryDeviceInfo() {
 
 		if (commands->isCommandSupported(SysExMessage::GET_MIDI_INFO)) {
 			GetMidiInfo *getMidiInfo = new GetMidiInfo(this);
-			this->midiInfo = (RetSetMidiInfo *)getMidiInfo->execute();
+			this->midiInfo = (RetSetMidiInfo *)getMidiInfo->query();
 		}
 
 #ifdef __MIO_SIMULATE__
@@ -209,6 +209,8 @@ bool Device::queryDeviceInfo() {
 #endif //__MIO_SIMULATE__
   return true;
 }
+
+bool Device::hasMidiSupport() { return (getMidiInfo() != 0); }
 
 BYTE_VECTOR *Device::nextTransactionId() {
   if (transactionId > 16000)

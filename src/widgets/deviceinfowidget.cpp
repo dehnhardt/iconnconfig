@@ -2,6 +2,7 @@
 #include "../sysex/getethernetportinfo.h"
 #include "../sysex/retcommandlist.h"
 #include "../sysex/retsetethernetportinfo.h"
+#include "../sysex/retsetmidiinfo.h"
 #include "ethernetinfowidget.h"
 #include "infotablewidget.h"
 #include "ui_deviceinfowidget.h"
@@ -19,8 +20,15 @@ DeviceInfoWidget::DeviceInfoWidget(MioMain *parent, Device *device,
   if (device->getCommands()->isCommandSupported(SysExMessage::GET_INFO_LIST))
     infoSections.push_back("Global");
   if (device->getCommands()->isCommandSupported(
-          SysExMessage::GET_ETHERNET_PORT_INFO))
-    infoSections.push_back("Network");
+					SysExMessage::GET_ETHERNET_PORT_INFO)) {
+		int networkAdapters = device->getMidiInfo()->getEthernetJacks();
+		for (int i = 0; i < networkAdapters; i++) {
+			std::string name = "Network";
+			name.push_back(' ');
+			name.push_back(0x30 + i);
+			infoSections.push_back(name.c_str());
+		}
+	}
 }
 
 DeviceInfoWidget::~DeviceInfoWidget() {}
@@ -44,7 +52,8 @@ QWidget *DeviceInfoWidget::createWidget(std::string infoName) {
     connect(w, &InfoTableWidget::deviceInfoChanged, this,
             &DeviceInfoWidget::deviceInfoChanged);
     return w;
-  } else if (infoName == "Network") {
+	} else if (infoName.compare(0, 7, "Network") == 0) {
+		int i = infoName.at(8) - 0x30;
     GetEthernetPortInfo *getEthernetPortInfo =
         new GetEthernetPortInfo(this->device);
     getEthernetPortInfo->setDebug(true);
