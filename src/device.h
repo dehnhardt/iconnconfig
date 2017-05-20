@@ -11,6 +11,7 @@
 class SysExMessage;
 class RetCommandList;
 class RetInfoList;
+class RetSetMidiInfo;
 class GetInfo;
 
 class Device {
@@ -96,6 +97,7 @@ private:
   std::string hardwareVersion;
   std::string modelNumber;
 
+	RetSetMidiInfo *midiInfo = 0;
   RetCommandList *commands = 0;
   RetInfoList *ii = 0;
   GetInfo *deviceInfo = 0;

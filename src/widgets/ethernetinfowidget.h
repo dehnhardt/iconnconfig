@@ -24,6 +24,9 @@ signals:
 public slots:
   void comboboxSelected(int selected);
 
+private slots:
+	void editFinished();
+
 private:
   RetSetEthernetPortInfo *retSetEthernetPortInfo = 0;
 

@@ -68,10 +68,10 @@ void EthernetInfoWidget::createWidgets() {
   tl = new QLabel(tr("Address Type"));
   ipl1 = new QLabel(tr("Static IP"), staticBox);
   sml1 = new QLabel(tr("Subnet Mask"), staticBox);
-  gwl1 = new QLabel(tr("Gatewey"), staticBox);
-  ipl2 = new QLabel(tr("Static IP"), this);
+	gwl1 = new QLabel(tr("Gateway"), staticBox);
+	ipl2 = new QLabel(tr("DHCP IP"), this);
   sml2 = new QLabel(tr("Subnet Mask"), this);
-  gwl2 = new QLabel(tr("Gatewey"), this);
+	gwl2 = new QLabel(tr("Gateway"), this);
 
   ip1 = new QLineEdit(staticBox);
   sm1 = new QLineEdit(staticBox);
@@ -88,31 +88,26 @@ void EthernetInfoWidget::setupWidgets() {
   QString ipRange = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])";
   QRegExp ipRegex("^" + ipRange + "\\." + ipRange + "\\." + ipRange + "\\." +
                   ipRange + "$");
-  QRegExpValidator regValidator(ipRegex, 0);
+	QRegExpValidator *regValidator = new QRegExpValidator(ipRegex, 0);
 
-  ip1->setInputMask("000.000.000.000;0");
-  ip1->setValidator(&regValidator);
+	ip1->setValidator(regValidator);
 
-  sm1->setInputMask("000.000.000.000;0");
-  sm1->setValidator(&regValidator);
+	sm1->setValidator(regValidator);
 
-  gw1->setInputMask("000.000.000.000;0");
-  gw1->setValidator(&regValidator);
+	gw1->setValidator(regValidator);
 
-  ip2->setInputMask("000.000.000.000;0");
-  ip2->setValidator(&regValidator);
-
-  sm2->setInputMask("000.000.000.000;0");
-  sm2->setValidator(&regValidator);
-
-  gw2->setInputMask("000.000.000.000;0");
-  gw2->setValidator(&regValidator);
-
+	dhcpBox->setDisabled(true);
   empty->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
   connect(methodBox, SIGNAL(activated(int)), this, SLOT(comboboxSelected(int)));
   connect(this, &EthernetInfoWidget::staticBoxDisabled, staticBox,
           &QGroupBox::setDisabled);
+	connect(ip1, &QLineEdit::editingFinished, this,
+					&EthernetInfoWidget::editFinished);
+	connect(sm1, &QLineEdit::editingFinished, this,
+					&EthernetInfoWidget::editFinished);
+	connect(gw1, &QLineEdit::editingFinished, this,
+					&EthernetInfoWidget::editFinished);
 }
 
 void EthernetInfoWidget::setupLayout() {
@@ -193,4 +188,8 @@ void EthernetInfoWidget::createConnections() {
 void EthernetInfoWidget::comboboxSelected(int selected) {
   bool disabled = (selected == 1);
   emit staticBoxDisabled(disabled);
+}
+
+void EthernetInfoWidget::editFinished() {
+	std::cout << "Edit finished" << std::endl;
 }

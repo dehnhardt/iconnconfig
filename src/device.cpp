@@ -2,9 +2,11 @@
 #include "sysex/getcommandlist.h"
 #include "sysex/getinfo.h"
 #include "sysex/getinfolist.h"
+#include "sysex/getmidiinfo.h"
 #include "sysex/midi.h"
 #include "sysex/retcommandlist.h"
 #include "sysex/retinfolist.h"
+#include "sysex/retsetmidiinfo.h"
 
 #include <array>
 #include <cstring>
@@ -196,6 +198,12 @@ bool Device::queryDeviceInfo() {
 
     if (ii->isInfoImplemented(GetInfo::MODEL_NUMBER))
       modelNumber = deviceInfo->getItemValue(GetInfo::MODEL_NUMBER);
+
+		if (commands->isCommandSupported(SysExMessage::GET_MIDI_INFO)) {
+			GetMidiInfo *getMidiInfo = new GetMidiInfo(this);
+			this->midiInfo = (RetSetMidiInfo *)getMidiInfo->execute();
+		}
+
 #ifdef __MIO_SIMULATE__
   }
 #endif //__MIO_SIMULATE__
