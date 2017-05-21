@@ -14,7 +14,7 @@ public:
 	~PortsWidget();
 
 protected:
-	QWidget *createWidget(std::string infoName);
+	QWidget *createWidget(MultiInfoListEntry entry);
 };
 
 #endif // PORTSWIDGET_H

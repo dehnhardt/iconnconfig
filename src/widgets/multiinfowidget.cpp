@@ -9,6 +9,7 @@ MultiInfoWidget::MultiInfoWidget(MioMain *parent, Device *device,
   setWindowTitle(windowTitle);
   connect(this, SIGNAL(visibilityChanged(bool)), this, SLOT(visible(bool)));
   // hack to delete the titlebar
+
   QWidget *lTitleBar = titleBarWidget();
   setTitleBarWidget(new QWidget());
   delete lTitleBar;
@@ -17,13 +18,15 @@ MultiInfoWidget::MultiInfoWidget(MioMain *parent, Device *device,
 MultiInfoWidget::~MultiInfoWidget() { delete ui; }
 
 void MultiInfoWidget::on_infoList_currentRowChanged(int currentRow) {
-  std::string selectedInfo = infoSections[currentRow];
-  QListWidgetItem *item = ui->infoList->item(currentRow);
-  selectedInfo = item->text().toStdString();
-  std::cout << "Current row " << currentRow << " Text: " << std::endl;
-  QWidget *w = getWidget(selectedInfo);
-  ((MioMain *)this->parentWidget())->replacePanel(w);
-  emit infoTabChanged(currentRow);
+	MultiInfoListEntry selectedInfo = (*infoSections)[currentRow];
+	if (selectedInfo.widget == 0) {
+		selectedInfo.widget = createWidget(selectedInfo);
+	}
+	if (selectedInfo.widget) {
+		QWidget *w = selectedInfo.widget;
+		((MioMain *)this->parentWidget())->replacePanel(w);
+		emit infoTabChanged(currentRow);
+	}
 }
 
 void MultiInfoWidget::visible(bool visible) {
@@ -32,20 +35,16 @@ void MultiInfoWidget::visible(bool visible) {
 }
 
 void MultiInfoWidget::createInfoSections() {
-  std::vector<std::string>::iterator it;
-  for (it = infoSections.begin(); it < infoSections.end(); ++it) {
-    std::string v = *it;
-    ui->infoList->addItem(tr(v.c_str()));
+	std::vector<MultiInfoListEntry>::iterator it;
+	for (it = infoSections->begin(); it < infoSections->end(); ++it) {
+		MultiInfoListEntry entry = *it;
+		QString item;
+		if (entry.index == -1)
+			item = QString(entry.name.c_str());
+		else
+			item = QString::asprintf("%s %i", entry.name.c_str(), entry.index);
+		ui->infoList->addItem(item);
   }
-}
-
-QWidget *MultiInfoWidget::getWidget(std::string infoName) {
-  QWidget *w = this->infoWidgets[infoName];
-  if (w == 0) {
-    w = createWidget(infoName);
-    this->infoWidgets[infoName] = w;
-  }
-  return w;
 }
 
 void MultiInfoWidget::openLastSelectedSection() {

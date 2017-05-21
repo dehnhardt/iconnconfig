@@ -65,7 +65,8 @@ SOURCES +=\
     src/sysex/retsetethernetportinfo.cpp \
     src/sysex/getmidiinfo.cpp \
     src/sysex/retsetmidiportinfo.cpp \
-    src/sysex/retsetmidiinfo.cpp
+    src/sysex/retsetmidiinfo.cpp \
+    src/widgets/multiinfolistentry.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
@@ -99,7 +100,8 @@ HEADERS  += src/miomain.h \
     src/sysex/retsetethernetportinfo.h \
     src/sysex/getmidiinfo.h \
     src/sysex/retsetmidiportinfo.h \
-    src/sysex/retsetmidiinfo.h
+    src/sysex/retsetmidiinfo.h \
+    src/widgets/multiinfolistentry.h
 
 FORMS    += src/miomain.ui \
     src/devicedetection.ui \

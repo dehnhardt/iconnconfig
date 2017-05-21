@@ -18,7 +18,7 @@ public slots:
 
 protected:
   void setInfoSections();
-  QWidget *createWidget(std::string infoName);
+	QWidget *createWidget(MultiInfoListEntry entry);
 
 private:
 	GetInfo *deviceInfo = 0;

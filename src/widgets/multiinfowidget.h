@@ -3,6 +3,7 @@
 
 #include "../device.h"
 #include "../miomain.h"
+#include "multiinfolistentry.h"
 
 #include <QDockWidget>
 #include <QPalette>
@@ -30,18 +31,18 @@ protected slots:
 protected:
   Ui::MultiInfoWidget *ui;
   Device *device;
-  std::vector<std::string> infoSections = {"Info 1", "Info 2"};
   int lastSelectedSection = 0;
+	std::vector<MultiInfoListEntry> *infoSections = 0;
 
 public:
   QMap<std::string, QWidget *> infoWidgets;
   void createInfoSections();
 
-  // methods
 protected:
-  QWidget *getWidget(std::string infoName);
+	// methods
+	QWidget *getWidget(int row);
   void openLastSelectedSection();
-  virtual QWidget *createWidget(std::string infoName) = 0;
+	virtual QWidget *createWidget(MultiInfoListEntry entry) = 0;
 
 signals:
   void infoTabChanged(int row);
