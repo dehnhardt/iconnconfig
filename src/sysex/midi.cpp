@@ -85,13 +85,6 @@ long MIDI::byteJoin(BYTE_VECTOR *message, unsigned int start,
 std::string MIDI::decodeIp(BYTE_VECTOR *data, int offset) {
 
   long address = MIDI::byteJoin(data, offset, 5);
-#ifdef __MIO_DEBUG__
-  std::cout << "Bytes orig: ";
-  MIDI::printMessage(
-      new BYTE_VECTOR(data->begin() + offset, data->begin() + offset + 5));
-  std::cout << std::hex << address << ": ";
-#endif
-
   int a1 = address & 255;
   address >>= 8;
   int a2 = address & 255;
@@ -102,10 +95,6 @@ std::string MIDI::decodeIp(BYTE_VECTOR *data, int offset) {
   std::stringstream result;
   result << std::dec << a4 << "." << a3 << "." << a2 << "." << a1;
   std::string ad = result.str();
-#ifdef __MIO_DEBUG__
-  std::cout << ad << std::endl;
-  encodeIpAddress(ad);
-#endif
   return ad;
 }
 
@@ -128,12 +117,6 @@ BYTE_VECTOR *MIDI::encodeIpAddress(std::string ipAddress) {
     lAddress += std::stol(token);
   }
   result = MIDI::byteSplit(lAddress, 5);
-
-#ifdef __MIO_DEBUG__
-  std::cout << std::hex << lAddress << " - Bytes enc: ";
-  MIDI::printMessage(result);
-  std::cout << std::endl;
-#endif
   return result;
 }
 
