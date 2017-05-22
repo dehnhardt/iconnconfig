@@ -15,5 +15,7 @@ BYTE_VECTOR *GetEthernetPortInfo::getMessageData() {
 void GetEthernetPortInfo::createAnswer(SysExMessage::Command cmd,
                                        BYTE_VECTOR *message, Device *device) {
   answer = new RetSetEthernetPortInfo(cmd, message, device);
+  if (debug)
+    answer->setDebug(true);
   answer->parseAnswerData();
 }
