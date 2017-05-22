@@ -1,7 +1,6 @@
 #include "midi.h"
 
 #include <algorithm>
-#include <arpa/inet.h>
 #include <iostream>
 #include <sstream>
 
@@ -13,7 +12,7 @@ RtMidiIn *MIDI::createMidiIn(const std::string clientName) {
   try {
     midiin = new RtMidiIn(RtMidi::LINUX_ALSA, clientName);
   } catch (RtMidiError &error) {
-    // Handle the exception here
+    // TODO Handle the exception here
     error.printMessage();
   }
   midiin->ignoreTypes(false, true, true);
@@ -26,7 +25,7 @@ MIDI::createMidiOut(const std::string clientName) { // RtMidiOut constructor
   try {
     midiout = new RtMidiOut(RtMidi::LINUX_ALSA, clientName);
   } catch (RtMidiError &error) {
-    // Handle the exception here
+    // TODO Handle the exception here
     error.printMessage();
   }
   return midiout;
@@ -86,6 +85,13 @@ long MIDI::byteJoin(BYTE_VECTOR *message, unsigned int start,
 std::string MIDI::decodeIp(BYTE_VECTOR *data, int offset) {
 
   long address = MIDI::byteJoin(data, offset, 5);
+#ifdef __MIO_DEBUG__
+  std::cout << "Bytes orig: ";
+  MIDI::printMessage(
+      new BYTE_VECTOR(data->begin() + offset, data->begin() + offset + 5));
+  std::cout << std::hex << address << ": ";
+#endif
+
   int a1 = address & 255;
   address >>= 8;
   int a2 = address & 255;
@@ -98,14 +104,37 @@ std::string MIDI::decodeIp(BYTE_VECTOR *data, int offset) {
   std::string ad = result.str();
 #ifdef __MIO_DEBUG__
   std::cout << ad << std::endl;
+  encodeIpAddress(ad);
 #endif
   return ad;
 }
 
 BYTE_VECTOR *MIDI::encodeIpAddress(std::string ipAddress) {
-  struct sockaddr_in sa;
-  inet_pton(AF_INET, ipAddress.c_str(), &(sa.sin_addr));
-  return new BYTE_VECTOR();
+  BYTE_VECTOR *result = 0;
+
+  long lAddress = 0L;
+  std::istringstream ss(ipAddress);
+  std::string token;
+  std::vector<std::string> ipParts;
+
+  while (std::getline(ss, token, '.')) {
+    ipParts.push_back(std::string(token));
+  }
+  for (std::vector<std::string>::iterator it = ipParts.begin();
+       it != ipParts.end(); ++it) {
+    if (it != ipParts.begin())
+      lAddress <<= 8;
+    token = (*it);
+    lAddress += std::stol(token);
+  }
+  result = MIDI::byteSplit(lAddress, 5);
+
+#ifdef __MIO_DEBUG__
+  std::cout << std::hex << lAddress << " - Bytes enc: ";
+  MIDI::printMessage(result);
+  std::cout << std::endl;
+#endif
+  return result;
 }
 
 void MIDI::printMessage(BYTE_VECTOR *message) {
