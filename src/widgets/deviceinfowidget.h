@@ -14,14 +14,14 @@ public:
   ~DeviceInfoWidget();
 
 public slots:
-	void deviceInfoChanged(SysExMessage::DeviceInfoItem, std::string value);
+  void deviceInfoChanged(SysExMessage::DeviceInfoItem, std::string value);
 
 protected:
   void setInfoSections();
-	QWidget *createWidget(MultiInfoListEntry entry);
+  QWidget *createWidget(MultiInfoListEntry *entry);
 
 private:
-	GetInfo *deviceInfo = 0;
+  GetInfo *deviceInfo = 0;
 };
 
 #endif // DEVICEINFOWIDGET_H

@@ -11,10 +11,10 @@ class PortsWidget : public MultiInfoWidget {
 public:
   explicit PortsWidget(MioMain *parent = 0, Device *device = 0,
                        QString windowTitle = tr("Ports"));
-	~PortsWidget();
+  ~PortsWidget();
 
 protected:
-	QWidget *createWidget(MultiInfoListEntry entry);
+  QWidget *createWidget(MultiInfoListEntry *entry);
 };
 
 #endif // PORTSWIDGET_H
