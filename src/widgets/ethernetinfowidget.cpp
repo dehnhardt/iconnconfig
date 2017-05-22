@@ -36,6 +36,8 @@ EthernetInfoWidget::~EthernetInfoWidget() {
   delete ipl2;
   delete sml2;
   delete gwl2;
+  delete bjl;
+  delete macl;
 
   delete ip1;
   delete sm1;
@@ -43,15 +45,19 @@ EthernetInfoWidget::~EthernetInfoWidget() {
   delete ip2;
   delete sm2;
   delete gw2;
+  delete bj;
+  delete mac;
 
   delete empty;
 
   delete lo;
   delete staticLayout;
   delete dhcpLayout;
+  delete infoLayout;
 
   delete staticBox;
   delete dhcpBox;
+  delete infoBox;
 }
 
 void EthernetInfoWidget::createWidgets() {
@@ -59,19 +65,23 @@ void EthernetInfoWidget::createWidgets() {
   lo = new QGridLayout();
   staticLayout = new QGridLayout();
   dhcpLayout = new QGridLayout();
+  infoLayout = new QGridLayout();
 
   methodBox = new QComboBox(this);
 
   staticBox = new QGroupBox(tr("Static Address"), this);
   dhcpBox = new QGroupBox(tr("DHCP Address"), this);
+  infoBox = new QGroupBox(tr("Info"), this);
 
   tl = new QLabel(tr("Address Type"));
   ipl1 = new QLabel(tr("Static IP"), staticBox);
   sml1 = new QLabel(tr("Subnet Mask"), staticBox);
-	gwl1 = new QLabel(tr("Gateway"), staticBox);
-	ipl2 = new QLabel(tr("DHCP IP"), this);
+  gwl1 = new QLabel(tr("Gateway"), staticBox);
+  ipl2 = new QLabel(tr("DHCP IP"), this);
   sml2 = new QLabel(tr("Subnet Mask"), this);
-	gwl2 = new QLabel(tr("Gateway"), this);
+  gwl2 = new QLabel(tr("Gateway"), this);
+  bjl = new QLabel(tr("Bonjour Name"), infoBox);
+  macl = new QLabel(tr("MAC Address"), infoBox);
 
   ip1 = new QLineEdit(staticBox);
   sm1 = new QLineEdit(staticBox);
@@ -79,6 +89,8 @@ void EthernetInfoWidget::createWidgets() {
   ip2 = new QLineEdit(dhcpBox);
   sm2 = new QLineEdit(dhcpBox);
   gw2 = new QLineEdit(dhcpBox);
+  bj = new QLineEdit(infoBox);
+  mac = new QLineEdit(infoBox);
 
   empty = new QWidget();
 }
@@ -88,26 +100,19 @@ void EthernetInfoWidget::setupWidgets() {
   QString ipRange = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])";
   QRegExp ipRegex("^" + ipRange + "\\." + ipRange + "\\." + ipRange + "\\." +
                   ipRange + "$");
-	QRegExpValidator *regValidator = new QRegExpValidator(ipRegex, 0);
+  QRegExpValidator *regValidator = new QRegExpValidator(ipRegex, 0);
 
-	ip1->setValidator(regValidator);
+  ip1->setValidator(regValidator);
 
-	sm1->setValidator(regValidator);
+  sm1->setValidator(regValidator);
 
-	gw1->setValidator(regValidator);
+  gw1->setValidator(regValidator);
 
-	dhcpBox->setDisabled(true);
+  mac->setInputMask("nn:nn:nn:nn:nn:nn;_");
+
+  dhcpBox->setDisabled(true);
+  infoBox->setDisabled(true);
   empty->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-
-  connect(methodBox, SIGNAL(activated(int)), this, SLOT(comboboxSelected(int)));
-  connect(this, &EthernetInfoWidget::staticBoxDisabled, staticBox,
-          &QGroupBox::setDisabled);
-	connect(ip1, &QLineEdit::editingFinished, this,
-					&EthernetInfoWidget::editFinished);
-	connect(sm1, &QLineEdit::editingFinished, this,
-					&EthernetInfoWidget::editFinished);
-	connect(gw1, &QLineEdit::editingFinished, this,
-					&EthernetInfoWidget::editFinished);
 }
 
 void EthernetInfoWidget::setupLayout() {
@@ -133,11 +138,18 @@ void EthernetInfoWidget::setupLayout() {
   dhcpLayout->addWidget(gwl2, 2, 0);
   dhcpLayout->addWidget(gw2, 2, 1);
 
+  infoLayout->addWidget(bjl, 0, 0);
+  infoLayout->addWidget(bj, 0, 1);
+  infoLayout->addWidget(macl, 1, 0);
+  infoLayout->addWidget(mac, 1, 1);
+
   staticBox->setLayout(staticLayout);
   dhcpBox->setLayout(dhcpLayout);
+  infoBox->setLayout(infoLayout);
 
   lo->addWidget(staticBox, 1, 0, 1, 2);
   lo->addWidget(dhcpBox, 2, 0, 1, 2);
+  lo->addWidget(infoBox, 3, 0, 1, 2);
   lo->addWidget(empty, 3, 0, 1, 2);
 }
 
@@ -171,25 +183,42 @@ void EthernetInfoWidget::setData() {
                            ->getAddress(RetSetEthernetPortInfo::DYNAMIC |
                                         RetSetEthernetPortInfo::GATEWAY)
                            .c_str()));
+  bj->setText(QString(retSetEthernetPortInfo->getBonjourName().c_str()));
+  mac->setText(QString(retSetEthernetPortInfo->getMacAddress().c_str()));
 
   int index = methodBox->findData((int)retSetEthernetPortInfo->getMethod());
   if (index != -1) { // -1 for not found
     methodBox->setCurrentIndex(index);
-    comboboxSelected(index);
+    setStaticBoxEnabled(index);
   }
 }
 
 void EthernetInfoWidget::createConnections() {
+
   connect(methodBox, SIGNAL(activated(int)), this, SLOT(comboboxSelected(int)));
+  connect(this, &EthernetInfoWidget::staticBoxDisabled, staticBox,
+          &QGroupBox::setDisabled);
+  connect(ip1, &QLineEdit::editingFinished, this,
+          &EthernetInfoWidget::editFinished);
+  connect(sm1, &QLineEdit::editingFinished, this,
+          &EthernetInfoWidget::editFinished);
+  connect(gw1, &QLineEdit::editingFinished, this,
+          &EthernetInfoWidget::editFinished);
   connect(this, &EthernetInfoWidget::staticBoxDisabled, staticBox,
           &QGroupBox::setDisabled);
 }
 
-void EthernetInfoWidget::comboboxSelected(int selected) {
+void EthernetInfoWidget::setStaticBoxEnabled(int selected) {
   bool disabled = (selected == 1);
   emit staticBoxDisabled(disabled);
 }
 
+void EthernetInfoWidget::comboboxSelected(int selected) {
+  setStaticBoxEnabled(selected);
+  retSetEthernetPortInfo->setMethod((RetSetEthernetPortInfo::IPFlags)selected);
+  retSetEthernetPortInfo->execute();
+}
+
 void EthernetInfoWidget::editFinished() {
-	std::cout << "Edit finished" << std::endl;
+  std::cout << "Edit finished" << std::endl;
 }

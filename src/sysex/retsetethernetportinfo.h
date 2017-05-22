@@ -21,13 +21,26 @@ public:
   };
 
 public:
-  virtual void parseAnswerData();
-  std::string getAddress(int flags);
-  void setAddress(int flags, std::string address);
+  void parseAnswerData();
+  BYTE_VECTOR *getMessageData();
+
+public:
+  // getter
   IPFlags getMethod();
+  std::string getAddress(int flags);
+  std::string getMacAddress() const;
+  std::string getBonjourName() const;
+
+public:
+  // setter
+  void setMethod(IPFlags method);
+  void setAddress(int flags, std::string address);
+  void setBonjourName(const std::string &value);
 
 private:
   BYTE_VECTOR *portId = 0;
+  std::string macAddress;
+  std::string bonjourName;
   IPFlags method;
   std::map<int, std::string> *addresses = 0;
 };
