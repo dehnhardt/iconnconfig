@@ -140,6 +140,8 @@ int SysExMessage::execute() {
   if (device == 0)
     return -1;
   BYTE_VECTOR *message = getMIDISysExMessage();
+  if (debug)
+    MIDI::printMessage(message);
   device->sentSysex(message);
   BYTE_VECTOR *answerMessage = device->retrieveSysex();
   if (answerMessage != nullptr) {
@@ -185,6 +187,7 @@ CommandAcceptedAnswers SysExMessage::commandAcceptedAnswers = {
     {GET_RESET_LIST, AcceptedAnswers{RET_RESET_LIST, ACK}},
     {GET_SAVE_RESTORE_LIST, AcceptedAnswers{RET_SAVE_RESTORE_LIST, ACK}},
     {GET_ETHERNET_PORT_INFO, AcceptedAnswers{RET_SET_ETHERNET_PORT_INFO, ACK}},
+    {RET_SET_ETHERNET_PORT_INFO, AcceptedAnswers{ACK}},
     {RESET, AcceptedAnswers{ACK}},
     {SAVE_RESTORE, AcceptedAnswers{ACK}},
     {GET_GIZMO_COUNT, AcceptedAnswers{RET_GIZMO_COUNT, ACK}},
