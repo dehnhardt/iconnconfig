@@ -12,6 +12,7 @@
 #include <QHeaderView>
 #include <QLabel>
 #include <QListWidgetItem>
+#include <QScrollArea>
 #include <QTableWidget>
 
 DeviceInfoWidget::DeviceInfoWidget(MioMain *parent, Device *device,
@@ -52,10 +53,11 @@ QWidget *DeviceInfoWidget::createWidget(MultiInfoListEntry *entry) {
         this->parentWidget(), this->deviceInfo->getRetSetInfos());
     connect(w, &InfoTableWidget::deviceInfoChanged, this,
             &DeviceInfoWidget::deviceInfoChanged);
-    return w;
+		return w;
   } break;
   case MultiInfoListEntry::NETWORK_INFO: {
-    GetEthernetPortInfo *getEthernetPortInfo =
+		QScrollArea *a = new QScrollArea();
+		GetEthernetPortInfo *getEthernetPortInfo =
         new GetEthernetPortInfo(this->device);
     getEthernetPortInfo->setDebug(true);
     RetSetEthernetPortInfo *retSetEthernetPortInfo =
@@ -63,7 +65,8 @@ QWidget *DeviceInfoWidget::createWidget(MultiInfoListEntry *entry) {
     retSetEthernetPortInfo->setDebug(true);
     EthernetInfoWidget *w =
         new EthernetInfoWidget(this, retSetEthernetPortInfo);
-    return w;
+		a->setWidget(w);
+		return a;
   } break;
   default: {
     QWidget *w = new QWidget(this->parentWidget());

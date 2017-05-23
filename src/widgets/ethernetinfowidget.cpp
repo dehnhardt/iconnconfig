@@ -19,9 +19,9 @@ EthernetInfoWidget::EthernetInfoWidget(
     createWidgets();
     setupWidgets();
     setupLayout();
-    setData();
-    createConnections();
-  }
+		createConnections();
+		setData();
+	}
   setLayout(lo);
 }
 
