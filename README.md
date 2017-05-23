@@ -14,3 +14,5 @@ Status
 * (2017-05-13) only scan all ports if no devices are in config
 * (2017-05-14) First working update of device data: Device name can be changed
 * (2017-05-15) Read all information from first ethernet device
+* (2017-05-20) Some GUI-infrastructure ti check for valid ip adresses
+* (2017-05-22) Update of method (static, dhcp) for IP-connection implemented
