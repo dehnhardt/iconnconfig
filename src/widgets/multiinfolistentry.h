@@ -9,7 +9,8 @@ public:
 		NONE = -1,
 		GLOBAL_DEVICE_INFO = 0,
 		NETWORK_INFO,
-		MIDI_INFO
+		MIDI_INFO,
+		PORT_ROUTING
 	};
 
 public:

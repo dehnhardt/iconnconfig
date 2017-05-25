@@ -67,7 +67,8 @@ SOURCES +=\
     src/sysex/retsetmidiportinfo.cpp \
     src/sysex/retsetmidiinfo.cpp \
     src/widgets/multiinfolistentry.cpp \
-    src/widgets/controls/portbutton.cpp
+    src/widgets/controls/portbutton.cpp \
+    src/widgets/portroutingwidget.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
@@ -103,7 +104,8 @@ HEADERS  += src/miomain.h \
     src/sysex/retsetmidiportinfo.h \
     src/sysex/retsetmidiinfo.h \
     src/widgets/multiinfolistentry.h \
-    src/widgets/controls/portbutton.h
+    src/widgets/controls/portbutton.h \
+    src/widgets/portroutingwidget.h
 
 FORMS    += src/miomain.ui \
     src/devicedetection.ui \

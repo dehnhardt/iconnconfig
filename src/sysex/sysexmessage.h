@@ -60,8 +60,16 @@ public:
     RET_SET_MIDI_INFO,  /*!< Returns information about the midi parameters */
     GET_MIDI_PORT_INFO, /*!< Queuery the information about a specific MIDI Port
                            */
-    RET_SET_MIDI_PORT_INFO, /*!< Returns or set the MIDI-Information for a
-                               specific port */
+		RET_SET_MIDI_PORT_INFO,   /*!< Returns or set the MIDI-Information for a
+																																																						 specific port */
+		GET_MIDI_PORT_FILTER,     /*!< Queueries infomation about current midi port
+																																																						 filters for a specific port */
+		RET_SET_MIDI_PORT_FILTER, /*!< Returns or writes infomation about current
+																																																			 midi port filters for a specific port*/
+		GET_MIDI_PORT_REMAP,
+		RET_SET_MIDI_PORT_REMAP,
+		GET_MIDI_PORT_ROUTE,
+		RET_SET_MIDI_PORT_ROUTE
   };
 
   enum DeviceInfoItem {

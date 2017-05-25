@@ -15,6 +15,9 @@ public:
 
 protected:
   QWidget *createWidget(MultiInfoListEntry *entry);
+
+private:
+	int countDinPorts = 0;
 };
 
 #endif // PORTSWIDGET_H

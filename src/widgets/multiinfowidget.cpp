@@ -42,7 +42,7 @@ void MultiInfoWidget::createInfoSections() {
     if (entry->index == -1)
       item = QString(entry->name.c_str());
     else
-      item = QString::asprintf("%s %i", entry->name.c_str(), entry->index);
+			item = QString::asprintf("%s %i", entry->name.c_str(), entry->index + 1);
     ui->infoList->addItem(item);
   }
 }
