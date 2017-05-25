@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/pixmaps">
+        <file alias="midijack">resources/midijack_svg.xpm</file>
+    </qresource>
+</RCC>

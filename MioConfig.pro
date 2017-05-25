@@ -66,7 +66,8 @@ SOURCES +=\
     src/sysex/getmidiinfo.cpp \
     src/sysex/retsetmidiportinfo.cpp \
     src/sysex/retsetmidiinfo.cpp \
-    src/widgets/multiinfolistentry.cpp
+    src/widgets/multiinfolistentry.cpp \
+    src/widgets/controls/portbutton.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
@@ -101,7 +102,8 @@ HEADERS  += src/miomain.h \
     src/sysex/getmidiinfo.h \
     src/sysex/retsetmidiportinfo.h \
     src/sysex/retsetmidiinfo.h \
-    src/widgets/multiinfolistentry.h
+    src/widgets/multiinfolistentry.h \
+    src/widgets/controls/portbutton.h
 
 FORMS    += src/miomain.ui \
     src/devicedetection.ui \
@@ -112,7 +114,8 @@ unix:!macx: LIBS += -lasound \
                     -lusb-1.0
 
 RESOURCES += \
-    translations.qrc
+    translations.qrc \
+    resources.qrc
 
 DISTFILES += \
     tr/mioconfig_de_DE.qm \
