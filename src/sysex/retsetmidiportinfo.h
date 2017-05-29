@@ -9,6 +9,8 @@ public:
 
 	RetSetMidiPortInfo(Command cmd, BYTE_VECTOR *message, Device *device)
 			: SysExMessage(cmd, message, device) {}
+
+	enum MidiPortType { DIN, USB_DEVICE, USB_HOST, ETHERNET };
 };
 
 #endif // RETSETMIDIPORTINFO_H
