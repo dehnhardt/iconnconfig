@@ -39,13 +39,13 @@ void PortButton::paintEvent(QPaintEvent *event) {
                          QPainter::Antialiasing);
   QFont font = painter.font();
   font.setBold(true);
-  font.setPointSize(10);
+  font.setPointSize(12);
   painter.setFont(font);
   if (isChecked()) {
     QPen penHText(QColor("#66ff66"));
     painter.setPen(penHText);
   } else {
-    QPen penHText(QColor("#ffffff"));
+    QPen penHText(QColor("#cccccc"));
     painter.setPen(penHText);
   }
   if (rect1.intersects(rect))
