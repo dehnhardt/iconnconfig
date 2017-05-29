@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="41.677429mm"
+   height="42.073952mm"
+   viewBox="0 0 147.67593 149.08093"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="midijack.svg"
+   inkscape:export-filename="/home/dehnhardt/Graphik/midijack.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs4">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient4362">
+      <stop
+         style="stop-color:#909090;stop-opacity:1;"
+         offset="0"
+         id="stop4364" />
+      <stop
+         style="stop-color:#909090;stop-opacity:0;"
+         offset="1"
+         id="stop4366" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient4186"
+       osb:paint="gradient">
+      <stop
+         style="stop-color:#909090;stop-opacity:1;"
+         offset="0"
+         id="stop4188" />
+      <stop
+         style="stop-color:#909090;stop-opacity:0;"
+         offset="1"
+         id="stop4190" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4362"
+       id="linearGradient4368"
+       x1="122.07792"
+       y1="343.72388"
+       x2="495.18558"
+       y2="588.83344"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.76023167"
+     inkscape:cx="166.7183"
+     inkscape:cy="157.30503"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1366"
+     inkscape:window-height="744"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     showguides="false"
+     inkscape:guide-bbox="true"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0">
+    <sodipodi:guide
+       position="74.626578,81.162188"
+       orientation="1,0"
+       id="guide6663" />
+    <sodipodi:guide
+       position="74.626578,81.162188"
+       orientation="0,1"
+       id="guide6665" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     style="opacity:1"
+     transform="translate(-183.83055,-366.41139)">
+    <g
+       id="g4156">
+      <path
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         sodipodi:nodetypes="ssscscs"
+         inkscape:connector-curvature="0"
+         d="m 187.98075,434.57554 c 3.40425,-36.77572 34.07392,-64.75199 70.51039,-64.31818 36.43647,0.43381 66.44946,29.13257 69.00065,65.9792 2.55119,36.84663 -23.21295,69.51363 -59.23639,75.10502 -2.86125,-3.84551 -6.92205,-6.07447 -11.20227,-6.14407 -4.28023,-0.0696 -8.65739,2.12491 -11.59797,5.87436 -35.87855,-6.44921 -60.87866,-39.72061 -57.47441,-76.49633 z"
+         style="opacity:1;fill:#181818;fill-opacity:1;stroke:url(#linearGradient4368);stroke-width:7.68200016;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="path4160" />
+      <ellipse
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:transform-center-x="-0.23253003"
+         inkscape:transform-center-y="-40.692755"
+         ry="7.1904211"
+         rx="7.1988521"
+         cy="393.65414"
+         cx="258.43594"
+         id="path6746"
+         style="opacity:1;fill:#ededed;fill-opacity:1;stroke:#c6c6c6;stroke-width:2.41899991;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <ellipse
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         transform="matrix(0.70710678,0.70710678,-0.70710678,0.70710678,0,0)"
+         style="opacity:1;fill:#ededed;fill-opacity:1;stroke:#c6c6c6;stroke-width:2.41899991;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="ellipse6752"
+         cx="489.93954"
+         cy="83.859497"
+         rx="7.1988521"
+         ry="7.1904211"
+         inkscape:transform-center-y="-28.609707"
+         inkscape:transform-center-x="-28.938541" />
+      <ellipse
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:transform-center-x="-40.692765"
+         inkscape:transform-center-y="0.23250696"
+         ry="7.1904211"
+         rx="7.1988521"
+         cy="-298.89618"
+         cx="434.57941"
+         id="ellipse6754"
+         style="opacity:1;fill:#ededed;fill-opacity:1;stroke:#c6c6c6;stroke-width:2.41899991;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         transform="matrix(0,1,-1,0,0,0)" />
+      <ellipse
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)"
+         style="opacity:1;fill:#ededed;fill-opacity:1;stroke:#c6c6c6;stroke-width:2.41899991;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="ellipse6756"
+         cx="-124.31973"
+         cy="449.01428"
+         rx="7.1988521"
+         ry="7.1904211"
+         inkscape:transform-center-y="-28.93853"
+         inkscape:transform-center-x="28.609696" />
+      <ellipse
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:transform-center-x="40.692748"
+         inkscape:transform-center-y="-0.23251925"
+         ry="7.1904211"
+         rx="7.1988521"
+         cy="217.51067"
+         cx="-434.11438"
+         id="ellipse6758"
+         style="opacity:1;fill:#ededed;fill-opacity:1;stroke:#c6c6c6;stroke-width:2.41899991;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         transform="matrix(0,-1,1,0,0,0)" />
+    </g>
+  </g>
+</svg>

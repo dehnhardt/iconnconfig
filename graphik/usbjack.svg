@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="150"
+   height="150"
+   viewBox="0 0 150 150"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="usbjack.svg"
+   inkscape:export-filename="/home/dehnhardt/Graphik/midijack.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs4">
+    <linearGradient
+       id="linearGradient4186"
+       osb:paint="gradient">
+      <stop
+         style="stop-color:#909090;stop-opacity:1;"
+         offset="0"
+         id="stop4188" />
+      <stop
+         style="stop-color:#909090;stop-opacity:0;"
+         offset="1"
+         id="stop4190" />
+    </linearGradient>
+    <style
+       id="style4085"
+       type="text/css">
+   
+    .fil0 {fill:black;fill-rule:nonzero}
+   
+  </style>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="3.77"
+     inkscape:cx="119.39675"
+     inkscape:cy="67.287887"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="979"
+     inkscape:window-x="-4"
+     inkscape:window-y="50"
+     inkscape:window-maximized="1"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0">
+    <sodipodi:guide
+       position="74.626578,81.162188"
+       orientation="1,0"
+       id="guide6663" />
+    <sodipodi:guide
+       position="74.626578,81.162188"
+       orientation="0,1"
+       id="guide6665" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-183.83055,-365.49232)">
+    <path
+       id="path4089"
+       d="m 199.00892,454.08887 120.46438,0 0,-56.7509 -120.46438,0 0,56.7509 z m 7.25204,-6.54818 105.96031,0 c 0.80578,0 1.61156,-1.09136 1.61156,-2.18273 l 0,-22.37295 c 0,-1.09136 -0.80578,-2.18273 -1.61156,-2.18273 l -105.96031,0 c -0.80578,0 -1.61156,1.09137 -1.61156,2.18273 l 0,22.37295 c 0,1.09137 0.80578,2.18273 1.61156,2.18273 z m 118.04704,20.73591 -129.73088,0 c -1.61156,0 -2.82023,-1.09137 -4.02891,-2.18273 l 0,0 c -0.80578,-1.09136 -1.61156,-3.27409 -1.61156,-5.45682 l 0,-69.84727 c 0,-2.18272 0.80578,-3.81977 1.61156,-5.45681 0.80579,-1.09137 2.41735,-2.18273 4.02891,-2.18273 l 129.73088,0 c 1.61156,0 2.82023,1.09136 4.0289,2.18273 l 0,0 c 1.20868,1.63704 1.61157,3.27409 1.61157,5.45681 l 0,69.84727 c 0,2.18273 -0.80578,3.81977 -1.61157,5.45682 -0.80578,1.09136 -2.41734,2.18273 -4.0289,2.18273 z"
+       class="fil0"
+       inkscape:connector-curvature="0"
+       style="fill:#000000;fill-rule:nonzero" />
+  </g>
+</svg>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   version="1.1"
+   id="svg2"
+   viewBox="0 0 147.67593 149.08093"
+   height="42.073952mm"
+   width="41.677429mm">
+  <defs
+     id="defs4">
+    <linearGradient
+       id="linearGradient4362">
+      <stop
+         id="stop4364"
+         offset="0"
+         style="stop-color:#909090;stop-opacity:1;" />
+      <stop
+         id="stop4366"
+         offset="1"
+         style="stop-color:#909090;stop-opacity:0;" />
+    </linearGradient>
+    <linearGradient
+       osb:paint="gradient"
+       id="linearGradient4186">
+      <stop
+         id="stop4188"
+         offset="0"
+         style="stop-color:#909090;stop-opacity:1;" />
+      <stop
+         id="stop4190"
+         offset="1"
+         style="stop-color:#909090;stop-opacity:0;" />
+    </linearGradient>
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       y2="588.83344"
+       x2="495.18558"
+       y1="343.72388"
+       x1="122.07792"
+       id="linearGradient4368"
+       xlink:href="#linearGradient4362" />
+  </defs>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-183.83055,-366.41139)"
+     style="opacity:1"
+     id="layer1">
+    <g
+       id="g4156">
+      <path
+         id="path4160"
+         style="opacity:1;fill:#181818;fill-opacity:1;stroke:url(#linearGradient4368);stroke-width:7.68200016;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 187.98075,434.57554 c 3.40425,-36.77572 34.07392,-64.75199 70.51039,-64.31818 36.43647,0.43381 66.44946,29.13257 69.00065,65.9792 2.55119,36.84663 -23.21295,69.51363 -59.23639,75.10502 -2.86125,-3.84551 -6.92205,-6.07447 -11.20227,-6.14407 -4.28023,-0.0696 -8.65739,2.12491 -11.59797,5.87436 -35.87855,-6.44921 -60.87866,-39.72061 -57.47441,-76.49633 z" />
+      <ellipse
+         style="opacity:1;fill:#ededed;fill-opacity:1;stroke:#c6c6c6;stroke-width:2.41899991;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="path6746"
+         cx="258.43594"
+         cy="393.65414"
+         rx="7.1988521"
+         ry="7.1904211" />
+      <ellipse
+         ry="7.1904211"
+         rx="7.1988521"
+         cy="83.859497"
+         cx="489.93954"
+         id="ellipse6752"
+         style="opacity:1;fill:#ededed;fill-opacity:1;stroke:#c6c6c6;stroke-width:2.41899991;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         transform="matrix(0.70710678,0.70710678,-0.70710678,0.70710678,0,0)" />
+      <ellipse
+         transform="matrix(0,1,-1,0,0,0)"
+         style="opacity:1;fill:#ededed;fill-opacity:1;stroke:#c6c6c6;stroke-width:2.41899991;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="ellipse6754"
+         cx="434.57941"
+         cy="-298.89618"
+         rx="7.1988521"
+         ry="7.1904211" />
+      <ellipse
+         ry="7.1904211"
+         rx="7.1988521"
+         cy="449.01428"
+         cx="-124.31973"
+         id="ellipse6756"
+         style="opacity:1;fill:#ededed;fill-opacity:1;stroke:#c6c6c6;stroke-width:2.41899991;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)" />
+      <ellipse
+         transform="matrix(0,-1,1,0,0,0)"
+         style="opacity:1;fill:#ededed;fill-opacity:1;stroke:#c6c6c6;stroke-width:2.41899991;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="ellipse6758"
+         cx="-434.11438"
+         cy="217.51067"
+         rx="7.1988521"
+         ry="7.1904211" />
+    </g>
+  </g>
+</svg>
