@@ -3,10 +3,12 @@
 #include "sysex/getinfo.h"
 #include "sysex/getinfolist.h"
 #include "sysex/getmidiinfo.h"
+#include "sysex/getmidiportinfo.h"
 #include "sysex/midi.h"
 #include "sysex/retcommandlist.h"
 #include "sysex/retinfolist.h"
 #include "sysex/retsetmidiinfo.h"
+#include "sysex/retsetmidiportinfo.h"
 
 #include <array>
 #include <cstring>
@@ -147,7 +149,17 @@ bool Device::checkSysex(BYTE_VECTOR *data) {
   BYTE_VECTOR *dataHeader =
       new BYTE_VECTOR(data->begin() + 1, data->begin() + 12);
   BYTE_VECTOR *localHeader = getFullHeader();
-  return MIDI::compareByteVector(dataHeader, localHeader);
+	return MIDI::compareByteVector(dataHeader, localHeader);
+}
+
+void Device::requestMidiPortInfos() {
+	int midiPorts = getMidiInfo()->getMidiPorts();
+	GetMidiPortInfo *info = new GetMidiPortInfo(this);
+	for (int i = 1; i <= midiPorts; ++i) {
+		info->setPortNumer(i);
+		RetSetMidiPortInfo *midiPortInfo = (RetSetMidiPortInfo *)info->query();
+		midiPortInfo->printRawData();
+	}
 }
 
 bool Device::queryDeviceInfo() {
@@ -203,20 +215,24 @@ bool Device::queryDeviceInfo() {
 			GetMidiInfo *getMidiInfo = new GetMidiInfo(this);
 			this->midiInfo = (RetSetMidiInfo *)getMidiInfo->query();
 		}
+		if (commands->isCommandSupported(SysExMessage::GET_MIDI_PORT_INFO) &&
+				this->midiInfo != 0) {
+			requestMidiPortInfos();
+		}
 
 #ifdef __MIO_SIMULATE__
-  }
+	}
 #endif //__MIO_SIMULATE__
-  return true;
+	return true;
 }
 
 bool Device::hasMidiSupport() { return (getMidiInfo() != 0); }
 
 BYTE_VECTOR *Device::nextTransactionId() {
-  if (transactionId > 16000)
-    transactionId = 0;
-  BYTE_VECTOR *v = MIDI::byteSplit(++transactionId, 2);
-  return v;
+	if (transactionId > 16000)
+		transactionId = 0;
+	BYTE_VECTOR *v = MIDI::byteSplit(++transactionId, 2);
+	return v;
 }
 
 BYTE_VECTOR *Device::manufacturerHeader = 0;

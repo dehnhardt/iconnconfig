@@ -12,6 +12,7 @@ class SysExMessage;
 class RetCommandList;
 class RetInfoList;
 class RetSetMidiInfo;
+class RetSetMidiPortInfo;
 class GetInfo;
 
 class Device {
@@ -104,12 +105,14 @@ private:
   RetCommandList *commands = 0;
   RetInfoList *ii = 0;
   GetInfo *deviceInfo = 0;
+	std::map<int, std::vector<RetSetMidiPortInfo *>> *midiPortInfos = 0;
 
-  BYTE_VECTOR *deviceHeader = 0;
+	BYTE_VECTOR *deviceHeader = 0;
   BYTE_VECTOR *fullHeader = 0;
 
   void setupMidi();
   bool checkSysex(BYTE_VECTOR *data);
+	void requestMidiPortInfos();
 };
 
 #endif // DEVICE_H
