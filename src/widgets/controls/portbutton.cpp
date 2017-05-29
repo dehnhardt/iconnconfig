@@ -11,6 +11,13 @@ PortButton::PortButton(const long value, const QString &text,
   case MIDI:
     icon = QIcon(":/pixmaps/midijack");
     break;
+  case ETH:
+    icon = QIcon(":/pixmaps/ethernetjack");
+    break;
+  case USB_DEVICE:
+    icon = QIcon(":/pixmaps/usbjack");
+    break;
+
   default:
     break;
   }
