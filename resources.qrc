@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/pixmaps">
         <file alias="midijack">resources/midijack_svg.xpm</file>
+        <file alias="usbjack">resources/usbjack.xpm</file>
+        <file alias="ethernetjack">resources/ethernetjack.xpm</file>
     </qresource>
 </RCC>
