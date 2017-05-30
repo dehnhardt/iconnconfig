@@ -14,6 +14,7 @@
 #include <cstring>
 #include <iostream>
 #include <sstream>
+#include <stdexcept>
 #include <unistd.h>
 
 Device::Device(int inPortNumber, int outPortNumber, long serialNumber,
@@ -154,11 +155,29 @@ bool Device::checkSysex(BYTE_VECTOR *data) {
 
 void Device::requestMidiPortInfos() {
 	int midiPorts = getMidiInfo()->getMidiPorts();
+	if (midiPortInfos == 0) {
+		midiPortInfos = new std::map<int, std::vector<RetSetMidiPortInfo *> *>();
+	}
 	GetMidiPortInfo *info = new GetMidiPortInfo(this);
 	for (int i = 1; i <= midiPorts; ++i) {
+		std::vector<RetSetMidiPortInfo *> *v = 0;
 		info->setPortNumer(i);
 		RetSetMidiPortInfo *midiPortInfo = (RetSetMidiPortInfo *)info->query();
-		midiPortInfo->printRawData();
+		int portType = (int)midiPortInfo->getPortType();
+		try {
+			v = midiPortInfos->at(portType);
+		} catch (const std::out_of_range &oor) {
+			v = new std::vector<RetSetMidiPortInfo *>();
+			midiPortInfos->insert(
+					std::pair<int, std::vector<RetSetMidiPortInfo *> *>(portType, v));
+		}
+
+		if (v == 0) {
+			v = new std::vector<RetSetMidiPortInfo *>();
+			midiPortInfos->insert(
+					std::pair<int, std::vector<RetSetMidiPortInfo *> *>(portType, v));
+		}
+		v->push_back(midiPortInfo);
 	}
 }
 
@@ -225,6 +244,8 @@ bool Device::queryDeviceInfo() {
 #endif //__MIO_SIMULATE__
 	return true;
 }
+
+MIDI_PORT_INFOS *Device::getMidiPortInfos() const { return midiPortInfos; }
 
 bool Device::hasMidiSupport() { return (getMidiInfo() != 0); }
 
