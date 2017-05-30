@@ -2,6 +2,7 @@
 #define PORTSWIDGET_H
 
 #include "../device.h"
+#include "../sysex/retsetmidiportinfo.h"
 #include "multiinfowidget.h"
 
 #include <QDockWidget>
@@ -18,6 +19,9 @@ protected:
 
 private:
 	int countDinPorts = 0;
+	std::string getPortTypeName(MidiPortType portType);
+	void getMidiPortSections(Device *device);
+	void getMidiPorts(std::vector<RetSetMidiPortInfo *> *midiPortInfos);
 };
 
 #endif // PORTSWIDGET_H
