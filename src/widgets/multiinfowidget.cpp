@@ -37,13 +37,20 @@ void MultiInfoWidget::visible(bool visible) {
 void MultiInfoWidget::createInfoSections() {
   std::vector<MultiInfoListEntry *>::iterator it;
   for (it = infoSections->begin(); it != infoSections->end(); ++it) {
-    MultiInfoListEntry *entry = (*it);
-    QString item;
+		MultiInfoListEntry *entry = (*it);
+		QListWidgetItem *item = new QListWidgetItem();
     if (entry->index == -1)
-      item = QString(entry->name.c_str());
+			item->setText(QString(entry->name.c_str()));
     else
-			item = QString::asprintf("%s %i", entry->name.c_str(), entry->index + 1);
-    ui->infoList->addItem(item);
+			item->setText(
+					QString::asprintf("%s %i", entry->name.c_str(), entry->index + 1));
+		Qt::ItemFlags flags = item->flags();
+		if (!entry->enabled)
+			flags = flags & ~Qt::ItemIsEnabled;
+		if (!entry->selectable)
+			flags = flags & ~Qt::ItemIsSelectable;
+		item->setFlags(flags);
+		ui->infoList->addItem(item);
   }
 }
 
