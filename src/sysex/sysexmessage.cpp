@@ -193,5 +193,5 @@ CommandAcceptedAnswers SysExMessage::commandAcceptedAnswers = {
     {GET_GIZMO_COUNT, AcceptedAnswers{RET_GIZMO_COUNT, ACK}},
     {GET_GIZMO_INFO, AcceptedAnswers{RET_GIZMO_INFO, ACK}},
     {GET_MIDI_INFO, AcceptedAnswers{RET_SET_MIDI_INFO, ACK}},
-    {GET_MIDI_PORT_INFO, AcceptedAnswers{RET_SET_MIDI_PORT_INFO}},
+		{GET_MIDI_PORT_INFO, AcceptedAnswers{RET_SET_MIDI_PORT_INFO, ACK}},
     {RET_SET_MIDI_PORT_INFO, AcceptedAnswers{ACK}}};
