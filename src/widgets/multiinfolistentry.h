@@ -7,7 +7,8 @@ class MultiInfoListEntry {
 public:
 	enum ListEntryCode {
 		NONE = -1,
-		GLOBAL_DEVICE_INFO = 0,
+		SECTION = 0,
+		GLOBAL_DEVICE_INFO,
 		NETWORK_INFO,
 		MIDI_INFO,
 		PORT_ROUTING
@@ -15,13 +16,14 @@ public:
 
 public:
 	MultiInfoListEntry();
-	MultiInfoListEntry(ListEntryCode entryCode, std::string name, int index = -1)
-			: entryCode(entryCode), name(name), index(index) {}
+	MultiInfoListEntry(ListEntryCode entryCode, std::string name, int index = -1);
 
 	ListEntryCode entryCode = NONE;
 	std::string name;
 	int index = -1;
 	QWidget *widget = 0;
+	bool enabled = true;
+	bool selectable = true;
 };
 
 #endif // MULTIINFOLISTENTRY_H
