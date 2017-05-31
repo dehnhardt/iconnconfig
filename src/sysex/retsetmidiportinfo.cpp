@@ -69,6 +69,22 @@ int RetSetMidiPortInfo::getPortNumberOfType() const {
 	return 0;
 }
 
+int RetSetMidiPortInfo::getJackNumberOfType() const {
+	switch (portType) {
+	case DIN:
+		return 0;
+	case USB_DEVICE:
+		return jackNumber;
+	case USB_HOST:
+		return jackNumber;
+	case ETHERNET:
+		return jackNumber;
+	case NONE:
+		return 0;
+	}
+	return 0;
+}
+
 std::string RetSetMidiPortInfo::getPortName() const { return portName; }
 
 void RetSetMidiPortInfo::setPortName(const std::string &value) {
