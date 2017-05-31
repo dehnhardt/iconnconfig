@@ -23,6 +23,7 @@ Device::Device(int inPortNumber, int outPortNumber, long serialNumber,
   this->outPortNumber = outPortNumber;
   this->serialNumber = new MIDISysexValue(serialNumber, 5);
   this->productId = new MIDISysexValue(productId, 2);
+	this->debug = true;
   setupMidi();
 }
 
@@ -134,9 +135,18 @@ void Device::sentSysex(BYTE_VECTOR *data) { midiout->sendMessage(data); }
 BYTE_VECTOR *Device::retrieveSysex() {
   BYTE_VECTOR *data = new BYTE_VECTOR();
   int i = 0;
-  for (i = 0; i < WAIT_LOOPS && data->size() == 0; i++) {
+	for (i = 0; i < WAIT_LOOPS && data->size() == 0; ++i) {
     SLEEP(WAIT_TIME);
-    midiin->getMessage(data);
+		int y = 0;
+		midiin->getMessage(data);
+		// if there are other messages, skip them
+		while ((data->size() > 0) && (data->at(0) != 0xf0) && (y < 100)) {
+			midiin->getMessage(data);
+			if (debug)
+				std::cout << "Skipping " << std::dec << y << " midi messages"
+									<< std::endl;
+			y++;
+		}
   }
   std::cout << "delay: " << i << std::endl;
   if (checkSysex(data))
@@ -246,6 +256,16 @@ bool Device::queryDeviceInfo() {
 }
 
 MIDI_PORT_INFOS *Device::getMidiPortInfos() const { return midiPortInfos; }
+
+void Device::setDeviceInformation(std::string modelName,
+																	std::string deviceName) {
+	this->modelName = modelName;
+	this->deviceName = deviceName;
+}
+
+bool Device::getDebug() const { return debug; }
+
+void Device::setDebug(bool value) { debug = value; }
 
 bool Device::hasMidiSupport() { return (getMidiInfo() != 0); }
 

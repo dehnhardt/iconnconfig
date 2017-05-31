@@ -37,6 +37,8 @@ public:
 	BYTE_VECTOR *nextTransactionId();
 
 	// getter
+	bool getDebug() const;
+
 	bool hasMidiSupport();
 
 	static BYTE_VECTOR *getManufacturerHeader();
@@ -70,10 +72,8 @@ public:
 #endif
 
 	// setter
-	void setDeviceInformation(std::string modelName, std::string deviceName) {
-		this->modelName = modelName;
-		this->deviceName = deviceName;
-	}
+	void setDebug(bool value);
+	void setDeviceInformation(std::string modelName, std::string deviceName);
 	void setDefault(bool isDefault) { this->isDefault = isDefault; }
 #ifdef __MIO_SIMULATE__
 	void setSimulate() { deviceIsSimulated = true; }
@@ -83,6 +83,9 @@ private:
 #ifdef __MIO_SIMULATE__
 	bool deviceIsSimulated = false;
 #endif
+
+	bool debug = false;
+
 	int inPortNumber;
 	int outPortNumber;
 
