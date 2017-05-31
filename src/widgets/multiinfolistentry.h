@@ -1,6 +1,7 @@
 #ifndef MULTIINFOLISTENTRY_H
 #define MULTIINFOLISTENTRY_H
 
+#include <QIcon>
 #include <QWidget>
 
 class MultiInfoListEntry {
@@ -20,6 +21,7 @@ public:
 
 	ListEntryCode entryCode = NONE;
 	std::string name;
+	QIcon icon;
 	int index = -1;
 	QWidget *widget = 0;
 	bool enabled = true;
