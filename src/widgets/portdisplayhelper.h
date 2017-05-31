@@ -44,7 +44,8 @@ public:
 		case USB_DEVICE:
 			icon = QIcon(":/pixmaps/usbjack");
 			break;
-
+		case USB_HOST:
+			icon = QIcon(":/pixmaps/usbhostjack");
 		default:
 			break;
 		}
