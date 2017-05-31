@@ -25,8 +25,10 @@ void PortsWidget::getMidiPorts(
 	std::vector<RetSetMidiPortInfo *>::iterator it;
 	for (it = midiPortInfos->begin(); it != midiPortInfos->end(); ++it) {
 		RetSetMidiPortInfo *midiPortInfo = *it;
-		infoSections->push_back(new MultiInfoListEntry(
-				MultiInfoListEntry::PORT_ROUTING, midiPortInfo->getPortName()));
+		MultiInfoListEntry *entry = new MultiInfoListEntry(
+				MultiInfoListEntry::PORT_ROUTING, midiPortInfo->getPortName());
+		entry->icon = PortDisplayHelper::getPortIcon(midiPortInfo->getPortType());
+		infoSections->push_back(entry);
 	}
 }
 
@@ -47,7 +49,7 @@ void PortsWidget::getMidiPortSections(Device *device) {
 QWidget *PortsWidget::createWidget(MultiInfoListEntry *entry) {
 	std::cout << "create PortsWidget" << std::endl;
 	PortRoutingWidget *w =
-      new PortRoutingWidget(this->parentWidget(), countDinPorts);
+			new PortRoutingWidget(device, this->parentWidget(), countDinPorts);
   QScrollArea *a = new QScrollArea(this);
   a->setWidget(w);
   return a;
