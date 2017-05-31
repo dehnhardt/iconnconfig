@@ -37,8 +37,12 @@ void PortsWidget::getMidiPortSections(Device *device) {
 	std::map<int, std::vector<RetSetMidiPortInfo *> *>::iterator it;
 	for (it = midiPortInfoSections->begin(); it != midiPortInfoSections->end();
 			 ++it) {
-		MidiPortType portType = (MidiPortType)it->first;
+		int section = it->first;
+		int jack = section & 255;
+		MidiPortType portType = (MidiPortType)(section >> 8);
 		std::string portTypeName = PortDisplayHelper::getMidiPortTypeName(portType);
+		if (jack > 0)
+			portTypeName += " " + std::to_string(jack);
 		infoSections->push_back(
 				new MultiInfoListEntry(MultiInfoListEntry::SECTION, portTypeName));
 		std::vector<RetSetMidiPortInfo *> *midiPortInfos = it->second;

@@ -174,6 +174,8 @@ void Device::requestMidiPortInfos() {
 		info->setPortNumer(i);
 		RetSetMidiPortInfo *midiPortInfo = (RetSetMidiPortInfo *)info->query();
 		int portType = (int)midiPortInfo->getPortType();
+		portType <<= 8;
+		portType += midiPortInfo->getJackNumberOfType();
 		try {
 			v = midiPortInfos->at(portType);
 		} catch (const std::out_of_range &oor) {
