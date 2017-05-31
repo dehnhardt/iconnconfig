@@ -107,7 +107,8 @@ HEADERS  += src/miomain.h \
     src/widgets/multiinfolistentry.h \
     src/widgets/controls/portbutton.h \
     src/widgets/portroutingwidget.h \
-    src/sysex/getmidiportinfo.h
+    src/sysex/getmidiportinfo.h \
+    src/widgets/portdisplayhelper.h
 
 FORMS    += src/miomain.ui \
     src/devicedetection.ui \
