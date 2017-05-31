@@ -19,6 +19,8 @@ MultiInfoWidget::~MultiInfoWidget() { delete ui; }
 
 void MultiInfoWidget::on_infoList_currentRowChanged(int currentRow) {
   MultiInfoListEntry *selectedInfo = infoSections->at(currentRow);
+	if (!selectedInfo->enabled)
+		return;
   if (selectedInfo->widget == 0) {
     selectedInfo->widget = createWidget(selectedInfo);
   }
@@ -56,9 +58,18 @@ void MultiInfoWidget::createInfoSections() {
   }
 }
 
+int MultiInfoWidget::getFirstSelectableRow() {
+	for (int i = 0; i < this->ui->infoList->count(); ++i) {
+		MultiInfoListEntry *selectedInfo = infoSections->at(i);
+		if (selectedInfo->enabled)
+			return i;
+	}
+	return 0;
+}
+
 void MultiInfoWidget::openLastSelectedSection() {
   if (this->ui->infoList->currentRow() == -1) {
-    this->ui->infoList->setCurrentRow(0);
+		this->ui->infoList->setCurrentRow(getFirstSelectableRow());
   } else {
     on_infoList_currentRowChanged(this->ui->infoList->currentRow());
   }

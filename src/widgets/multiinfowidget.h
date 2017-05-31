@@ -18,6 +18,8 @@ class MultiInfoWidget;
 class MultiInfoWidget : public QDockWidget {
   Q_OBJECT
 
+	int getFirstSelectableRow();
+
 public:
   explicit MultiInfoWidget(MioMain *parent = 0, Device *device = 0,
                            QString windowTitle = tr("MultiInfoWidget"));
