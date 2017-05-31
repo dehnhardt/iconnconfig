@@ -1,26 +1,14 @@
 #include "portbutton.h"
+#include "../portdisplayhelper.h"
 
 #include <QPaintEvent>
 #include <QStyleOptionToolButton>
 #include <QStylePainter>
 
 PortButton::PortButton(const long value, const QString &text,
-                       const PortType portType, QWidget *parent)
-    : QToolButton(parent), value(value), portType(portType) {
-  switch (portType) {
-  case MIDI:
-    icon = QIcon(":/pixmaps/midijack");
-    break;
-  case ETH:
-    icon = QIcon(":/pixmaps/ethernetjack");
-    break;
-  case USB_DEVICE:
-    icon = QIcon(":/pixmaps/usbjack");
-    break;
-
-  default:
-    break;
-  }
+											 const MidiPortType midiPortType, QWidget *parent)
+		: QToolButton(parent), value(value), midiPortType(midiPortType) {
+	icon = PortDisplayHelper::getPortIcon(midiPortType);
   setIcon(icon);
   setText(text);
   setCheckable(true);

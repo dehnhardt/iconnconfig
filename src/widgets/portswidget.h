@@ -19,7 +19,6 @@ protected:
 
 private:
 	int countDinPorts = 0;
-	std::string getPortTypeName(MidiPortType portType);
 	void getMidiPortSections(Device *device);
 	void getMidiPorts(std::vector<RetSetMidiPortInfo *> *midiPortInfos);
 };

@@ -1,14 +1,14 @@
 #ifndef PORTBUTTON_H
 #define PORTBUTTON_H
 
+#include "../portdisplayhelper.h"
+
 #include <QToolButton>
 
 class PortButton : public QToolButton {
 public:
-	enum PortType { MIDI, USB_DEVICE, USB_HOTS, ETH };
-
-	PortButton(const long val, const QString &text, const PortType portType,
-						 QWidget *parent = Q_NULLPTR);
+	PortButton(const long val, const QString &text,
+						 const MidiPortType midiPortType, QWidget *parent = Q_NULLPTR);
 
 	long getValue() const;
 	void setValue(long value);
@@ -18,7 +18,7 @@ protected:
 
 private:
 	long value = 0;
-	PortType portType;
+	MidiPortType midiPortType;
 	QIcon icon;
 };
 
