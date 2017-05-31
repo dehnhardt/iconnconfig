@@ -12,8 +12,6 @@ public:
 	RetSetMidiPortInfo(Command cmd, BYTE_VECTOR *message, Device *device)
 			: SysExMessage(cmd, message, device) {}
 
-	// enum MidiPortType { NONE, DIN, USB_DEVICE, USB_HOST, ETHERNET };
-
 	void parseAnswerData();
 
 public:
@@ -27,6 +25,7 @@ public:
 	int getUsbHostPort() const;
 	void setUsbHostPort(int value);
 	int getEthernetSession() const;
+	int getPortNumerOfType() const;
 	std::string getPortName() const;
 
 public:

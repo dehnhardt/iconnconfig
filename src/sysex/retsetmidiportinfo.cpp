@@ -53,6 +53,22 @@ void RetSetMidiPortInfo::setUsbHostPort(int value) { usbHostPort = value; }
 
 int RetSetMidiPortInfo::getEthernetSession() const { return ethernetSession; }
 
+int RetSetMidiPortInfo::getPortNumberOfType() const {
+	switch (portType) {
+	case DIN:
+		return jackNumber;
+	case USB_DEVICE:
+		return usbDevicePort;
+	case USB_HOST:
+		return usbHostPort;
+	case ETHERNET:
+		return ethernetSession;
+	case NONE:
+		return 0;
+	}
+	return 0;
+}
+
 std::string RetSetMidiPortInfo::getPortName() const { return portName; }
 
 void RetSetMidiPortInfo::setPortName(const std::string &value) {
