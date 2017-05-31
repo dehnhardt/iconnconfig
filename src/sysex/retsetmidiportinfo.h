@@ -25,7 +25,7 @@ public:
 	int getUsbHostPort() const;
 	void setUsbHostPort(int value);
 	int getEthernetSession() const;
-	int getPortNumerOfType() const;
+	int getPortNumberOfType() const;
 	std::string getPortName() const;
 
 public:
