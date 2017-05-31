@@ -50,6 +50,8 @@ void MultiInfoWidget::createInfoSections() {
 		if (!entry->selectable)
 			flags = flags & ~Qt::ItemIsSelectable;
 		item->setFlags(flags);
+		if (!entry->icon.isNull())
+			item->setIcon(entry->icon);
 		ui->infoList->addItem(item);
   }
 }
