@@ -12,22 +12,20 @@ void PortRoutingWidget::createWidgets() {
   for (int i = 0; i < numDinPorts; ++i) {
     std::stringstream s;
     s << (i + 1);
-    PortButton *b =
-        new PortButton(i, QString(s.str().c_str()), PortButton::MIDI, this);
+		PortButton *b = new PortButton(i, QString(s.str().c_str()), DIN, this);
     layout->addWidget(b, 0, i);
   }
   for (int i = 0; i < 10; ++i) {
     std::stringstream s;
     s << (i + 1);
-    PortButton *b = new PortButton(i, QString(s.str().c_str()),
-                                   PortButton::USB_DEVICE, this);
+		PortButton *b =
+				new PortButton(i, QString(s.str().c_str()), USB_DEVICE, this);
     layout->addWidget(b, 1, i);
   }
   for (int i = 0; i < 5; ++i) {
     std::stringstream s;
     s << (i + 1);
-    PortButton *b =
-        new PortButton(i, QString(s.str().c_str()), PortButton::ETH, this);
+		PortButton *b = new PortButton(i, QString(s.str().c_str()), ETHERNET, this);
     layout->addWidget(b, 2, i);
   }
 }
