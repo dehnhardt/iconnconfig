@@ -25,6 +25,8 @@ void PortButton::paintEvent(QPaintEvent *event) {
   QPainter painter(this);
   QRect rect = event->rect();
   QRect rect1 = this->rect();
+	QRect iconRect =
+			QRect(rect1.left(), rect1.top() + 5, rect1.width(), iconSize().height());
 
   painter.setRenderHints(QPainter::SmoothPixmapTransform |
                          QPainter::Antialiasing);
@@ -40,7 +42,7 @@ void PortButton::paintEvent(QPaintEvent *event) {
     painter.setPen(penHText);
   }
   if (rect1.intersects(rect))
-		painter.drawText(rect1, Qt::AlignCenter, QString::number(portNumber));
+		painter.drawText(iconRect, Qt::AlignCenter, QString::number(portNumber));
 }
 
 long PortButton::getValue() const { return value; }
