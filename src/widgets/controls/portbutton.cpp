@@ -5,10 +5,13 @@
 #include <QStyleOptionToolButton>
 #include <QStylePainter>
 
-PortButton::PortButton(const long value, const QString &text,
-											 const MidiPortType midiPortType, QWidget *parent)
-		: QToolButton(parent), value(value), midiPortType(midiPortType) {
+PortButton::PortButton(const long value, const int portNumber,
+											 const QString &text, const MidiPortType midiPortType,
+											 QWidget *parent)
+		: QToolButton(parent), value(value), portNumber(portNumber),
+			midiPortType(midiPortType) {
 	icon = PortDisplayHelper::getPortIcon(midiPortType);
+	setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
   setIcon(icon);
   setText(text);
   setCheckable(true);
@@ -37,7 +40,7 @@ void PortButton::paintEvent(QPaintEvent *event) {
     painter.setPen(penHText);
   }
   if (rect1.intersects(rect))
-    painter.drawText(rect1, Qt::AlignCenter, this->text());
+		painter.drawText(rect1, Qt::AlignCenter, QString::number(portNumber));
 }
 
 long PortButton::getValue() const { return value; }

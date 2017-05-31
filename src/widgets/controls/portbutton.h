@@ -7,7 +7,7 @@
 
 class PortButton : public QToolButton {
 public:
-	PortButton(const long val, const QString &text,
+	PortButton(const long val, const int portNumber, const QString &text,
 						 const MidiPortType midiPortType, QWidget *parent = Q_NULLPTR);
 
 	long getValue() const;
@@ -18,6 +18,7 @@ protected:
 
 private:
 	long value = 0;
+	int portNumber = 0;
 	MidiPortType midiPortType;
 	QIcon icon;
 };
