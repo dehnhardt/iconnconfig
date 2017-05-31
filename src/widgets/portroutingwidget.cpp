@@ -2,32 +2,39 @@
 
 #include <sstream>
 
-PortRoutingWidget::PortRoutingWidget(QWidget *parent, int numDinPorts)
-    : QWidget(parent), numDinPorts(numDinPorts) {
+PortRoutingWidget::PortRoutingWidget(Device *device, QWidget *parent,
+																		 int numDinPorts)
+		: QWidget(parent), device(device), numDinPorts(numDinPorts) {
   createWidgets();
+}
+
+void PortRoutingWidget::getMidiPorts(
+		int line, std::vector<RetSetMidiPortInfo *> *midiPortInfos) {
+	std::vector<RetSetMidiPortInfo *>::iterator it;
+	for (it = midiPortInfos->begin(); it != midiPortInfos->end(); ++it) {
+		RetSetMidiPortInfo *midiPortInfo = *it;
+		int jackNumber = midiPortInfo->getPortNumberOfType();
+		PortButton *p = new PortButton(midiPortInfo->getPortId(), jackNumber,
+																	 QString(midiPortInfo->getPortName().c_str()),
+																	 midiPortInfo->getPortType(), this);
+		layout->addWidget(p, line, jackNumber);
+	}
+}
+
+void PortRoutingWidget::getMidiPortSections(Device *device) {
+	int line = 0;
+	MIDI_PORT_INFOS *midiPortInfoSections = device->getMidiPortInfos();
+	std::map<int, std::vector<RetSetMidiPortInfo *> *>::iterator it;
+	for (it = midiPortInfoSections->begin(); it != midiPortInfoSections->end();
+			 ++it, ++line) {
+		std::vector<RetSetMidiPortInfo *> *midiPortInfos = it->second;
+		getMidiPorts(line, midiPortInfos);
+	}
 }
 
 void PortRoutingWidget::createWidgets() {
   layout = new QGridLayout(this);
-  for (int i = 0; i < numDinPorts; ++i) {
-    std::stringstream s;
-    s << (i + 1);
-		PortButton *b = new PortButton(i, QString(s.str().c_str()), DIN, this);
-    layout->addWidget(b, 0, i);
-  }
-  for (int i = 0; i < 10; ++i) {
-    std::stringstream s;
-    s << (i + 1);
-		PortButton *b =
-				new PortButton(i, QString(s.str().c_str()), USB_DEVICE, this);
-    layout->addWidget(b, 1, i);
-  }
-  for (int i = 0; i < 5; ++i) {
-    std::stringstream s;
-    s << (i + 1);
-		PortButton *b = new PortButton(i, QString(s.str().c_str()), ETHERNET, this);
-    layout->addWidget(b, 2, i);
-  }
+	getMidiPortSections(device);
 }
 
 void PortRoutingWidget::setupWidgets() {}
