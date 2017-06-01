@@ -31,6 +31,7 @@ void PortRoutingWidget::createMidiPorts(
 											 QString(midiPortInfo->getPortName().c_str()),
 											 midiPortInfo->getPortType(), this);
 		p->setEnabled(midiPortInfo->getOutputEnabled());
+		p->setChecked(midiPortRoute->isPortRouted(p->getValue()));
 		layout->addWidget(p, line, jackNumber);
 		buttonLine->push_back(p);
 	}
