@@ -1,4 +1,5 @@
 #include "portroutingwidget.h"
+#include "../sysex/getmidiportroute.h"
 
 #include <sstream>
 
@@ -6,6 +7,7 @@ PortRoutingWidget::PortRoutingWidget(Device *device, int portNumber,
 																		 QWidget *parent)
 		: QWidget(parent), device(device), portNumber(portNumber) {
 	buttonLines = new std::vector<std::vector<PortButton *> *>;
+	retrieveData();
 	createSignalMapper();
 	createWidgets();
 	connect(lineButtonMapper, SIGNAL(mapped(QObject *)), this,
@@ -65,7 +67,11 @@ void PortRoutingWidget::setupWidgets() {}
 
 void PortRoutingWidget::setupLayout() { setLayout(layout); }
 
-void PortRoutingWidget::setData() {}
+void PortRoutingWidget::retrieveData() {
+	GetMidiPortRoute *getMidiPortRoute = new GetMidiPortRoute(device);
+	getMidiPortRoute->setPortNumer(portNumber);
+	midiPortRoute = (RetSetMidiPortRoute *)getMidiPortRoute->query();
+}
 
 void PortRoutingWidget::createSignalMapper() {
 	lineButtonMapper = new QSignalMapper();

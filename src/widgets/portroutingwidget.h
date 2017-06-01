@@ -2,6 +2,7 @@
 #define PORTROUTINGWIDGET_H
 
 #include "../device.h"
+#include "../sysex/retsetmidiportroute.h"
 #include "controls/portbutton.h"
 
 #include <QGridLayout>
@@ -32,6 +33,7 @@ private:
 	Device *device;
 	QGridLayout *layout = 0;
 	int portNumber = 0;
+	RetSetMidiPortRoute *midiPortRoute = 0;
 
 	std::vector<std::vector<PortButton *> *> *buttonLines;
 
@@ -43,7 +45,7 @@ private:
 	void createWidgets();
 	void setupWidgets();
 	void setupLayout();
-	void setData();
+	void retrieveData();
 	void createSignalMapper();
 	void createMidiPortSections(Device *device);
 	void createMidiPorts(int line,
