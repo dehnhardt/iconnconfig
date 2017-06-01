@@ -6,5 +6,5 @@ RetSetMidiPortRoute::RetSetMidiPortRoute(Device *device)
 
 void RetSetMidiPortRoute::parseAnswerData() {
 	portId = MIDI::byteJoin(data, 1, 2);
-	portRoutings = new BYTE_VECTOR(data->begin() + 2, data->end() - 2);
+	portRoutings = new BYTE_VECTOR(data->begin() + 3, data->end());
 }
