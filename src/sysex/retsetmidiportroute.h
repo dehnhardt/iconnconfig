@@ -11,6 +11,7 @@ public:
 			: SysExMessage(cmd, message, device) {}
 
 	void parseAnswerData();
+	bool isPortRouted(int portNumber);
 
 private:
 	long portId;
