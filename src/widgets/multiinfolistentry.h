@@ -1,6 +1,8 @@
 #ifndef MULTIINFOLISTENTRY_H
 #define MULTIINFOLISTENTRY_H
 
+#include "../sysex/sysexmessage.h"
+
 #include <QIcon>
 #include <QWidget>
 
@@ -26,6 +28,7 @@ public:
 	QWidget *widget = 0;
 	bool enabled = true;
 	bool selectable = true;
+	SysExMessage *message = 0;
 };
 
 #endif // MULTIINFOLISTENTRY_H
