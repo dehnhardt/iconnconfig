@@ -18,7 +18,6 @@ protected:
   QWidget *createWidget(MultiInfoListEntry *entry);
 
 private:
-	int countDinPorts = 0;
 	void getMidiPortSections(Device *device);
 	void getMidiPorts(std::vector<RetSetMidiPortInfo *> *midiPortInfos);
 };

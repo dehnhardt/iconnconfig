@@ -12,8 +12,6 @@ PortsWidget::PortsWidget(MioMain *parent, Device *device, QString windowTitle)
 	infoSections = new std::vector<MultiInfoListEntry *>();
 	if (device->getCommands()->isCommandSupported(
 					SysExMessage::GET_MIDI_PORT_ROUTE)) {
-		RetSetMidiInfo *midiInfo = device->getMidiInfo();
-		countDinPorts = midiInfo->getDinPorts();
 		getMidiPortSections(device);
 	}
 }
@@ -28,6 +26,7 @@ void PortsWidget::getMidiPorts(
 		MultiInfoListEntry *entry = new MultiInfoListEntry(
 				MultiInfoListEntry::PORT_ROUTING, midiPortInfo->getPortName());
 		entry->icon = PortDisplayHelper::getPortIcon(midiPortInfo->getPortType());
+		entry->enabled = midiPortInfo->getInputEnabled();
 		infoSections->push_back(entry);
 	}
 }
@@ -52,8 +51,7 @@ void PortsWidget::getMidiPortSections(Device *device) {
 
 QWidget *PortsWidget::createWidget(MultiInfoListEntry *entry) {
 	std::cout << "create PortsWidget" << std::endl;
-	PortRoutingWidget *w =
-			new PortRoutingWidget(device, this->parentWidget(), countDinPorts);
+	PortRoutingWidget *w = new PortRoutingWidget(device, this->parentWidget());
   QScrollArea *a = new QScrollArea(this);
   a->setWidget(w);
   return a;
