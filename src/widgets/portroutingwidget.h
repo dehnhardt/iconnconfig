@@ -5,24 +5,36 @@
 #include "controls/portbutton.h"
 
 #include <QGridLayout>
+#include <QSignalMapper>
 #include <QWidget>
+
+class PortButtonMapper : public QObject {
+public:
+	PortButtonMapper(PortButton *portButton) : portButton(portButton) {}
+	PortButton *portButton;
+};
 
 class PortRoutingWidget : public QWidget {
 	Q_OBJECT
 public:
-	explicit PortRoutingWidget(Device *device, QWidget *parent = 0,
-														 int numDinPorts = 0);
-
+	explicit PortRoutingWidget(Device *device, QWidget *parent = 0);
+	virtual ~PortRoutingWidget();
 signals:
 
 public slots:
 
+protected slots:
+	void lineButtonClicked(QObject *object);
+
 private:
 	// members
 	Device *device;
-	int numDinPorts = 0;
-	std::vector<PortButton *> *portButtons = 0;
 	QGridLayout *layout = 0;
+
+	std::vector<std::vector<PortButton *> *> *buttonLines;
+
+	QSignalMapper *lineButtonMapper = 0;
+	QSignalMapper *portButtonMapper = 0;
 
 private:
 	// methods
@@ -30,9 +42,13 @@ private:
 	void setupWidgets();
 	void setupLayout();
 	void setData();
-	void createConnections();
-	void getMidiPortSections(Device *device);
-	void getMidiPorts(int line, std::vector<RetSetMidiPortInfo *> *midiPortInfos);
+	void createSignalMapper();
+	void createMidiPortSections(Device *device);
+	void createMidiPorts(int line,
+											 std::vector<RetSetMidiPortInfo *> *midiPortInfos);
+	int getButtonLineIndex(PortButton *b);
+	bool isButtonChecked(int row);
+	void setButtonsChecked(int row, bool checked);
 };
 
 #endif // PORTROUTINGWIDGET_H
