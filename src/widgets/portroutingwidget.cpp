@@ -2,8 +2,9 @@
 
 #include <sstream>
 
-PortRoutingWidget::PortRoutingWidget(Device *device, QWidget *parent)
-		: QWidget(parent), device(device) {
+PortRoutingWidget::PortRoutingWidget(Device *device, int portNumber,
+																		 QWidget *parent)
+		: QWidget(parent), device(device), portNumber(portNumber) {
 	buttonLines = new std::vector<std::vector<PortButton *> *>;
 	createSignalMapper();
 	createWidgets();

@@ -17,7 +17,8 @@ public:
 class PortRoutingWidget : public QWidget {
 	Q_OBJECT
 public:
-	explicit PortRoutingWidget(Device *device, QWidget *parent = 0);
+	explicit PortRoutingWidget(Device *device, int portNumber,
+														 QWidget *parent = 0);
 	virtual ~PortRoutingWidget();
 signals:
 
@@ -30,6 +31,7 @@ private:
 	// members
 	Device *device;
 	QGridLayout *layout = 0;
+	int portNumber = 0;
 
 	std::vector<std::vector<PortButton *> *> *buttonLines;
 
