@@ -15,4 +15,5 @@ Status
 * (2017-05-14) First working update of device data: Device name can be changed
 * (2017-05-15) Read all information from first ethernet device
 * (2017-05-20) Some GUI-infrastructure to check for valid ip addresses
-* (2017-05-22) Update of method (static, dhcp) for IP-connection implemented
+* (2017-05-22) Update of method (static, dhcp) for IP-connection implemented (still struggling with verifying static IP-Adresses)
+* (2017-06-01) Reading and Displaying the Midi port routings works
