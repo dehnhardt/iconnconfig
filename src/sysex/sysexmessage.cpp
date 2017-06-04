@@ -136,12 +136,16 @@ void SysExMessage::createAnswer(SysExMessage::Command cmd,
   }
 }
 
+unsigned char SysExMessage::getCmdflags() const { return cmdflags; }
+
+void SysExMessage::setCmdflags(unsigned char value) { cmdflags = value; }
+
 int SysExMessage::execute() {
-  if (device == 0)
-    return -1;
-  BYTE_VECTOR *message = getMIDISysExMessage();
-  if (debug)
-    MIDI::printMessage(message);
+	if (device == 0)
+		return -1;
+	BYTE_VECTOR *message = getMIDISysExMessage();
+	if (debug)
+		MIDI::printMessage(message);
   device->sentSysex(message);
   BYTE_VECTOR *answerMessage = device->retrieveSysex();
   if (answerMessage != nullptr) {

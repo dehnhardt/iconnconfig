@@ -61,11 +61,11 @@ public:
     GET_MIDI_PORT_INFO, /*!< Queuery the information about a specific MIDI Port
                            */
 		RET_SET_MIDI_PORT_INFO,   /*!< Returns or set the MIDI-Information for a
-																																																						 specific port */
+																																																																																																																																																																																																																		 specific port */
 		GET_MIDI_PORT_FILTER,     /*!< Queueries infomation about current midi port
-																																																						 filters for a specific port */
+																																																																																																																																																																																																																		 filters for a specific port */
 		RET_SET_MIDI_PORT_FILTER, /*!< Returns or writes infomation about current
-																																																			 midi port filters for a specific port*/
+																																																																																																																																																																																																						 midi port filters for a specific port*/
 		GET_MIDI_PORT_REMAP,
 		RET_SET_MIDI_PORT_REMAP,
 		GET_MIDI_PORT_ROUTE,
@@ -115,9 +115,12 @@ public:
   virtual void parseAnswerData() {}
 
   // methods
+	unsigned char getCmdflags() const;
+	void setCmdflags(unsigned char value);
+
 protected:
-  virtual BYTE_VECTOR *getCommand() { return command; }
-  virtual BYTE_VECTOR *getMessageData() { return new BYTE_VECTOR(); }
+	virtual BYTE_VECTOR *getCommand() { return command; }
+	virtual BYTE_VECTOR *getMessageData() { return new BYTE_VECTOR(); }
   virtual BYTE_VECTOR *getTransactionId() {
     if (transactionId == 0) {
       if (device != 0)
