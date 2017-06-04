@@ -1,6 +1,5 @@
 #include "portsettingwidget.h"
 #include "../device.h"
-#include "ui_portsettingwidget.h"
 
 PortSettingWidget::PortSettingWidget(MioMain *parent, Device *device,
                                      QString windowTitle)

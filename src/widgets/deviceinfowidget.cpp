@@ -6,7 +6,6 @@
 #include "ethernetinfowidget.h"
 #include "infotablewidget.h"
 #include "multiinfolistentry.h"
-#include "ui_deviceinfowidget.h"
 
 #include <QGridLayout>
 #include <QHeaderView>
@@ -51,8 +50,10 @@ QWidget *DeviceInfoWidget::createWidget(MultiInfoListEntry *entry) {
   case MultiInfoListEntry::GLOBAL_DEVICE_INFO: {
     InfoTableWidget *w = new InfoTableWidget(
         this->parentWidget(), this->deviceInfo->getRetSetInfos());
-    connect(w, &InfoTableWidget::deviceInfoChanged, this,
-            &DeviceInfoWidget::deviceInfoChanged);
+		connect(
+				w, SIGNAL(deviceInfoChanged(SysExMessage::DeviceInfoItem, std::string)),
+				this,
+				SLOT(deviceInfoChanged(SysExMessage::DeviceInfoItem, std::string)));
 		return w;
   } break;
   case MultiInfoListEntry::NETWORK_INFO: {

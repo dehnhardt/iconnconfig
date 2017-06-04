@@ -13,9 +13,12 @@ void RetSetMidiPortRoute::parseAnswerData() {
 
 bool RetSetMidiPortRoute::isPortRouted(int portNumber) {
 	--portNumber;
-	int byte = portNumber / 4;
-	int bit = portNumber - (byte * 4);
-	int byteVal = portRoutings->at(byte);
-	int mask = pow(2, bit);
-	return byteVal & mask;
+	unsigned int byte = portNumber / 4;
+	unsigned int bit = portNumber - (byte * 4);
+	if( byte < portRoutings->size() ){
+		unsigned int byteVal = portRoutings->at(byte);
+		int mask = pow(2, bit);
+		return byteVal & mask;
+	}
+	return false;
 }

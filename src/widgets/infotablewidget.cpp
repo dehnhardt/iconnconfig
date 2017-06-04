@@ -42,8 +42,8 @@ InfoTableWidget::InfoTableWidget(
       ++i;
     }
     lo->addWidget(tw, 0, 0);
-    connect(tw, &QTableWidget::cellChanged, this,
-            &InfoTableWidget::onDeviceInfoChanged);
+    connect(tw, SIGNAL(cellChanged(int, int)), this,
+            SLOT(onDeviceInfoChanged(int, int)));
   }
 }
 
@@ -52,7 +52,7 @@ void InfoTableWidget::setupTable() {
   tw->setHorizontalHeaderItem(0, new QTableWidgetItem(tr("Name")));
   tw->setHorizontalHeaderItem(1, new QTableWidgetItem(tr("Value")));
   tw->verticalHeader()->hide();
-  tw->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+	//  tw->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
   tw->setColumnHidden(2, true);
 }
 

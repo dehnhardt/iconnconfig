@@ -43,18 +43,24 @@ void MultiInfoWidget::createInfoSections() {
 		QListWidgetItem *item = new QListWidgetItem();
     if (entry->index == -1)
 			item->setText(QString(entry->name.c_str()));
-    else
-			item->setText(
-					QString::asprintf("%s %i", entry->name.c_str(), entry->index + 1));
-		Qt::ItemFlags flags = item->flags();
-		if (!entry->enabled)
-			flags = flags & ~Qt::ItemIsEnabled;
-		if (!entry->selectable)
-			flags = flags & ~Qt::ItemIsSelectable;
-		item->setFlags(flags);
-		if (!entry->icon.isNull())
-			item->setIcon(entry->icon);
-		ui->infoList->addItem(item);
+    else {
+			QString qstr(entry->name.c_str());
+                        qstr.append(" ");
+                        QString num = QString::number(entry->index + 1);
+                        qstr.append(num);
+			item->setText(qstr);
+//			item->setText("asprintf");
+//					QString::asprintf("%s %i", entry->name.c_str(), entry->index + 1));
+    }
+    Qt::ItemFlags flags = item->flags();
+    if (!entry->enabled)
+	flags = flags & ~Qt::ItemIsEnabled;
+    if (!entry->selectable)
+	flags = flags & ~Qt::ItemIsSelectable;
+    item->setFlags(flags);
+    if (!entry->icon.isNull())
+	item->setIcon(entry->icon);
+    ui->infoList->addItem(item);
   }
 }
 

@@ -59,8 +59,8 @@ bool DeviceSelectionTableModel::setData(const QModelIndex &index,
           current->setDefault(value.toBool());
           Configuration::getInstance().setDefaultDevice(
               current->getSerialNumber()->getLongValue());
-          for (unsigned int i = 0; i < tableData.size(); i++) {
-            if (i != index.row()) {
+					for (unsigned int i = 0; i < tableData.size(); i++) {
+						if ((int)i != index.row()) {
               if (tableData.at(i)->getDefault()) {
                 tableData.at(i)->setDefault(false);
                 QModelIndex upd = createIndex(i, 0);

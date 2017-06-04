@@ -196,16 +196,16 @@ void EthernetInfoWidget::setData() {
 void EthernetInfoWidget::createConnections() {
 
   connect(methodBox, SIGNAL(activated(int)), this, SLOT(comboboxSelected(int)));
-  connect(this, &EthernetInfoWidget::staticBoxDisabled, staticBox,
-          &QGroupBox::setDisabled);
-  connect(ip1, &QLineEdit::editingFinished, this,
-          &EthernetInfoWidget::editFinished);
-  connect(sm1, &QLineEdit::editingFinished, this,
-          &EthernetInfoWidget::editFinished);
-  connect(gw1, &QLineEdit::editingFinished, this,
-          &EthernetInfoWidget::editFinished);
-  connect(this, &EthernetInfoWidget::staticBoxDisabled, staticBox,
-          &QGroupBox::setDisabled);
+  connect(this, SIGNAL(staticBoxDisabled(bool)), staticBox,
+          SLOT(setDisabled(bool)));
+  connect(ip1, SIGNAL(editingFinished()), this,
+          SLOT(editFinished()));
+  connect(sm1, SIGNAL(editingFinished()), this,
+          SLOT(editFinished()));
+  connect(gw1, SIGNAL(editingFinished()), this,
+          SLOT(editFinished()));
+  connect(this, SIGNAL(staticBoxDisabled(bool)), staticBox,
+          SLOT(setDisabled(bool)));
 }
 
 void EthernetInfoWidget::setStaticBoxEnabled(int selected) {

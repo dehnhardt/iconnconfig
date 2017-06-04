@@ -4,9 +4,9 @@
 #include "../device.h"
 #include "../sysex/getinfo.h"
 #include "multiinfowidget.h"
+#include <QObject>
 
 class DeviceInfoWidget : public MultiInfoWidget {
-
 public:
   explicit DeviceInfoWidget(MioMain *parent = 0, Device *device = 0,
                             GetInfo *deviceInfo = 0,
@@ -14,7 +14,7 @@ public:
   ~DeviceInfoWidget();
 
 public slots:
-  void deviceInfoChanged(SysExMessage::DeviceInfoItem, std::string value);
+  void deviceInfoChanged(SysExMessage::DeviceInfoItem, std::string);
 
 protected:
   void setInfoSections();
