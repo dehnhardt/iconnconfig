@@ -27,6 +27,7 @@ public slots:
 
 protected slots:
 	void lineButtonClicked(QObject *object);
+	void portButtonClicked(QObject *object);
 
 private:
 	// members
@@ -37,8 +38,8 @@ private:
 
 	std::vector<std::vector<PortButton *> *> *buttonLines;
 
-	QSignalMapper *lineButtonMapper = 0;
-	QSignalMapper *portButtonMapper = 0;
+	QSignalMapper *lineButtonSignalMapper = 0;
+	QSignalMapper *portButtonSignalMapper = 0;
 
 private:
 	// methods

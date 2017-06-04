@@ -1,4 +1,5 @@
 #include "portroutingwidget.h"
+#include "../sysex/getmidiinfo.h"
 #include "../sysex/getmidiportroute.h"
 
 #include <sstream>
@@ -10,13 +11,16 @@ PortRoutingWidget::PortRoutingWidget(Device *device, int portNumber,
 	retrieveData();
 	createSignalMapper();
 	createWidgets();
-	connect(lineButtonMapper, SIGNAL(mapped(QObject *)), this,
+	connect(lineButtonSignalMapper, SIGNAL(mapped(QObject *)), this,
 					SLOT(lineButtonClicked(QObject *)));
+
+	connect(portButtonSignalMapper, SIGNAL(mapped(QObject *)), this,
+					SLOT(portButtonClicked(QObject *)));
 }
 
 PortRoutingWidget::~PortRoutingWidget() {
-	delete lineButtonMapper;
-	delete portButtonMapper;
+	delete lineButtonSignalMapper;
+	delete portButtonSignalMapper;
 }
 
 void PortRoutingWidget::createMidiPorts(
@@ -32,6 +36,8 @@ void PortRoutingWidget::createMidiPorts(
 											 midiPortInfo->getPortType(), this);
 		p->setEnabled(midiPortInfo->getOutputEnabled());
 		p->setChecked(midiPortRoute->isPortRouted(p->getValue()));
+		connect(p, SIGNAL(clicked(bool)), portButtonSignalMapper, SLOT(map()));
+		portButtonSignalMapper->setMapping(p, new PortButtonMapper(p));
 		layout->addWidget(p, line, jackNumber);
 		buttonLine->push_back(p);
 	}
@@ -51,8 +57,8 @@ void PortRoutingWidget::createMidiPortSections(Device *device) {
 				0, "all", QString(PortDisplayHelper::getMidiPortTypeName(pt).c_str()),
 				pt, this);
 		bAll->setCheckable(false);
-		connect(bAll, SIGNAL(clicked(bool)), lineButtonMapper, SLOT(map()));
-		lineButtonMapper->setMapping(bAll, new PortButtonMapper(bAll));
+		connect(bAll, SIGNAL(clicked(bool)), lineButtonSignalMapper, SLOT(map()));
+		lineButtonSignalMapper->setMapping(bAll, new PortButtonMapper(bAll));
 		layout->addWidget(bAll, line, 0);
 		std::vector<RetSetMidiPortInfo *> *midiPortInfos = it->second;
 		createMidiPorts(line, midiPortInfos);
@@ -72,11 +78,12 @@ void PortRoutingWidget::retrieveData() {
 	GetMidiPortRoute *getMidiPortRoute = new GetMidiPortRoute(device);
 	getMidiPortRoute->setPortNumer(portNumber);
 	midiPortRoute = (RetSetMidiPortRoute *)getMidiPortRoute->query();
+	midiPortRoute->setTotalNumberOfPorts(device->getMidiInfo()->getMidiPorts());
 }
 
 void PortRoutingWidget::createSignalMapper() {
-	lineButtonMapper = new QSignalMapper();
-	portButtonMapper = new QSignalMapper();
+	lineButtonSignalMapper = new QSignalMapper();
+	portButtonSignalMapper = new QSignalMapper();
 }
 
 int PortRoutingWidget::getButtonLineIndex(PortButton *b) {
@@ -91,6 +98,13 @@ void PortRoutingWidget::lineButtonClicked(QObject *object) {
 	PortButton *b = m->portButton;
 	int row = getButtonLineIndex(b);
 	setButtonsChecked(row, !isButtonChecked(row));
+}
+
+void PortRoutingWidget::portButtonClicked(QObject *object) {
+	PortButtonMapper *m = (PortButtonMapper *)object;
+	PortButton *b = m->portButton;
+	int portNumber = b->getValue();
+	midiPortRoute->setPortRouted(portNumber, b->isChecked());
 }
 
 bool PortRoutingWidget::isButtonChecked(int row) {
