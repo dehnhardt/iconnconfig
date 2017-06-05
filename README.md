@@ -17,3 +17,5 @@ Status
 * (2017-05-20) Some GUI-infrastructure to check for valid ip addresses
 * (2017-05-22) Update of method (static, dhcp) for IP-connection implemented (still struggling with verifying static IP-Adresses)
 * (2017-06-01) Reading and Displaying the Midi port routings works
+* (2017-06-04) Applied a patch from Ralf Beck to make it compile with qt 4.8
+* (2017-06-06) Added methods to update port routings
