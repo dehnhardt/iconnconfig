@@ -8,6 +8,8 @@ PortRoutingWidget::PortRoutingWidget(Device *device, int portNumber,
 																		 QWidget *parent)
 		: QWidget(parent), device(device), portNumber(portNumber) {
 	buttonLines = new std::vector<std::vector<PortButton *> *>;
+	updateTimer = new QTimer(this);
+	updateTimer->setSingleShot(true);
 	retrieveData();
 	createSignalMapper();
 	createWidgets();
@@ -16,6 +18,8 @@ PortRoutingWidget::PortRoutingWidget(Device *device, int portNumber,
 
 	connect(portButtonSignalMapper, SIGNAL(mapped(QObject *)), this,
 					SLOT(portButtonClicked(QObject *)));
+
+	connect(updateTimer, SIGNAL(timeout()), this, SLOT(updateRouting()));
 }
 
 PortRoutingWidget::~PortRoutingWidget() {
@@ -76,9 +80,12 @@ void PortRoutingWidget::setupLayout() { setLayout(layout); }
 
 void PortRoutingWidget::retrieveData() {
 	GetMidiPortRoute *getMidiPortRoute = new GetMidiPortRoute(device);
+	getMidiPortRoute->setDebug(true);
 	getMidiPortRoute->setPortNumer(portNumber);
 	midiPortRoute = (RetSetMidiPortRoute *)getMidiPortRoute->query();
 	midiPortRoute->setTotalNumberOfPorts(device->getMidiInfo()->getMidiPorts());
+	midiPortRoute->setDebug(true);
+	midiPortRoute->setCmdflags(0x40);
 }
 
 void PortRoutingWidget::createSignalMapper() {
@@ -105,6 +112,9 @@ void PortRoutingWidget::portButtonClicked(QObject *object) {
 	PortButton *b = m->portButton;
 	int portNumber = b->getValue();
 	midiPortRoute->setPortRouted(portNumber, b->isChecked());
+	std::cout << "changed port " << portNumber << " to " << b->isChecked()
+						<< std::endl;
+	updateTimer->start(1000);
 }
 
 bool PortRoutingWidget::isButtonChecked(int row) {
@@ -122,5 +132,13 @@ void PortRoutingWidget::setButtonsChecked(int row, bool checked) {
 	for (std::vector<PortButton *>::iterator it = buttonLine->begin();
 			 it != buttonLine->end(); ++it) {
 		(*it)->setChecked(checked);
+		int portNumber = (*it)->getValue();
+		midiPortRoute->setPortRouted(portNumber, checked);
 	}
+	updateTimer->start(1000);
+}
+
+void PortRoutingWidget::updateRouting() {
+	std::cout << "update midiportrouting" << std::endl;
+	midiPortRoute->execute();
 }

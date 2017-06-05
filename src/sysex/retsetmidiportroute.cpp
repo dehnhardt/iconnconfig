@@ -34,8 +34,9 @@ void RetSetMidiPortRoute::setPortRouted(int portNumber, bool routed) {
 	if (routed) {
 		val |= mask;
 	} else {
-		val &= !mask;
+		val &= ~mask;
 	}
+	(*portRoutings)[byte] = val;
 }
 
 int RetSetMidiPortRoute::getTotalNumberOfPorts() const {
@@ -47,9 +48,15 @@ void RetSetMidiPortRoute::setTotalNumberOfPorts(int value) {
 	numerOfExpectedBytes = getNumberOfExpectedBytes(totalNumberOfPorts);
 }
 
-std::vector<unsigned char> *RetSetMidiPortRoute::getMessageData()
-{
-	return portRoutings;
+std::vector<unsigned char> *RetSetMidiPortRoute::getMessageData() {
+	this->command->at(0) = 0x40;
+	BYTE_VECTOR *messageData = new BYTE_VECTOR();
+	messageData->push_back(0x01);
+	BYTE_VECTOR *portIdV = MIDI::byteSplit(portId, 2);
+	messageData->insert(messageData->end(), portIdV->begin(), portIdV->end());
+	messageData->insert(messageData->end(), portRoutings->begin(),
+											portRoutings->end());
+	return messageData;
 }
 
 void RetSetMidiPortRoute::getPortByteAndBit(int portNumber, int &byte,

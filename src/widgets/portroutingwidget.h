@@ -7,6 +7,7 @@
 
 #include <QGridLayout>
 #include <QSignalMapper>
+#include <QTimer>
 #include <QWidget>
 
 class PortButtonMapper : public QObject {
@@ -28,6 +29,7 @@ public slots:
 protected slots:
 	void lineButtonClicked(QObject *object);
 	void portButtonClicked(QObject *object);
+	void updateRouting();
 
 private:
 	// members
@@ -35,6 +37,7 @@ private:
 	QGridLayout *layout = 0;
 	int portNumber = 0;
 	RetSetMidiPortRoute *midiPortRoute = 0;
+	QTimer *updateTimer = 0;
 
 	std::vector<std::vector<PortButton *> *> *buttonLines;
 
