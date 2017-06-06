@@ -71,7 +71,10 @@ SOURCES +=\
     src/widgets/portroutingwidget.cpp \
     src/sysex/getmidiportinfo.cpp \
     src/sysex/getmidiportroute.cpp \
-    src/sysex/retsetmidiportroute.cpp
+    src/sysex/retsetmidiportroute.cpp \
+    src/sysex/saverestore.cpp \
+    src/sysex/getsaverestorelist.cpp \
+    src/sysex/retsaverestorelist.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
@@ -112,7 +115,10 @@ HEADERS  += src/miomain.h \
     src/sysex/getmidiportinfo.h \
     src/widgets/portdisplayhelper.h \
     src/sysex/getmidiportroute.h \
-    src/sysex/retsetmidiportroute.h
+    src/sysex/retsetmidiportroute.h \
+    src/sysex/saverestore.h \
+    src/sysex/getsaverestorelist.h \
+    src/sysex/retsaverestorelist.h
 
 FORMS    += src/miomain.ui \
     src/devicedetection.ui \
