@@ -5,6 +5,7 @@
 #include "widgets/centralwidget.h"
 
 #include <QMainWindow>
+#include <QToolBar>
 
 namespace Ui {
 class MioMain;
@@ -37,6 +38,7 @@ private:
   // Members
   Ui::MioMain *ui;
   DeviceDetection *deviceDetectionWindow = 0;
+  QToolBar *toolBar = 0;
   std::map<Qt::DockWidgetArea, std::vector<QDockWidget *>> dockWidgetAreas;
   QString title;
 

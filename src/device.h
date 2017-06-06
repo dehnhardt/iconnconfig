@@ -35,6 +35,7 @@ public:
 	void sentSysex(BYTE_VECTOR *data);
 	BYTE_VECTOR *retrieveSysex();
 	BYTE_VECTOR *nextTransactionId();
+	BYTE_VECTOR *saveRestoreList = 0;
 
 	// getter
 	bool getDebug() const;

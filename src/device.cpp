@@ -4,9 +4,11 @@
 #include "sysex/getinfolist.h"
 #include "sysex/getmidiinfo.h"
 #include "sysex/getmidiportinfo.h"
+#include "sysex/getsaverestorelist.h"
 #include "sysex/midi.h"
 #include "sysex/retcommandlist.h"
 #include "sysex/retinfolist.h"
+#include "sysex/retsaverestorelist.h"
 #include "sysex/retsetmidiinfo.h"
 #include "sysex/retsetmidiportinfo.h"
 
@@ -249,6 +251,11 @@ bool Device::queryDeviceInfo() {
 		if (commands->isCommandSupported(SysExMessage::GET_MIDI_PORT_INFO) &&
 				this->midiInfo != 0) {
 			requestMidiPortInfos();
+		}
+		if (commands->isCommandSupported(SysExMessage::GET_SAVE_RESTORE_LIST)) {
+			GetSaveRestoreList *getSaveRestoreList = new GetSaveRestoreList(this);
+			RetSaveRestoreList *l = (RetSaveRestoreList *)getSaveRestoreList->query();
+			saveRestoreList = l->getSaveRestoreList();
 		}
 
 #ifdef __MIO_SIMULATE__

@@ -14,12 +14,16 @@
 #include <QSignalMapper>
 #include <QStyle>
 #include <QTimer>
+#include <QToolButton>
 #include <QtDebug>
 
 MioMain::MioMain(QWidget *parent) : QMainWindow(parent), ui(new Ui::MioMain) {
   ui->setupUi(this);
+  toolBar = new QToolBar(tr("Device Actions"), this);
   setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::ForceTabbedDocks |
                  QMainWindow::VerticalTabs);
+
+  this->addToolBar(toolBar);
   readSettings();
   if (readDevicesFromSettings())
     openDefaultDevice();
@@ -127,6 +131,29 @@ void MioMain::openDeviceGUI(Device *d) {
 
   PortsWidget *portsWidget = new PortsWidget(this, d);
   this->addDock(portsWidget, Qt::LeftDockWidgetArea);
+
+  BYTE_VECTOR *saveRestoreList = d->saveRestoreList;
+  for( unsigned int i = 0; i < saveRestoreList->size(); ++i){
+	  switch((*saveRestoreList)[i]){
+	  case 1:
+	  {QToolButton *btn = new QToolButton();
+		  btn->setText("Save");
+		  toolBar->addWidget(btn);}
+		  break;
+	  case 2:
+	  {QToolButton *btn = new QToolButton();
+		  btn->setText("Restore");
+		  toolBar->addWidget(btn);}
+		  break;
+	  case 3:
+	  {QToolButton *btn = new QToolButton();
+		  btn->setText("Fact");
+		  toolBar->addWidget(btn);}
+		  break;
+	  default:
+		  break;
+	  }
+  }
 
   QSettings *settings = Configuration::getInstance().getSettings();
   settings->beginGroup("MainWindow");
