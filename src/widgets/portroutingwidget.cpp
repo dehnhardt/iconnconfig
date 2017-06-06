@@ -13,6 +13,7 @@ PortRoutingWidget::PortRoutingWidget(Device *device, int portNumber,
 	retrieveData();
 	createSignalMapper();
 	createWidgets();
+	loadData();
 	connect(lineButtonSignalMapper, SIGNAL(mapped(QObject *)), this,
 					SLOT(lineButtonClicked(QObject *)));
 
@@ -39,7 +40,7 @@ void PortRoutingWidget::createMidiPorts(
 											 QString(midiPortInfo->getPortName().c_str()),
 											 midiPortInfo->getPortType(), this);
 		p->setEnabled(midiPortInfo->getOutputEnabled());
-		p->setChecked(midiPortRoute->isPortRouted(p->getValue()));
+		// p->setChecked(midiPortRoute->isPortRouted(p->getValue()));
 		connect(p, SIGNAL(clicked(bool)), portButtonSignalMapper, SLOT(map()));
 		portButtonSignalMapper->setMapping(p, new PortButtonMapper(p));
 		layout->addWidget(p, line, jackNumber);
@@ -86,6 +87,18 @@ void PortRoutingWidget::retrieveData() {
 	midiPortRoute->setTotalNumberOfPorts(device->getMidiInfo()->getMidiPorts());
 	midiPortRoute->setDebug(true);
 	midiPortRoute->setCmdflags(0x40);
+}
+
+void PortRoutingWidget::loadData() {
+	std::vector<std::vector<PortButton *> *>::iterator lineIt;
+	for (lineIt = buttonLines->begin(); lineIt != buttonLines->end(); ++lineIt) {
+		std::vector<PortButton *>::iterator buttonIt;
+		std::vector<PortButton *> *v = (*lineIt);
+		for (buttonIt = v->begin(); buttonIt != v->end(); ++buttonIt) {
+			PortButton *p = (*buttonIt);
+			p->setChecked(midiPortRoute->isPortRouted(p->getValue()));
+		}
+	}
 }
 
 void PortRoutingWidget::createSignalMapper() {

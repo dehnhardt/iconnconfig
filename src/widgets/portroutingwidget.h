@@ -50,6 +50,7 @@ private:
 	void setupWidgets();
 	void setupLayout();
 	void retrieveData();
+	void loadData();
 	void createSignalMapper();
 	void createMidiPortSections(Device *device);
 	void createMidiPorts(int line,
