@@ -19,3 +19,4 @@ Status
 * (2017-06-01) Reading and Displaying the Midi port routings works
 * (2017-06-04) Applied a patch from Ralf Beck to make it compile with qt 4.8
 * (2017-06-06) Added methods to update port routings
+* (2017-06-07) Save settings to device and restore settings from device works
