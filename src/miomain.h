@@ -2,6 +2,7 @@
 #define MIOMAIN_H
 
 #include "devicedetection.h"
+#include "sysex/saverestore.h"
 #include "widgets/centralwidget.h"
 
 #include <QMainWindow>
@@ -33,6 +34,9 @@ private slots:
   void openDetectionWindow();
   void openDeviceGUI(QObject *m);
   void openDeviceGUI(Device *d);
+	void storeToDevice();
+	void readFromDevice();
+	void resetFromDevice();
 
 private:
   // Members
@@ -41,6 +45,7 @@ private:
   QToolBar *toolBar = 0;
   std::map<Qt::DockWidgetArea, std::vector<QDockWidget *>> dockWidgetAreas;
   QString title;
+	Device *currentDevice = 0;
 
   // methods
   void readSettings();
@@ -54,6 +59,7 @@ private:
                Qt::DockWidgetArea area = Qt::NoDockWidgetArea);
 
   void clearDocWidgets();
+	void saveRestore(SaveRestore::SaveResstoreId saveRestoreId);
 
 protected:
   void closeEvent(QCloseEvent *event);

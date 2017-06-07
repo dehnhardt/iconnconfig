@@ -11,6 +11,7 @@
 
 #include <QCloseEvent>
 #include <QDesktopWidget>
+#include <QMessageBox>
 #include <QPixmap>
 #include <QSignalMapper>
 #include <QStyle>
@@ -119,6 +120,7 @@ void MioMain::replacePanel(QWidget *w) {
 
 void MioMain::openDeviceGUI(Device *d) {
   clearDocWidgets();
+	this->currentDevice = d;
   RetCommandList *c = d->getCommands();
   if (c == 0) {
     // TODO throw error
@@ -138,8 +140,8 @@ void MioMain::openDeviceGUI(Device *d) {
 
   BYTE_VECTOR *saveRestoreList = d->saveRestoreList;
 	for (unsigned int i = 0; i < saveRestoreList->size(); ++i) {
-		switch ((*saveRestoreList)[i]) {
-		case 1: {
+		switch ((SaveRestore::SaveResstoreId)(*saveRestoreList)[i]) {
+		case SaveRestore::SAVE_TO_DEVICE: {
 			QToolButton *btn = new QToolButton();
 			btn->setToolButtonStyle(Qt::ToolButtonIconOnly);
 			btn->setText("Save");
@@ -147,7 +149,7 @@ void MioMain::openDeviceGUI(Device *d) {
 			toolBar->addWidget(btn);
 			btn->setIcon(QIcon(":/pixmaps/saveto"));
 		} break;
-		case 2: {
+		case SaveRestore::RESTORE_FROM_DEVICE: {
 			QToolButton *btn = new QToolButton();
 			btn->setToolButtonStyle(Qt::ToolButtonIconOnly);
 			btn->setText("Restore");
@@ -155,7 +157,7 @@ void MioMain::openDeviceGUI(Device *d) {
 			toolBar->addWidget(btn);
 			btn->setIcon(QIcon(":/pixmaps/readfrom"));
 		} break;
-		case 3: {
+		case SaveRestore::SET_TO_FACTORY_DEFAULT: {
 			QToolButton *btn = new QToolButton();
 			btn->setToolButtonStyle(Qt::ToolButtonIconOnly);
 			btn->setText("Fact");
@@ -176,7 +178,43 @@ void MioMain::openDeviceGUI(Device *d) {
   // restoreState(settings->value("DockWindows").toByteArray());
   settings->endGroup();
   deviceInfoWidget->show();
-  deviceInfoWidget->raise();
+	deviceInfoWidget->raise();
+}
+
+void MioMain::storeToDevice() {
+	QMessageBox msgBox;
+	msgBox.setText(tr("Store current setings to device?"));
+	msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+	msgBox.setDefaultButton(QMessageBox::Save);
+	int ret = msgBox.exec();
+	if (ret == QMessageBox::Ok)
+		saveRestore(SaveRestore::SAVE_TO_DEVICE);
+}
+
+void MioMain::readFromDevice() {
+	QMessageBox msgBox;
+	msgBox.setText(tr("Read all settings from device?"));
+	msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+	msgBox.setDefaultButton(QMessageBox::Save);
+	int ret = msgBox.exec();
+	if (ret == QMessageBox::Ok)
+		saveRestore(SaveRestore::RESTORE_FROM_DEVICE);
+}
+
+void MioMain::resetFromDevice() {
+	QMessageBox msgBox;
+	msgBox.setText(tr("Reset all settings to factory default?"));
+	msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+	msgBox.setDefaultButton(QMessageBox::Save);
+	int ret = msgBox.exec();
+	if (ret == QMessageBox::Ok)
+		saveRestore(SaveRestore::SET_TO_FACTORY_DEFAULT);
+}
+
+void MioMain::saveRestore(SaveRestore::SaveResstoreId saveRestoreId) {
+	SaveRestore *saveRestore = new SaveRestore(currentDevice);
+	saveRestore->setSaveRestoreId(saveRestoreId);
+	saveRestore->execute();
 }
 
 void MioMain::closeEvent(QCloseEvent *event) {
