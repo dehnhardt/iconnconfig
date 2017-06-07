@@ -8,6 +8,7 @@
 #include <QDockWidget>
 
 class PortsWidget : public MultiInfoWidget {
+	Q_OBJECT
 
 public:
   explicit PortsWidget(MioMain *parent = 0, Device *device = 0,
