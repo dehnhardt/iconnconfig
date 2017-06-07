@@ -33,6 +33,9 @@ public:
 	static const int DATA_OFFSET = 18;
 
 	void sentSysex(BYTE_VECTOR *data);
+	void disconnect();
+	void connect();
+
 	BYTE_VECTOR *retrieveSysex();
 	BYTE_VECTOR *nextTransactionId();
 	BYTE_VECTOR *saveRestoreList = 0;

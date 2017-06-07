@@ -69,18 +69,7 @@ RetCommandList *Device::simulateCommands() {
 
 #endif //__MIO_SIMULATE__
 
-Device::~Device() {
-  if (midiin) {
-    if (midiin->isPortOpen())
-      midiin->closePort();
-    delete midiin;
-  }
-  if (midiout) {
-    if (midiout->isPortOpen())
-      midiout->closePort();
-    delete midiout;
-  }
-}
+Device::~Device() { disconnect(); }
 
 BYTE_VECTOR *Device::getManufacturerHeader() {
   if (Device::manufacturerHeader == 0) {
@@ -124,15 +113,38 @@ BYTE_VECTOR *Device::getFullHeader() {
 
 void Device::setupMidi() {
   std::stringstream name;
-  name << "MioConfig In " << serialNumber->getLongValue();
-  midiin = MIDI::createMidiIn(name.str());
-  midiin->openPort(inPortNumber);
-  name << "MioConfig Out " << serialNumber->getLongValue();
-  midiout = MIDI::createMidiOut(name.str());
-  midiout->openPort(outPortNumber);
+	if (!midiin) {
+		name << "MioConfig In " << serialNumber->getLongValue();
+		midiin = MIDI::createMidiIn(name.str());
+	}
+	if (!midiin->isPortOpen())
+		midiin->openPort(inPortNumber);
+	if (!midiout) {
+		name << "MioConfig Out " << serialNumber->getLongValue();
+		midiout = MIDI::createMidiOut(name.str());
+	}
+	if (!midiout->isPortOpen())
+		midiout->openPort(outPortNumber);
 }
 
 void Device::sentSysex(BYTE_VECTOR *data) { midiout->sendMessage(data); }
+
+void Device::disconnect() {
+	if (midiin) {
+		if (midiin->isPortOpen())
+			midiin->closePort();
+		delete midiin;
+		midiin = 0;
+	}
+	if (midiout) {
+		if (midiout->isPortOpen())
+			midiout->closePort();
+		delete midiout;
+		midiout = 0;
+	}
+}
+
+void Device::connect() { setupMidi(); }
 
 BYTE_VECTOR *Device::retrieveSysex() {
   BYTE_VECTOR *data = new BYTE_VECTOR();

@@ -139,7 +139,7 @@ void MioMain::addDeviceToolButtons() {
 			btn->setToolTip(tr("Restore settings from device"));
 			toolBar->addWidget(btn);
 			btn->setIcon(QIcon(":/pixmaps/readfrom"));
-			connect(btn, SIGNAL(pressed()), this, SLOT(readFromDevice()));
+			connect(btn, SIGNAL(pressed()), this, SLOT(restoreFromDevice()));
 		} break;
 		case SaveRestore::SET_TO_FACTORY_DEFAULT: {
 			QToolButton *btn = new QToolButton();
@@ -163,6 +163,7 @@ void MioMain::openDeviceGUI(Device *d) {
 	this->addToolBar(toolBar);
 
 	this->currentDevice = d;
+	d->connect();
   RetCommandList *c = d->getCommands();
   if (c == 0) {
     // TODO throw error
@@ -203,7 +204,7 @@ void MioMain::storeToDevice() {
 		saveRestore(SaveRestore::SAVE_TO_DEVICE);
 }
 
-void MioMain::readFromDevice() {
+void MioMain::restoreFromDevice() {
 	QMessageBox msgBox;
 	msgBox.setText(tr("Read all settings from device?"));
 	msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
@@ -211,6 +212,7 @@ void MioMain::readFromDevice() {
 	int ret = msgBox.exec();
 	if (ret == QMessageBox::Ok) {
 		saveRestore(SaveRestore::RESTORE_FROM_DEVICE);
+		currentDevice->disconnect();
 		openDeviceGUI(this->currentDevice);
 	}
 }
@@ -223,6 +225,7 @@ void MioMain::resetToFactoryDefaults() {
 	int ret = msgBox.exec();
 	if (ret == QMessageBox::Ok) {
 		saveRestore(SaveRestore::SET_TO_FACTORY_DEFAULT);
+		currentDevice->disconnect();
 		openDeviceGUI(this->currentDevice);
 	}
 }

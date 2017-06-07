@@ -35,7 +35,7 @@ private slots:
   void openDeviceGUI(QObject *m);
   void openDeviceGUI(Device *d);
 	void storeToDevice();
-	void readFromDevice();
+	void restoreFromDevice();
 	void resetToFactoryDefaults();
 
 private:
