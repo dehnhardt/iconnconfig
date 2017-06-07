@@ -5,9 +5,11 @@
 #include "multiinfowidget.h"
 
 class PortSettingWidget : public MultiInfoWidget {
+	Q_OBJECT
 
 public:
-  explicit PortSettingWidget(MioMain *parent = 0, Device *device = nullptr, QString windowTitle = "PortSettings");
+	explicit PortSettingWidget(MioMain *parent = 0, Device *device = nullptr,
+														 QString windowTitle = "PortSettings");
   ~PortSettingWidget();
 };
 
