@@ -21,14 +21,12 @@
 
 MioMain::MioMain(QWidget *parent) : QMainWindow(parent), ui(new Ui::MioMain) {
   ui->setupUi(this);
-  toolBar = new QToolBar(tr("Device Actions"), this);
-  setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::ForceTabbedDocks |
+	setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::ForceTabbedDocks |
                  QMainWindow::VerticalTabs);
 	/*QPixmap *pm = new QPixmap("/develop/mioconfig/graphik/restore.svg");
 	pm->save("/develop/mioconfig/graphik/restore.xpm", "xpm");
 	pm->load("/develop/mioconfig/graphik/SaveToDevice.svg");
 	pm->save("/develop/mioconfig/graphik/SaveToDevice.xpm", "xpm");*/
-  this->addToolBar(toolBar);
   readSettings();
   if (readDevicesFromSettings())
     openDefaultDevice();
@@ -100,6 +98,9 @@ void MioMain::addDock(QDockWidget *dockWidget, Qt::DockWidgetArea area) {
 }
 
 void MioMain::clearDocWidgets() {
+	removeToolBar(toolBar);
+	delete toolBar;
+	toolBar = 0;
   for (std::map<Qt::DockWidgetArea, std::vector<QDockWidget *>>::iterator it =
            dockWidgetAreas.begin();
        it != dockWidgetAreas.end(); ++it) {
@@ -118,8 +119,49 @@ void MioMain::replacePanel(QWidget *w) {
   cw->replacePanel(w);
 }
 
+void MioMain::addDeviceToolButtons() {
+	BYTE_VECTOR *saveRestoreList = this->currentDevice->saveRestoreList;
+	for (unsigned int i = 0; i < saveRestoreList->size(); ++i) {
+		switch ((SaveRestore::SaveResstoreId)(*saveRestoreList)[i]) {
+		case SaveRestore::SAVE_TO_DEVICE: {
+			QToolButton *btn = new QToolButton();
+			btn->setToolButtonStyle(Qt::ToolButtonIconOnly);
+			btn->setText("Save");
+			btn->setToolTip(tr("Save current settings to device"));
+			toolBar->addWidget(btn);
+			btn->setIcon(QIcon(":/pixmaps/saveto"));
+			connect(btn, SIGNAL(pressed()), this, SLOT(storeToDevice()));
+		} break;
+		case SaveRestore::RESTORE_FROM_DEVICE: {
+			QToolButton *btn = new QToolButton();
+			btn->setToolButtonStyle(Qt::ToolButtonIconOnly);
+			btn->setText("Restore");
+			btn->setToolTip(tr("Restore settings from device"));
+			toolBar->addWidget(btn);
+			btn->setIcon(QIcon(":/pixmaps/readfrom"));
+			connect(btn, SIGNAL(pressed()), this, SLOT(readFromDevice()));
+		} break;
+		case SaveRestore::SET_TO_FACTORY_DEFAULT: {
+			QToolButton *btn = new QToolButton();
+			btn->setToolButtonStyle(Qt::ToolButtonIconOnly);
+			btn->setText("Fact");
+			btn->setToolTip(tr("Reset settings to factory default"));
+			toolBar->addWidget(btn);
+			btn->setIcon(QIcon(":/pixmaps/restore"));
+			connect(btn, SIGNAL(pressed()), this, SLOT(resetToFactoryDefaults()));
+		} break;
+		default:
+			break;
+		}
+	}
+}
+
 void MioMain::openDeviceGUI(Device *d) {
   clearDocWidgets();
+	toolBar = new QToolBar(tr("Device Actions"), this);
+	toolBar->setObjectName("DeviceActions");
+	this->addToolBar(toolBar);
+
 	this->currentDevice = d;
   RetCommandList *c = d->getCommands();
   if (c == 0) {
@@ -138,37 +180,7 @@ void MioMain::openDeviceGUI(Device *d) {
   PortsWidget *portsWidget = new PortsWidget(this, d);
   this->addDock(portsWidget, Qt::LeftDockWidgetArea);
 
-  BYTE_VECTOR *saveRestoreList = d->saveRestoreList;
-	for (unsigned int i = 0; i < saveRestoreList->size(); ++i) {
-		switch ((SaveRestore::SaveResstoreId)(*saveRestoreList)[i]) {
-		case SaveRestore::SAVE_TO_DEVICE: {
-			QToolButton *btn = new QToolButton();
-			btn->setToolButtonStyle(Qt::ToolButtonIconOnly);
-			btn->setText("Save");
-			btn->setToolTip(tr("Save current settings to device"));
-			toolBar->addWidget(btn);
-			btn->setIcon(QIcon(":/pixmaps/saveto"));
-		} break;
-		case SaveRestore::RESTORE_FROM_DEVICE: {
-			QToolButton *btn = new QToolButton();
-			btn->setToolButtonStyle(Qt::ToolButtonIconOnly);
-			btn->setText("Restore");
-			btn->setToolTip(tr("Restore settings from device"));
-			toolBar->addWidget(btn);
-			btn->setIcon(QIcon(":/pixmaps/readfrom"));
-		} break;
-		case SaveRestore::SET_TO_FACTORY_DEFAULT: {
-			QToolButton *btn = new QToolButton();
-			btn->setToolButtonStyle(Qt::ToolButtonIconOnly);
-			btn->setText("Fact");
-			btn->setToolTip(tr("Reset settings to factory default"));
-			toolBar->addWidget(btn);
-			btn->setIcon(QIcon(":/pixmaps/restore"));
-		} break;
-		default:
-			break;
-		}
-  }
+	addDeviceToolButtons();
 
   QSettings *settings = Configuration::getInstance().getSettings();
   settings->beginGroup("MainWindow");
@@ -197,18 +209,22 @@ void MioMain::readFromDevice() {
 	msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
 	msgBox.setDefaultButton(QMessageBox::Save);
 	int ret = msgBox.exec();
-	if (ret == QMessageBox::Ok)
+	if (ret == QMessageBox::Ok) {
 		saveRestore(SaveRestore::RESTORE_FROM_DEVICE);
+		openDeviceGUI(this->currentDevice);
+	}
 }
 
-void MioMain::resetFromDevice() {
+void MioMain::resetToFactoryDefaults() {
 	QMessageBox msgBox;
 	msgBox.setText(tr("Reset all settings to factory default?"));
 	msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
 	msgBox.setDefaultButton(QMessageBox::Save);
 	int ret = msgBox.exec();
-	if (ret == QMessageBox::Ok)
+	if (ret == QMessageBox::Ok) {
 		saveRestore(SaveRestore::SET_TO_FACTORY_DEFAULT);
+		openDeviceGUI(this->currentDevice);
+	}
 }
 
 void MioMain::saveRestore(SaveRestore::SaveResstoreId saveRestoreId) {

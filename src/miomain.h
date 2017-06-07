@@ -36,7 +36,7 @@ private slots:
   void openDeviceGUI(Device *d);
 	void storeToDevice();
 	void readFromDevice();
-	void resetFromDevice();
+	void resetToFactoryDefaults();
 
 private:
   // Members
@@ -60,6 +60,7 @@ private:
 
   void clearDocWidgets();
 	void saveRestore(SaveRestore::SaveResstoreId saveRestoreId);
+	void addDeviceToolButtons();
 
 protected:
   void closeEvent(QCloseEvent *event);
