@@ -4,5 +4,8 @@
         <file alias="usbjack">resources/usbjack.xpm</file>
         <file alias="ethernetjack">resources/ethernetjack.xpm</file>
         <file alias="usbhostjack">resources/usbhostjack.xpm</file>
+        <file alias="readfrom">resources/readfromdevice.xpm</file>
+        <file alias="saveto">resources/savetodevice.xpm</file>
+        <file alias="restore">resources/restore.xpm</file>
     </qresource>
 </RCC>

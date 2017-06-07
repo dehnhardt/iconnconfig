@@ -11,6 +11,7 @@
 
 #include <QCloseEvent>
 #include <QDesktopWidget>
+#include <QPixmap>
 #include <QSignalMapper>
 #include <QStyle>
 #include <QTimer>
@@ -22,7 +23,10 @@ MioMain::MioMain(QWidget *parent) : QMainWindow(parent), ui(new Ui::MioMain) {
   toolBar = new QToolBar(tr("Device Actions"), this);
   setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::ForceTabbedDocks |
                  QMainWindow::VerticalTabs);
-
+	/*QPixmap *pm = new QPixmap("/develop/mioconfig/graphik/restore.svg");
+	pm->save("/develop/mioconfig/graphik/restore.xpm", "xpm");
+	pm->load("/develop/mioconfig/graphik/SaveToDevice.svg");
+	pm->save("/develop/mioconfig/graphik/SaveToDevice.xpm", "xpm");*/
   this->addToolBar(toolBar);
   readSettings();
   if (readDevicesFromSettings())
@@ -133,26 +137,35 @@ void MioMain::openDeviceGUI(Device *d) {
   this->addDock(portsWidget, Qt::LeftDockWidgetArea);
 
   BYTE_VECTOR *saveRestoreList = d->saveRestoreList;
-  for( unsigned int i = 0; i < saveRestoreList->size(); ++i){
-	  switch((*saveRestoreList)[i]){
-	  case 1:
-	  {QToolButton *btn = new QToolButton();
-		  btn->setText("Save");
-		  toolBar->addWidget(btn);}
-		  break;
-	  case 2:
-	  {QToolButton *btn = new QToolButton();
-		  btn->setText("Restore");
-		  toolBar->addWidget(btn);}
-		  break;
-	  case 3:
-	  {QToolButton *btn = new QToolButton();
-		  btn->setText("Fact");
-		  toolBar->addWidget(btn);}
-		  break;
-	  default:
-		  break;
-	  }
+	for (unsigned int i = 0; i < saveRestoreList->size(); ++i) {
+		switch ((*saveRestoreList)[i]) {
+		case 1: {
+			QToolButton *btn = new QToolButton();
+			btn->setToolButtonStyle(Qt::ToolButtonIconOnly);
+			btn->setText("Save");
+			btn->setToolTip(tr("Save current settings to device"));
+			toolBar->addWidget(btn);
+			btn->setIcon(QIcon(":/pixmaps/saveto"));
+		} break;
+		case 2: {
+			QToolButton *btn = new QToolButton();
+			btn->setToolButtonStyle(Qt::ToolButtonIconOnly);
+			btn->setText("Restore");
+			btn->setToolTip(tr("Restore settings from device"));
+			toolBar->addWidget(btn);
+			btn->setIcon(QIcon(":/pixmaps/readfrom"));
+		} break;
+		case 3: {
+			QToolButton *btn = new QToolButton();
+			btn->setToolButtonStyle(Qt::ToolButtonIconOnly);
+			btn->setText("Fact");
+			btn->setToolTip(tr("Reset settings to factory default"));
+			toolBar->addWidget(btn);
+			btn->setIcon(QIcon(":/pixmaps/restore"));
+		} break;
+		default:
+			break;
+		}
   }
 
   QSettings *settings = Configuration::getInstance().getSettings();
