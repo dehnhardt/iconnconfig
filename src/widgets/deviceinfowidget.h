@@ -7,6 +7,8 @@
 #include <QObject>
 
 class DeviceInfoWidget : public MultiInfoWidget {
+	Q_OBJECT
+
 public:
   explicit DeviceInfoWidget(MioMain *parent = 0, Device *device = 0,
                             GetInfo *deviceInfo = 0,
