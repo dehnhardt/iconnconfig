@@ -16,9 +16,8 @@ class MultiInfoWidget;
 }
 
 class MultiInfoWidget : public QDockWidget {
-  Q_OBJECT
 
-	int getFirstSelectableRow();
+  Q_OBJECT
 
 public:
   explicit MultiInfoWidget(MioMain *parent = 0, Device *device = 0,
@@ -39,6 +38,7 @@ protected:
 public:
   QMap<std::string, QWidget *> infoWidgets;
   void createInfoSections();
+	int getFirstSelectableRow();
 
 protected:
   // methods
