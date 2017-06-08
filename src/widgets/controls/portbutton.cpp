@@ -11,9 +11,11 @@ PortButton::PortButton(const long value, const QString iconText,
 		: QToolButton(parent), value(value), iconText(iconText),
 			midiPortType(midiPortType) {
 	icon = PortDisplayHelper::getPortIcon(midiPortType);
-	setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-  setIcon(icon);
+	//	setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+	setToolButtonStyle(Qt::ToolButtonIconOnly);
+	setIcon(icon);
   setText(text);
+	setToolTip(text);
   setCheckable(true);
   setMinimumSize(50, 50);
 	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
@@ -27,8 +29,25 @@ void PortButton::paintEvent(QPaintEvent *event) {
   QPainter painter(this);
   QRect rect = event->rect();
   QRect rect1 = this->rect();
-	QRect iconRect =
-			QRect(rect1.left(), rect1.top() + 5, rect1.width(), iconSize().height());
+
+	int top = 0;
+
+	switch (midiPortType) {
+	case DIN:
+		top = rect1.top() + 10;
+		break;
+	case USB_HOST:
+		top = rect1.top() + 10;
+		break;
+	case ETHERNET:
+		top = rect1.top() + 5;
+		break;
+	default:
+		top = rect1.top() + 5;
+		break;
+	}
+
+	QRect iconRect = QRect(rect1.left(), top, rect1.width(), iconSize().height());
 
   painter.setRenderHints(QPainter::SmoothPixmapTransform |
                          QPainter::Antialiasing);
