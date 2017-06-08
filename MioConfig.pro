@@ -74,7 +74,8 @@ SOURCES +=\
     src/sysex/retsetmidiportroute.cpp \
     src/sysex/saverestore.cpp \
     src/sysex/getsaverestorelist.cpp \
-    src/sysex/retsaverestorelist.cpp
+    src/sysex/retsaverestorelist.cpp \
+    src/widgets/controls/ipaddressinput.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
@@ -118,7 +119,8 @@ HEADERS  += src/miomain.h \
     src/sysex/retsetmidiportroute.h \
     src/sysex/saverestore.h \
     src/sysex/getsaverestorelist.h \
-    src/sysex/retsaverestorelist.h
+    src/sysex/retsaverestorelist.h \
+    src/widgets/controls/ipaddressinput.h
 
 FORMS    += src/miomain.ui \
     src/devicedetection.ui \

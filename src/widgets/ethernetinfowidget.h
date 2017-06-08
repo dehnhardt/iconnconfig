@@ -2,6 +2,7 @@
 #define ETHERNETINFOWIDGET_H
 
 #include "../sysex/retsetethernetportinfo.h"
+#include "controls/ipaddressinput.h"
 
 #include <QComboBox>
 #include <QGridLayout>

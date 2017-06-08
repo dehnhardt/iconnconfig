@@ -83,7 +83,7 @@ void EthernetInfoWidget::createWidgets() {
   bjl = new QLabel(tr("Bonjour Name"), infoBox);
   macl = new QLabel(tr("MAC Address"), infoBox);
 
-  ip1 = new QLineEdit(staticBox);
+	ip1 = new IPAddressInput(staticBox);
   sm1 = new QLineEdit(staticBox);
   gw1 = new QLineEdit(staticBox);
   ip2 = new QLineEdit(dhcpBox);
@@ -198,12 +198,9 @@ void EthernetInfoWidget::createConnections() {
   connect(methodBox, SIGNAL(activated(int)), this, SLOT(comboboxSelected(int)));
   connect(this, SIGNAL(staticBoxDisabled(bool)), staticBox,
           SLOT(setDisabled(bool)));
-  connect(ip1, SIGNAL(editingFinished()), this,
-          SLOT(editFinished()));
-  connect(sm1, SIGNAL(editingFinished()), this,
-          SLOT(editFinished()));
-  connect(gw1, SIGNAL(editingFinished()), this,
-          SLOT(editFinished()));
+	connect(ip1, SIGNAL(editingFinished()), this, SLOT(editFinished()));
+	connect(sm1, SIGNAL(editingFinished()), this, SLOT(editFinished()));
+	connect(gw1, SIGNAL(editingFinished()), this, SLOT(editFinished()));
   connect(this, SIGNAL(staticBoxDisabled(bool)), staticBox,
           SLOT(setDisabled(bool)));
 }
@@ -215,8 +212,8 @@ void EthernetInfoWidget::setStaticBoxEnabled(int selected) {
 
 void EthernetInfoWidget::comboboxSelected(int selected) {
   setStaticBoxEnabled(selected);
-  retSetEthernetPortInfo->setMethod((RetSetEthernetPortInfo::IPFlags)selected);
-  retSetEthernetPortInfo->execute();
+	// retSetEthernetPortInfo->setMethod((RetSetEthernetPortInfo::IPFlags)selected);
+	// retSetEthernetPortInfo->execute();
 }
 
 void EthernetInfoWidget::editFinished() {
