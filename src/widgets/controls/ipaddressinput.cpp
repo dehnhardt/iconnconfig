@@ -14,9 +14,7 @@ bool IPAddressInput::getValid() const { return valid; }
 void IPAddressInput::validate(QString text) {
 	valid = ipRegex.exactMatch(text);
 	if (valid)
-		setStyleSheet("QLineEdit { background: rgb(0, 255, 255); "
-									"selection-background-color: rgb(233, 99, 0); }");
+		setStyleSheet("");
 	else
-		setStyleSheet("QLineEdit { background: rgb(255, 0, 255); "
-									"selection-background-color: rgb(233, 0, 99); }");
+		setStyleSheet("border: 1px solid red");
 }

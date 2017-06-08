@@ -102,7 +102,7 @@ void EthernetInfoWidget::setupWidgets() {
                   ipRange + "$");
   QRegExpValidator *regValidator = new QRegExpValidator(ipRegex, 0);
 
-  ip1->setValidator(regValidator);
+	// ip1->setValidator(regValidator);
 
   sm1->setValidator(regValidator);
 

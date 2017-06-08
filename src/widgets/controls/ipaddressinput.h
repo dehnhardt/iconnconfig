@@ -5,6 +5,8 @@
 #include <QObject>
 
 class IPAddressInput : public QLineEdit {
+	Q_OBJECT
+
 public:
 	IPAddressInput(QWidget *parent);
 
