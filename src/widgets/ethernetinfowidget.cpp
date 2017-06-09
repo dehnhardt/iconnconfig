@@ -14,6 +14,9 @@ EthernetInfoWidget::EthernetInfoWidget(
     : QWidget(parent), retSetEthernetPortInfo(retSetEthernetPortInfo) {
 
   lo = new QGridLayout();
+	validateControls = new std::vector<IPAddressInput *>();
+	updateTimer = new QTimer(this);
+	updateTimer->setSingleShot(true);
 
   if (retSetEthernetPortInfo) {
     createWidgets();
@@ -62,6 +65,8 @@ EthernetInfoWidget::~EthernetInfoWidget() {
 
 void EthernetInfoWidget::createWidgets() {
 
+	iPAddressInputSignalMapper = new QSignalMapper();
+
   lo = new QGridLayout();
   staticLayout = new QGridLayout();
   dhcpLayout = new QGridLayout();
@@ -84,8 +89,8 @@ void EthernetInfoWidget::createWidgets() {
   macl = new QLabel(tr("MAC Address"), infoBox);
 
 	ip1 = new IPAddressInput(staticBox);
-  sm1 = new QLineEdit(staticBox);
-  gw1 = new QLineEdit(staticBox);
+	sm1 = new IPAddressInput(staticBox);
+	gw1 = new IPAddressInput(staticBox);
   ip2 = new QLineEdit(dhcpBox);
   sm2 = new QLineEdit(dhcpBox);
   gw2 = new QLineEdit(dhcpBox);
@@ -100,13 +105,10 @@ void EthernetInfoWidget::setupWidgets() {
   QString ipRange = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])";
   QRegExp ipRegex("^" + ipRange + "\\." + ipRange + "\\." + ipRange + "\\." +
                   ipRange + "$");
-  QRegExpValidator *regValidator = new QRegExpValidator(ipRegex, 0);
 
-	// ip1->setValidator(regValidator);
-
-  sm1->setValidator(regValidator);
-
-  gw1->setValidator(regValidator);
+	validateControls->push_back(ip1);
+	validateControls->push_back(sm1);
+	validateControls->push_back(gw1);
 
   mac->setInputMask("nn:nn:nn:nn:nn:nn;_");
 
@@ -194,28 +196,73 @@ void EthernetInfoWidget::setData() {
 }
 
 void EthernetInfoWidget::createConnections() {
+	connect(iPAddressInputSignalMapper, SIGNAL(mapped(QObject *)), this,
+					SLOT(editFinished(QObject *)));
 
   connect(methodBox, SIGNAL(activated(int)), this, SLOT(comboboxSelected(int)));
   connect(this, SIGNAL(staticBoxDisabled(bool)), staticBox,
           SLOT(setDisabled(bool)));
-	connect(ip1, SIGNAL(editingFinished()), this, SLOT(editFinished()));
-	connect(sm1, SIGNAL(editingFinished()), this, SLOT(editFinished()));
-	connect(gw1, SIGNAL(editingFinished()), this, SLOT(editFinished()));
+
+	connect(ip1, SIGNAL(editingFinished()), iPAddressInputSignalMapper,
+					SLOT(map()));
+	iPAddressInputSignalMapper->setMapping(
+			ip1, new IPAddressInputMapper(ip1, RetSetEthernetPortInfo::STATIC |
+																						 RetSetEthernetPortInfo::ADDRESS));
+	connect(sm1, SIGNAL(editingFinished()), iPAddressInputSignalMapper,
+					SLOT(map()));
+	iPAddressInputSignalMapper->setMapping(
+			sm1,
+			new IPAddressInputMapper(sm1, RetSetEthernetPortInfo::STATIC |
+																				RetSetEthernetPortInfo::SUBNET_MASK));
+	connect(gw1, SIGNAL(editingFinished()), iPAddressInputSignalMapper,
+					SLOT(map()));
+	iPAddressInputSignalMapper->setMapping(
+			ip1, new IPAddressInputMapper(gw1, RetSetEthernetPortInfo::STATIC |
+																						 RetSetEthernetPortInfo::GATEWAY));
+
   connect(this, SIGNAL(staticBoxDisabled(bool)), staticBox,
           SLOT(setDisabled(bool)));
+
+	connect(updateTimer, SIGNAL(timeout()), this, SLOT(updateEthernetConfig()));
 }
 
 void EthernetInfoWidget::setStaticBoxEnabled(int selected) {
   bool disabled = (selected == 1);
-  emit staticBoxDisabled(disabled);
+	emit staticBoxDisabled(disabled);
+}
+
+bool EthernetInfoWidget::ipAddressControlsValid() {
+	std::vector<IPAddressInput *>::iterator it;
+	for (it = validateControls->begin(); it != validateControls->end(); ++it) {
+		IPAddressInput *input = (*it);
+		if (!input->getValid())
+			return false;
+	}
+	return true;
 }
 
 void EthernetInfoWidget::comboboxSelected(int selected) {
   setStaticBoxEnabled(selected);
-	// retSetEthernetPortInfo->setMethod((RetSetEthernetPortInfo::IPFlags)selected);
-	// retSetEthernetPortInfo->execute();
+	retSetEthernetPortInfo->setMethod(
+			(RetSetEthernetPortInfo::IPFlags)methodBox->currentData().Int);
+	updateTimer->start(1000);
 }
 
-void EthernetInfoWidget::editFinished() {
-  std::cout << "Edit finished" << std::endl;
+void EthernetInfoWidget::editFinished(QObject *object) {
+	IPAddressInputMapper *m = (IPAddressInputMapper *)object;
+	IPAddressInput *input = m->input;
+	std::cout << "Edit finished" << std::endl;
+	if (m->input->getValid()) {
+		retSetEthernetPortInfo->setAddress(m->flags,
+																			 m->input->text().toStdString());
+		updateTimer->start(1000);
+	}
+}
+
+void EthernetInfoWidget::updateEthernetConfig() {
+	if (ipAddressControlsValid()) {
+		std::cout << "all controls valid" << std::endl;
+	} else {
+		std::cout << "at least one control invalid" << std::endl;
+	}
 }

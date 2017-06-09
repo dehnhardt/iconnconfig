@@ -14,7 +14,7 @@ bool IPAddressInput::getValid() const { return valid; }
 void IPAddressInput::validate(QString text) {
 	valid = ipRegex.exactMatch(text);
 	if (valid)
-		setStyleSheet("");
+		setStyleSheet("border: 1px solid green; border-radius: 2px; padding: 1px;");
 	else
-		setStyleSheet("border: 1px solid red");
+		setStyleSheet("border: 1px solid red; border-radius: 2px; padding: 1px;");
 }

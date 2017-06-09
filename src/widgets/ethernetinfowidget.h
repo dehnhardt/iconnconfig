@@ -9,7 +9,17 @@
 #include <QGroupBox>
 #include <QLabel>
 #include <QLineEdit>
+#include <QSignalMapper>
+#include <QTimer>
 #include <QWidget>
+
+class IPAddressInputMapper : public QObject {
+public:
+	IPAddressInputMapper(IPAddressInput *input, int flags)
+			: input(input), flags(flags) {}
+	IPAddressInput *input;
+	int flags;
+};
 
 class EthernetInfoWidget : public QWidget {
   Q_OBJECT
@@ -26,10 +36,14 @@ public slots:
   void comboboxSelected(int selected);
 
 private slots:
-  void editFinished();
+	void editFinished(QObject *object);
+	void updateEthernetConfig();
 
 private:
   RetSetEthernetPortInfo *retSetEthernetPortInfo = 0;
+	QTimer *updateTimer = 0;
+
+	QSignalMapper *iPAddressInputSignalMapper = 0;
 
   QRegExpValidator *regValidator = 0;
 
@@ -54,9 +68,9 @@ private:
   QGroupBox *dhcpBox = 0;
   QGroupBox *infoBox = 0;
 
-  QLineEdit *ip1 = 0;
-  QLineEdit *sm1 = 0;
-  QLineEdit *gw1 = 0;
+	IPAddressInput *ip1 = 0;
+	IPAddressInput *sm1 = 0;
+	IPAddressInput *gw1 = 0;
   QLineEdit *ip2 = 0;
   QLineEdit *sm2 = 0;
   QLineEdit *gw2 = 0;
@@ -65,6 +79,8 @@ private:
 
   QWidget *empty = 0;
 
+	std::vector<IPAddressInput *> *validateControls;
+
 private:
   void createWidgets();
   void setupWidgets();
@@ -72,6 +88,7 @@ private:
   void setData();
   void createConnections();
   void setStaticBoxEnabled(int selected);
+	bool ipAddressControlsValid();
 };
 
 #endif // ETHERNETINFOWIDGET_H

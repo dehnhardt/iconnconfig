@@ -18,7 +18,6 @@ private slots:
 private:
 	QString ipRange;
 	QRegExp ipRegex;
-	// QRegExpValidator *regValidator = 0;
 	bool valid = false;
 };
 
