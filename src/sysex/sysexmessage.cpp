@@ -154,8 +154,9 @@ int SysExMessage::execute() {
       MIDI::printMessage(answerMessage);
     if (cmd != this->cmd)
       createAnswer(cmd, answerMessage, device);
-  }
-  return 0;
+		return 0;
+	}
+	return -2;
 }
 
 void SysExMessage::setDebug(bool debug) { this->debug = debug; }
