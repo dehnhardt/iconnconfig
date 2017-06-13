@@ -13,7 +13,10 @@ GetDevice::GetDevice()
   deviceHeader->push_back(0x00);
   deviceHeader->push_back(0x00);
   deviceHeader->push_back(0x00);
-  deviceHeader->push_back(0x00);
+	deviceHeader->push_back(0x00);
 }
+
+GetDevice::GetDevice(Device *device)
+		: SysExMessage(SysExMessage::GET_DEVICE, SysExMessage::QUERY, device) {}
 
 GetDevice::~GetDevice() { delete transactionId; }

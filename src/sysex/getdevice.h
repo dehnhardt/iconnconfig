@@ -7,7 +7,8 @@
 class GetDevice : public SysExMessage {
 public:
   GetDevice();
-  ~GetDevice();
+	GetDevice(Device *device);
+	~GetDevice();
 };
 
 #endif // DEVICEDETECTIONQUERY_H
