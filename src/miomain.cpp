@@ -213,7 +213,19 @@ void MioMain::restoreFromDevice() {
 	if (ret == QMessageBox::Ok) {
 		saveRestore(SaveRestore::RESTORE_FROM_DEVICE);
 		currentDevice->disconnect();
-		openDeviceGUI(this->currentDevice);
+		SLEEP(5000);
+		bool valid = false;
+		for (int i = 0; i < 10; ++i) {
+			currentDevice->connect();
+			valid = currentDevice->isDeviceValid();
+			if (valid) {
+				currentDevice->getDeviceInfo();
+				openDeviceGUI(currentDevice);
+				break;
+			}
+		}
+		if (!valid)
+			exit(-1);
 	}
 }
 
