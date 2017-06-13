@@ -217,7 +217,7 @@ void EthernetInfoWidget::createConnections() {
 	connect(gw1, SIGNAL(editingFinished()), iPAddressInputSignalMapper,
 					SLOT(map()));
 	iPAddressInputSignalMapper->setMapping(
-			ip1, new IPAddressInputMapper(gw1, RetSetEthernetPortInfo::STATIC |
+			gw1, new IPAddressInputMapper(gw1, RetSetEthernetPortInfo::STATIC |
 																						 RetSetEthernetPortInfo::GATEWAY));
 
   connect(this, SIGNAL(staticBoxDisabled(bool)), staticBox,
@@ -262,6 +262,7 @@ void EthernetInfoWidget::editFinished(QObject *object) {
 void EthernetInfoWidget::updateEthernetConfig() {
 	if (ipAddressControlsValid()) {
 		std::cout << "all controls valid" << std::endl;
+		retSetEthernetPortInfo->execute();
 	} else {
 		std::cout << "at least one control invalid" << std::endl;
 	}
