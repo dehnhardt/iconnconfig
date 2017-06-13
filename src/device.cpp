@@ -1,5 +1,6 @@
 #include "device.h"
 #include "sysex/getcommandlist.h"
+#include "sysex/getdevice.h"
 #include "sysex/getinfo.h"
 #include "sysex/getinfolist.h"
 #include "sysex/getmidiinfo.h"
@@ -26,8 +27,13 @@ Device::Device(int inPortNumber, int outPortNumber, long serialNumber,
   this->serialNumber = new MIDISysexValue(serialNumber, 5);
   this->productId = new MIDISysexValue(productId, 2);
 	this->debug = true;
-  setupMidi();
+	connect();
 }
+
+Device::Device(Device *device)
+		: Device(device->getInPortNumer(), device->getOutPortNumer(),
+						 device->getSerialNumber()->getLongValue(),
+						 device->getProductId()->getLongValue()) {}
 
 #ifdef __MIO_SIMULATE__
 
@@ -111,25 +117,36 @@ BYTE_VECTOR *Device::getFullHeader() {
   return fullHeader;
 }
 
-void Device::setupMidi() {
+bool Device::setupMidi() {
+	std::cout << "connect" << std::endl;
   std::stringstream name;
 	if (!midiin) {
 		name << "MioConfig In " << serialNumber->getLongValue();
 		midiin = MIDI::createMidiIn(name.str());
+		if (midiin)
+			midiin->setErrorCallback(&midiinErrorCallback, this);
+		else
+			return false;
 	}
 	if (!midiin->isPortOpen())
 		midiin->openPort(inPortNumber);
 	if (!midiout) {
 		name << "MioConfig Out " << serialNumber->getLongValue();
 		midiout = MIDI::createMidiOut(name.str());
+		if (midiout)
+			midiout->setErrorCallback(&midiOutErrorCallback, this);
+		else
+			return false;
 	}
 	if (!midiout->isPortOpen())
 		midiout->openPort(outPortNumber);
+	return midiin->isPortOpen() && midiout->isPortOpen();
 }
 
 void Device::sentSysex(BYTE_VECTOR *data) { midiout->sendMessage(data); }
 
 void Device::disconnect() {
+	std::cout << "disconnect" << std::endl;
 	if (midiin) {
 		if (midiin->isPortOpen())
 			midiin->closePort();
@@ -144,7 +161,13 @@ void Device::disconnect() {
 	}
 }
 
-void Device::connect() { setupMidi(); }
+void Device::connect() {
+	bool deviceOpen = false;
+	for (int i = 0; i < WAIT_LOOPS && !deviceOpen; i++) {
+		SLEEP(WAIT_TIME);
+		deviceOpen = setupMidi();
+	}
+}
 
 BYTE_VECTOR *Device::retrieveSysex() {
   BYTE_VECTOR *data = new BYTE_VECTOR();
@@ -276,6 +299,19 @@ bool Device::queryDeviceInfo() {
 	return true;
 }
 
+bool Device::isDeviceValid() {
+	GetDevice *getDevice = new GetDevice(this);
+	getDevice->setDebug(true);
+	int ret = -3;
+	for (int i = 0; i < WAIT_LOOPS; ++i) {
+		ret = getDevice->execute();
+		if (ret == 0)
+			return true;
+		SLEEP(1000);
+	}
+	return false;
+}
+
 MIDI_PORT_INFOS *Device::getMidiPortInfos() const { return midiPortInfos; }
 
 void Device::setDeviceInformation(std::string modelName,
@@ -295,6 +331,16 @@ BYTE_VECTOR *Device::nextTransactionId() {
 		transactionId = 0;
 	BYTE_VECTOR *v = MIDI::byteSplit(++transactionId, 2);
 	return v;
+}
+
+void midiOutErrorCallback(RtMidiError::Type type, const std::string &errorText,
+													void *userData) {
+	std::cout << "UEC " << errorText << std::endl;
+}
+
+void midiinErrorCallback(RtMidiError::Type type, const std::string &errorText,
+												 void *userData) {
+	std::cout << "IEC " << errorText << std::endl;
 }
 
 BYTE_VECTOR *Device::manufacturerHeader = 0;

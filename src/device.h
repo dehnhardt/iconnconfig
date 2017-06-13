@@ -20,6 +20,8 @@ class GetInfo;
 class Device {
 public:
 	Device(int inPortNumber, int outPortNumber, long serialNumber, int productId);
+	Device(Device *device);
+
 	~Device();
 
 public:
@@ -49,6 +51,7 @@ public:
 	BYTE_VECTOR *getDeviceHeader();
 	BYTE_VECTOR *getFullHeader();
 	bool queryDeviceInfo();
+	bool isDeviceValid();
 
 	std::string getModelName() { return modelName; }
 	std::string getDeviceName() { return deviceName; }
@@ -120,9 +123,14 @@ private:
 	BYTE_VECTOR *deviceHeader = 0;
 	BYTE_VECTOR *fullHeader = 0;
 
-	void setupMidi();
+	bool setupMidi();
 	bool checkSysex(BYTE_VECTOR *data);
 	void requestMidiPortInfos();
 };
+
+void midiOutErrorCallback(RtMidiError::Type type, const std::string &errorText,
+													void *userData);
+void midiinErrorCallback(RtMidiError::Type type, const std::string &errorText,
+												 void *userData);
 
 #endif // DEVICE_H
