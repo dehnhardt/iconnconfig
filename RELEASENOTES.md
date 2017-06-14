@@ -14,3 +14,9 @@
 * known problems
 ** in general error handling is currently nearly not implemented. I still don't have a concept
 ** (1) after reading the settings from flash or restoring to factory default, the application might crash - I'm still not sure what the problem is.
+
+### Windows
+someone might try;-)
+
+### Mac
+someone might try;-)
