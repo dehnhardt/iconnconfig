@@ -244,7 +244,7 @@ bool EthernetInfoWidget::ipAddressControlsValid() {
 void EthernetInfoWidget::comboboxSelected(int selected) {
   setStaticBoxEnabled(selected);
 	retSetEthernetPortInfo->setMethod(
-			(RetSetEthernetPortInfo::IPFlags)methodBox->currentData().Int);
+			(RetSetEthernetPortInfo::IPFlags)methodBox->itemData(selected).Int);
 	updateTimer->start(1000);
 }
 
