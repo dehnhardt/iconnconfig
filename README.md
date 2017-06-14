@@ -21,4 +21,3 @@ Status
 * (2017-06-06) Added methods to update port routings
 * (2017-06-07) Save settings to device and restore settings from device works
 * (2017-06-13) Saving of static IP-address, netmask and gateway works
-* (2017-06-13) Release 0.1
