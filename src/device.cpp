@@ -119,10 +119,11 @@ BYTE_VECTOR *Device::getFullHeader() {
 
 bool Device::setupMidi() {
 	std::cout << "connect" << std::endl;
-  std::stringstream name;
+	std::stringstream nameIn;
+	std::stringstream nameOut;
 	if (!midiin) {
-		name << "MioConfig In " << serialNumber->getLongValue();
-		midiin = MIDI::createMidiIn(name.str());
+		nameIn << "MioConfig In " << serialNumber->getLongValue();
+		midiin = MIDI::createMidiIn(nameIn.str());
 		if (midiin)
 			midiin->setErrorCallback(&midiinErrorCallback, this);
 		else
@@ -131,8 +132,8 @@ bool Device::setupMidi() {
 	if (!midiin->isPortOpen())
 		midiin->openPort(inPortNumber);
 	if (!midiout) {
-		name << "MioConfig Out " << serialNumber->getLongValue();
-		midiout = MIDI::createMidiOut(name.str());
+		nameOut << "MioConfig Out " << serialNumber->getLongValue();
+		midiout = MIDI::createMidiOut(nameOut.str());
 		if (midiout)
 			midiout->setErrorCallback(&midiOutErrorCallback, this);
 		else
@@ -305,8 +306,10 @@ bool Device::isDeviceValid() {
 	int ret = -3;
 	for (int i = 0; i < WAIT_LOOPS; ++i) {
 		ret = getDevice->execute();
-		if (ret == 0)
+		if (ret == 0) {
+			std::cout << "device is up and answers" << std::endl;
 			return true;
+		}
 		SLEEP(1000);
 	}
 	return false;
