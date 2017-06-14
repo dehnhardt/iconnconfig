@@ -62,6 +62,10 @@ private:
 	void saveRestore(SaveRestore::SaveResstoreId saveRestoreId);
 	void addDeviceToolButtons();
 
+        void reinitDevice(int ret);
+        
+        void reinitDevice();
+        
 protected:
   void closeEvent(QCloseEvent *event);
 
