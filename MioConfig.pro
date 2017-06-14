@@ -136,4 +136,6 @@ RESOURCES += \
 
 DISTFILES += \
     tr/mioconfig_de_DE.qm \
-    tr/mioconfig_de_DE.ts
+    tr/mioconfig_de_DE.ts \
+    README.md \
+    RELEASENOTES.md
