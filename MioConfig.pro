@@ -138,4 +138,5 @@ DISTFILES += \
     tr/mioconfig_de_DE.qm \
     tr/mioconfig_de_DE.ts \
     README.md \
-    RELEASENOTES.md
+    RELEASENOTES.md \
+    BUILD.md
