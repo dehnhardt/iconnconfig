@@ -103,21 +103,25 @@ BYTE_VECTOR *SysExMessage::getMIDISysExMessage() {
 }
 
 SysExMessage::Command SysExMessage::parseAnswer(BYTE_VECTOR *answer) {
+	if (!answer || answer->size() < 20)
+		return CMD_ERROR;
   std::cout << "Answer: " << std::dec << answer->size() << std::endl;
   BYTE_VECTOR *commandBytes =
       new BYTE_VECTOR(answer->begin() + 14, answer->begin() + 16);
-  MIDISysexValue command = MIDISysexValue(commandBytes);
-  if (checkAnswerValid(command.getLongValue())) {
+	int command = commandBytes->at(1);
+	// MIDISysexValue command = MIDISysexValue(commandBytes);
+	if (checkAnswerValid(command)) {
 #ifdef __RTMIDI_DEBUG__
-    std::cout << "Answer (command: " << command.getLongValue() << ") accepted "
-              << std::endl;
+		std::cout << "Answer (command: " << command << ") accepted " << std::endl;
 #endif //__RTMIDI_DEBUG__
     extractData(answer);
-    return (SysExMessage::Command)command.getLongValue();
+		return (SysExMessage::Command)command;
   }
 #ifdef __RTMIDI_DEBUG__
-  std::cout << "Answer (command: " << command.getLongValue()
-            << ") not accepted " << std::endl;
+	std::cout << "Answer (command: " << command << ") not accepted " << std::endl
+						<< "A: ";
+	MIDI::printMessage(answer);
+	MIDI::printMessage(commandBytes);
 #endif //__RTMIDI_DEBUG__
   return CMD_ERROR;
 }
@@ -132,7 +136,7 @@ void SysExMessage::createAnswer(SysExMessage::Command cmd,
                                 Device *device) {
   if (cmd == ACK) {
     answer = new Ack(cmd, message, device);
-    answer->parseAnswerData();
+		answer->parseAnswerData();
   }
 }
 
@@ -150,8 +154,12 @@ int SysExMessage::execute() {
   BYTE_VECTOR *answerMessage = device->retrieveSysex();
   if (answerMessage != nullptr) {
     Command cmd = parseAnswer(answerMessage);
-    if (debug)
-      MIDI::printMessage(answerMessage);
+		if (cmd == CMD_ERROR)
+			return -3;
+		if (debug) {
+			std::cout << "c: ";
+			MIDI::printMessage(answerMessage);
+		}
     if (cmd != this->cmd)
       createAnswer(cmd, answerMessage, device);
 		return 0;
