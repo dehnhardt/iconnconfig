@@ -120,7 +120,8 @@ HEADERS  += src/miomain.h \
     src/sysex/saverestore.h \
     src/sysex/getsaverestorelist.h \
     src/sysex/retsaverestorelist.h \
-    src/widgets/controls/ipaddressinput.h
+    src/widgets/controls/ipaddressinput.h \
+    src/sysex/communicationexception.h
 
 FORMS    += src/miomain.ui \
     src/devicedetection.ui \
