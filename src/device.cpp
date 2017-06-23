@@ -1,4 +1,5 @@
 #include "device.h"
+#include "sysex/communicationexception.h"
 #include "sysex/getcommandlist.h"
 #include "sysex/getdevice.h"
 #include "sysex/getinfo.h"
@@ -189,7 +190,9 @@ BYTE_VECTOR *Device::retrieveSysex() {
   std::cout << "delay: " << i << std::endl;
   if (checkSysex(data))
     return data;
-  return 0;
+	else
+		throw CommunicationException(CommunicationException::ANSWER_TIMEOOUT);
+	return 0;
 }
 
 bool Device::checkSysex(BYTE_VECTOR *data) {
@@ -338,7 +341,7 @@ BYTE_VECTOR *Device::nextTransactionId() {
 
 void midiOutErrorCallback(RtMidiError::Type type, const std::string &errorText,
 													void *userData) {
-	std::cout << "UEC " << errorText << std::endl;
+	std::cout << "UEC (" << (int)type << "): " << errorText << std::endl;
 }
 
 void midiinErrorCallback(RtMidiError::Type type, const std::string &errorText,

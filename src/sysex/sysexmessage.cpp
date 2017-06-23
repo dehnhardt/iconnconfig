@@ -1,5 +1,6 @@
 #include "sysexmessage.h"
 #include "ack.h"
+#include "communicationexception.h"
 
 #include <algorithm>
 #include <iostream>
@@ -151,20 +152,25 @@ int SysExMessage::execute() {
 	if (debug)
 		MIDI::printMessage(message);
   device->sentSysex(message);
-  BYTE_VECTOR *answerMessage = device->retrieveSysex();
-  if (answerMessage != nullptr) {
-    Command cmd = parseAnswer(answerMessage);
-		if (cmd == CMD_ERROR)
-			return -3;
-		if (debug) {
-			std::cout << "c: ";
-			MIDI::printMessage(answerMessage);
+	try {
+		BYTE_VECTOR *answerMessage = device->retrieveSysex();
+		if (answerMessage != nullptr) {
+			Command cmd = parseAnswer(answerMessage);
+			if (cmd == CMD_ERROR)
+				return -3;
+			if (debug) {
+				std::cout << "c: ";
+				MIDI::printMessage(answerMessage);
+			}
+			if (cmd != this->cmd)
+				createAnswer(cmd, answerMessage, device);
+			return 0;
 		}
-    if (cmd != this->cmd)
-      createAnswer(cmd, answerMessage, device);
-		return 0;
+	} catch (CommunicationException e) {
+		throw;
 	}
-	return -2;
+
+	// return -2;
 }
 
 void SysExMessage::setDebug(bool debug) { this->debug = debug; }
@@ -174,8 +180,13 @@ void SysExMessage::printRawData() { MIDI::printMessage(data); }
 SysExMessage *SysExMessage::getAnswer() { return answer; }
 
 SysExMessage *SysExMessage::query() {
-  execute();
-  return answer;
+	try {
+		execute();
+	} catch (CommunicationException e) {
+		std::cerr << e.getErrorMessage();
+	}
+
+	return answer;
 }
 
 std::string SysExMessage::getDataAsString() {
