@@ -21,4 +21,6 @@ Status
 * (2017-06-06) Added methods to update port routings
 * (2017-06-07) Save settings to device and restore settings from device works
 * (2017-06-12) Saving of static IP-address, netmask and gateway works
-* (2017-06-14) Release of version 0.1
+* (2017-06-14) Release of version v0.1-beta
+
+* (2017-06-19) Added some screenshots to the WIKI-Page https://github.com/dehnhardt/mioconfig/wiki
