@@ -12,6 +12,7 @@ public:
 		ACK_UNKNOWN_COMMAD,
 		ACK_MALFORMED_MESSAGE,
 		ACK_COMMAND_FAILED,
+		WRONG_VERSION,
 		WRONG_ANSWER
 	};
 
@@ -22,13 +23,26 @@ public:
 	ProtocolErrorCode getErrorCode() { return code; }
 	std::string getErrorMessage() {
 		std::strstream e;
-		e << "Error when communicationg with device. Reason: ";
+		e << "Protocol error. Reason: ";
 		switch (code) {
 		case UNKNOWN:
 			e << " unknown";
 			break;
-		case ANSWER_TIMEOOUT:
-			e << " the answer had a timeout";
+		case ACK_UNKNOWN_COMMAD:
+			e << " the command is unknown";
+			break;
+		case ACK_MALFORMED_MESSAGE:
+			e << " the message is malformed";
+			break;
+		case ACK_COMMAND_FAILED:
+			e << " the command failed for an unknown reason";
+			break;
+		case WRONG_VERSION:
+			e << " the protocol version does not match";
+			break;
+		case WRONG_ANSWER:
+			e << " the answer is not allowed to this command";
+			break;
 		default:
 			break;
 		}
