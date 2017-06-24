@@ -1,6 +1,7 @@
 #include "sysexmessage.h"
 #include "ack.h"
 #include "communicationexception.h"
+#include "protocolexception.h"
 
 #include <algorithm>
 #include <iostream>
@@ -110,26 +111,28 @@ SysExMessage::Command SysExMessage::parseAnswer(BYTE_VECTOR *answer) {
   BYTE_VECTOR *commandBytes =
       new BYTE_VECTOR(answer->begin() + 14, answer->begin() + 16);
 	int command = commandBytes->at(1);
-	// MIDISysexValue command = MIDISysexValue(commandBytes);
-	if (checkAnswerValid(command)) {
-#ifdef __RTMIDI_DEBUG__
-		std::cout << "Answer (command: " << command << ") accepted " << std::endl;
-#endif //__RTMIDI_DEBUG__
+	try {
+		checkAnswerValid(command);
+		if (debug)
+			std::cout << "Answer (command: " << command << ") accepted " << std::endl;
     extractData(answer);
 		return (SysExMessage::Command)command;
-  }
-#ifdef __RTMIDI_DEBUG__
-	std::cout << "Answer (command: " << command << ") not accepted " << std::endl
-						<< "A: ";
-	MIDI::printMessage(answer);
-	MIDI::printMessage(commandBytes);
-#endif //__RTMIDI_DEBUG__
+	} catch (ProtocolException e) {
+		std::cerr << e.getErrorMessage();
+	}
+
+	if (debug) {
+		MIDI::printMessage(answer);
+		MIDI::printMessage(commandBytes);
+	}
   return CMD_ERROR;
 }
 
 bool SysExMessage::checkAnswerValid(long answerCommandId) {
-  return std::find(acceptedAnswers.begin(), acceptedAnswers.end(),
-                   answerCommandId) != acceptedAnswers.end();
+	if (std::find(acceptedAnswers.begin(), acceptedAnswers.end(),
+								answerCommandId) == acceptedAnswers.end())
+		throw ProtocolException(ProtocolException::WRONG_ANSWER);
+	return true;
 }
 
 void SysExMessage::createAnswer(SysExMessage::Command cmd,
