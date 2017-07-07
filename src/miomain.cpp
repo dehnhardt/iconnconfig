@@ -9,16 +9,24 @@
 #include "widgets/multiinfowidget.h"
 #include "widgets/portswidget.h"
 
+#include <cerrno>   // for errno
+#include <csignal>  // for sigaction()
+#include <cstring>  // for strerror()
+#include <unistd.h> // for pipe()
+
 #include <QCloseEvent>
 #include <QDesktopWidget>
 #include <QMessageBox>
 #include <QPixmap>
 #include <QProgressDialog>
 #include <QSignalMapper>
+#include <QSocketNotifier>
 #include <QStyle>
 #include <QTimer>
 #include <QToolButton>
 #include <QtDebug>
+
+int MioMain::sigpipe[2];
 
 MioMain::MioMain(QWidget *parent) : QMainWindow(parent), ui(new Ui::MioMain) {
   ui->setupUi(this);
@@ -28,6 +36,8 @@ MioMain::MioMain(QWidget *parent) : QMainWindow(parent), ui(new Ui::MioMain) {
 	pm->save("/develop/mioconfig/graphik/restore.xpm", "xpm");
 	pm->load("/develop/mioconfig/graphik/SaveToDevice.svg");
 	pm->save("/develop/mioconfig/graphik/SaveToDevice.xpm", "xpm");*/
+	if (!installSignalHandlers())
+		qWarning("%s", "Signal handlers not installed!");
   readSettings();
   if (readDevicesFromSettings())
     openDefaultDevice();
@@ -227,6 +237,10 @@ void MioMain::reinitDevice() {
 		exit(-1);
 }
 
+void MioMain::readConfigurationFromFile() {}
+
+void MioMain::writeConfigurtionToFile() {}
+
 void MioMain::restoreFromDevice() {
 	QMessageBox msgBox;
 	msgBox.setText(tr("Read all settings from device?"));
@@ -361,3 +375,67 @@ bool MioMain::readDevicesFromSettings() {
 	return true;
 }
 void MioMain::on_actionQuit_triggered() { close(); }
+
+/******************************************************************************
+ *************** Methods for handling ladish events ***************************
+ *****************************************************************************/
+
+/* Handler for system signals (SIGUSR1, SIGINT...)
+ * Write a message to the pipe and leave as soon as possible
+ */
+void MioMain::handleSignal(int sig) {
+	if (write(sigpipe[1], &sig, sizeof(sig)) == -1) {
+		qWarning("write() failed: %s", std::strerror(errno));
+	}
+}
+
+/* Install signal handlers (may be more than one; called from the
+ * constructor of your MainWindow class*/
+bool MioMain::installSignalHandlers() {
+	/*install pipe to forward received system signals*/
+	if (pipe(sigpipe) < 0) {
+		qWarning("pipe() failed: %s", std::strerror(errno));
+		return false;
+	}
+
+	/*install notifier to handle pipe messages*/
+	QSocketNotifier *signalNotifier =
+			new QSocketNotifier(sigpipe[0], QSocketNotifier::Read, this);
+	connect(signalNotifier, SIGNAL(activated(int)), this,
+					SLOT(signalAction(int)));
+
+	/*install signal handlers*/
+	struct sigaction action;
+	memset(&action, 0, sizeof(action));
+	action.sa_handler = handleSignal;
+
+	if (sigaction(SIGUSR1, &action, NULL) == -1) {
+		qWarning("sigaction() failed: %s", std::strerror(errno));
+		return false;
+	}
+
+	/* optional: register more signals to handle: */
+
+	return true;
+}
+
+/* Slot to give response to the incoming pipe message;
+e.g.: save current file */
+void MioMain::signalAction(int fd) {
+	int message;
+
+	if (read(fd, &message, sizeof(message)) == -1) {
+		qWarning("read() failed: %s", std::strerror(errno));
+		return;
+	}
+
+	switch (message) {
+	case SIGUSR1:
+		writeConfigurtionToFile();
+		break;
+	/* optional: handle more signals: */
+	default:
+		qWarning("Unexpected signal received: %d", message);
+		break;
+	}
+}

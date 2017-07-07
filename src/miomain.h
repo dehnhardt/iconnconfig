@@ -5,6 +5,7 @@
 #include "sysex/saverestore.h"
 #include "widgets/centralwidget.h"
 
+#include <QFile>
 #include <QMainWindow>
 #include <QToolBar>
 
@@ -24,7 +25,8 @@ class MioMain : public QMainWindow {
 public:
   explicit MioMain(QWidget *parent = 0);
   ~MioMain();
-  void replacePanel(QWidget *w);
+	void setConfigurationFile(QFile *file) { this->configurationFile = file; }
+	void replacePanel(QWidget *w);
 
 public slots:
   void openDefaultDevice();
@@ -37,6 +39,7 @@ private slots:
 	void storeToDevice();
 	void restoreFromDevice();
 	void resetToFactoryDefaults();
+	void signalAction(int);
 
 private:
   // Members
@@ -46,7 +49,10 @@ private:
   std::map<Qt::DockWidgetArea, std::vector<QDockWidget *>> dockWidgetAreas;
   QString title;
 	Device *currentDevice = 0;
+	QFile *configurationFile = 0;
+	static int sigpipe[2];
 
+private:
   // methods
   void readSettings();
   bool readDevicesFromSettings();
@@ -62,10 +68,16 @@ private:
 	void saveRestore(SaveRestore::SaveResstoreId saveRestoreId);
 	void addDeviceToolButtons();
 
-        void reinitDevice(int ret);
-        
-        void reinitDevice();
-        
+	void reinitDevice(int ret);
+	void reinitDevice();
+
+	void readConfigurationFromFile();
+	void writeConfigurtionToFile();
+
+	// signalling
+	static void handleSignal(int);
+	bool installSignalHandlers();
+
 protected:
   void closeEvent(QCloseEvent *event);
 
