@@ -123,7 +123,8 @@ HEADERS  += src/miomain.h \
     src/sysex/retsaverestorelist.h \
     src/widgets/controls/ipaddressinput.h \
     src/sysex/communicationexception.h \
-    src/sysex/protocolexception.h
+    src/sysex/protocolexception.h \
+    src/config/qsettings-xml.h
 
 FORMS    += src/miomain.ui \
     src/devicedetection.ui \
