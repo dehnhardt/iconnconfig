@@ -141,8 +141,12 @@ void SysExMessage::createAnswer(SysExMessage::Command cmd,
   if (cmd == ACK) {
     answer = new Ack(cmd, message, device);
 		answer->parseAnswerData();
-  }
+	}
 }
+
+void SysExMessage::readSettings() {}
+
+void SysExMessage::storeSettings() {}
 
 unsigned char SysExMessage::getCmdflags() const { return cmdflags; }
 
