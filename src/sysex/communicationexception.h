@@ -11,7 +11,7 @@ public:
 
 	CommunicationException(CommunicationErrorCode code = UNKNOWN)
 		: std::runtime_error("CommunicationException"), code(code) {}
-
+	virtual ~CommunicationException();
 	// getter
 	CommunicationErrorCode getErrorCode() { return code; }
 	std::string getErrorMessage() {

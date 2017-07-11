@@ -12,12 +12,15 @@ public:
 		ACK_UNKNOWN_COMMAD,
 		ACK_MALFORMED_MESSAGE,
 		ACK_COMMAND_FAILED,
+		MESSAGE_TO_SHORT,
 		WRONG_VERSION,
 		WRONG_ANSWER
 	};
 
 	ProtocolException(ProtocolErrorCode code = UNKNOWN)
 		: std::runtime_error("CommunicationException"), code(code) {}
+
+	virtual ~ProtocolException();
 
 	// getter
 	ProtocolErrorCode getErrorCode() { return code; }
@@ -36,6 +39,9 @@ public:
 			break;
 		case ACK_COMMAND_FAILED:
 			e << " the command failed for an unknown reason";
+			break;
+		case MESSAGE_TO_SHORT:
+			e << " the the length of the message is shorten than 20 chars";
 			break;
 		case WRONG_VERSION:
 			e << " the protocol version does not match";

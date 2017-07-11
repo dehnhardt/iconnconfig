@@ -75,7 +75,9 @@ SOURCES +=\
     src/sysex/saverestore.cpp \
     src/sysex/getsaverestorelist.cpp \
     src/sysex/retsaverestorelist.cpp \
-    src/widgets/controls/ipaddressinput.cpp
+    src/widgets/controls/ipaddressinput.cpp \
+    src/sysex/communicationexception.cpp \
+    src/sysex/protocolexception.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
