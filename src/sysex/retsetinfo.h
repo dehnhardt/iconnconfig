@@ -7,32 +7,37 @@
 #include <QtCore/QCoreApplication>
 
 class RetSetInfo : public SysExMessage {
-  Q_DECLARE_TR_FUNCTIONS(InfoItem)
+	Q_DECLARE_TR_FUNCTIONS(InfoItem)
 
 public:
-  // Constructors
-  RetSetInfo(Device *device);
-  RetSetInfo(CommandFlags flags, Device *device);
-  RetSetInfo(Command cmd, BYTE_VECTOR *message, Device *device)
-      : SysExMessage(cmd, message, device) {}
+	// Constructors
+	RetSetInfo(Device *device);
+	RetSetInfo(CommandFlags flags, Device *device);
+	RetSetInfo(Command cmd, BYTE_VECTOR *message, Device *device)
+		: SysExMessage(cmd, message, device) {}
 
-  // getter
-  SysExMessage::DeviceInfoItem getInfoItem();
-  std::string getValue();
-  bool isItemEditable();
-  std::string getItemName();
+	// getter
+	SysExMessage::DeviceInfoItem getInfoItem();
+	std::string getValue();
+	bool isItemEditable();
+	std::string getItemName();
 
-  // setter
-  bool setValue(std::string value);
+	// setter
+	bool setValue(std::string value);
+
+	// methods
+	int getSettingsId() { return cmd; }
+	int getSettingsIndex() { return 0; }
+	std::string getStorableValue() { return ""; }
 
 protected:
-  void parseAnswerData();
-  BYTE_VECTOR *getMessageData();
+	void parseAnswerData();
+	BYTE_VECTOR *getMessageData();
 
 private:
-  // variables
-  SysExMessage::DeviceInfoItem infoItem;
-  std::string value;
+	// variables
+	SysExMessage::DeviceInfoItem infoItem;
+	std::string value;
 };
 
-#endif // RETSETINFO_H
+#endif// RETSETINFO_H

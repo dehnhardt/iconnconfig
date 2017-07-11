@@ -8,7 +8,7 @@ public:
 	RetSetMidiPortRoute(Device *device);
 
 	RetSetMidiPortRoute(Command cmd, BYTE_VECTOR *message, Device *device)
-			: SysExMessage(cmd, message, device) {}
+		: SysExMessage(cmd, message, device) {}
 
 	void parseAnswerData();
 	bool isPortRouted(int portNumber);
@@ -17,6 +17,10 @@ public:
 	int getTotalNumberOfPorts() const;
 	void setTotalNumberOfPorts(int value);
 	BYTE_VECTOR *getMessageData();
+
+	int getSettingsId() { return cmd; }
+	int getSettingsIndex() { return 0; }
+	std::string getStorableValue() { return ""; }
 
 private:
 	long portId;
@@ -27,4 +31,4 @@ private:
 	void getPortByteAndBit(int portNumber, int &byte, int &bit);
 };
 
-#endif // RETSETMIDIPORTROUTE_H
+#endif// RETSETMIDIPORTROUTE_H

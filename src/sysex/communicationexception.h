@@ -1,21 +1,21 @@
 #ifndef COMMUNICATIONEXCEPTION_H
 #define COMMUNICATIONEXCEPTION_H
 
+#include <sstream>
 #include <stdexcept>
 #include <string>
-#include <strstream>
 
 class CommunicationException : public std::runtime_error {
 public:
 	enum CommunicationErrorCode { UNKNOWN = 0, ANSWER_TIMEOOUT = 1 };
 
 	CommunicationException(CommunicationErrorCode code = UNKNOWN)
-			: std::runtime_error("CommunicationException"), code(code) {}
+		: std::runtime_error("CommunicationException"), code(code) {}
 
 	// getter
 	CommunicationErrorCode getErrorCode() { return code; }
 	std::string getErrorMessage() {
-		std::strstream e;
+		std::stringstream e;
 		e << "Error when communicationg with device. Reason: ";
 		switch (code) {
 		case UNKNOWN:
@@ -23,6 +23,7 @@ public:
 			break;
 		case ANSWER_TIMEOOUT:
 			e << " the answer had a timeout";
+			break;
 		default:
 			break;
 		}
@@ -34,4 +35,4 @@ private:
 	CommunicationErrorCode code = UNKNOWN;
 };
 
-#endif // COMMUNICATIONEXCEPTION_H
+#endif// COMMUNICATIONEXCEPTION_H

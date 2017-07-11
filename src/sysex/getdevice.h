@@ -6,9 +6,12 @@
 
 class GetDevice : public SysExMessage {
 public:
-  GetDevice();
+	GetDevice();
 	GetDevice(Device *device);
 	~GetDevice();
+	int getSettingsId() { return cmd; }
+	int getSettingsIndex() { return 0; }
+	std::string getStorableValue() { return ""; }
 };
 
-#endif // DEVICEDETECTIONQUERY_H
+#endif// DEVICEDETECTIONQUERY_H

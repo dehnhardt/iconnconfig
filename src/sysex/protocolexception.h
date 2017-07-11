@@ -1,9 +1,9 @@
 #ifndef PROTOCOLEXCEPTION_H
 #define PROTOCOLEXCEPTION_H
 
+#include <sstream>
 #include <stdexcept>
 #include <string>
-#include <strstream>
 
 class ProtocolException : public std::runtime_error {
 public:
@@ -17,12 +17,12 @@ public:
 	};
 
 	ProtocolException(ProtocolErrorCode code = UNKNOWN)
-			: std::runtime_error("CommunicationException"), code(code) {}
+		: std::runtime_error("CommunicationException"), code(code) {}
 
 	// getter
 	ProtocolErrorCode getErrorCode() { return code; }
 	std::string getErrorMessage() {
-		std::strstream e;
+		std::stringstream e;
 		e << "Protocol error. Reason: ";
 		switch (code) {
 		case UNKNOWN:
@@ -54,4 +54,4 @@ private:
 	ProtocolErrorCode code = UNKNOWN;
 };
 
-#endif // PROTOCOLEXCEPTION_H
+#endif// PROTOCOLEXCEPTION_H

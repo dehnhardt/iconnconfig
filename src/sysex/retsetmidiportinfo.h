@@ -10,7 +10,7 @@ public:
 	RetSetMidiPortInfo(Device *device);
 
 	RetSetMidiPortInfo(Command cmd, BYTE_VECTOR *message, Device *device)
-			: SysExMessage(cmd, message, device) {}
+		: SysExMessage(cmd, message, device) {}
 
 	void parseAnswerData();
 
@@ -33,6 +33,12 @@ public:
 	// setter
 	void setPortName(const std::string &value);
 
+public:
+	// methods
+	int getSettingsId() { return cmd; }
+	int getSettingsIndex() { return 0; }
+	std::string getStorableValue() { return ""; }
+
 private:
 	long portId;
 	MidiPortType portType;
@@ -49,4 +55,4 @@ private:
 	std::string portTypeName;
 };
 
-#endif // RETSETMIDIPORTINFO_H
+#endif// RETSETMIDIPORTINFO_H

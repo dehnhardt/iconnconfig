@@ -8,7 +8,7 @@ public:
 	RetSetMidiInfo(Device *device);
 
 	RetSetMidiInfo(Command cmd, BYTE_VECTOR *message, Device *device)
-			: SysExMessage(cmd, message, device) {}
+		: SysExMessage(cmd, message, device) {}
 
 public:
 	// getters
@@ -32,6 +32,12 @@ public:
 	void setEnableRoutingBetweenHostJacks(bool value);
 	void setMaximumSupportedUsbHostPorts(int value);
 
+public:
+	// methods
+	int getSettingsId() { return cmd; }
+	int getSettingsIndex() { return 0; }
+	std::string getStorableValue() { return ""; }
+
 protected:
 	void parseAnswerData();
 
@@ -52,4 +58,4 @@ private:
 	bool enableRunningStatusOnDin = false;
 };
 
-#endif // RETSETMIDIINFO_H
+#endif// RETSETMIDIINFO_H
