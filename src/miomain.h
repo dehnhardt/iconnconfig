@@ -5,8 +5,10 @@
 #include "sysex/saverestore.h"
 #include "widgets/centralwidget.h"
 
+#include <QCommandLineParser>
 #include <QFile>
 #include <QMainWindow>
+#include <QSettings>
 #include <QToolBar>
 
 namespace Ui {
@@ -15,56 +17,57 @@ class MioMain;
 
 class DeviceMenuMapper : public QObject {
 public:
-  DeviceMenuMapper(Device *device) : device(device) {}
-  Device *device;
+	DeviceMenuMapper(Device *device) : device(device) {}
+	Device *device;
 };
 
 class MioMain : public QMainWindow {
-  Q_OBJECT
+	Q_OBJECT
 
 public:
-  explicit MioMain(QWidget *parent = 0);
-  ~MioMain();
-	void setConfigurationFile(QFile *file) { this->configurationFile = file; }
+	explicit MioMain(QCommandLineParser *parser, QWidget *parent = 0);
+	~MioMain();
+	void setConfigurationFile(QString *file) { this->configurationFile = file; }
 	void replacePanel(QWidget *w);
 
 public slots:
-  void openDefaultDevice();
+	void openDefaultDevice();
 
 private slots:
-  void on_actionQuit_triggered();
-  void openDetectionWindow();
-  void openDeviceGUI(QObject *m);
-  void openDeviceGUI(Device *d);
+	void on_actionQuit_triggered();
+	void openDetectionWindow();
+	void openDeviceGUI(QObject *m);
+	void openDeviceGUI(Device *d);
 	void storeToDevice();
 	void restoreFromDevice();
 	void resetToFactoryDefaults();
 	void signalAction(int);
 
 private:
-  // Members
-  Ui::MioMain *ui;
-  DeviceDetection *deviceDetectionWindow = 0;
-  QToolBar *toolBar = 0;
-  std::map<Qt::DockWidgetArea, std::vector<QDockWidget *>> dockWidgetAreas;
-  QString title;
+	// Members
+	Ui::MioMain *ui;
+	DeviceDetection *deviceDetectionWindow = 0;
+	QToolBar *toolBar = 0;
+	std::map<Qt::DockWidgetArea, std::vector<QDockWidget *>> dockWidgetAreas;
+	QString title;
 	Device *currentDevice = 0;
-	QFile *configurationFile = 0;
+	QString *configurationFile = 0;
+	QSettings *configuration = 0;
 	static int sigpipe[2];
 
 private:
-  // methods
-  void readSettings();
-  bool readDevicesFromSettings();
-  void writeSettings();
-  void writeDevicesToSettings();
-  void connectSlots();
-  void addDevicesToSelectionMenu(long defaultDeviceSN);
+	// methods
+	void readSettings();
+	bool readDevicesFromSettings();
+	void writeSettings();
+	void writeDevicesToSettings();
+	void connectSlots();
+	void addDevicesToSelectionMenu(long defaultDeviceSN);
 
-  void addDock(QDockWidget *widget,
-               Qt::DockWidgetArea area = Qt::NoDockWidgetArea);
+	void addDock(QDockWidget *widget,
+				 Qt::DockWidgetArea area = Qt::NoDockWidgetArea);
 
-  void clearDocWidgets();
+	void clearDocWidgets();
 	void saveRestore(SaveRestore::SaveResstoreId saveRestoreId);
 	void addDeviceToolButtons();
 
@@ -79,10 +82,10 @@ private:
 	bool installSignalHandlers();
 
 protected:
-  void closeEvent(QCloseEvent *event);
+	void closeEvent(QCloseEvent *event);
 
 signals:
-  void deviceSelected(Device *d);
+	void deviceSelected(Device *d);
 };
 
-#endif // MIOMAIN_H
+#endif// MIOMAIN_H

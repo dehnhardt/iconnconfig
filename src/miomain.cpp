@@ -1,5 +1,6 @@
 #include "miomain.h"
 #include "config/configuration.h"
+#include "config/qsettings-xml.h"
 #include "devicedetection.h"
 #include "sysex/midi.h"
 #include "sysex/retcommandlist.h"
@@ -9,16 +10,17 @@
 #include "widgets/multiinfowidget.h"
 #include "widgets/portswidget.h"
 
-#include <cerrno>   // for errno
-#include <csignal>  // for sigaction()
-#include <cstring>  // for strerror()
-#include <unistd.h> // for pipe()
+#include <cerrno>  // for errno
+#include <csignal> // for sigaction()
+#include <cstring> // for strerror()
+#include <unistd.h>// for pipe()
 
 #include <QCloseEvent>
 #include <QDesktopWidget>
 #include <QMessageBox>
 #include <QPixmap>
 #include <QProgressDialog>
+#include <QSettings>
 #include <QSignalMapper>
 #include <QSocketNotifier>
 #include <QStyle>
@@ -28,106 +30,117 @@
 
 int MioMain::sigpipe[2];
 
-MioMain::MioMain(QWidget *parent) : QMainWindow(parent), ui(new Ui::MioMain) {
-  ui->setupUi(this);
+MioMain::MioMain(QCommandLineParser *parser, QWidget *parent)
+	: QMainWindow(parent), ui(new Ui::MioMain) {
+	ui->setupUi(this);
 	setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::ForceTabbedDocks |
-                 QMainWindow::VerticalTabs);
+				   QMainWindow::VerticalTabs);
 	/*QPixmap *pm = new QPixmap("/develop/mioconfig/graphik/restore.svg");
 	pm->save("/develop/mioconfig/graphik/restore.xpm", "xpm");
 	pm->load("/develop/mioconfig/graphik/SaveToDevice.svg");
 	pm->save("/develop/mioconfig/graphik/SaveToDevice.xpm", "xpm");*/
+	if (parser->isSet("filename")) {
+		QString *fileName = new QString(parser->value("filename"));
+		setConfigurationFile(fileName);
+	}
+	if (configurationFile) {
+		configuration = new QSettings(*configurationFile, xmlFormat);
+		configuration->beginGroup("Test");
+		configuration->setValue("ConfigName", "lala");
+		configuration->endGroup();
+	}
 	if (!installSignalHandlers())
 		qWarning("%s", "Signal handlers not installed!");
-  readSettings();
-  if (readDevicesFromSettings())
-    openDefaultDevice();
-  else
-    QTimer::singleShot(100, this, SLOT(openDetectionWindow()));
+	readSettings();
+	if (readDevicesFromSettings())
+		openDefaultDevice();
+	else
+		QTimer::singleShot(100, this, SLOT(openDetectionWindow()));
 }
 
 MioMain::~MioMain() {
-  if (deviceDetectionWindow)
-    delete deviceDetectionWindow;
-  delete ui;
+	if (deviceDetectionWindow)
+		delete deviceDetectionWindow;
+	delete ui;
 }
 
 void MioMain::openDefaultDevice() {
-  writeDevicesToSettings();
-  long defaultDeviceSN = Configuration::getInstance().getDefaultDevice();
-  Device *d = Configuration::getInstance().getDevices()->at(defaultDeviceSN);
-  addDevicesToSelectionMenu(defaultDeviceSN);
-  openDeviceGUI(d);
+	writeDevicesToSettings();
+	long defaultDeviceSN = Configuration::getInstance().getDefaultDevice();
+	Device *d = Configuration::getInstance().getDevices()->at(defaultDeviceSN);
+	addDevicesToSelectionMenu(defaultDeviceSN);
+	openDeviceGUI(d);
 }
 
 void MioMain::addDevicesToSelectionMenu(long defaultDeviceSN) {
-  QSignalMapper *signalMapper = new QSignalMapper();
-  Devices *devices = Configuration::getInstance().getDevices();
-  QActionGroup *devicesGroup = new QActionGroup(this);
-  devicesGroup->setExclusive(true);
-  for (Devices::iterator it = devices->begin(); it != devices->end(); ++it) {
-    Device *d = it->second;
-    QAction *a =
-        ui->menuSelect->addAction(QString::fromStdString(d->getDeviceName()));
-    a->setCheckable(true);
-    devicesGroup->addAction(a);
-    connect(a, SIGNAL(triggered()), signalMapper, SLOT(map()));
-    signalMapper->setMapping(a, new DeviceMenuMapper(d));
-    if (it->first == defaultDeviceSN)
-      a->setChecked(true);
-  }
-  connect(signalMapper, SIGNAL(mapped(QObject *)), this,
-          SLOT(openDeviceGUI(QObject *)));
+	QSignalMapper *signalMapper = new QSignalMapper();
+	Devices *devices = Configuration::getInstance().getDevices();
+	QActionGroup *devicesGroup = new QActionGroup(this);
+	devicesGroup->setExclusive(true);
+	for (Devices::iterator it = devices->begin(); it != devices->end(); ++it) {
+		Device *d = it->second;
+		QAction *a = ui->menuSelect->addAction(
+			QString::fromStdString(d->getDeviceName()));
+		a->setCheckable(true);
+		devicesGroup->addAction(a);
+		connect(a, SIGNAL(triggered()), signalMapper, SLOT(map()));
+		signalMapper->setMapping(a, new DeviceMenuMapper(d));
+		if (it->first == defaultDeviceSN)
+			a->setChecked(true);
+	}
+	connect(signalMapper, SIGNAL(mapped(QObject *)), this,
+			SLOT(openDeviceGUI(QObject *)));
 }
 
 void MioMain::openDeviceGUI(QObject *o) {
-  DeviceMenuMapper *m = (DeviceMenuMapper *)o;
+	DeviceMenuMapper *m = dynamic_cast<DeviceMenuMapper *>(o);
 #ifdef __MIO_DEBUG__
-  std::cout << "open device GUI: " << m->device->getDeviceName() << std::endl;
-#endif //__MIO_DEBUG__
-  openDeviceGUI(m->device);
+	std::cout << "open device GUI: " << m->device->getDeviceName() << std::endl;
+#endif//__MIO_DEBUG__
+	openDeviceGUI(m->device);
 }
 
 void MioMain::addDock(QDockWidget *dockWidget, Qt::DockWidgetArea area) {
-  if (MultiInfoWidget *miw = dynamic_cast<MultiInfoWidget *>(dockWidget)) {
-    miw->createInfoSections();
-  }
-  switch (area) {
-  case Qt::NoDockWidgetArea:
-    setCentralWidget(dockWidget);
-    break;
-  case Qt::LeftDockWidgetArea:
-    this->addDockWidget(Qt::LeftDockWidgetArea, dockWidget);
-    break;
-  default:
-    break;
-  }
-  std::vector<QDockWidget *> v = dockWidgetAreas[area];
-  if (v.size() > 0) {
-    tabifyDockWidget(v[v.size() - 1], dockWidget);
-  }
-  dockWidgetAreas[area].push_back(dockWidget);
+	if (MultiInfoWidget *miw = dynamic_cast<MultiInfoWidget *>(dockWidget)) {
+		miw->createInfoSections();
+	}
+	switch (area) {
+	case Qt::NoDockWidgetArea:
+		setCentralWidget(dockWidget);
+		break;
+	case Qt::LeftDockWidgetArea:
+		this->addDockWidget(Qt::LeftDockWidgetArea, dockWidget);
+		break;
+	default:
+		break;
+	}
+	std::vector<QDockWidget *> v = dockWidgetAreas[area];
+	if (v.size() > 0) {
+		tabifyDockWidget(v[v.size() - 1], dockWidget);
+	}
+	dockWidgetAreas[area].push_back(dockWidget);
 }
 
 void MioMain::clearDocWidgets() {
 	removeToolBar(toolBar);
 	delete toolBar;
 	toolBar = 0;
-  for (std::map<Qt::DockWidgetArea, std::vector<QDockWidget *>>::iterator it =
-           dockWidgetAreas.begin();
-       it != dockWidgetAreas.end(); ++it) {
-    std::vector<QDockWidget *> v = it->second;
-    for (unsigned int j = 0; j < v.size(); j++) {
-      QWidget *w = v.at(j);
-      delete w;
-    }
-    v.clear();
-  }
-  dockWidgetAreas.clear();
+	for (std::map<Qt::DockWidgetArea, std::vector<QDockWidget *>>::iterator it =
+			 dockWidgetAreas.begin();
+		 it != dockWidgetAreas.end(); ++it) {
+		std::vector<QDockWidget *> v = it->second;
+		for (unsigned int j = 0; j < v.size(); j++) {
+			QWidget *w = v.at(j);
+			delete w;
+		}
+		v.clear();
+	}
+	dockWidgetAreas.clear();
 }
 
 void MioMain::replacePanel(QWidget *w) {
-  CentralWidget *cw = (CentralWidget *)centralWidget();
-  cw->replacePanel(w);
+	CentralWidget *cw = dynamic_cast<CentralWidget *>(centralWidget());
+	cw->replacePanel(w);
 }
 
 void MioMain::addDeviceToolButtons() {
@@ -159,7 +172,8 @@ void MioMain::addDeviceToolButtons() {
 			btn->setToolTip(tr("Reset settings to factory default"));
 			toolBar->addWidget(btn);
 			btn->setIcon(QIcon(":/pixmaps/restore"));
-			connect(btn, SIGNAL(pressed()), this, SLOT(resetToFactoryDefaults()));
+			connect(btn, SIGNAL(pressed()), this,
+					SLOT(resetToFactoryDefaults()));
 		} break;
 		default:
 			break;
@@ -168,40 +182,40 @@ void MioMain::addDeviceToolButtons() {
 }
 
 void MioMain::openDeviceGUI(Device *d) {
-  clearDocWidgets();
+	clearDocWidgets();
 	toolBar = new QToolBar(tr("Device Actions"), this);
 	toolBar->setObjectName("DeviceActions");
 	this->addToolBar(toolBar);
 
 	this->currentDevice = d;
 	d->connect();
-  RetCommandList *c = d->getCommands();
-  if (c == 0) {
-    // TODO throw error
-    exit(2);
-  }
-  setWindowTitle(this->title + QString(": ") +
-                 QString::fromStdString(d->getDeviceName()));
-  CentralWidget *centralWidget = new CentralWidget(this, d);
-  this->addDock(centralWidget);
+	RetCommandList *c = d->getCommands();
+	if (c == 0) {
+		// TODO throw error
+		exit(2);
+	}
+	setWindowTitle(this->title + QString(": ") +
+				   QString::fromStdString(d->getDeviceName()));
+	CentralWidget *centralWidget = new CentralWidget(this, d);
+	this->addDock(centralWidget);
 
-  DeviceInfoWidget *deviceInfoWidget =
-      new DeviceInfoWidget(this, d, d->getDeviceInfo());
-  this->addDock(deviceInfoWidget, Qt::LeftDockWidgetArea);
+	DeviceInfoWidget *deviceInfoWidget =
+		new DeviceInfoWidget(this, d, d->getDeviceInfo());
+	this->addDock(deviceInfoWidget, Qt::LeftDockWidgetArea);
 
-  PortsWidget *portsWidget = new PortsWidget(this, d);
-  this->addDock(portsWidget, Qt::LeftDockWidgetArea);
+	PortsWidget *portsWidget = new PortsWidget(this, d);
+	this->addDock(portsWidget, Qt::LeftDockWidgetArea);
 
 	addDeviceToolButtons();
 
-  QSettings *settings = Configuration::getInstance().getSettings();
-  settings->beginGroup("MainWindow");
-  restoreGeometry(settings->value("geometry").toByteArray());
-  settings->endGroup();
-  settings->beginGroup("Docks");
-  // restoreState(settings->value("DockWindows").toByteArray());
-  settings->endGroup();
-  deviceInfoWidget->show();
+	QSettings *settings = Configuration::getInstance().getSettings();
+	settings->beginGroup("MainWindow");
+	restoreGeometry(settings->value("geometry").toByteArray());
+	settings->endGroup();
+	settings->beginGroup("Docks");
+	// restoreState(settings->value("DockWindows").toByteArray());
+	settings->endGroup();
+	deviceInfoWidget->show();
 	deviceInfoWidget->raise();
 }
 
@@ -217,8 +231,8 @@ void MioMain::storeToDevice() {
 
 void MioMain::reinitDevice() {
 	QProgressDialog progress(
-			tr("Waiting 10 seconds for device to be responsive again"),
-			tr("Exit application"), 0, 10, this);
+		tr("Waiting 10 seconds for device to be responsive again"),
+		tr("Exit application"), 0, 10, this);
 	progress.setWindowModality(Qt::WindowModal);
 
 	for (int i = 0; i < 10; i++) {
@@ -303,22 +317,24 @@ void MioMain::writeDevicesToSettings() {
 		settings->setArrayIndex(i);
 		Device *d = it->second;
 		settings->setValue("Device Name",
-											 QString::fromStdString(d->getDeviceName()));
-		settings->setValue("Serial Number",
-											 (qlonglong)(d->getSerialNumber()->getLongValue()));
+						   QString::fromStdString(d->getDeviceName()));
+		settings->setValue(
+			"Serial Number",
+			static_cast<qlonglong>(d->getSerialNumber()->getLongValue()));
 		settings->setValue("Input Port", d->getInPortNumer());
 		settings->setValue("Output Port", d->getOutPortNumer());
-		settings->setValue("Product Id",
-											 (qlonglong)d->getProductId()->getLongValue());
+		settings->setValue(
+			"Product Id",
+			static_cast<qlonglong>(d->getProductId()->getLongValue()));
 #ifdef __MIO_SIMULATE__
 		if (d->getSimulate()) {
 			settings->setValue("Simulate", true);
 			settings->setValue("Model Name",
-												 QString::fromStdString(d->getModelName()));
-    }
+							   QString::fromStdString(d->getModelName()));
+		}
 #endif
 		++i;
-  }
+	}
 	settings->endArray();
 }
 
@@ -346,19 +362,20 @@ bool MioMain::readDevicesFromSettings() {
 		Device *device = 0;
 		settings->setArrayIndex(i);
 		int productId = settings->value("Product Id").toInt();
-		long serialNumber =
-				(qlonglong)settings->value("Serial Number").toLongLong();
-		int inputPort = (qlonglong)settings->value("Input Port").toInt();
-		int outputPort = (qlonglong)settings->value("Output Port").toInt();
+		long serialNumber = static_cast<qlonglong>(
+			settings->value("Serial Number").toLongLong());
+		int inputPort = static_cast<int>(settings->value("Input Port").toInt());
+		int outputPort =
+			static_cast<int>(settings->value("Output Port").toInt());
 		bool simulate = settings->value("Simulate").toBool();
 #ifdef __MIO_SIMULATE__
 		if (simulate) {
 			std::string modelName =
-					settings->value("Model Name").toString().toStdString();
+				settings->value("Model Name").toString().toStdString();
 			std::string deviceName =
-					settings->value("Device Name").toString().toStdString();
+				settings->value("Device Name").toString().toStdString();
 			device = new Device(inputPort, outputPort, serialNumber, productId,
-													modelName, deviceName);
+								modelName, deviceName);
 		} else {
 			device = new Device(inputPort, outputPort, serialNumber, productId);
 		}
@@ -368,7 +385,7 @@ bool MioMain::readDevicesFromSettings() {
 #endif
 		if (device && device->queryDeviceInfo())
 			devices->insert(std::pair<long, Device *>(serialNumber, device));
-  }
+	}
 	settings->endArray();
 	if (devices->size() == 0)
 		return false;
@@ -400,9 +417,9 @@ bool MioMain::installSignalHandlers() {
 
 	/*install notifier to handle pipe messages*/
 	QSocketNotifier *signalNotifier =
-			new QSocketNotifier(sigpipe[0], QSocketNotifier::Read, this);
+		new QSocketNotifier(sigpipe[0], QSocketNotifier::Read, this);
 	connect(signalNotifier, SIGNAL(activated(int)), this,
-					SLOT(signalAction(int)));
+			SLOT(signalAction(int)));
 
 	/*install signal handlers*/
 	struct sigaction action;
