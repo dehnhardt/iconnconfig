@@ -39,7 +39,7 @@ SysExMessage::SysExMessage(Command cmd, CommandFlags flags, Device *device)
 		deviceHeader = new BYTE_VECTOR();
 	command = new BYTE_VECTOR();
 	command->push_back(flags);
-	command->push_back(cmd);
+	command->push_back(static_cast<unsigned char>(cmd));
 	acceptedAnswers = commandAcceptedAnswers[cmd];
 }
 
@@ -53,7 +53,7 @@ SysExMessage::SysExMessage(Command cmd, std::vector<unsigned char> *message,
 	cmdflags = (*message)[14];
 	command = new BYTE_VECTOR();
 	command->push_back(cmdflags);
-	command->push_back(cmd);
+	command->push_back(static_cast<unsigned char>(cmd));
 	acceptedAnswers = commandAcceptedAnswers[cmd];
 	extractData(message);
 }
@@ -78,7 +78,7 @@ BYTE_VECTOR *SysExMessage::getMIDISysExMessage() {
 	BYTE_VECTOR *manufacturerHeader = Device::getManufacturerHeader();
 
 	BYTE_VECTOR *md = getMessageData();
-	int mdSize = md->size();
+	unsigned long mdSize = md->size();
 	BYTE_VECTOR *bodyLength = MIDI::byteSplit(mdSize, 2);
 	BYTE_VECTOR *transactionId = getTransactionId();
 
@@ -117,7 +117,7 @@ SysExMessage::Command SysExMessage::parseAnswer(BYTE_VECTOR *answer) {
 			std::cout << "Answer (command: " << command << ") accepted "
 					  << std::endl;
 		extractData(answer);
-		return (SysExMessage::Command)command;
+		return static_cast<SysExMessage::Command>(command);
 	} catch (ProtocolException e) {
 		std::cerr << e.getErrorMessage();
 	}
@@ -147,7 +147,11 @@ void SysExMessage::createAnswer(SysExMessage::Command cmd,
 
 void SysExMessage::readSettings() {}
 
-void SysExMessage::storeSettings() {}
+void SysExMessage::storeSettings() {
+	getSettingsId();
+	getSettingsIndex();
+	getStorableValue();
+}
 
 unsigned char SysExMessage::getCmdflags() const { return cmdflags; }
 
