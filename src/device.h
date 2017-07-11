@@ -19,8 +19,8 @@ class GetInfo;
 
 class Device {
 public:
-	Device(int inPortNumber, int outPortNumber, long serialNumber,
-		   int productId);
+	Device(unsigned int inPortNumber, unsigned int outPortNumber,
+		   unsigned long serialNumber, unsigned int productId);
 	Device(Device *device);
 
 	~Device();
@@ -61,8 +61,8 @@ public:
 	std::string getFirmwareVersion() { return firmwareVersion; }
 	std::string getHardwareVersion() { return hardwareVersion; }
 	std::string getModelNumber() { return modelNumber; }
-	int getInPortNumer() { return inPortNumber; }
-	int getOutPortNumer() { return outPortNumber; }
+	unsigned int getInPortNumer() { return inPortNumber; }
+	unsigned int getOutPortNumer() { return outPortNumber; }
 
 	MIDISysexValue *getSerialNumber() { return serialNumber; }
 	MIDISysexValue *getProductId() { return productId; }
@@ -80,10 +80,10 @@ public:
 private:
 	bool debug = false;
 
-	int inPortNumber;
-	int outPortNumber;
+	unsigned int inPortNumber;
+	unsigned int outPortNumber;
 
-	int transactionId = 0;
+	unsigned int transactionId = 0;
 
 	bool isDefault = false;
 

@@ -8,6 +8,7 @@
 #include "sysex/getmidiportinfo.h"
 #include "sysex/getsaverestorelist.h"
 #include "sysex/midi.h"
+#include "sysex/protocolexception.h"
 #include "sysex/retcommandlist.h"
 #include "sysex/retinfolist.h"
 #include "sysex/retsaverestorelist.h"
@@ -21,20 +22,21 @@
 #include <stdexcept>
 #include <unistd.h>
 
-Device::Device(int inPortNumber, int outPortNumber, long serialNumber,
-			   int productId) {
+Device::Device(unsigned int inPortNumber, unsigned int outPortNumber,
+			   unsigned long serialNumber, unsigned int productId) {
 	this->inPortNumber = inPortNumber;
 	this->outPortNumber = outPortNumber;
-	this->serialNumber = new MIDISysexValue(serialNumber, 5);
+	this->serialNumber = new MIDISysexValue(static_cast<long>(serialNumber), 5);
 	this->productId = new MIDISysexValue(productId, 2);
 	this->debug = true;
 	connect();
 }
 
 Device::Device(Device *device)
-	: Device(device->getInPortNumer(), device->getOutPortNumer(),
-			 device->getSerialNumber()->getLongValue(),
-			 device->getProductId()->getLongValue()) {}
+	: Device(
+		  device->getInPortNumer(), device->getOutPortNumer(),
+		  static_cast<unsigned long>(device->getSerialNumber()->getLongValue()),
+		  static_cast<unsigned int>(device->getProductId()->getLongValue())) {}
 
 Device::~Device() { disconnect(); }
 
@@ -152,12 +154,13 @@ BYTE_VECTOR *Device::retrieveSysex() {
 		return data;
 	else
 		throw CommunicationException(CommunicationException::ANSWER_TIMEOOUT);
-	return 0;
 }
 
 bool Device::checkSysex(BYTE_VECTOR *data) {
 	if (!data || data->size() <= 0)
 		return false;
+	if (data->size() < 20)
+		throw new ProtocolException(ProtocolException::MESSAGE_TO_SHORT);
 	BYTE_VECTOR *dataHeader =
 		new BYTE_VECTOR(data->begin() + 1, data->begin() + 12);
 	BYTE_VECTOR *localHeader = getFullHeader();
@@ -174,8 +177,9 @@ void Device::requestMidiPortInfos() {
 	for (int i = 1; i <= midiPorts; ++i) {
 		std::vector<RetSetMidiPortInfo *> *v = 0;
 		info->setPortNumer(i);
-		RetSetMidiPortInfo *midiPortInfo = (RetSetMidiPortInfo *)info->query();
-		int portType = (int)midiPortInfo->getPortType();
+		RetSetMidiPortInfo *midiPortInfo =
+			dynamic_cast<RetSetMidiPortInfo *>(info->query());
+		int portType = static_cast<int>(midiPortInfo->getPortType());
 		portType <<= 8;
 		portType += midiPortInfo->getJackNumberOfType();
 		try {
@@ -200,7 +204,7 @@ void Device::requestMidiPortInfos() {
 bool Device::queryDeviceInfo() {
 	GetCommandList *c = new GetCommandList(this);
 	c->setDebug(true);
-	commands = (RetCommandList *)c->query();
+	commands = dynamic_cast<RetCommandList *>(c->query());
 	if (commands == 0) {
 		std::cerr << "can not query supported commands";
 		return false;
@@ -209,7 +213,7 @@ bool Device::queryDeviceInfo() {
 	if (commands->isCommandSupported(SysExMessage::GET_INFO_LIST)) {
 		GetInfoList *i = new GetInfoList(this);
 		i->setDebug(true);
-		ii = (RetInfoList *)i->query();
+		ii = dynamic_cast<RetInfoList *>(i->query());
 	}
 
 	deviceInfo = new GetInfo(this, ii);
@@ -237,7 +241,7 @@ bool Device::queryDeviceInfo() {
 
 	if (commands->isCommandSupported(SysExMessage::GET_MIDI_INFO)) {
 		GetMidiInfo *getMidiInfo = new GetMidiInfo(this);
-		this->midiInfo = (RetSetMidiInfo *)getMidiInfo->query();
+		this->midiInfo = dynamic_cast<RetSetMidiInfo *>(getMidiInfo->query());
 	}
 	if (commands->isCommandSupported(SysExMessage::GET_MIDI_PORT_INFO) &&
 		this->midiInfo != 0) {
@@ -246,7 +250,7 @@ bool Device::queryDeviceInfo() {
 	if (commands->isCommandSupported(SysExMessage::GET_SAVE_RESTORE_LIST)) {
 		GetSaveRestoreList *getSaveRestoreList = new GetSaveRestoreList(this);
 		RetSaveRestoreList *l =
-			(RetSaveRestoreList *)getSaveRestoreList->query();
+			dynamic_cast<RetSaveRestoreList *>(getSaveRestoreList->query());
 		saveRestoreList = l->getSaveRestoreList();
 	}
 
@@ -291,7 +295,8 @@ BYTE_VECTOR *Device::nextTransactionId() {
 
 void midiOutErrorCallback(RtMidiError::Type type, const std::string &errorText,
 						  void *userData __attribute__((unused))) {
-	std::cout << "UEC (" << (int)type << "): " << errorText << std::endl;
+	std::cout << "UEC (" << static_cast<int>(type) << "): " << errorText
+			  << std::endl;
 }
 
 void midiinErrorCallback(RtMidiError::Type type __attribute__((unused)),
