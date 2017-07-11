@@ -12,7 +12,8 @@
 #define SLEEP(milliseconds) Sleep((DWORD)milliseconds)
 #else// Unix variants
 #include <unistd.h>
-#define SLEEP(milliseconds) usleep((unsigned long)(milliseconds * 1000.0))
+#define SLEEP(milliseconds)                                                    \
+	usleep(static_cast<unsigned long>(milliseconds * 1000.0))
 #endif
 
 #ifdef __LINUX_ALSA__
