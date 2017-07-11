@@ -19,7 +19,8 @@ class GetInfo;
 
 class Device {
 public:
-	Device(int inPortNumber, int outPortNumber, long serialNumber, int productId);
+	Device(int inPortNumber, int outPortNumber, long serialNumber,
+		   int productId);
 	Device(Device *device);
 
 	~Device();
@@ -71,26 +72,12 @@ public:
 	RetSetMidiInfo *getMidiInfo() { return midiInfo; }
 	MIDI_PORT_INFOS *getMidiPortInfos() const;
 
-#ifdef __MIO_SIMULATE__
-	Device(int inPortNumber, int outPortNumber, long serialNumber, int productId,
-				 std::string modelName, std::string deviceName);
-	bool getSimulate() { return deviceIsSimulated; }
-	RetCommandList *simulateCommands();
-#endif
-
 	// setter
 	void setDebug(bool value);
 	void setDeviceInformation(std::string modelName, std::string deviceName);
 	void setDefault(bool isDefault) { this->isDefault = isDefault; }
-#ifdef __MIO_SIMULATE__
-	void setSimulate() { deviceIsSimulated = true; }
-#endif
 
 private:
-#ifdef __MIO_SIMULATE__
-	bool deviceIsSimulated = false;
-#endif
-
 	bool debug = false;
 
 	int inPortNumber;
@@ -129,8 +116,8 @@ private:
 };
 
 void midiOutErrorCallback(RtMidiError::Type type, const std::string &errorText,
-													void *userData);
+						  void *userData);
 void midiinErrorCallback(RtMidiError::Type type, const std::string &errorText,
-												 void *userData);
+						 void *userData);
 
-#endif // DEVICE_H
+#endif// DEVICE_H

@@ -326,13 +326,6 @@ void MioMain::writeDevicesToSettings() {
 		settings->setValue(
 			"Product Id",
 			static_cast<qlonglong>(d->getProductId()->getLongValue()));
-#ifdef __MIO_SIMULATE__
-		if (d->getSimulate()) {
-			settings->setValue("Simulate", true);
-			settings->setValue("Model Name",
-							   QString::fromStdString(d->getModelName()));
-		}
-#endif
 		++i;
 	}
 	settings->endArray();
@@ -368,21 +361,8 @@ bool MioMain::readDevicesFromSettings() {
 		int outputPort =
 			static_cast<int>(settings->value("Output Port").toInt());
 		bool simulate = settings->value("Simulate").toBool();
-#ifdef __MIO_SIMULATE__
-		if (simulate) {
-			std::string modelName =
-				settings->value("Model Name").toString().toStdString();
-			std::string deviceName =
-				settings->value("Device Name").toString().toStdString();
-			device = new Device(inputPort, outputPort, serialNumber, productId,
-								modelName, deviceName);
-		} else {
-			device = new Device(inputPort, outputPort, serialNumber, productId);
-		}
-#else
 		if (!simulate)
 			device = new Device(inputPort, outputPort, serialNumber, productId);
-#endif
 		if (device && device->queryDeviceInfo())
 			devices->insert(std::pair<long, Device *>(serialNumber, device));
 	}
