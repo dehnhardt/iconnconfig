@@ -150,21 +150,27 @@ BYTE_VECTOR *Device::retrieveSysex() {
 		}
 	}
 	std::cout << "delay: " << i << std::endl;
-	if (checkSysex(data))
-		return data;
-	else
-		throw CommunicationException(CommunicationException::ANSWER_TIMEOOUT);
+	try {
+		checkSysex(data);
+	} catch (...) {
+		throw;
+	}
+	return data;
 }
 
 bool Device::checkSysex(BYTE_VECTOR *data) {
 	if (!data || data->size() <= 0)
-		return false;
+		throw new CommunicationException(
+			CommunicationException::ANSWER_TIMEOOUT);
 	if (data->size() < 20)
 		throw new ProtocolException(ProtocolException::MESSAGE_TO_SHORT);
 	BYTE_VECTOR *dataHeader =
 		new BYTE_VECTOR(data->begin() + 1, data->begin() + 12);
 	BYTE_VECTOR *localHeader = getFullHeader();
-	return MIDI::compareByteVector(dataHeader, localHeader);
+	if (!MIDI::compareByteVector(dataHeader, localHeader)) {
+		throw new ProtocolException(ProtocolException::WRONG_HEADER);
+	}
+	return true;
 }
 
 void Device::requestMidiPortInfos() {
@@ -204,7 +210,12 @@ void Device::requestMidiPortInfos() {
 bool Device::queryDeviceInfo() {
 	GetCommandList *c = new GetCommandList(this);
 	c->setDebug(true);
-	commands = dynamic_cast<RetCommandList *>(c->query());
+	try {
+		SysExMessage *m = c->query();
+		commands = dynamic_cast<RetCommandList *>(m);
+	} catch (...) {
+		throw;
+	}
 	if (commands == 0) {
 		std::cerr << "can not query supported commands";
 		return false;

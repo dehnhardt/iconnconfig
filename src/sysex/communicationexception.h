@@ -19,10 +19,10 @@ public:
 		e << "Error when communicationg with device. Reason: ";
 		switch (code) {
 		case UNKNOWN:
-			e << " unknown";
+			e << " unknown. ";
 			break;
 		case ANSWER_TIMEOOUT:
-			e << " the answer had a timeout";
+			e << " timeout whil waiting for the answer. ";
 			break;
 		default:
 			break;

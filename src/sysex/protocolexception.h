@@ -14,7 +14,8 @@ public:
 		ACK_COMMAND_FAILED,
 		MESSAGE_TO_SHORT,
 		WRONG_VERSION,
-		WRONG_ANSWER
+		WRONG_ANSWER,
+		WRONG_HEADER
 	};
 
 	ProtocolException(ProtocolErrorCode code = UNKNOWN)
@@ -48,6 +49,9 @@ public:
 			break;
 		case WRONG_ANSWER:
 			e << " the answer is not allowed to this command";
+			break;
+		case WRONG_HEADER:
+			e << " the answer has an unexpected header";
 			break;
 		default:
 			break;

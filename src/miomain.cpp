@@ -2,7 +2,9 @@
 #include "config/configuration.h"
 #include "config/qsettings-xml.h"
 #include "devicedetection.h"
+#include "sysex/communicationexception.h"
 #include "sysex/midi.h"
+#include "sysex/protocolexception.h"
 #include "sysex/retcommandlist.h"
 #include "ui_miomain.h"
 #include "widgets/centralwidget.h"
@@ -354,17 +356,36 @@ bool MioMain::readDevicesFromSettings() {
 	for (int i = 0; i < size; ++i) {
 		Device *device = 0;
 		settings->setArrayIndex(i);
-		int productId = settings->value("Product Id").toInt();
-		long serialNumber = static_cast<qlonglong>(
+		unsigned int productId =
+			static_cast<unsigned int>(settings->value("Product Id").toInt());
+		unsigned long serialNumber = static_cast<unsigned long>(
 			settings->value("Serial Number").toLongLong());
-		int inputPort = static_cast<int>(settings->value("Input Port").toInt());
-		int outputPort =
-			static_cast<int>(settings->value("Output Port").toInt());
+		unsigned int inputPort =
+			static_cast<unsigned int>(settings->value("Input Port").toInt());
+		unsigned int outputPort =
+			static_cast<unsigned int>(settings->value("Output Port").toInt());
 		bool simulate = settings->value("Simulate").toBool();
 		if (!simulate)
 			device = new Device(inputPort, outputPort, serialNumber, productId);
-		if (device && device->queryDeviceInfo())
-			devices->insert(std::pair<long, Device *>(serialNumber, device));
+		if (device)
+			try {
+				device->queryDeviceInfo();
+				devices->insert(
+					std::pair<long, Device *>(serialNumber, device));
+			} catch (CommunicationException *e) {
+				std::cerr << e->getErrorMessage();
+				std::cerr << "Device: Product Id: " << productId
+						  << ", Serial Number: " << serialNumber
+						  << " did not answer" << std::endl;
+				std::cerr << "Device not added" << std::endl;
+			} catch (ProtocolException *e) {
+				std::cerr << e->getErrorMessage();
+				std::cerr << "Device: Product Id: " << productId
+						  << ", Serial Number: " << serialNumber
+						  << " had an error in the communication stream"
+						  << std::endl;
+				std::cerr << "Device not added" << std::endl;
+			}
 	}
 	settings->endArray();
 	if (devices->size() == 0)

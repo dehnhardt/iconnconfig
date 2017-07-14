@@ -165,7 +165,8 @@ int SysExMessage::execute() {
 		MIDI::printMessage(message);
 	device->sentSysex(message);
 	try {
-		BYTE_VECTOR *answerMessage = device->retrieveSysex();
+		BYTE_VECTOR *answerMessage = 0;
+		answerMessage = device->retrieveSysex();
 		if (answerMessage != nullptr) {
 			Command cmd = parseAnswer(answerMessage);
 			if (cmd == CMD_ERROR)
@@ -178,7 +179,7 @@ int SysExMessage::execute() {
 				createAnswer(cmd, answerMessage, device);
 			return 0;
 		}
-	} catch (CommunicationException e) {
+	} catch (...) {
 		throw;
 	}
 
@@ -194,8 +195,8 @@ SysExMessage *SysExMessage::getAnswer() { return answer; }
 SysExMessage *SysExMessage::query() {
 	try {
 		execute();
-	} catch (CommunicationException e) {
-		std::cerr << e.getErrorMessage();
+	} catch (...) {
+		throw;
 	}
 
 	return answer;
