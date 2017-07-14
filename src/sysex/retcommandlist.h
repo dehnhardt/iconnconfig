@@ -8,8 +8,7 @@
 class RetCommandList : public SysExMessage {
 public:
 	RetCommandList(Device *device);
-	RetCommandList(SysExMessage::Command cmd, BYTE_VECTOR *message,
-				   Device *device)
+	RetCommandList(Command cmd, BYTE_VECTOR *message, Device *device)
 		: SysExMessage(cmd, message, device) {}
 	std::vector<int> getSupportedCommands();
 	bool isCommandSupported(Command cmd);

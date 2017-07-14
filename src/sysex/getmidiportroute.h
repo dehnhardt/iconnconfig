@@ -6,8 +6,8 @@
 class GetMidiPortRoute : public SysExMessage {
 public:
 	GetMidiPortRoute(Device *device);
-	void createAnswer(SysExMessage::Command cmd,
-					  std::vector<unsigned char> *message, Device *device);
+	void createAnswer(Command cmd, std::vector<unsigned char> *message,
+					  Device *device);
 	int getSettingsId() { return cmd; }
 	int getSettingsIndex() { return 0; }
 	std::string getStorableValue() { return ""; }

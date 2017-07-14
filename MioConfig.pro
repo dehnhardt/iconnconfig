@@ -125,7 +125,8 @@ HEADERS  += src/miomain.h \
     src/widgets/controls/ipaddressinput.h \
     src/sysex/communicationexception.h \
     src/sysex/protocolexception.h \
-    src/config/qsettings-xml.h
+    src/config/qsettings-xml.h \
+    src/definitions.h
 
 FORMS    += src/miomain.ui \
     src/devicedetection.ui \

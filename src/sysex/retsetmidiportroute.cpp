@@ -3,8 +3,8 @@
 #include <cmath>
 
 RetSetMidiPortRoute::RetSetMidiPortRoute(Device *device)
-		: SysExMessage(SysExMessage::RET_SET_MIDI_PORT_INFO, SysExMessage::QUERY,
-									 device) {}
+	: SysExMessage(Command::RET_SET_MIDI_PORT_INFO, SysExMessage::QUERY,
+				   device) {}
 
 void RetSetMidiPortRoute::parseAnswerData() {
 	portId = MIDI::byteJoin(data, 1, 2);
@@ -55,15 +55,15 @@ std::vector<unsigned char> *RetSetMidiPortRoute::getMessageData() {
 	BYTE_VECTOR *portIdV = MIDI::byteSplit(portId, 2);
 	messageData->insert(messageData->end(), portIdV->begin(), portIdV->end());
 	messageData->insert(messageData->end(), portRoutings->begin(),
-											portRoutings->end());
+						portRoutings->end());
 	return messageData;
 }
 
 void RetSetMidiPortRoute::getPortByteAndBit(int portNumber, int &byte,
-																						int &bit) {
+											int &bit) {
 	--portNumber;
 	if (numerOfExpectedBytes != -1 &&
-			(unsigned int)numerOfExpectedBytes >= portRoutings->size())
+		(unsigned int)numerOfExpectedBytes >= portRoutings->size())
 		byte = portNumber / 4;
 	bit = portNumber - (byte * 4);
 }

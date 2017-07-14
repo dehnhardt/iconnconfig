@@ -1,8 +1,7 @@
 #include "retsetmidiinfo.h"
 
 RetSetMidiInfo::RetSetMidiInfo(Device *device)
-		: SysExMessage(SysExMessage::RET_SET_MIDI_INFO, SysExMessage::QUERY,
-									 device) {}
+	: SysExMessage(Command::RET_SET_MIDI_INFO, SysExMessage::QUERY, device) {}
 
 void RetSetMidiInfo::parseAnswerData() {
 	if (data->size() < 15)

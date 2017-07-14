@@ -221,7 +221,7 @@ bool Device::queryDeviceInfo() {
 		return false;
 	}
 
-	if (commands->isCommandSupported(SysExMessage::GET_INFO_LIST)) {
+	if (commands->isCommandSupported(Command::GET_INFO_LIST)) {
 		GetInfoList *i = new GetInfoList(this);
 		i->setDebug(true);
 		ii = dynamic_cast<RetInfoList *>(i->query());
@@ -250,15 +250,15 @@ bool Device::queryDeviceInfo() {
 	if (ii->isInfoImplemented(GetInfo::MODEL_NUMBER))
 		modelNumber = deviceInfo->getItemValue(GetInfo::MODEL_NUMBER);
 
-	if (commands->isCommandSupported(SysExMessage::GET_MIDI_INFO)) {
+	if (commands->isCommandSupported(Command::GET_MIDI_INFO)) {
 		GetMidiInfo *getMidiInfo = new GetMidiInfo(this);
 		this->midiInfo = dynamic_cast<RetSetMidiInfo *>(getMidiInfo->query());
 	}
-	if (commands->isCommandSupported(SysExMessage::GET_MIDI_PORT_INFO) &&
+	if (commands->isCommandSupported(Command::GET_MIDI_PORT_INFO) &&
 		this->midiInfo != 0) {
 		requestMidiPortInfos();
 	}
-	if (commands->isCommandSupported(SysExMessage::GET_SAVE_RESTORE_LIST)) {
+	if (commands->isCommandSupported(Command::GET_SAVE_RESTORE_LIST)) {
 		GetSaveRestoreList *getSaveRestoreList = new GetSaveRestoreList(this);
 		RetSaveRestoreList *l =
 			dynamic_cast<RetSaveRestoreList *>(getSaveRestoreList->query());
@@ -301,6 +301,11 @@ BYTE_VECTOR *Device::nextTransactionId() {
 		transactionId = 0;
 	BYTE_VECTOR *v = MIDI::byteSplit(++transactionId, 2);
 	return v;
+}
+
+bool Device::loadConfigurationFromDevice() {
+	getCommands();
+	return true;
 }
 
 void midiOutErrorCallback(RtMidiError::Type type, const std::string &errorText,

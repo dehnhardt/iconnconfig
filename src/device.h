@@ -2,6 +2,7 @@
 #define DEVICE_H
 
 #include "RtMidi.h"
+#include "definitions.h"
 #include "sysex/midi.h"
 
 #include <map>
@@ -35,6 +36,7 @@ public:
 	static const int DATA_LENGTH_LENGTH = 2;
 	static const int DATA_OFFSET = 18;
 
+	// methods
 	void sentSysex(BYTE_VECTOR *data);
 	void disconnect();
 	void connect();
@@ -42,6 +44,8 @@ public:
 	BYTE_VECTOR *retrieveSysex();
 	BYTE_VECTOR *nextTransactionId();
 	BYTE_VECTOR *saveRestoreList = 0;
+
+	bool loadConfigurationFromDevice();
 
 	// getter
 	bool getDebug() const;
@@ -106,6 +110,8 @@ private:
 	RetInfoList *ii = 0;
 	GetInfo *deviceInfo = 0;
 	std::map<int, std::vector<RetSetMidiPortInfo *> *> *midiPortInfos = 0;
+
+	std::map<Command, SysExMessage *> informationTree;
 
 	BYTE_VECTOR *deviceHeader = 0;
 	BYTE_VECTOR *fullHeader = 0;

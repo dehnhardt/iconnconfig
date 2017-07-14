@@ -13,7 +13,7 @@ class GetInfo : public SysExMessage {
 public:
 	GetInfo(Device *device);
 	GetInfo(Device *device, RetInfoList *infoList);
-	GetInfo(SysExMessage::Command cmd, BYTE_VECTOR *message, Device *device)
+	GetInfo(Command cmd, BYTE_VECTOR *message, Device *device)
 		: SysExMessage(cmd, message, device) {}
 	~GetInfo();
 
@@ -36,8 +36,7 @@ private:
 
 	// methods
 private:
-	void createAnswer(SysExMessage::Command cmd, BYTE_VECTOR *message,
-					  Device *device);
+	void createAnswer(Command cmd, BYTE_VECTOR *message, Device *device);
 	void setInfoData(DeviceInfoItem item, std::string value);
 };
 

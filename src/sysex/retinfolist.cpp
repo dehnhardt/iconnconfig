@@ -1,28 +1,28 @@
 #include "retinfolist.h"
 
 RetInfoList::RetInfoList(Device *device)
-    : SysExMessage(SysExMessage::RET_INFO_LIST, SysExMessage::QUERY, device) {}
+	: SysExMessage(Command::RET_INFO_LIST, SysExMessage::QUERY, device) {}
 
 void RetInfoList::parseAnswerData() {
-  implementedInfos = new std::vector<DeviceInfoItem>();
-  unsigned int nInfosSize = data->size();
-  DeviceInfoItem info;
-  for (unsigned int i = 0; i < nInfosSize; ++i) {
-    info = (DeviceInfoItem)data->at(i);
-    if (info != 0)
-      implementedInfos->push_back(info);
-    if (info == 16)
-      ++i;
-  }
+	implementedInfos = new std::vector<DeviceInfoItem>();
+	unsigned int nInfosSize = data->size();
+	DeviceInfoItem info;
+	for (unsigned int i = 0; i < nInfosSize; ++i) {
+		info = (DeviceInfoItem)data->at(i);
+		if (info != 0)
+			implementedInfos->push_back(info);
+		if (info == 16)
+			++i;
+	}
 }
 
 bool RetInfoList::isInfoImplemented(SysExMessage::DeviceInfoItem info) {
-  if (!implementedInfos)
-    return false;
-  std::vector<DeviceInfoItem>::iterator it;
-  for (it = implementedInfos->begin(); it != implementedInfos->end(); it++) {
-    if (*it == info)
-      return true;
-  }
-  return false;
+	if (!implementedInfos)
+		return false;
+	std::vector<DeviceInfoItem>::iterator it;
+	for (it = implementedInfos->begin(); it != implementedInfos->end(); it++) {
+		if (*it == info)
+			return true;
+	}
+	return false;
 }

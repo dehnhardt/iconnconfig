@@ -7,15 +7,14 @@
 class GetInfoList : public SysExMessage {
 public:
 	GetInfoList(Device *device);
-	GetInfoList(SysExMessage::Command cmd, BYTE_VECTOR *message, Device *device)
+	GetInfoList(Command cmd, BYTE_VECTOR *message, Device *device)
 		: SysExMessage(cmd, message, device) {}
 	int getSettingsId() { return cmd; }
 	int getSettingsIndex() { return 0; }
 	std::string getStorableValue() { return ""; }
 
 private:
-	void createAnswer(SysExMessage::Command cmd, BYTE_VECTOR *message,
-					  Device *device) {
+	void createAnswer(Command cmd, BYTE_VECTOR *message, Device *device) {
 		answer = new RetInfoList(cmd, message, device);
 		answer->parseAnswerData();
 	}

@@ -6,8 +6,7 @@
 class RetSaveRestoreList : public SysExMessage {
 public:
 	RetSaveRestoreList(Device *device);
-	RetSaveRestoreList(SysExMessage::Command cmd, BYTE_VECTOR *message,
-					   Device *device)
+	RetSaveRestoreList(Command cmd, BYTE_VECTOR *message, Device *device)
 		: SysExMessage(cmd, message, device) {}
 	BYTE_VECTOR *getSaveRestoreList() { return data; }
 	int getSettingsId() { return cmd; }

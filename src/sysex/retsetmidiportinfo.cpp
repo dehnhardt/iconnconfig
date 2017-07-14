@@ -1,8 +1,8 @@
 #include "retsetmidiportinfo.h"
 
 RetSetMidiPortInfo::RetSetMidiPortInfo(Device *device)
-		: SysExMessage(SysExMessage::RET_SET_MIDI_PORT_INFO, SysExMessage::QUERY,
-									 device) {}
+	: SysExMessage(Command::RET_SET_MIDI_PORT_INFO, SysExMessage::QUERY,
+				   device) {}
 
 void RetSetMidiPortInfo::parseAnswerData() {
 	portId = MIDI::byteJoin(data, 1, 2);

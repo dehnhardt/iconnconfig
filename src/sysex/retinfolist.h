@@ -6,7 +6,7 @@
 class RetInfoList : public SysExMessage {
 public:
 	RetInfoList(Device *device);
-	RetInfoList(SysExMessage::Command cmd, BYTE_VECTOR *message, Device *device)
+	RetInfoList(Command cmd, BYTE_VECTOR *message, Device *device)
 		: SysExMessage(cmd, message, device) {}
 
 	std::vector<DeviceInfoItem> *getImplementedInfos() {

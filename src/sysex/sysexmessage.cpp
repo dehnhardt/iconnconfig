@@ -104,7 +104,7 @@ BYTE_VECTOR *SysExMessage::getMIDISysExMessage() {
 	return message;
 }
 
-SysExMessage::Command SysExMessage::parseAnswer(BYTE_VECTOR *answer) {
+Command SysExMessage::parseAnswer(BYTE_VECTOR *answer) {
 	if (!answer || answer->size() < 20)
 		return CMD_ERROR;
 	std::cout << "Answer: " << std::dec << answer->size() << std::endl;
@@ -117,7 +117,7 @@ SysExMessage::Command SysExMessage::parseAnswer(BYTE_VECTOR *answer) {
 			std::cout << "Answer (command: " << command << ") accepted "
 					  << std::endl;
 		extractData(answer);
-		return static_cast<SysExMessage::Command>(command);
+		return static_cast<Command>(command);
 	} catch (ProtocolException e) {
 		std::cerr << e.getErrorMessage();
 	}
@@ -136,7 +136,7 @@ bool SysExMessage::checkAnswerValid(long answerCommandId) {
 	return true;
 }
 
-void SysExMessage::createAnswer(SysExMessage::Command cmd,
+void SysExMessage::createAnswer(Command cmd,
 								std::vector<unsigned char> *message,
 								Device *device) {
 	if (cmd == ACK) {

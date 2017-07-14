@@ -13,7 +13,7 @@ public:
 	};
 
 	SaveRestore(Device *device);
-	SaveRestore(SysExMessage::Command cmd, BYTE_VECTOR *message, Device *device)
+	SaveRestore(Command cmd, BYTE_VECTOR *message, Device *device)
 		: SysExMessage(cmd, message, device) {}
 
 	void setSaveRestoreId(SaveResstoreId saveRestoreId);

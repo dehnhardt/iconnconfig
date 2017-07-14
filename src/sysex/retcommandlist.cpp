@@ -2,8 +2,7 @@
 #include "midi.h"
 
 RetCommandList::RetCommandList(Device *device)
-	: SysExMessage(SysExMessage::RET_COMMAND_LIST, SysExMessage::QUERY,
-				   device) {}
+	: SysExMessage(Command::RET_COMMAND_LIST, SysExMessage::QUERY, device) {}
 
 bool RetCommandList::isCommandSupported(const Command cmd) {
 	if (!supportedCommands)

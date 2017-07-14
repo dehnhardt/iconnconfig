@@ -1,7 +1,7 @@
 #include "saverestore.h"
 
 SaveRestore::SaveRestore(Device *device)
-		: SysExMessage(SysExMessage::SAVE_RESTORE, SysExMessage::QUERY, device) {}
+	: SysExMessage(Command::SAVE_RESTORE, SysExMessage::QUERY, device) {}
 
 void SaveRestore::setSaveRestoreId(SaveResstoreId saveRestoreId) {
 	this->saveRestoreId = saveRestoreId;
