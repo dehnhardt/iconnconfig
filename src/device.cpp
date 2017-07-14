@@ -264,7 +264,6 @@ bool Device::queryDeviceInfo() {
 			dynamic_cast<RetSaveRestoreList *>(getSaveRestoreList->query());
 		saveRestoreList = l->getSaveRestoreList();
 	}
-
 	return true;
 }
 

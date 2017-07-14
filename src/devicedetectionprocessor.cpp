@@ -28,13 +28,13 @@ DeviceDetectionProcessor::~DeviceDetectionProcessor() {
 	}
 }
 
-int DeviceDetectionProcessor::getMidiInPortCount() {
+unsigned int DeviceDetectionProcessor::getMidiInPortCount() {
 	if (midiin)
 		return midiin->getPortCount();
 	return 0;
 }
 
-int DeviceDetectionProcessor::getMidiOutPortCount() {
+unsigned int DeviceDetectionProcessor::getMidiOutPortCount() {
 	if (midiout)
 		return midiout->getPortCount();
 	return 0;
@@ -50,7 +50,7 @@ void DeviceDetectionProcessor::startDeviceDetection() {
 
 bool DeviceDetectionProcessor::isIconnectivityDevice(
 	std::vector<unsigned char> *message) {
-	int nMessageSize = message->size();
+	unsigned long nMessageSize = message->size();
 	return ((nMessageSize >= 16) && (message->at(0) == SYSEX_START) &&
 			(message->at(1) == Device::MANUFACTURER_SYSEX_ID[0]) &&
 			(message->at(2) == Device::MANUFACTURER_SYSEX_ID[1]) &&
@@ -63,18 +63,18 @@ void DeviceDetectionProcessor::setupMidiPorts() {
 	createMidiOut();
 }
 
-void DeviceDetectionProcessor::sendProgressEvent(int progress) {
+void DeviceDetectionProcessor::sendProgressEvent(unsigned int progress) {
 	ProgressEvent *e = new ProgressEvent();
 	e->setValue(progress);
 	QApplication::sendEvent(gui, e);
 }
 
-int DeviceDetectionProcessor::detectDevices() {
+unsigned long DeviceDetectionProcessor::detectDevices() {
 
-	int defaultDeviceSerialNumber =
-		Configuration::getInstance().getDefaultDevice();
-	int nOutPortCount = midiout->getPortCount();
-	int nInPortCount = midiin->getPortCount();
+	unsigned long defaultDeviceSerialNumber = static_cast<unsigned long>(
+		Configuration::getInstance().getDefaultDevice());
+	unsigned int nOutPortCount = midiout->getPortCount();
+	unsigned int nInPortCount = midiin->getPortCount();
 #ifdef __MIO_DEBUG__
 	std::cout << "Out ports: " << std::dec << nOutPortCount
 			  << ", in ports: " << nInPortCount
@@ -82,16 +82,16 @@ int DeviceDetectionProcessor::detectDevices() {
 			  << std::endl;
 #endif//__MIO_DEBUG__
 	GetDevice *q = new GetDevice();
-	long serialNumber;
+	unsigned long serialNumber;
 	BYTE_VECTOR *qMessage = q->getMIDISysExMessage();
-	std::map<long, Device *> *devices =
+	std::map<unsigned long, Device *> *devices =
 		Configuration::getInstance().getDevices();
 	// for each output signal
-	for (int i = 0; i < nOutPortCount; i++) {
+	for (unsigned int i = 0; i < nOutPortCount; i++) {
 		midiout->openPort(i);
 		// and each input signal
-		for (int j = 0; j < nInPortCount; j++) {
-			int progress = (i * nInPortCount) + j + 1;
+		for (unsigned int j = 0; j < nInPortCount; j++) {
+			unsigned int progress = (i * nInPortCount) + j + 1;
 			sendProgressEvent(progress);
 			midiin->openPort(j);
 			midiout->sendMessage(qMessage);
@@ -101,15 +101,15 @@ int DeviceDetectionProcessor::detectDevices() {
 				SLEEP(WAIT_TIME);
 				midiin->getMessage(message);
 			}
-			unsigned int nMessageSize = message->size();
+			unsigned long nMessageSize = message->size();
 			if (nMessageSize > 0) {
 #ifdef __MIO_DEBUG__
 				MIDI::printMessage(message);
 #endif//__MIO_DEBUG__
 				// test for iConnectivity device
 				if (isIconnectivityDevice(message)) {
-					serialNumber = MIDI::byteJoin(message, (unsigned int)7,
-												  (unsigned int)5);
+					serialNumber = static_cast<unsigned long>(
+						MIDI::byteJoin(message, 7, 5));
 					std::cout << "device with serial number " << serialNumber
 							  << " detected... (" << midiout->getPortName(i)
 							  << ":" << i << " - " << midiin->getPortName(j)
@@ -117,7 +117,8 @@ int DeviceDetectionProcessor::detectDevices() {
 					midiin->closePort();
 					midiout->closePort();
 					if (devices->find(serialNumber) == devices->end()) {
-						int productId = MIDI::byteJoin(message, 5, 2);
+						unsigned int productId = static_cast<unsigned int>(
+							MIDI::byteJoin(message, 5, 2));
 						Device *device =
 							new Device(j, i, serialNumber, productId);
 						devices->insert(
@@ -160,7 +161,8 @@ int DeviceDetectionProcessor::detectDevices() {
 	} catch (std::out_of_range) {
 		d = devices->begin()->second;
 		d->setDefault(true);
-		defaultDeviceSerialNumber = d->getSerialNumber()->getLongValue();
+		defaultDeviceSerialNumber =
+			static_cast<unsigned long>(d->getSerialNumber()->getLongValue());
 		Configuration::getInstance().setDefaultDevice(
 			defaultDeviceSerialNumber);
 	}

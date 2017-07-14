@@ -8,17 +8,17 @@
 class ProgressEvent : public QEvent {
 
 public:
-  ProgressEvent() : QEvent(static_cast<QEvent::Type>(PROGRESS_EVENT_TYPE)) {}
+	ProgressEvent() : QEvent(static_cast<QEvent::Type>(PROGRESS_EVENT_TYPE)) {}
 
 private:
-  int value = 0;
+	unsigned int value = 0;
 
 public:
-  static const QEvent::Type myType =
-      static_cast<QEvent::Type>(PROGRESS_EVENT_TYPE);
+	static const QEvent::Type myType =
+		static_cast<QEvent::Type>(PROGRESS_EVENT_TYPE);
 
-  void setValue(int value) { this->value = value; }
-  int getValue(void) { return value; }
+	void setValue(unsigned int value) { this->value = value; }
+	unsigned int getValue(void) { return value; }
 };
 
-#endif // PROGRESSEVENT_H
+#endif// PROGRESSEVENT_H

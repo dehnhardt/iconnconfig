@@ -10,36 +10,36 @@
 
 class DeviceDetectionProcessor {
 public:
-  DeviceDetectionProcessor(QWidget *gui);
-  ~DeviceDetectionProcessor();
-  int getMidiInPortCount();
-  int getMidiOutPortCount();
-  void startDeviceDetection();
+	DeviceDetectionProcessor(QWidget *gui);
+	~DeviceDetectionProcessor();
+	unsigned int getMidiInPortCount();
+	unsigned int getMidiOutPortCount();
+	void startDeviceDetection();
 
 private:
-  // Members
-  RtMidiIn *midiin = 0;
-  RtMidiOut *midiout = 0;
+	// Members
+	RtMidiIn *midiin = 0;
+	RtMidiOut *midiout = 0;
 
-  libusb_device **devs;
+	libusb_device **devs;
 
-  // methods
-  bool isIconnectivityDevice(BYTE_VECTOR *message);
+	// methods
+	bool isIconnectivityDevice(BYTE_VECTOR *message);
 
-  // MIDI-methods
-  void createMidiIn();
-  void createMidiOut();
-  void setupMidiPorts();
-  int detectDevices();
-  double getMessage(BYTE_VECTOR *message);
+	// MIDI-methods
+	void createMidiIn();
+	void createMidiOut();
+	void setupMidiPorts();
+	unsigned long detectDevices();
+	double getMessage(BYTE_VECTOR *message);
 
-  // USB-methods
-  bool setupUSB();
-  void printUSBDevs();
+	// USB-methods
+	bool setupUSB();
+	void printUSBDevs();
 
-  QWidget *gui;
+	QWidget *gui;
 
-  void sendProgressEvent(int progress);
+	void sendProgressEvent(unsigned int progress);
 };
 
-#endif // DEVICEDETECTIONPROCESSOR_H
+#endif// DEVICEDETECTIONPROCESSOR_H
