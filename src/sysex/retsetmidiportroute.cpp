@@ -49,7 +49,7 @@ void RetSetMidiPortRoute::setTotalNumberOfPorts(int value) {
 }
 
 std::vector<unsigned char> *RetSetMidiPortRoute::getMessageData() {
-	this->command->at(0) = 0x40;
+	this->commandData->at(0) = 0x40;
 	BYTE_VECTOR *messageData = new BYTE_VECTOR();
 	messageData->push_back(0x01);
 	BYTE_VECTOR *portIdV = MIDI::byteSplit(portId, 2);

@@ -208,24 +208,36 @@ void Device::requestMidiPortInfos() {
 	}
 }
 
+void Device::addCommandToStructure(
+	Command cmd, DeviceStructureContainer *structureContainer) {
+	informationTree->insert(std::pair<Command, DeviceStructureContainer *>(
+		cmd, structureContainer));
+}
+
 bool Device::queryDeviceInfo() {
+
 	GetCommandList *c = new GetCommandList(this);
 	c->setDebug(true);
 	try {
 		SysExMessage *m = c->query();
 		commands = dynamic_cast<RetCommandList *>(m);
+		addCommandToStructure(commands->getCommand(),
+							  new DeviceStructureContainer(commands));
 	} catch (...) {
 		throw;
-	}
-	if (commands == 0) {
-		std::cerr << "can not query supported commands";
-		return false;
 	}
 
 	if (commands->isCommandSupported(Command::GET_INFO_LIST)) {
 		GetInfoList *i = new GetInfoList(this);
 		i->setDebug(true);
-		ii = dynamic_cast<RetInfoList *>(i->query());
+		try {
+			ii = dynamic_cast<RetInfoList *>(i->query());
+			DeviceStructureContainer *c = new DeviceStructureContainer();
+			addCommandToStructure(ii->getCommand(), c);
+
+		} catch (...) {
+			throw;
+		}
 	}
 
 	deviceInfo = new GetInfo(this, ii);
@@ -306,6 +318,7 @@ BYTE_VECTOR *Device::nextTransactionId() {
 
 bool Device::loadConfigurationFromDevice() {
 	getCommands();
+
 	return true;
 }
 

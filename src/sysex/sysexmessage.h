@@ -61,12 +61,15 @@ public:
 	void printRawData();
 	virtual void parseAnswerData() {}
 
-	// methods
+	// getter
 	unsigned char getCmdflags() const;
+	Command getCommand() { return cmd; }
+
+	// setter
 	void setCmdflags(unsigned char value);
 
 protected:
-	virtual BYTE_VECTOR *getCommand() { return command; }
+	virtual BYTE_VECTOR *getCommandData() { return commandData; }
 	virtual BYTE_VECTOR *getMessageData() { return new BYTE_VECTOR(); }
 	virtual BYTE_VECTOR *getTransactionId() {
 		if (transactionId == 0) {
@@ -96,7 +99,7 @@ protected:
 	AcceptedAnswers acceptedAnswers;
 	Device *device = 0;
 	SysExMessage *answer;
-	BYTE_VECTOR *command = 0;
+	BYTE_VECTOR *commandData = 0;
 	BYTE_VECTOR *transactionId = 0;
 	BYTE_VECTOR *deviceHeader = 0;
 	BYTE_VECTOR *resultData = 0;

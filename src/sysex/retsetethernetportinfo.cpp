@@ -51,7 +51,7 @@ void RetSetEthernetPortInfo::setMethod(RetSetEthernetPortInfo::IPFlags method) {
 }
 
 std::vector<unsigned char> *RetSetEthernetPortInfo::getMessageData() {
-  this->command->at(0) = 0x40;
+  this->commandData->at(0) = 0x40;
   BYTE_VECTOR *messageData = new BYTE_VECTOR();
   messageData->push_back(commandVersionNumber);
   messageData->insert(messageData->end(), portId->begin(), portId->end());

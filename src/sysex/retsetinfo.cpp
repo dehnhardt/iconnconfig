@@ -54,7 +54,7 @@ std::string RetSetInfo::getItemName() {
 
 bool RetSetInfo::setValue(std::string value) {
 	this->value = value;
-	this->command->at(0) = 0x40;
+	this->commandData->at(0) = 0x40;
 	execute();
 	return true;
 }

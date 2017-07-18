@@ -24,8 +24,12 @@ typedef std::map<unsigned int, DeviceStructureContainer *> DeviceStructure;
 class DeviceStructureContainer {
 
 public:
-	enum SetType { MESSAGE, STRUCTURE };
-	SetType type;
+	DeviceStructureContainer() {}
+	DeviceStructureContainer(SysExMessage *message) { setMessage(message); }
+	DeviceStructureContainer(DeviceStructure *structure) {
+		setStructure(structure);
+	}
+
 	void setMessage(SysExMessage *message) {
 		this->message = message;
 		type = MESSAGE;
@@ -38,6 +42,9 @@ public:
 
 	SysExMessage *getMessage() { return message; }
 	DeviceStructure *getStructure() { return deviceStructure; }
+
+	enum SetType { MESSAGE, STRUCTURE };
+	SetType type;
 
 private:
 	SysExMessage *message = 0;
@@ -145,6 +152,8 @@ private:
 	bool setupMidi();
 	bool checkSysex(BYTE_VECTOR *data);
 	void requestMidiPortInfos();
+	void addCommandToStructure(Command cmd,
+							   DeviceStructureContainer *structureContainer);
 };
 
 void midiOutErrorCallback(RtMidiError::Type type, const std::string &errorText,

@@ -37,9 +37,9 @@ SysExMessage::SysExMessage(Command cmd, CommandFlags flags, Device *device)
 		this->deviceHeader = this->device->getDeviceHeader();
 	else
 		deviceHeader = new BYTE_VECTOR();
-	command = new BYTE_VECTOR();
-	command->push_back(flags);
-	command->push_back(static_cast<unsigned char>(cmd));
+	commandData = new BYTE_VECTOR();
+	commandData->push_back(flags);
+	commandData->push_back(static_cast<unsigned char>(cmd));
 	acceptedAnswers = commandAcceptedAnswers[cmd];
 }
 
@@ -51,15 +51,15 @@ SysExMessage::SysExMessage(Command cmd, std::vector<unsigned char> *message,
 	else
 		deviceHeader = new BYTE_VECTOR();
 	cmdflags = (*message)[14];
-	command = new BYTE_VECTOR();
-	command->push_back(cmdflags);
-	command->push_back(static_cast<unsigned char>(cmd));
+	commandData = new BYTE_VECTOR();
+	commandData->push_back(cmdflags);
+	commandData->push_back(static_cast<unsigned char>(cmd));
 	acceptedAnswers = commandAcceptedAnswers[cmd];
 	extractData(message);
 }
 
 SysExMessage::~SysExMessage() {
-	delete command;
+	delete commandData;
 	delete deviceHeader;
 }
 
@@ -85,7 +85,8 @@ BYTE_VECTOR *SysExMessage::getMIDISysExMessage() {
 	body->reserve(deviceHeader->size() + 6 + mdSize);
 	body->insert(body->end(), deviceHeader->begin(), deviceHeader->end());
 	body->insert(body->end(), transactionId->begin(), transactionId->end());
-	body->insert(body->end(), getCommand()->begin(), getCommand()->end());
+	body->insert(body->end(), getCommandData()->begin(),
+				 getCommandData()->end());
 	body->insert(body->end(), bodyLength->begin(), bodyLength->end());
 	if (mdSize > 0) {
 		body->insert(body->end(), md->begin(), md->end());
