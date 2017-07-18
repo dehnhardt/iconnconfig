@@ -77,7 +77,8 @@ SOURCES +=\
     src/sysex/retsaverestorelist.cpp \
     src/widgets/controls/ipaddressinput.cpp \
     src/sysex/communicationexception.cpp \
-    src/sysex/protocolexception.cpp
+    src/sysex/protocolexception.cpp \
+    src/aboutdialog.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
@@ -126,11 +127,13 @@ HEADERS  += src/miomain.h \
     src/sysex/communicationexception.h \
     src/sysex/protocolexception.h \
     src/config/qsettings-xml.h \
-    src/definitions.h
+    src/definitions.h \
+    src/aboutdialog.h
 
 FORMS    += src/miomain.ui \
     src/devicedetection.ui \
-    src/widgets/multiinfowidget.ui
+    src/widgets/multiinfowidget.ui \
+    src/aboutdialog.ui
 
 unix:!macx: LIBS += -lasound \
                     -lpthread \
