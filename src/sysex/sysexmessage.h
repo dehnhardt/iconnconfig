@@ -44,12 +44,12 @@ public:
 
 	static CommandAcceptedAnswers commandAcceptedAnswers;
 
-	// methods
 public:
 	SysExMessage(Command cmd, CommandFlags flags, Device *device);
 	SysExMessage(Command cmd, BYTE_VECTOR *message, Device *device);
-
 	virtual ~SysExMessage();
+
+	// methods
 	virtual BYTE_VECTOR *getMIDISysExMessage();
 	std::string getDataAsString();
 	long getDataAsLong();

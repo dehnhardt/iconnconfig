@@ -29,6 +29,7 @@ Device::Device(unsigned int inPortNumber, unsigned int outPortNumber,
 	this->serialNumber = new MIDISysexValue(static_cast<long>(serialNumber), 5);
 	this->productId = new MIDISysexValue(productId, 2);
 	this->debug = true;
+	this->informationTree = new DeviceStructure;
 	connect();
 }
 

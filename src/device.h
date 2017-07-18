@@ -17,6 +17,32 @@ class RetInfoList;
 class RetSetMidiInfo;
 class RetSetMidiPortInfo;
 class GetInfo;
+class DeviceStructureContainer;
+
+typedef std::map<unsigned int, DeviceStructureContainer *> DeviceStructure;
+
+class DeviceStructureContainer {
+
+public:
+	enum SetType { MESSAGE, STRUCTURE };
+	SetType type;
+	void setMessage(SysExMessage *message) {
+		this->message = message;
+		type = MESSAGE;
+	}
+
+	void setStructure(DeviceStructure *deviceStructure) {
+		this->deviceStructure = deviceStructure;
+		type = STRUCTURE;
+	}
+
+	SysExMessage *getMessage() { return message; }
+	DeviceStructure *getStructure() { return deviceStructure; }
+
+private:
+	SysExMessage *message = 0;
+	DeviceStructure *deviceStructure = 0;
+};
 
 class Device {
 public:
@@ -111,7 +137,7 @@ private:
 	GetInfo *deviceInfo = 0;
 	std::map<int, std::vector<RetSetMidiPortInfo *> *> *midiPortInfos = 0;
 
-	std::map<Command, SysExMessage *> informationTree;
+	DeviceStructure *informationTree = 0;
 
 	BYTE_VECTOR *deviceHeader = 0;
 	BYTE_VECTOR *fullHeader = 0;
