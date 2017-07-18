@@ -12,6 +12,7 @@ int main(int argc, char *argv[]) {
 	QCoreApplication::setOrganizationName("punkt-k");
 	QCoreApplication::setOrganizationDomain("www.punkt-k.de");
 	QCoreApplication::setApplicationName("Mio Config");
+	QCoreApplication::setApplicationVersion("0.1.5-alpha");
 
 	QTranslator mioConfigTranslator;
 	QString l = "mioconfig_" + QLocale::system().name();

@@ -1,4 +1,5 @@
 #include "miomain.h"
+#include "aboutdialog.h"
 #include "config/configuration.h"
 #include "config/qsettings-xml.h"
 #include "devicedetection.h"
@@ -51,6 +52,7 @@ MioMain::MioMain(QCommandLineParser *parser, QWidget *parent)
 		configuration->setValue("ConfigName", "lala");
 		configuration->endGroup();
 	}
+	connectSignals();
 	if (!installSignalHandlers())
 		qWarning("%s", "Signal handlers not installed!");
 	readSettings();
@@ -456,4 +458,14 @@ void MioMain::signalAction(int fd) {
 		qWarning("Unexpected signal received: %d", message);
 		break;
 	}
+}
+
+void MioMain::openAboutDialog() {
+	AboutDialog *aboutDialog = new AboutDialog(this);
+	aboutDialog->exec();
+}
+
+void MioMain::connectSignals() {
+	connect(this->ui->actionAbout, SIGNAL(triggered()), this,
+			SLOT(openAboutDialog()));
 }

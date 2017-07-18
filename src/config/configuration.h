@@ -5,6 +5,9 @@
 #include <QSettings>
 #include <map>
 
+#define AUTHOR "Holger Dehnhardt"
+#define LICENSE "MIT"
+
 typedef std::map<unsigned long, Device *> Devices;
 
 class Configuration {

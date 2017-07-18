@@ -28,7 +28,7 @@ enum Command {
 				   0x03) */
 	RESET,			 /*!< Resets the device */
 	SAVE_RESTORE,	/*!< Used to save or restore the current device
-					   configuration */
+						   configuration */
 	GET_GIZMO_COUNT, /*!< Number of other devices connected to this device
 						*/
 	RET_GIZMO_COUNT, /*!< Returns the number of devices that are
@@ -46,7 +46,7 @@ enum Command {
 	RET_SET_MIDI_PORT_INFO,   /*!< Returns or set the MIDI-Information
 								  for a specific port */
 	GET_MIDI_PORT_FILTER,	 /*!< Queueries infomation about current midi port
-								filters for a specific port */
+									filters for a specific port */
 	RET_SET_MIDI_PORT_FILTER, /*!< Returns or writes infomation about
 								current midi port filters for a specific
 								port*/

@@ -42,6 +42,7 @@ private slots:
 	void restoreFromDevice();
 	void resetToFactoryDefaults();
 	void signalAction(int);
+	void openAboutDialog();
 
 private:
 	// Members
@@ -57,6 +58,7 @@ private:
 
 private:
 	// methods
+	void connectSignals();
 	void readSettings();
 	bool readDevicesFromSettings();
 	void writeSettings();
