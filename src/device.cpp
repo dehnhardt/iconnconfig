@@ -30,7 +30,11 @@ Device::Device(unsigned int inPortNumber, unsigned int outPortNumber,
 	this->productId = new MIDISysexValue(productId, 2);
 	this->debug = true;
 	this->informationTree = new DeviceStructure;
+	try{
 	connect();
+	} catch( CommunicationException *e ){
+		throw e;
+	}
 }
 
 Device::Device(Device *device)
@@ -88,23 +92,29 @@ bool Device::setupMidi() {
 	if (!midiin) {
 		nameIn << "MioConfig In " << serialNumber->getLongValue();
 		midiin = MIDI::createMidiIn(nameIn.str());
-		if (midiin)
-			midiin->setErrorCallback(&midiinErrorCallback, this);
-		else
+		if (!midiin)
 			return false;
 	}
 	if (!midiin->isPortOpen())
+		try{
 		midiin->openPort(inPortNumber);
+	} catch( ... ){
+		throw;
+	}
+
 	if (!midiout) {
 		nameOut << "MioConfig Out " << serialNumber->getLongValue();
 		midiout = MIDI::createMidiOut(nameOut.str());
-		if (midiout)
-			midiout->setErrorCallback(&midiOutErrorCallback, this);
-		else
+		if (!midiout)
 			return false;
 	}
 	if (!midiout->isPortOpen())
+		try{
 		midiout->openPort(outPortNumber);
+	}catch(...){
+		throw;
+	}
+
 	return midiin->isPortOpen() && midiout->isPortOpen();
 }
 
@@ -130,7 +140,11 @@ void Device::connect() {
 	bool deviceOpen = false;
 	for (int i = 0; i < WAIT_LOOPS && !deviceOpen; i++) {
 		SLEEP(WAIT_TIME);
+		try{
 		deviceOpen = setupMidi();
+		}catch(RtMidiError e){
+			throw new CommunicationException( e);
+		}
 	}
 }
 
@@ -320,18 +334,6 @@ bool Device::loadConfigurationFromDevice() {
 	getCommands();
 
 	return true;
-}
-
-void midiOutErrorCallback(RtMidiError::Type type, const std::string &errorText,
-						  void *userData __attribute__((unused))) {
-	std::cout << "UEC (" << static_cast<int>(type) << "): " << errorText
-			  << std::endl;
-}
-
-void midiinErrorCallback(RtMidiError::Type type __attribute__((unused)),
-						 const std::string &errorText,
-						 void *userData __attribute__((unused))) {
-	std::cout << "IEC " << errorText << std::endl;
 }
 
 BYTE_VECTOR *Device::manufacturerHeader = 0;

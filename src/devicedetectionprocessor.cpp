@@ -159,19 +159,23 @@ unsigned long DeviceDetectionProcessor::detectDevices() {
 		d = devices->at(defaultDeviceSerialNumber);
 		d->setDefault(true);
 	} catch (std::out_of_range) {
-		d = devices->begin()->second;
-		d->setDefault(true);
-		defaultDeviceSerialNumber =
-			static_cast<unsigned long>(d->getSerialNumber()->getLongValue());
-		Configuration::getInstance().setDefaultDevice(
-			defaultDeviceSerialNumber);
+		if( devices->size() > 0 ){
+			d = devices->begin()->second;
+			d->setDefault(true);
+			defaultDeviceSerialNumber =
+					static_cast<unsigned long>(d->getSerialNumber()->getLongValue());
+			Configuration::getInstance().setDefaultDevice(
+						defaultDeviceSerialNumber);
+		}
 	}
 
-	for (Devices::iterator it = devices->begin(); it != devices->end(); ++it) {
-		d = it->second;
-		d->queryDeviceInfo();
+	if( devices->size() > 0 ){
+		for (Devices::iterator it = devices->begin(); it != devices->end(); ++it) {
+			d = it->second;
+			d->queryDeviceInfo();
+		}
+		Configuration::getInstance().setDevices(devices);
 	}
-	Configuration::getInstance().setDevices(devices);
 	return devices->size();
 }
 

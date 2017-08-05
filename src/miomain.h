@@ -64,10 +64,10 @@ private:
 	void writeSettings();
 	void writeDevicesToSettings();
 	void connectSlots();
-	void addDevicesToSelectionMenu(long defaultDeviceSN);
+	void addDevicesToSelectionMenu(unsigned long defaultDeviceSN);
 
 	void addDock(QDockWidget *widget,
-				 Qt::DockWidgetArea area = Qt::NoDockWidgetArea);
+							 Qt::DockWidgetArea area = Qt::NoDockWidgetArea);
 
 	void clearDocWidgets();
 	void saveRestore(SaveRestore::SaveResstoreId saveRestoreId);
@@ -90,4 +90,4 @@ signals:
 	void deviceSelected(Device *d);
 };
 
-#endif// MIOMAIN_H
+#endif // MIOMAIN_H
