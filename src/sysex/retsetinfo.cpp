@@ -1,10 +1,10 @@
 #include "retsetinfo.h"
 
 RetSetInfo::RetSetInfo(Device *device)
-	: RetSetInfo(SysExMessage::QUERY, device) {}
+		: RetSetInfo(SysExMessage::QUERY, device) {}
 
 RetSetInfo::RetSetInfo(CommandFlags flags, Device *device)
-	: SysExMessage(Command::RET_SET_INFO, flags, device) {}
+		: SysExMessage(Command::RET_SET_INFO, flags, device) {}
 
 SysExMessage::DeviceInfoItem RetSetInfo::getInfoItem() { return infoItem; }
 
@@ -40,7 +40,7 @@ std::string RetSetInfo::getItemName() {
 	case MODEL_NUMBER:
 		return tr("Model Number").toStdString();
 	case SERIAL_NUMBER:
-		return tr("Serial Numer").toStdString();
+		return tr("Serial Number").toStdString();
 	case FIRMWARE_VERSION:
 		return tr("Firmware Version").toStdString();
 	case HARDWARE_VERSION:
