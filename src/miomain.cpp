@@ -67,9 +67,16 @@ MioMain::~MioMain() {
 void MioMain::openDefaultDevice() {
 	writeDevicesToSettings();
 	long defaultDeviceSN = Configuration::getInstance().getDefaultDevice();
-	Device *d = Configuration::getInstance().getDevices()->at(defaultDeviceSN);
-	addDevicesToSelectionMenu(defaultDeviceSN);
-	openDeviceGUI(d);
+	if (Configuration::getInstance().getDevices()->size() > 0) {
+		try {
+			Device *d =
+					Configuration::getInstance().getDevices()->at(defaultDeviceSN);
+			addDevicesToSelectionMenu(defaultDeviceSN);
+			openDeviceGUI(d);
+		} catch (const std::out_of_range &oor) {
+			std::cerr << oor.what() << std::endl;
+		}
+	}
 }
 
 void MioMain::addDevicesToSelectionMenu(unsigned long defaultDeviceSN) {
@@ -462,4 +469,6 @@ void MioMain::openAboutDialog() {
 void MioMain::connectSignals() {
 	connect(this->ui->actionAbout, SIGNAL(triggered()), this,
 					SLOT(openAboutDialog()));
+	connect(this->ui->actionRedetectDevices, SIGNAL(triggered()), this,
+					SLOT(openDetectionWindow()));
 }
