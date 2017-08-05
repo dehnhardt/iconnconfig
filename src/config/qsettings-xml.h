@@ -19,21 +19,21 @@ static const QString rootName = "config";
 // the resulting xml file. writing example:
 /*	we want: (which is our current result)
 <root>
-				<category1>
-								<entry1 />
-								<entry2 />
-				</category1>
-				<category2 />
+																<category1>
+																																<entry1 />
+																																<entry2 />
+																</category1>
+																<category2 />
 </root>
 what we don't want:
 <root>
-				<category1>
-								<entry1 />
-				</category1>
-				<categrory2 />
-				<category1>
-								<entry2 />
-				</category1>
+																<category1>
+																																<entry1 />
+																</category1>
+																<categrory2 />
+																<category1>
+																																<entry2 />
+																</category1>
 </root>
 */
 
@@ -98,6 +98,8 @@ bool readSettingsXml(QIODevice &device, QMap<QString, QVariant> &map) {
 		case QXmlStreamReader::Characters:
 			if (!xml.isWhitespace())
 				map[curNode->fullPath()] = xml.text().toString();
+			break;
+		default:
 			break;
 		}
 	}
