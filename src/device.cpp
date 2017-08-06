@@ -2,6 +2,7 @@
 #include "sysex/communicationexception.h"
 #include "sysex/getcommandlist.h"
 #include "sysex/getdevice.h"
+#include "sysex/getethernetportinfo.h"
 #include "sysex/getinfo.h"
 #include "sysex/getinfolist.h"
 #include "sysex/getmidiinfo.h"
@@ -30,9 +31,9 @@ Device::Device(unsigned int inPortNumber, unsigned int outPortNumber,
 	this->productId = new MIDISysexValue(productId, 2);
 	this->debug = true;
 	this->informationTree = new DeviceStructure;
-	try{
-	connect();
-	} catch( CommunicationException *e ){
+	try {
+		connect();
+	} catch (CommunicationException *e) {
 		throw e;
 	}
 }
@@ -96,11 +97,11 @@ bool Device::setupMidi() {
 			return false;
 	}
 	if (!midiin->isPortOpen())
-		try{
-		midiin->openPort(inPortNumber);
-	} catch( ... ){
-		throw;
-	}
+		try {
+			midiin->openPort(inPortNumber);
+		} catch (...) {
+			throw;
+		}
 
 	if (!midiout) {
 		nameOut << "MioConfig Out " << serialNumber->getLongValue();
@@ -109,11 +110,11 @@ bool Device::setupMidi() {
 			return false;
 	}
 	if (!midiout->isPortOpen())
-		try{
-		midiout->openPort(outPortNumber);
-	}catch(...){
-		throw;
-	}
+		try {
+			midiout->openPort(outPortNumber);
+		} catch (...) {
+			throw;
+		}
 
 	return midiin->isPortOpen() && midiout->isPortOpen();
 }
@@ -140,10 +141,10 @@ void Device::connect() {
 	bool deviceOpen = false;
 	for (int i = 0; i < WAIT_LOOPS && !deviceOpen; i++) {
 		SLEEP(WAIT_TIME);
-		try{
-		deviceOpen = setupMidi();
-		}catch(RtMidiError e){
-			throw new CommunicationException( e);
+		try {
+			deviceOpen = setupMidi();
+		} catch (RtMidiError e) {
+			throw new CommunicationException(e);
 		}
 	}
 }
@@ -248,7 +249,6 @@ bool Device::queryDeviceInfo() {
 			ii = dynamic_cast<RetInfoList *>(i->query());
 			DeviceStructureContainer *c = new DeviceStructureContainer();
 			addCommandToStructure(ii->getCommand(), c);
-
 		} catch (...) {
 			throw;
 		}
@@ -307,6 +307,19 @@ bool Device::isDeviceValid() {
 		SLEEP(1000);
 	}
 	return false;
+}
+
+SysExMessage *Device::getSysExMessage(Command cmd) {
+	switch (cmd) {
+	case Command::GET_ETHERNET_PORT_INFO:
+		return new GetEthernetPortInfo(this);
+	case Command::GET_INFO_LIST:
+		return new GetInfoList(this);
+	case Command::GET_MIDI_INFO:
+		return new GetMidiInfo(this);
+	default:
+		return NULL;
+	}
 }
 
 MIDI_PORT_INFOS *Device::getMidiPortInfos() const { return midiPortInfos; }

@@ -60,6 +60,9 @@ public:
 	~Device();
 
 public:
+	SysExMessage *getSysExMessage(Command cmd);
+
+public:
 	static const long MANUFACTURER_USB_ID = 0x2321;
 	static const char MESSAGE_CLASS = 0x7e;
 	static constexpr char MANUFACTURER_SYSEX_ID[3] = {0x00, 0x01, 0x73};
