@@ -35,10 +35,13 @@
      <x>0</x>
      <y>0</y>
      <width>610</width>
-     <height>22</height>
+     <height>19</height>
     </rect>
    </property>
    <property name="defaultUp">
+    <bool>false</bool>
+   </property>
+   <property name="nativeMenuBar">
     <bool>true</bool>
    </property>
    <widget class="QMenu" name="menuMio10_Config">
@@ -53,12 +56,11 @@
     </property>
     <widget class="QMenu" name="menuSelect">
      <property name="enabled">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="title">
       <string>Select</string>
      </property>
-     <addaction name="actionDevice1"/>
     </widget>
     <addaction name="actionRedetectDevices"/>
     <addaction name="separator"/>
