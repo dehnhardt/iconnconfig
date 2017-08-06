@@ -44,12 +44,14 @@ public:
 	}
 	QSettings *getSettings() { return new QSettings(); }
 
-	long getDefaultDevice() {
+	unsigned long getDefaultDevice() {
+		unsigned long defaultDevice = 0;
 		QSettings *settings = new QSettings();
 		settings->beginGroup("Default Device");
-		return settings->value("serialNumber", 0).toInt();
+		defaultDevice = settings->value("serialNumber", 0).toUInt();
 		settings->endGroup();
 		delete settings;
+		return defaultDevice;
 	}
 
 	bool getUsbDeviceDetection() { return enableUsbDetection; }
