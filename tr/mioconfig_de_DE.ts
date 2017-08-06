@@ -44,9 +44,13 @@
         <translation>RtMidi</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="56"/>
         <source>All midi inout and output is realized with the RtMidi Library. Created at &lt;a href=&apos;https://ccrma.stanford.edu/software/stk/classRtMidi.html&apos;&gt;Stanford University&lt;/a&gt; &lt;br/&gt;Copyright ©1995--2016 Perry R. Cook and Gary P. Scavone. All Rights Reserved.</source>
-        <translation>Alle MIDI Ein- uund Ausgabe ist über die RtMidi Bibliothek realisiert. Diese ist an der &lt;a href=&apos;https://ccrma.stanford.edu/software/stk/classRtMidi.html&apos;&gt;Stanford Universität &lt;/a&gt; erstellt worden &lt;br/&gt;Copyright ©1995--2016 Perry R. Cook and Gary P. Scavone. All Rights Reserved.</translation>
+        <translation type="vanished">Alle MIDI Ein- uund Ausgabe ist über die RtMidi Bibliothek realisiert. Diese ist an der &lt;a href=&apos;https://ccrma.stanford.edu/software/stk/classRtMidi.html&apos;&gt;Stanford Universität &lt;/a&gt; erstellt worden &lt;br/&gt;Copyright ©1995--2016 Perry R. Cook and Gary P. Scavone. All Rights Reserved.</translation>
+    </message>
+    <message>
+        <location filename="../src/aboutdialog.cpp" line="56"/>
+        <source>All midi in- and output is realized with the RtMidi Library. Created at &lt;a href=&apos;https://ccrma.stanford.edu/software/stk/classRtMidi.html&apos;&gt;Stanford University&lt;/a&gt; &lt;br/&gt;Copyright ©1995--2016 Perry R. Cook and Gary P. Scavone. All Rights Reserved.</source>
+        <translation>Alle MIDI Ein- und Ausgaben sind über die RtMidi Bibliothek realisiert. Diese ist an der &lt;a href=&apos;https://ccrma.stanford.edu/software/stk/classRtMidi.html&apos;&gt;Stanford Universität &lt;/a&gt; erstellt worden &lt;br/&gt;Copyright ©1995--2016 Perry R. Cook and Gary P. Scavone. All Rights Reserved.</translation>
     </message>
     <message>
         <location filename="../src/aboutdialog.cpp" line="63"/>
@@ -90,8 +94,14 @@ Erstelt von Michael Wohlwend</translation>
     <message>
         <location filename="../src/aboutdialog.cpp" line="77"/>
         <source>Ralf Beck created an RTP-Driver which I use often to connect to the MIO10 when doing boring programming routines in front of an exciting film.
+As well he provided a patch to make MioConfig work with QT-Version 4.8.</source>
+        <translation>Ralf Beck hat einen RTP-Treiber für die MIIO-Geräte entwickelt, welchen ich regelmäßig benutzt habe um vor dem TV langweilige Routineprogrammtätigkeiten für diese Anwendung zu machen.
+Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm unter der QT-Version 4.8. zu programmieren.</translation>
+    </message>
+    <message>
+        <source>Ralf Beck created an RTP-Driver which I use often to connect to the MIO10 when doing boring programming routines in front of an exciting film.
 As well he provided a patch to make MioConfig work with QT-Version 4.8</source>
-        <translation type="unfinished">Ralf Beck hat einen RTP-Treiber für die MIIO-Geräte entwickelt, welchen ich regelmäßig benutzt habe um vor dem TV langweilige Routineprogrammtätigkeiten für diese Anwendung zu machen.
+        <translation type="vanished">Ralf Beck hat einen RTP-Treiber für die MIIO-Geräte entwickelt, welchen ich regelmäßig benutzt habe um vor dem TV langweilige Routineprogrammtätigkeiten für diese Anwendung zu machen.
 Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm unter der QT-Version 4.8 zu programmieren.</translation>
     </message>
 </context>

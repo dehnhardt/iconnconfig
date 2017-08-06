@@ -6,7 +6,7 @@
 #include <QLabel>
 
 AboutDialog::AboutDialog(QWidget *parent)
-		: QDialog(parent), ui(new Ui::AboutDialog) {
+	: QDialog(parent), ui(new Ui::AboutDialog) {
 	ui->setupUi(this);
 	setupScrollArea();
 	setupTable();
@@ -20,7 +20,7 @@ void AboutDialog::setupScrollArea() {
 }
 
 void AboutDialog::addEntry(const QString label, const QString value,
-													 bool header) {
+						   bool header) {
 	int colspan = 1;
 	if (header) {
 		colspan = 2;
@@ -53,33 +53,33 @@ void AboutDialog::setupTable() {
 	addEntry(tr("Used Software"), NULL, true);
 	// RtMIDI
 	addEntry(tr("RtMIDI"),
-					 tr("All midi inout and output is realized with the RtMidi "
-							"Library. Created at <a "
-							"href='https://ccrma.stanford.edu/software/stk/"
-							"classRtMidi.html'>Stanford University</a> "
-							"<br/>Copyright ©1995--2016 Perry R. Cook and Gary P. Scavone. "
-							"All Rights Reserved."));
+			 tr("All midi in- and output is realized with the RtMidi "
+				"Library. Created at <a "
+				"href='https://ccrma.stanford.edu/software/stk/"
+				"classRtMidi.html'>Stanford University</a> "
+				"<br/>Copyright ©1995--2016 Perry R. Cook and Gary P. Scavone. "
+				"All Rights Reserved."));
 	// Icons
 	addEntry(tr("Used Icons"), NULL, true);
 	// USB Host
 	addEntry(tr("USB Device Jack Icon"), tr("Downloaded from the <a "
-																					"href='https://thenounproject.com/"
-																					"'>NOUN Project</a><br/>"
-																					"\nCreated by Okan Benn"));
+											"href='https://thenounproject.com/"
+											"'>NOUN Project</a><br/>"
+											"\nCreated by Okan Benn"));
 	// Ethernet Jack
 	addEntry(tr("Ethernet Jack Icon"), tr("Downloaded from the <a "
-																				"href='https://thenounproject.com/"
-																				"'>NOUN Project</a><br/>"
-																				"\nCreated by Michael Wohlwend"));
+										  "href='https://thenounproject.com/"
+										  "'>NOUN Project</a><br/>"
+										  "\nCreated by Michael Wohlwend"));
 	addEntry(tr("Credits"), NULL, true);
 	// Ralf Beck - MTP-Driver
 	addEntry(tr("RTP-Driver"),
-					 tr("Ralf Beck created an RTP-Driver which I use "
-							"often to connect to the MIO10 when doing "
-							"boring programming routines in front of an exciting "
-							"film."
-							"\nAs well he provided a patch to make MioConfig "
-							"work with QT-Version 4.8"));
+			 tr("Ralf Beck created an RTP-Driver which I use "
+				"often to connect to the MIO10 when doing "
+				"boring programming routines in front of an exciting "
+				"film."
+				"\nAs well he provided a patch to make MioConfig "
+				"work with QT-Version 4.8."));
 }
 
 QLabel *AboutDialog::getLabel(QLabel *label, const bool header) {
