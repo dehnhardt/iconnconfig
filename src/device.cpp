@@ -199,8 +199,14 @@ void Device::requestMidiPortInfos() {
 	for (int i = 1; i <= midiPorts; ++i) {
 		std::vector<RetSetMidiPortInfo *> *v = 0;
 		info->setPortNumer(i);
-		RetSetMidiPortInfo *midiPortInfo =
-			dynamic_cast<RetSetMidiPortInfo *>(info->query());
+		RetSetMidiPortInfo *midiPortInfo = 0;
+		try {
+			midiPortInfo = dynamic_cast<RetSetMidiPortInfo *>(info->query());
+		} catch (CommunicationException *ce) {
+			std::cerr << ce->getErrorMessage();
+			continue;
+		}
+
 		int portType = static_cast<int>(midiPortInfo->getPortType());
 		portType <<= 8;
 		portType += midiPortInfo->getJackNumberOfType();
