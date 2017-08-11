@@ -7,8 +7,8 @@ void RetSetMidiInfo::parseAnswerData() {
 	if (data->size() < 15)
 		return;
 	commandVersionNumber = this->data->at(0);
-	midiPorts = MIDI::byteJoin(this->data, 1, 2);
-	currentCommunicationPort = MIDI::byteJoin(data, 3, 4);
+	midiPorts = static_cast<int>(MIDI::byteJoin(this->data, 1, 2));
+	currentCommunicationPort = static_cast<int>(MIDI::byteJoin(data, 3, 2));
 	dinPorts = this->data->at(5);
 	usbDeviceJacks = this->data->at(6);
 	usbHostJacks = this->data->at(7);
