@@ -22,15 +22,16 @@ DeviceDetection::DeviceDetection(QWidget *parent)
 DeviceDetection::~DeviceDetection() { delete ui; }
 
 void DeviceDetection::customEvent(QEvent *e) {
-	if (e->type() == (QEvent::Type)PROGRESS_EVENT_TYPE) {
-		ui->progressBar->setValue(((ProgressEvent *)e)->getValue());
+	if (e->type() == static_cast<QEvent::Type>(PROGRESS_EVENT_TYPE)) {
+		ui->progressBar->setValue(
+			static_cast<int>((dynamic_cast<ProgressEvent *>(e))->getValue()));
 	}
 }
 
 void DeviceDetection::startDeviceDetection() {
-	int maximum = detectionProcessor->getMidiOutPortCount() *
-				  detectionProcessor->getMidiInPortCount();
-	ui->progressBar->setMaximum(maximum);
+	unsigned int maximum = detectionProcessor->getMidiOutPortCount() *
+						   detectionProcessor->getMidiInPortCount();
+	ui->progressBar->setMaximum(static_cast<int>(maximum));
 	ui->progressBar->setMinimum(0);
 	ui->progressBar->setValue(0);
 	detectionProcessor->startDeviceDetection();
