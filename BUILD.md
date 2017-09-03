@@ -2,7 +2,7 @@
 
 ## Linux
 at least 
-* qt4.8 development packages
+* qt5.2 development packages
 * libasound2-dev
 * libclalsadrv-dev
 * libusb-1.0-0-dev
