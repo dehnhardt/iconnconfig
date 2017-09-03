@@ -1,6 +1,7 @@
 #include "midi.h"
 
 #include <algorithm>
+#include <iomanip>
 #include <iostream>
 #include <sstream>
 
@@ -20,7 +21,7 @@ RtMidiIn *MIDI::createMidiIn(const std::string clientName) {
 }
 
 RtMidiOut *
-MIDI::createMidiOut(const std::string clientName) {// RtMidiOut constructor
+MIDI::createMidiOut(const std::string clientName) { // RtMidiOut constructor
 	RtMidiOut *midiout = 0;
 	try {
 		midiout = new RtMidiOut(RtMidi::LINUX_ALSA, clientName);
@@ -70,7 +71,7 @@ long MIDI::byteJoin(BYTE_VECTOR *message) {
 }
 
 long MIDI::byteJoin(BYTE_VECTOR *message, unsigned long start,
-					unsigned long length) {
+										unsigned long length) {
 	unsigned long cnt;
 	long current = 0;
 
@@ -112,7 +113,7 @@ BYTE_VECTOR *MIDI::encodeIpAddress(std::string ipAddress) {
 		ipParts.push_back(std::string(token));
 	}
 	for (std::vector<std::string>::iterator it = ipParts.begin();
-		 it != ipParts.end(); ++it) {
+			 it != ipParts.end(); ++it) {
 		if (it != ipParts.begin())
 			lAddress <<= 8;
 		token = (*it);
@@ -127,4 +128,17 @@ void MIDI::printMessage(BYTE_VECTOR *message) {
 	for (unsigned int i = 0; i < nMessageSize; i++)
 		std::cout << std::hex << static_cast<int>(message->at(i)) << " ";
 	std::cout << "\n" << std::flush;
+}
+
+std::string MIDI::printMessageToHexString(BYTE_VECTOR *message) {
+	unsigned long nMessageSize = message->size();
+	std::stringstream ss;
+	ss << std::hex;
+	for (unsigned int i = 0; i < nMessageSize; i++) {
+		ss << std::setw(2) << std::setfill('0') << (int)message->at(i);
+		if (i % 2 == 0)
+			ss << ' ';
+	}
+	std::cout << std::flush;
+	return ss.str();
 }
