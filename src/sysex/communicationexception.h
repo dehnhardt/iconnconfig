@@ -19,9 +19,9 @@ public:
 	};
 
 	CommunicationException(CommunicationErrorCode code = UNKNOWN)
-			: std::runtime_error("CommunicationException"), code(code) {}
+		: std::runtime_error("CommunicationException"), code(code) {}
 	CommunicationException(RtMidiError error)
-			: std::runtime_error("CommunicationException") {
+		: std::runtime_error("CommunicationException") {
 		switch (error.getType()) {
 		case RtMidiError::INVALID_PARAMETER:
 			code = INVALID_PARAMETER;
@@ -54,7 +54,7 @@ public:
 			e << " unknown. ";
 			break;
 		case ANSWER_TIMEOOUT:
-			e << " timeout whil waiting for the answer. ";
+			e << " timeout while waiting for the answer. ";
 			break;
 		case INVALID_PARAMETER:
 			e << " the port number given is invalid. ";
@@ -78,4 +78,4 @@ private:
 	std::string errorString;
 };
 
-#endif // COMMUNICATIONEXCEPTION_H
+#endif// COMMUNICATIONEXCEPTION_H
