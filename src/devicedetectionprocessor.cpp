@@ -49,13 +49,13 @@ void DeviceDetectionProcessor::startDeviceDetection() {
 }
 
 bool DeviceDetectionProcessor::isIconnectivityDevice(
-	std::vector<unsigned char> *message) {
+		std::vector<unsigned char> *message) {
 	unsigned long nMessageSize = message->size();
 	return ((nMessageSize >= 16) && (message->at(0) == SYSEX_START) &&
-			(message->at(1) == Device::MANUFACTURER_SYSEX_ID[0]) &&
-			(message->at(2) == Device::MANUFACTURER_SYSEX_ID[1]) &&
-			(message->at(3) == Device::MANUFACTURER_SYSEX_ID[2]) &&
-			(message->at(15) == 0x02));
+					(message->at(1) == Device::MANUFACTURER_SYSEX_ID[0]) &&
+					(message->at(2) == Device::MANUFACTURER_SYSEX_ID[1]) &&
+					(message->at(3) == Device::MANUFACTURER_SYSEX_ID[2]) &&
+					(message->at(15) == 0x02));
 }
 
 void DeviceDetectionProcessor::setupMidiPorts() {
@@ -72,20 +72,20 @@ void DeviceDetectionProcessor::sendProgressEvent(unsigned int progress) {
 unsigned long DeviceDetectionProcessor::detectDevices() {
 
 	unsigned long defaultDeviceSerialNumber = static_cast<unsigned long>(
-		Configuration::getInstance().getDefaultDevice());
+			Configuration::getInstance().getDefaultDevice());
 	unsigned int nOutPortCount = midiout->getPortCount();
 	unsigned int nInPortCount = midiin->getPortCount();
 #ifdef __MIO_DEBUG__
 	std::cout << "Out ports: " << std::dec << nOutPortCount
-			  << ", in ports: " << nInPortCount
-			  << " - combinations to probe:  " << nOutPortCount * nInPortCount
-			  << std::endl;
-#endif//__MIO_DEBUG__
+						<< ", in ports: " << nInPortCount
+						<< " - combinations to probe:  " << nOutPortCount * nInPortCount
+						<< std::endl;
+#endif //__MIO_DEBUG__
 	GetDevice *q = new GetDevice();
 	unsigned long serialNumber;
 	BYTE_VECTOR *qMessage = q->getMIDISysExMessage();
 	std::map<unsigned long, Device *> *devices =
-		Configuration::getInstance().getDevices();
+			Configuration::getInstance().getDevices();
 	// for each output signal
 	for (unsigned int i = 0; i < nOutPortCount; i++) {
 		midiout->openPort(i);
@@ -105,48 +105,42 @@ unsigned long DeviceDetectionProcessor::detectDevices() {
 			if (nMessageSize > 0) {
 #ifdef __MIO_DEBUG__
 				MIDI::printMessage(message);
-#endif//__MIO_DEBUG__
+#endif //__MIO_DEBUG__
 				// test for iConnectivity device
 				if (isIconnectivityDevice(message)) {
-					serialNumber = static_cast<unsigned long>(
-						MIDI::byteJoin(message, 7, 5));
+					serialNumber =
+							static_cast<unsigned long>(MIDI::byteJoin(message, 7, 5));
 					std::cout << "device with serial number " << serialNumber
-							  << " detected... (" << midiout->getPortName(i)
-							  << ":" << i << " - " << midiin->getPortName(j)
-							  << ":" << j << ") ";
+										<< " detected... (" << midiout->getPortName(i) << ":" << i
+										<< " - " << midiin->getPortName(j) << ":" << j << ") ";
 					midiin->closePort();
 					midiout->closePort();
 					if (devices->find(serialNumber) == devices->end()) {
-						unsigned int productId = static_cast<unsigned int>(
-							MIDI::byteJoin(message, 5, 2));
-						Device *device =
-							new Device(j, i, serialNumber, productId);
-						devices->insert(
-							std::pair<long, Device *>(serialNumber, device));
-						std::cout << "... and added to list of devices"
-								  << std::endl;
+						unsigned int productId =
+								static_cast<unsigned int>(MIDI::byteJoin(message, 5, 2));
+						Device *device = new Device(j, i, serialNumber, productId);
+						devices->insert(std::pair<long, Device *>(serialNumber, device));
+						std::cout << "... and added to list of devices" << std::endl;
 					} else {
-						std::cout << "... but it's already recognized"
-								  << std::endl;
+						std::cout << "... but it's already recognized" << std::endl;
 					}
 					break;
 				}
 #ifdef __MIO_DEBUG__
 				else {
 					std::cout << "there is an answer from a device but no "
-								 "iConnectivity: "
-							  << midiout->getPortName(i) << " - "
-							  << midiin->getPortName(j) << std::endl;
+											 "iConnectivity: "
+										<< midiout->getPortName(i) << " - "
+										<< midiin->getPortName(j) << std::endl;
 				}
-#endif// __MIO_DEBUG__
+#endif // __MIO_DEBUG__
 			}
 #ifdef __MIO_DEBUG__
 			else {
-				std::cout << "no answer from any device: "
-						  << midiout->getPortName(i) << " - "
-						  << midiin->getPortName(j) << std::endl;
+				std::cout << "no answer from any device: " << midiout->getPortName(i)
+									<< " - " << midiin->getPortName(j) << std::endl;
 			}
-#endif//__MIO_DEBUG__
+#endif //__MIO_DEBUG__
 			midiin->closePort();
 		}
 		if (midiout->isPortOpen())
@@ -159,17 +153,16 @@ unsigned long DeviceDetectionProcessor::detectDevices() {
 		d = devices->at(defaultDeviceSerialNumber);
 		d->setDefault(true);
 	} catch (std::out_of_range) {
-		if( devices->size() > 0 ){
+		if (devices->size() > 0) {
 			d = devices->begin()->second;
 			d->setDefault(true);
 			defaultDeviceSerialNumber =
 					static_cast<unsigned long>(d->getSerialNumber()->getLongValue());
-			Configuration::getInstance().setDefaultDevice(
-						defaultDeviceSerialNumber);
+			Configuration::getInstance().setDefaultDevice(defaultDeviceSerialNumber);
 		}
 	}
 
-	if( devices->size() > 0 ){
+	if (devices->size() > 0) {
 		for (Devices::iterator it = devices->begin(); it != devices->end(); ++it) {
 			d = it->second;
 			d->queryDeviceInfo();
@@ -196,10 +189,9 @@ void DeviceDetectionProcessor::createMidiIn() {
 		} catch (RtMidiError &error) {
 			error.printMessage();
 		}
-		std::cout << "  Input Port #" << i + 1 << ": " << portName.c_str()
-				  << "\n";
+		std::cout << "  Input Port #" << i + 1 << ": " << portName.c_str() << "\n";
 	}
-#endif//__MIO_DEBUG_
+#endif //__MIO_DEBUG_
 }
 
 void DeviceDetectionProcessor::createMidiOut() {
@@ -216,10 +208,9 @@ void DeviceDetectionProcessor::createMidiOut() {
 		} catch (RtMidiError &error) {
 			error.printMessage();
 		}
-		std::cout << "  Output Port #" << i + 1 << ": " << portName.c_str()
-				  << "\n";
+		std::cout << "  Output Port #" << i + 1 << ": " << portName.c_str() << "\n";
 	}
-#endif//__MIO_DEBUG__
+#endif //__MIO_DEBUG__
 }
 
 /* USB methods - currently not used */
@@ -253,7 +244,7 @@ void DeviceDetectionProcessor::printUSBDevs() {
 		}
 
 		printf("%04x:%04x (bus %d, device %d)", desc.idVendor, desc.idProduct,
-			   libusb_get_bus_number(dev), libusb_get_device_address(dev));
+					 libusb_get_bus_number(dev), libusb_get_device_address(dev));
 		if (desc.idVendor == Device::MANUFACTURER_USB_ID) {
 			std::cout << "Found iConnectivity Device";
 		}
