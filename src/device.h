@@ -54,7 +54,7 @@ private:
 class Device {
 public:
 	Device(unsigned int inPortNumber, unsigned int outPortNumber,
-		   unsigned long serialNumber, unsigned int productId);
+				 unsigned long serialNumber, unsigned int productId);
 	Device(Device *device);
 
 	~Device();
@@ -111,11 +111,16 @@ public:
 	GetInfo *getDeviceInfo() { return deviceInfo; }
 	RetSetMidiInfo *getMidiInfo() { return midiInfo; }
 	MIDI_PORT_INFOS *getMidiPortInfos() const;
+	BYTE_VECTOR *getLastSendMessage() const;
+	BYTE_VECTOR *getLastRetrieveMessage() const;
 
 	// setter
 	void setDebug(bool value);
 	void setDeviceInformation(std::string modelName, std::string deviceName);
 	void setDefault(bool isDefault) { this->isDefault = isDefault; }
+
+	void setLastSendMessage(BYTE_VECTOR *value);
+	void setLastRetrieveMessage(BYTE_VECTOR *value);
 
 private:
 	bool debug = false;
@@ -124,6 +129,9 @@ private:
 	unsigned int outPortNumber;
 
 	unsigned int transactionId = 0;
+
+	BYTE_VECTOR *lastSendMessage = 0;
+	BYTE_VECTOR *lastRetrieveMessage = 0;
 
 	bool isDefault = false;
 
@@ -156,12 +164,12 @@ private:
 	bool checkSysex(BYTE_VECTOR *data);
 	void requestMidiPortInfos();
 	void addCommandToStructure(Command cmd,
-							   DeviceStructureContainer *structureContainer);
+														 DeviceStructureContainer *structureContainer);
 };
 
 void midiOutErrorCallback(RtMidiError::Type type, const std::string &errorText,
-						  void *userData);
+													void *userData);
 void midiinErrorCallback(RtMidiError::Type type, const std::string &errorText,
-						 void *userData);
+												 void *userData);
 
-#endif// DEVICE_H
+#endif // DEVICE_H

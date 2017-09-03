@@ -24,7 +24,7 @@
 #include <unistd.h>
 
 Device::Device(unsigned int inPortNumber, unsigned int outPortNumber,
-			   unsigned long serialNumber, unsigned int productId) {
+							 unsigned long serialNumber, unsigned int productId) {
 	this->inPortNumber = inPortNumber;
 	this->outPortNumber = outPortNumber;
 	this->serialNumber = new MIDISysexValue(static_cast<long>(serialNumber), 5);
@@ -39,10 +39,10 @@ Device::Device(unsigned int inPortNumber, unsigned int outPortNumber,
 }
 
 Device::Device(Device *device)
-	: Device(
-		  device->getInPortNumer(), device->getOutPortNumer(),
-		  static_cast<unsigned long>(device->getSerialNumber()->getLongValue()),
-		  static_cast<unsigned int>(device->getProductId()->getLongValue())) {}
+		: Device(
+					device->getInPortNumer(), device->getOutPortNumer(),
+					static_cast<unsigned long>(device->getSerialNumber()->getLongValue()),
+					static_cast<unsigned int>(device->getProductId()->getLongValue())) {}
 
 Device::~Device() { disconnect(); }
 
@@ -60,13 +60,13 @@ BYTE_VECTOR *Device::getDeviceHeader() {
 	if (deviceHeader == 0) {
 		deviceHeader = new BYTE_VECTOR();
 		deviceHeader->reserve(productId->getByteValue()->size() +
-							  serialNumber->getByteValue()->size());
+													serialNumber->getByteValue()->size());
 		deviceHeader->insert(deviceHeader->end(),
-							 productId->getByteValue()->begin(),
-							 productId->getByteValue()->end());
+												 productId->getByteValue()->begin(),
+												 productId->getByteValue()->end());
 		deviceHeader->insert(deviceHeader->end(),
-							 serialNumber->getByteValue()->begin(),
-							 serialNumber->getByteValue()->end());
+												 serialNumber->getByteValue()->begin(),
+												 serialNumber->getByteValue()->end());
 	}
 	return deviceHeader;
 }
@@ -75,13 +75,13 @@ BYTE_VECTOR *Device::getFullHeader() {
 	if (fullHeader == 0) {
 		fullHeader = new BYTE_VECTOR();
 		fullHeader->reserve(Device::getManufacturerHeader()->size() +
-							getDeviceHeader()->size() + 1);
+												getDeviceHeader()->size() + 1);
 		fullHeader->insert(fullHeader->end(),
-						   Device::getManufacturerHeader()->begin(),
-						   Device::getManufacturerHeader()->end());
+											 Device::getManufacturerHeader()->begin(),
+											 Device::getManufacturerHeader()->end());
 		fullHeader->push_back(Device::MESSAGE_CLASS);
 		fullHeader->insert(fullHeader->end(), getDeviceHeader()->begin(),
-						   getDeviceHeader()->end());
+											 getDeviceHeader()->end());
 	}
 	return fullHeader;
 }
@@ -119,7 +119,10 @@ bool Device::setupMidi() {
 	return midiin->isPortOpen() && midiout->isPortOpen();
 }
 
-void Device::sentSysex(BYTE_VECTOR *data) { midiout->sendMessage(data); }
+void Device::sentSysex(BYTE_VECTOR *data) {
+	setLastSendMessage(data);
+	midiout->sendMessage(data);
+}
 
 void Device::disconnect() {
 	std::cout << "disconnect" << std::endl;
@@ -161,7 +164,7 @@ BYTE_VECTOR *Device::retrieveSysex() {
 			midiin->getMessage(data);
 			if (debug)
 				std::cout << "Skipping " << std::dec << y << " midi messages"
-						  << std::endl;
+									<< std::endl;
 			y++;
 		}
 	}
@@ -171,20 +174,21 @@ BYTE_VECTOR *Device::retrieveSysex() {
 	} catch (...) {
 		throw;
 	}
+	setLastRetrieveMessage(data);
 	return data;
 }
 
 bool Device::checkSysex(BYTE_VECTOR *data) {
 	if (!data || data->size() <= 0)
-		throw new CommunicationException(
-			CommunicationException::ANSWER_TIMEOOUT);
+		throw new CommunicationException(CommunicationException::ANSWER_TIMEOOUT,
+																		 this);
 	if (data->size() < 20)
-		throw new ProtocolException(ProtocolException::MESSAGE_TO_SHORT);
+		throw new ProtocolException(ProtocolException::MESSAGE_TO_SHORT, this);
 	BYTE_VECTOR *dataHeader =
-		new BYTE_VECTOR(data->begin() + 1, data->begin() + 12);
+			new BYTE_VECTOR(data->begin() + 1, data->begin() + 12);
 	BYTE_VECTOR *localHeader = getFullHeader();
 	if (!MIDI::compareByteVector(dataHeader, localHeader)) {
-		throw new ProtocolException(ProtocolException::WRONG_HEADER);
+		throw new ProtocolException(ProtocolException::WRONG_HEADER, this);
 	}
 	return true;
 }
@@ -192,8 +196,7 @@ bool Device::checkSysex(BYTE_VECTOR *data) {
 void Device::requestMidiPortInfos() {
 	int midiPorts = getMidiInfo()->getMidiPorts();
 	if (midiPortInfos == 0) {
-		midiPortInfos =
-			new std::map<int, std::vector<RetSetMidiPortInfo *> *>();
+		midiPortInfos = new std::map<int, std::vector<RetSetMidiPortInfo *> *>();
 	}
 	GetMidiPortInfo *info = new GetMidiPortInfo(this);
 	for (int i = 1; i <= midiPorts; ++i) {
@@ -215,24 +218,22 @@ void Device::requestMidiPortInfos() {
 		} catch (const std::out_of_range &oor) {
 			v = new std::vector<RetSetMidiPortInfo *>();
 			midiPortInfos->insert(
-				std::pair<int, std::vector<RetSetMidiPortInfo *> *>(portType,
-																	v));
+					std::pair<int, std::vector<RetSetMidiPortInfo *> *>(portType, v));
 		}
 
 		if (v == 0) {
 			v = new std::vector<RetSetMidiPortInfo *>();
 			midiPortInfos->insert(
-				std::pair<int, std::vector<RetSetMidiPortInfo *> *>(portType,
-																	v));
+					std::pair<int, std::vector<RetSetMidiPortInfo *> *>(portType, v));
 		}
 		v->push_back(midiPortInfo);
 	}
 }
 
 void Device::addCommandToStructure(
-	Command cmd, DeviceStructureContainer *structureContainer) {
-	informationTree->insert(std::pair<Command, DeviceStructureContainer *>(
-		cmd, structureContainer));
+		Command cmd, DeviceStructureContainer *structureContainer) {
+	informationTree->insert(
+			std::pair<Command, DeviceStructureContainer *>(cmd, structureContainer));
 }
 
 bool Device::queryDeviceInfo() {
@@ -243,7 +244,7 @@ bool Device::queryDeviceInfo() {
 		SysExMessage *m = c->query();
 		commands = dynamic_cast<RetCommandList *>(m);
 		addCommandToStructure(commands->getCommand(),
-							  new DeviceStructureContainer(commands));
+													new DeviceStructureContainer(commands));
 	} catch (...) {
 		throw;
 	}
@@ -288,13 +289,13 @@ bool Device::queryDeviceInfo() {
 		this->midiInfo = dynamic_cast<RetSetMidiInfo *>(getMidiInfo->query());
 	}
 	if (commands->isCommandSupported(Command::GET_MIDI_PORT_INFO) &&
-		this->midiInfo != 0) {
+			this->midiInfo != 0) {
 		requestMidiPortInfos();
 	}
 	if (commands->isCommandSupported(Command::GET_SAVE_RESTORE_LIST)) {
 		GetSaveRestoreList *getSaveRestoreList = new GetSaveRestoreList(this);
 		RetSaveRestoreList *l =
-			dynamic_cast<RetSaveRestoreList *>(getSaveRestoreList->query());
+				dynamic_cast<RetSaveRestoreList *>(getSaveRestoreList->query());
 		saveRestoreList = l->getSaveRestoreList();
 	}
 	return true;
@@ -331,9 +332,31 @@ SysExMessage *Device::getSysExMessage(Command cmd) {
 MIDI_PORT_INFOS *Device::getMidiPortInfos() const { return midiPortInfos; }
 
 void Device::setDeviceInformation(std::string modelName,
-								  std::string deviceName) {
+																	std::string deviceName) {
 	this->modelName = modelName;
 	this->deviceName = deviceName;
+}
+
+std::vector<unsigned char> *Device::getLastSendMessage() const {
+	return lastSendMessage;
+}
+
+std::vector<unsigned char> *Device::getLastRetrieveMessage() const {
+	return lastRetrieveMessage;
+}
+
+void Device::setLastSendMessage(std::vector<unsigned char> *value) {
+	/*if (lastSendMessage)
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																	delete lastSendMessage;
+	lastSendMessage = new BYTE_VECTOR(value);*/
+	lastSendMessage = value;
+}
+
+void Device::setLastRetrieveMessage(std::vector<unsigned char> *value) {
+	/*if (lastRetrieveMessage)
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																	delete lastRetrieveMessage;
+	lastRetrieveMessage = new BYTE_VECTOR(value);*/
+	lastRetrieveMessage = value;
 }
 
 bool Device::getDebug() const { return debug; }
