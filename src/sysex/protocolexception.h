@@ -1,6 +1,8 @@
 #ifndef PROTOCOLEXCEPTION_H
 #define PROTOCOLEXCEPTION_H
 
+#include "../device.h"
+
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -18,8 +20,9 @@ public:
 		WRONG_HEADER
 	};
 
-	ProtocolException(ProtocolErrorCode code = UNKNOWN)
-		: std::runtime_error("CommunicationException"), code(code) {}
+	ProtocolException(ProtocolErrorCode code = UNKNOWN, Device *device = 0)
+			: std::runtime_error("CommunicationException"), code(code),
+				device(device) {}
 
 	virtual ~ProtocolException();
 
@@ -62,6 +65,7 @@ public:
 
 private:
 	ProtocolErrorCode code = UNKNOWN;
+	Device *device;
 };
 
-#endif// PROTOCOLEXCEPTION_H
+#endif // PROTOCOLEXCEPTION_H

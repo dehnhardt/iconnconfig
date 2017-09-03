@@ -2,6 +2,7 @@
 #define COMMUNICATIONEXCEPTION_H
 
 #include "../RtMidi.h"
+#include "../device.h"
 
 #include <sstream>
 #include <stdexcept>
@@ -18,10 +19,13 @@ public:
 		INVALID_USE,
 	};
 
-	CommunicationException(CommunicationErrorCode code = UNKNOWN)
-		: std::runtime_error("CommunicationException"), code(code) {}
+	CommunicationException(CommunicationErrorCode code = UNKNOWN,
+												 Device *device = 0)
+			: std::runtime_error("CommunicationException"), code(code),
+				device(device) {}
+
 	CommunicationException(RtMidiError error)
-		: std::runtime_error("CommunicationException") {
+			: std::runtime_error("CommunicationException") {
 		switch (error.getType()) {
 		case RtMidiError::INVALID_PARAMETER:
 			code = INVALID_PARAMETER;
@@ -55,6 +59,8 @@ public:
 			break;
 		case ANSWER_TIMEOOUT:
 			e << " timeout while waiting for the answer. ";
+			if (device)
+				e << std::endl << "Query: " << device->getLastSendMessage();
 			break;
 		case INVALID_PARAMETER:
 			e << " the port number given is invalid. ";
@@ -75,7 +81,8 @@ public:
 
 private:
 	CommunicationErrorCode code = UNKNOWN;
+	Device *device = 0;
 	std::string errorString;
 };
 
-#endif// COMMUNICATIONEXCEPTION_H
+#endif // COMMUNICATIONEXCEPTION_H
