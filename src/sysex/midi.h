@@ -10,7 +10,7 @@
 #if defined(__WINDOWS_MM__)
 #include <windows.h>
 #define SLEEP(milliseconds) Sleep((DWORD)milliseconds)
-#else // Unix variants
+#else// Unix variants
 #include <unistd.h>
 #define SLEEP(milliseconds)                                                    \
 	usleep(static_cast<unsigned long>(milliseconds * 1000.0))
@@ -18,7 +18,7 @@
 
 #ifdef __LINUX_ALSA__
 #include <alsa/seq_event.h>
-#endif //__LINUX_ALSA__
+#endif//__LINUX_ALSA__
 
 #define SYSEX_START 0xf0
 #define SYSEX_END 0xf7
@@ -28,7 +28,7 @@
 #define BYTE_VECTOR std::vector<unsigned char>
 #ifdef __LINUX_ALSA__
 enum midiEventType { MIDI_EVENT_SYSEX = SND_SEQ_EVENT_SYSEX };
-#endif // __LINUX_ALSA__
+#endif// __LINUX_ALSA__
 
 class MIDI {
 public:
@@ -41,11 +41,11 @@ public:
 	static BYTE_VECTOR *byteSplit(unsigned long val);
 	static long byteJoin(BYTE_VECTOR *message);
 	static long byteJoin(BYTE_VECTOR *message, unsigned long start,
-											 unsigned long end);
+						 unsigned long end);
 	static std::string decodeIp(BYTE_VECTOR *data, unsigned long offset);
 	static BYTE_VECTOR *encodeIpAddress(std::string ipAddress);
 	static void printMessage(BYTE_VECTOR *v);
-	std::string printMessageToHexString(BYTE_VECTOR *message);
+	static std::string printMessageToHexString(BYTE_VECTOR *message);
 	static bool compareByteVector(BYTE_VECTOR *v1, BYTE_VECTOR *v2) {
 		if (v1->size() != v2->size())
 			return false;
@@ -58,15 +58,15 @@ public:
 	}
 
 	static RtMidiIn *createMidiIn(
-			const std::string clientName = std::string("MioConfig Input Client"));
+		const std::string clientName = std::string("MioConfig Input Client"));
 	static RtMidiOut *createMidiOut(
-			const std::string clientName = std::string("MioConfig Output Client"));
+		const std::string clientName = std::string("MioConfig Output Client"));
 };
 
 class MIDISysexValue {
 public:
 	MIDISysexValue(long val, unsigned long length)
-			: longValue(val), byteLength(length) {}
+		: longValue(val), byteLength(length) {}
 	MIDISysexValue(long val) : longValue(val) {}
 	// TODO setting the byte value does not set the correct long value
 	MIDISysexValue(BYTE_VECTOR *val) {
@@ -77,8 +77,8 @@ public:
 	long getLongValue() { return longValue; }
 	BYTE_VECTOR *getByteValue() {
 		if (byteValue == 0)
-			byteValue =
-					MIDI::byteSplit(static_cast<unsigned long>(longValue), byteLength);
+			byteValue = MIDI::byteSplit(static_cast<unsigned long>(longValue),
+										byteLength);
 		return byteValue;
 	}
 
@@ -88,4 +88,4 @@ private:
 	unsigned long byteLength;
 };
 
-#endif // MIDI_H
+#endif// MIDI_H
