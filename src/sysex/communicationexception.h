@@ -20,12 +20,12 @@ public:
 	};
 
 	CommunicationException(CommunicationErrorCode code = UNKNOWN,
-												 Device *device = 0)
-			: std::runtime_error("CommunicationException"), code(code),
-				device(device) {}
+						   Device *device = 0)
+		: std::runtime_error("CommunicationException"), code(code),
+		  device(device) {}
 
 	CommunicationException(RtMidiError error)
-			: std::runtime_error("CommunicationException") {
+		: std::runtime_error("CommunicationException") {
 		switch (error.getType()) {
 		case RtMidiError::INVALID_PARAMETER:
 			code = INVALID_PARAMETER;
@@ -60,7 +60,9 @@ public:
 		case ANSWER_TIMEOOUT:
 			e << " timeout while waiting for the answer. ";
 			if (device)
-				e << std::endl << "Query: " << device->getLastSendMessage();
+				e << std::endl
+				  << "Query: " << MIDI::printMessageToHexString(
+									  device->getLastSendMessage());
 			break;
 		case INVALID_PARAMETER:
 			e << " the port number given is invalid. ";
@@ -85,4 +87,4 @@ private:
 	std::string errorString;
 };
 
-#endif // COMMUNICATIONEXCEPTION_H
+#endif// COMMUNICATIONEXCEPTION_H
