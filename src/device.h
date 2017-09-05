@@ -54,7 +54,7 @@ private:
 class Device {
 public:
 	Device(unsigned int inPortNumber, unsigned int outPortNumber,
-				 unsigned long serialNumber, unsigned int productId);
+		   unsigned long serialNumber, unsigned int productId);
 	Device(Device *device);
 
 	~Device();
@@ -164,12 +164,12 @@ private:
 	bool checkSysex(BYTE_VECTOR *data);
 	void requestMidiPortInfos();
 	void addCommandToStructure(Command cmd,
-														 DeviceStructureContainer *structureContainer);
+							   DeviceStructureContainer *structureContainer);
 };
 
 void midiOutErrorCallback(RtMidiError::Type type, const std::string &errorText,
-													void *userData);
+						  void *userData);
 void midiinErrorCallback(RtMidiError::Type type, const std::string &errorText,
-												 void *userData);
+						 void *userData);
 
-#endif // DEVICE_H
+#endif// DEVICE_H
