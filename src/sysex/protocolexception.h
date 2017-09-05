@@ -21,8 +21,8 @@ public:
 	};
 
 	ProtocolException(ProtocolErrorCode code = UNKNOWN, Device *device = 0)
-			: std::runtime_error("CommunicationException"), code(code),
-				device(device) {}
+		: std::runtime_error("CommunicationException"), code(code),
+		  device(device) {}
 
 	virtual ~ProtocolException();
 
@@ -60,6 +60,15 @@ public:
 			break;
 		}
 		e << std::endl;
+		if (device) {
+			e << "Query: "
+			  << MIDI::printMessageToHexString(device->getLastSendMessage())
+			  << std::endl;
+
+			e << "Answer: "
+			  << MIDI::printMessageToHexString(device->getLastRetrieveMessage())
+			  << std::endl;
+		}
 		return e.str();
 	}
 
@@ -68,4 +77,4 @@ private:
 	Device *device;
 };
 
-#endif // PROTOCOLEXCEPTION_H
+#endif// PROTOCOLEXCEPTION_H
