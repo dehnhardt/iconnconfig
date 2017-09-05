@@ -124,9 +124,12 @@ BYTE_VECTOR *MIDI::encodeIpAddress(std::string ipAddress) {
 }
 
 void MIDI::printMessage(BYTE_VECTOR *message) {
+	if (!message)
+		return;
 	unsigned long nMessageSize = message->size();
+	std::cout << std::hex;
 	for (unsigned int i = 0; i < nMessageSize; i++)
-		std::cout << std::hex << std::setw(2) << std::setfill('0')
+		std::cout << std::setw(2) << std::setfill('0')
 				  << static_cast<int>(message->at(i)) << " ";
 	std::cout << "\n" << std::flush;
 }
@@ -134,10 +137,12 @@ void MIDI::printMessage(BYTE_VECTOR *message) {
 std::string MIDI::printMessageToHexString(BYTE_VECTOR *message) {
 	unsigned long nMessageSize = message->size();
 	std::stringstream ss;
-	ss << std::hex;
-	for (unsigned int i = 0; i < nMessageSize; i++) {
-		ss << std::setw(2) << std::setfill('0')
-		   << static_cast<int>(message->at(i)) << " ";
+	if (message) {
+		ss << std::hex;
+		for (unsigned int i = 0; i < nMessageSize; i++) {
+			ss << std::setw(2) << std::setfill('0')
+			   << static_cast<int>(message->at(i)) << " ";
+		}
 	}
 	std::cout << std::flush;
 	return ss.str();
