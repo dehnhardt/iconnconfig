@@ -246,8 +246,9 @@ bool Device::queryDeviceInfo() {
 	try {
 		SysExMessage *m = c->query();
 		commands = dynamic_cast<RetCommandList *>(m);
-		addCommandToStructure(commands->getCommand(),
-							  new DeviceStructureContainer(commands));
+		if (commands)
+			addCommandToStructure(commands->getCommand(),
+								  new DeviceStructureContainer(commands));
 	} catch (...) {
 		throw;
 	}
