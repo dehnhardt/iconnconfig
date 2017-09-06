@@ -6,10 +6,10 @@ Later I found the complete documentation for sysex-data from IConnectivity.
 ## Implemented
 * Device detection
 * Global Configuration
- * Device Name
- * IP Configuration
+  * Device Name
+  * IP Configuration
 * MIDI Configuration
- * MIDI Routing
+  * MIDI Routing
  
 ## Tested Devices
 * MIO 10
