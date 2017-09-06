@@ -13,7 +13,7 @@ Later I found the complete documentation for sysex-data from IConnectivity.
  
 ## Tested Devices
 * MIO 10
-* Audio 4+
+* iConnect Audio 4+
 
 ## Status
 * (2017-03-12) nothing relevant done so far
