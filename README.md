@@ -22,5 +22,6 @@ Status
 * (2017-06-07) Save settings to device and restore settings from device works
 * (2017-06-12) Saving of static IP-address, netmask and gateway works
 * (2017-06-14) Release of version v0.1-beta
-
 * (2017-06-19) Added some screenshots to the WIKI-Page https://github.com/dehnhardt/mioconfig/wiki
+* (2017-08-12) Tested with iConnect Audio 4+: MIDI functionality works, audio is to come
+* (2017-09-05) Enhanced error messages 
