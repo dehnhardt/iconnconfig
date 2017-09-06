@@ -1,9 +1,21 @@
 # mioconfig
-Linux based configuration utility for MIO midi interfaces
+Linux based configuration utility for IConnectivity interfaces. (Currently only MIDI configuration is implemented on combined interfaces)
 After trying to get the vendor provided config-utility to work under Wine without success I started analyzing the usb packets to write an Linux enabled version.
 Later I found the complete documentation for sysex-data from IConnectivity.
 
-Status
+## Implemented
+* Device detection
+* Global Configuration
+ * Device Name
+ * IP Configuration
+* MIDI Configuration
+ * MIDI Routing
+ 
+## Tested Devices
+* MIO 10
+* Audio 4+
+
+## Status
 * (2017-03-12) nothing relevant done so far
 * (2017-03-15) base structure done
 * (2017-03-17) device recognition works
