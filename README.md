@@ -1,4 +1,5 @@
-# mioconfig
+# iconnconfig
+*renamed, as not only mio devices are supported*
 Linux based configuration utility for IConnectivity interfaces. (Currently only MIDI configuration is implemented on combined interfaces)
 After trying to get the vendor provided config-utility to work under Wine without success I started analyzing the usb packets to write an Linux enabled version.
 Later I found the complete documentation for sysex-data from IConnectivity.
