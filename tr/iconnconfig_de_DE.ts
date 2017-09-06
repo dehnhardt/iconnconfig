@@ -108,9 +108,13 @@ Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm un
 <context>
     <name>DeviceDetection</name>
     <message>
-        <location filename="../src/devicedetection.ui" line="26"/>
         <source>Dialog</source>
-        <translation>Dialog</translation>
+        <translation type="vanished">Dialog</translation>
+    </message>
+    <message>
+        <location filename="../src/devicedetection.ui" line="26"/>
+        <source>Device Detection</source>
+        <translation>Erkennung der Interfaces</translation>
     </message>
 </context>
 <context>
@@ -274,32 +278,36 @@ Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm un
 <context>
     <name>MioMain</name>
     <message>
-        <location filename="../src/miomain.ui" line="26"/>
         <source>MioMain</source>
-        <translation>Mio Konfiguration</translation>
+        <translation type="vanished">Mio Konfiguration</translation>
     </message>
     <message>
-        <location filename="../src/miomain.ui" line="46"/>
+        <location filename="../src/iconnconfigmain.ui" line="26"/>
+        <source>iConnConfig</source>
+        <translation>iConnConfig</translation>
+    </message>
+    <message>
+        <location filename="../src/iconnconfigmain.ui" line="49"/>
         <source>File</source>
         <translation>Datei</translation>
     </message>
     <message>
-        <location filename="../src/miomain.ui" line="52"/>
+        <location filename="../src/iconnconfigmain.ui" line="55"/>
         <source>Device</source>
         <translation>Gerät</translation>
     </message>
     <message>
-        <location filename="../src/miomain.ui" line="69"/>
+        <location filename="../src/iconnconfigmain.ui" line="71"/>
         <source>Help</source>
         <translation>Hilfe</translation>
     </message>
     <message>
-        <location filename="../src/miomain.ui" line="101"/>
+        <location filename="../src/iconnconfigmain.ui" line="103"/>
         <source>About</source>
         <translation>Über</translation>
     </message>
     <message>
-        <location filename="../src/miomain.ui" line="106"/>
+        <location filename="../src/iconnconfigmain.ui" line="108"/>
         <source>Redetect Devices</source>
         <translation>Geräteerkennung erneut starten</translation>
     </message>
@@ -308,22 +316,22 @@ Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm un
         <translation type="vanished">Werkzeugleiste</translation>
     </message>
     <message>
-        <location filename="../src/miomain.ui" line="80"/>
+        <location filename="../src/iconnconfigmain.ui" line="82"/>
         <source>Quit</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="../src/miomain.ui" line="85"/>
+        <location filename="../src/iconnconfigmain.ui" line="87"/>
         <source>Open Device</source>
         <translation>Gerät öffnen</translation>
     </message>
     <message>
-        <location filename="../src/miomain.ui" line="96"/>
+        <location filename="../src/iconnconfigmain.ui" line="98"/>
         <source>Device1</source>
         <translation>Gerät 1</translation>
     </message>
     <message>
-        <location filename="../src/miomain.ui" line="59"/>
+        <location filename="../src/iconnconfigmain.ui" line="62"/>
         <source>Select</source>
         <translation>Auswählen</translation>
     </message>
@@ -332,49 +340,49 @@ Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm un
         <translation type="obsolete">Gerät öffnen</translation>
     </message>
     <message>
-        <location filename="../src/miomain.cpp" line="161"/>
+        <location filename="../src/iconnconfigmain.cpp" line="165"/>
         <source>Save current settings to device</source>
         <translation>Momentane Einstellungen in das Gerät schreiben</translation>
     </message>
     <message>
-        <location filename="../src/miomain.cpp" line="170"/>
+        <location filename="../src/iconnconfigmain.cpp" line="174"/>
         <source>Restore settings from device</source>
         <translation>Einstellungen des Gerätes auslesen</translation>
     </message>
     <message>
-        <location filename="../src/miomain.cpp" line="179"/>
+        <location filename="../src/iconnconfigmain.cpp" line="183"/>
         <source>Reset settings to factory default</source>
         <translation>Alle Einstellungen auf Werkeinstellungen zurücksetzen</translation>
     </message>
     <message>
-        <location filename="../src/miomain.cpp" line="192"/>
+        <location filename="../src/iconnconfigmain.cpp" line="197"/>
         <source>Device Actions</source>
         <translation>Geräte Funktionen</translation>
     </message>
     <message>
-        <location filename="../src/miomain.cpp" line="230"/>
+        <location filename="../src/iconnconfigmain.cpp" line="235"/>
         <source>Store current setings to device?</source>
         <translation>Alle Einstellungen im Gerät sichern?</translation>
     </message>
     <message>
-        <location filename="../src/miomain.cpp" line="240"/>
+        <location filename="../src/iconnconfigmain.cpp" line="245"/>
         <source>Waiting 10 seconds for device to be responsive again</source>
         <translation>Warte 10 Sekunden auf das Gerät</translation>
     </message>
     <message>
-        <location filename="../src/miomain.cpp" line="241"/>
+        <location filename="../src/iconnconfigmain.cpp" line="246"/>
         <source>Exit application</source>
         <translation>Anwendung beenden</translation>
     </message>
     <message>
-        <location filename="../src/miomain.cpp" line="266"/>
+        <location filename="../src/iconnconfigmain.cpp" line="271"/>
         <source>Read all settings from device?</source>
-        <translation>Alle Einstellungen lesen</translation>
+        <translation>Alle Einstellungen vom Gerät lesen?</translation>
     </message>
     <message>
-        <location filename="../src/miomain.cpp" line="278"/>
+        <location filename="../src/iconnconfigmain.cpp" line="283"/>
         <source>Reset all settings to factory default?</source>
-        <translation>Alle Einstellungen auf Werkeinstellungen zurücksetzen</translation>
+        <translation>Alle Einstellungen auf Werkeinstellungen zurücksetzen?</translation>
     </message>
 </context>
 <context>

@@ -1,4 +1,4 @@
-#include "miomain.h"
+#include "iconnconfigmain.h"
 
 #include <QApplication>
 #include <QCommandLineParser>
@@ -11,12 +11,12 @@ int main(int argc, char *argv[]) {
 	QApplication app(argc, argv);
 	QCoreApplication::setOrganizationName("punkt-k");
 	QCoreApplication::setOrganizationDomain("www.punkt-k.de");
-	QCoreApplication::setApplicationName("Mio Config");
+	QCoreApplication::setApplicationName("iConnConfig");
 	QCoreApplication::setApplicationVersion("0.1.5-alpha");
 
 	QTranslator mioConfigTranslator;
-	QString l = "mioconfig_" + QLocale::system().name();
-	if (mioConfigTranslator.load(QLocale(), QLatin1String("mioconfig"),
+	QString l = "iconnconfig_" + QLocale::system().name();
+	if (mioConfigTranslator.load(QLocale(), QLatin1String("iconnconfig"),
 								 QLatin1String("_"),
 								 QLatin1String(":/translations/tr"))) {
 		app.installTranslator(&mioConfigTranslator);

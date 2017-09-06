@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/translations">
-        <file>tr/mioconfig_de_DE.qm</file>
+        <file>tr/iconnconfig_de_DE.qm</file>
     </qresource>
 </RCC>

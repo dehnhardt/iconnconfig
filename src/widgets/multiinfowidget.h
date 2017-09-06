@@ -2,7 +2,7 @@
 #define MULTIINFOWIDGET_H
 
 #include "../device.h"
-#include "../miomain.h"
+#include "../iconnconfigmain.h"
 #include "multiinfolistentry.h"
 
 #include <QDockWidget>

@@ -3,7 +3,7 @@
 #include "devicedetectionprocessor.h"
 #include "deviceselectiontablemodel.h"
 #include "events/events.h"
-#include "miomain.h"
+#include "iconnconfigmain.h"
 #include "ui_devicedetection.h"
 
 #include <QStandardItemModel>

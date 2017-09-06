@@ -33,12 +33,11 @@ DEFINES += __RTMIDI_DEBUG__
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-TRANSLATIONS = tr/mioconfig_de_DE.ts
+TRANSLATIONS = tr/iconnconfig_de_DE.ts
 
 SOURCES +=\
         src/RtMidi.cpp \
     src/main.cpp \
-    src/miomain.cpp \
     src/device.cpp \
     src/sysex/midi.cpp \
     src/devicedetection.cpp \
@@ -78,11 +77,12 @@ SOURCES +=\
     src/widgets/controls/ipaddressinput.cpp \
     src/sysex/communicationexception.cpp \
     src/sysex/protocolexception.cpp \
-    src/aboutdialog.cpp
+    src/aboutdialog.cpp \
+    src/iconnconfigmain.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
-HEADERS  += src/miomain.h \
+HEADERS  += \
     src/RtMidi.h \
     src/device.h \
     src/sysex/midi.h \
@@ -128,12 +128,14 @@ HEADERS  += src/miomain.h \
     src/sysex/protocolexception.h \
     src/config/qsettings-xml.h \
     src/definitions.h \
-    src/aboutdialog.h
+    src/aboutdialog.h \
+    src/iconnconfigmain.h
 
-FORMS    += src/miomain.ui \
+FORMS    += \
     src/devicedetection.ui \
     src/widgets/multiinfowidget.ui \
-    src/aboutdialog.ui
+    src/aboutdialog.ui \
+    src/iconnconfigmain.ui
 
 unix:!macx: LIBS += -lasound \
                     -lpthread \
@@ -144,8 +146,8 @@ RESOURCES += \
     resources.qrc
 
 DISTFILES += \
-    tr/mioconfig_de_DE.qm \
-    tr/mioconfig_de_DE.ts \
     README.md \
     RELEASENOTES.md \
-    BUILD.md
+    BUILD.md \
+    tr/iconnconfig_de_DE.ts \
+    tr/iconnconfig_de_DE.qm

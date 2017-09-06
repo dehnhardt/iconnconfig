@@ -1,5 +1,5 @@
 #include "multiinfowidget.h"
-#include "../miomain.h"
+#include "../iconnconfigmain.h"
 #include "ui_multiinfowidget.h"
 
 MultiInfoWidget::MultiInfoWidget(MioMain *parent, Device *device,

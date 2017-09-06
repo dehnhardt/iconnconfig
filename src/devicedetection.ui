@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Device Detection</string>
   </property>
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
