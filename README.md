@@ -1,5 +1,6 @@
 # iconnconfig
-*renamed, as not only mio devices are supported*
+**renamed, as not only mio devices are supported**
+
 Linux based configuration utility for IConnectivity interfaces. (Currently only MIDI configuration is implemented on combined interfaces)
 After trying to get the vendor provided config-utility to work under Wine without success I started analyzing the usb packets to write an Linux enabled version.
 Later I found the complete documentation for sysex-data from IConnectivity.
@@ -35,7 +36,7 @@ Later I found the complete documentation for sysex-data from IConnectivity.
 * (2017-06-07) Save settings to device and restore settings from device works
 * (2017-06-12) Saving of static IP-address, netmask and gateway works
 * (2017-06-14) Release of version v0.1-beta
-* (2017-06-19) Added some screenshots to the WIKI-Page https://github.com/dehnhardt/mioconfig/wiki
+* (2017-06-19) Added some screenshots to the WIKI-Page https://github.com/dehnhardt/iconnconfig/wiki
 * (2017-07-14) Added error handling with exceptions
 * (2017-07-18) "About Box" added, credits to everyone...
 * (2017-08-05) Translations, translations....
