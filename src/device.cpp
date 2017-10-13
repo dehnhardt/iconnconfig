@@ -258,7 +258,7 @@ bool Device::queryDeviceInfo() {
 		i->setDebug(true);
 		try {
 			ii = dynamic_cast<RetInfoList *>(i->query());
-			DeviceStructureContainer *c = new DeviceStructureContainer();
+			DeviceStructureContainer *c = new DeviceStructureContainer(ii);
 			addCommandToStructure(ii->getCommand(), c);
 		} catch (...) {
 			throw;
@@ -321,16 +321,25 @@ bool Device::isDeviceValid() {
 }
 
 SysExMessage *Device::getSysExMessage(Command cmd) {
+	SysExMessage *m = 0;
 	switch (cmd) {
+	case GET_COMMAND_LIST:
+		m = new GetCommandList(this);
+		break;
 	case Command::GET_ETHERNET_PORT_INFO:
-		return new GetEthernetPortInfo(this);
+		m = new GetEthernetPortInfo(this);
+		break;
 	case Command::GET_INFO_LIST:
-		return new GetInfoList(this);
+		m = new GetInfoList(this);
+		break;
 	case Command::GET_MIDI_INFO:
-		return new GetMidiInfo(this);
+		m = new GetMidiInfo(this);
+		break;
 	default:
 		return NULL;
 	}
+	addCommandToStructure(cmd, new DeviceStructureContainer(m));
+	return m;
 }
 
 MIDI_PORT_INFOS *Device::getMidiPortInfos() const { return midiPortInfos; }
