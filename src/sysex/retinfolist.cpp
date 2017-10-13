@@ -5,10 +5,10 @@ RetInfoList::RetInfoList(Device *device)
 
 void RetInfoList::parseAnswerData() {
 	implementedInfos = new std::vector<DeviceInfoItem>();
-	unsigned int nInfosSize = data->size();
+	unsigned int nInfosSize = static_cast<unsigned int>(data->size());
 	DeviceInfoItem info;
 	for (unsigned int i = 0; i < nInfosSize; ++i) {
-		info = (DeviceInfoItem)data->at(i);
+		info = static_cast<DeviceInfoItem>(data->at(i));
 		if (info != 0)
 			implementedInfos->push_back(info);
 		if (info == 16)

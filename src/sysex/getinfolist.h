@@ -9,6 +9,7 @@ public:
 	GetInfoList(Device *device);
 	GetInfoList(Command cmd, BYTE_VECTOR *message, Device *device)
 		: SysExMessage(cmd, message, device) {}
+	virtual ~GetInfoList() {}
 	int getSettingsId() { return cmd; }
 	int getSettingsIndex() { return 0; }
 	std::string getStorableValue() { return ""; }
