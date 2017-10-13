@@ -78,7 +78,9 @@ SOURCES +=\
     src/sysex/communicationexception.cpp \
     src/sysex/protocolexception.cpp \
     src/aboutdialog.cpp \
-    src/iconnconfigmain.cpp
+    src/iconnconfigmain.cpp \
+    src/sysex/getgizmocount.cpp \
+    src/sysex/retgizmocount.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
@@ -129,7 +131,9 @@ HEADERS  += \
     src/config/qsettings-xml.h \
     src/definitions.h \
     src/aboutdialog.h \
-    src/iconnconfigmain.h
+    src/iconnconfigmain.h \
+    src/sysex/getgizmocount.h \
+    src/sysex/retgizmocount.h
 
 FORMS    += \
     src/devicedetection.ui \
