@@ -57,7 +57,7 @@ QWidget *DeviceInfoWidget::createWidget(MultiInfoListEntry *entry) {
 				this, SLOT(deviceInfoChanged(SysExMessage::DeviceInfoItem,
 											 std::string)));
 		return w;
-	} break;
+	};
 	case MultiInfoListEntry::NETWORK_INFO: {
 		QScrollArea *a = new QScrollArea();
 		GetEthernetPortInfo *getEthernetPortInfo =
@@ -70,7 +70,7 @@ QWidget *DeviceInfoWidget::createWidget(MultiInfoListEntry *entry) {
 			new EthernetInfoWidget(this, retSetEthernetPortInfo);
 		a->setWidget(w);
 		return a;
-	} break;
+	};
 	default: {
 		QWidget *w = new QWidget(this->parentWidget());
 		QGridLayout *lo = new QGridLayout();
@@ -79,6 +79,6 @@ QWidget *DeviceInfoWidget::createWidget(MultiInfoListEntry *entry) {
 		l->setText(QString::fromStdString(entry->name));
 		lo->addWidget(l, 0, 0);
 		return w;
-	} break;
+	};
 	}
 }
