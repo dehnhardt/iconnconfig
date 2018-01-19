@@ -21,21 +21,25 @@ class DeviceStructureContainer;
 
 typedef std::map<unsigned int, DeviceStructureContainer *> DeviceStructure;
 
-class DeviceStructureContainer {
+class DeviceStructureContainer
+{
 
 public:
 	DeviceStructureContainer() {}
 	DeviceStructureContainer(SysExMessage *message) { setMessage(message); }
-	DeviceStructureContainer(DeviceStructure *structure) {
+	DeviceStructureContainer(DeviceStructure *structure)
+	{
 		setStructure(structure);
 	}
 
-	void setMessage(SysExMessage *message) {
+	void setMessage(SysExMessage *message)
+	{
 		this->message = message;
 		type = MESSAGE;
 	}
 
-	void setStructure(DeviceStructure *deviceStructure) {
+	void setStructure(DeviceStructure *deviceStructure)
+	{
 		this->deviceStructure = deviceStructure;
 		type = STRUCTURE;
 	}
@@ -51,10 +55,11 @@ private:
 	DeviceStructure *deviceStructure = 0;
 };
 
-class Device {
+class Device
+{
 public:
-	Device(unsigned int inPortNumber, unsigned int outPortNumber,
-		   unsigned long serialNumber, unsigned int productId);
+	Device(unsigned int m_iInPortNumber, unsigned int m_iOutPortNumber,
+		   unsigned long m_pSerialNumber, unsigned int m_pProductId);
 	Device(Device *device);
 
 	~Device();
@@ -94,77 +99,78 @@ public:
 	bool queryDeviceInfo();
 	bool isDeviceValid();
 
-	std::string getModelName() { return modelName; }
-	std::string getDeviceName() { return deviceName; }
-	std::string getSerialNumberString() { return serialNumberString; }
-	std::string getManufacturerName() { return manufacturerName; }
-	std::string getFirmwareVersion() { return firmwareVersion; }
-	std::string getHardwareVersion() { return hardwareVersion; }
-	std::string getModelNumber() { return modelNumber; }
-	unsigned int getInPortNumer() { return inPortNumber; }
-	unsigned int getOutPortNumer() { return outPortNumber; }
+	std::string getModelName() { return m_sModelName; }
+	std::string getDeviceName() { return m_sDeviceName; }
+	std::string getSerialNumberString() { return m_sSerialNumber; }
+	std::string getManufacturerName() { return m_sManufacturerName; }
+	std::string getFirmwareVersion() { return m_sFirmwareVersion; }
+	std::string getHardwareVersion() { return m_sHardwareVersion; }
+	std::string getModelNumber() { return m_sModelNumber; }
+	unsigned int getInPortNumer() { return m_iInPortNumber; }
+	unsigned int getOutPortNumer() { return m_iOutPortNumber; }
 
-	MIDISysexValue *getSerialNumber() { return serialNumber; }
-	MIDISysexValue *getProductId() { return productId; }
-	bool getDefault() { return isDefault; }
-	RetCommandList *getCommands() { return commands; }
-	GetInfo *getDeviceInfo() { return deviceInfo; }
-	RetSetMidiInfo *getMidiInfo() { return midiInfo; }
+	MIDISysexValue *getSerialNumber() { return m_pSerialNumber; }
+	MIDISysexValue *getProductId() { return m_pProductId; }
+	bool getDefault() { return m_bIsDefault; }
+	RetCommandList *getCommands() { return m_pCommands; }
+	GetInfo *getDeviceInfo() { return m_pDeviceInfo; }
+	RetSetMidiInfo *getMidiInfo() { return m_pMidiInfo; }
 	MIDI_PORT_INFOS *getMidiPortInfos() const;
 	BYTE_VECTOR *getLastSendMessage() const;
 	BYTE_VECTOR *getLastRetrieveMessage() const;
 
 	// setter
 	void setDebug(bool value);
-	void setDeviceInformation(std::string modelName, std::string deviceName);
-	void setDefault(bool isDefault) { this->isDefault = isDefault; }
+	void setDeviceInformation(std::string m_sModelName, std::string m_sDeviceName);
+	void setDefault(bool isDefault) { this->m_bIsDefault = isDefault; }
 
 	void setLastSendMessage(BYTE_VECTOR *value);
 	void setLastRetrieveMessage(BYTE_VECTOR *value);
 
 private:
-	bool debug = false;
-
-	unsigned int inPortNumber;
-	unsigned int outPortNumber;
-
-	unsigned int transactionId = 0;
-
-	BYTE_VECTOR *lastSendMessage = 0;
-	BYTE_VECTOR *lastRetrieveMessage = 0;
-
-	bool isDefault = false;
-
-	RtMidiIn *midiin = 0;
-	RtMidiOut *midiout = 0;
-
-	MIDISysexValue *serialNumber;
-	MIDISysexValue *productId;
-
-	std::string modelName;
-	std::string deviceName;
-	std::string serialNumberString;
-	std::string manufacturerName;
-	std::string firmwareVersion;
-	std::string hardwareVersion;
-	std::string modelNumber;
-
-	RetSetMidiInfo *midiInfo = 0;
-	RetCommandList *commands = 0;
-	RetInfoList *ii = 0;
-	GetInfo *deviceInfo = 0;
-	std::map<int, std::vector<RetSetMidiPortInfo *> *> *midiPortInfos = 0;
-
-	DeviceStructure *informationTree = 0;
-
-	BYTE_VECTOR *deviceHeader = 0;
-	BYTE_VECTOR *fullHeader = 0;
-
 	bool setupMidi();
 	bool checkSysex(BYTE_VECTOR *data);
 	void requestMidiPortInfos();
 	void addCommandToStructure(Command cmd,
 							   DeviceStructureContainer *structureContainer);
+
+	bool debug = false;
+
+	unsigned int m_iInPortNumber;
+	unsigned int m_iOutPortNumber;
+
+	unsigned int m_iTransactionId = 0;
+
+	BYTE_VECTOR *m_pLastSendMessage = 0;
+	BYTE_VECTOR *m_pLastRetrieveMessage = 0;
+
+	bool m_bIsDefault = false;
+
+	RtMidiIn *midiin = 0;
+	RtMidiOut *midiout = 0;
+
+	MIDISysexValue *m_pSerialNumber;
+	MIDISysexValue *m_pProductId;
+
+	std::string m_sModelName;
+	std::string m_sDeviceName;
+	std::string m_sSerialNumber;
+	std::string m_sManufacturerName;
+	std::string m_sFirmwareVersion;
+	std::string m_sHardwareVersion;
+	std::string m_sModelNumber;
+
+	RetSetMidiInfo *m_pMidiInfo = 0;
+	RetCommandList *m_pCommands = 0;
+	RetInfoList *m_pRetInfoList = 0;
+	GetInfo *m_pDeviceInfo = 0;
+	std::map<int, std::vector<RetSetMidiPortInfo *> *> *m_pMidiPortInfos = 0;
+
+	DeviceStructure *m_pInformationTree = 0;
+
+	BYTE_VECTOR *m_pDeviceHeader = 0;
+	BYTE_VECTOR *m_pFullHeader = 0;
+
 };
 
 void midiOutErrorCallback(RtMidiError::Type type, const std::string &errorText,

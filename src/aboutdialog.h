@@ -5,11 +5,13 @@
 #include <QGridLayout>
 #include <QLabel>
 
-namespace Ui {
+namespace Ui
+{
 class AboutDialog;
 }
 
-class AboutDialog : public QDialog {
+class AboutDialog : public QDialog
+{
 	Q_OBJECT
 
 public:
@@ -17,9 +19,10 @@ public:
 	~AboutDialog();
 
 private:
-	Ui::AboutDialog *ui;
-	QGridLayout *layout = 0;
-	int row = 0;
+	Ui::AboutDialog *m_pUi;
+	QGridLayout *m_pLlayout = 0;
+	int m_iRow = 0;
+
 	void setupTable();
 	QLabel *getLabel(const char *text, const bool header = false);
 	QLabel *getLabel(const QString text, const bool header = false);

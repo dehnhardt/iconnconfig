@@ -41,66 +41,73 @@ what we don't want:
 // used for both reading & writing.
 // children are used only for writing.
 // parent used only for reading.
-class XmlNode : public QObject {
+class XmlNode : public QObject
+{
 public:
-	QString tagName, subtext;
+	QString m_sTagName;
+	QString m_sSubtext;
 
 	XmlNode(const QString &name, const QString &text = QString(),
-					QObject *parent = 0)
-			: QObject(parent), tagName(name), subtext(text) {}
+			QObject *parent = 0)
+		: QObject(parent), m_sTagName(name), m_sSubtext(text) {}
 
-	QString fullPath() const {
+	QString fullPath() const
+	{
 		const XmlNode *cur = this;
-		QString path = tagName;
+		QString path = m_sTagName;
 
 		while ((cur = (const XmlNode *)cur->parent()) != 0)
-			path.prepend(cur->tagName + "\\");
+			path.prepend(cur->m_sTagName + "\\");
 
 		return path.mid(rootName.size() + 1); // remove root node & trailing slash
 	}
 };
 
-bool readSettingsXml(QIODevice &device, QMap<QString, QVariant> &map) {
+bool readSettingsXml(QIODevice &device, QMap<QString, QVariant> &map)
+{
 	QXmlStreamReader xml(&device);
-	XmlNode *curNode = 0;
+	XmlNode *pCurNode = 0;
 
-	while (!xml.atEnd()) {
-		switch (xml.readNext()) {
-		case QXmlStreamReader::StartElement:
-			if (curNode != 0)
-				// we're already processing the file if there already is a current node
-				curNode = new XmlNode(xml.name().toString(), QString(), curNode);
-			else if (xml.name().toString() == rootName)
-				// no current node? this must be the first one: the root
-				curNode = new XmlNode(rootName);
-			else
-				return false; // invalid format: first element *must* be root tag
+	while (!xml.atEnd())
+	{
+		switch (xml.readNext())
+		{
+			case QXmlStreamReader::StartElement:
+				if (pCurNode != 0)
+					// we're already processing the file if there already is a current node
+					pCurNode = new XmlNode(xml.name().toString(), QString(), pCurNode);
+				else if (xml.name().toString() == rootName)
+					// no current node? this must be the first one: the root
+					pCurNode = new XmlNode(rootName);
+				else
+					return false; // invalid format: first element *must* be root tag
 
-			break;
+				break;
 
-		case QXmlStreamReader::EndElement:
-			// if current node has no parent, that means we just closed the root tag
-			// we're done!
-			if (!curNode->parent()) {
-				delete curNode;
-				return true;
-			}
+			case QXmlStreamReader::EndElement:
+				// if current node has no parent, that means we just closed the root tag
+				// we're done!
+				if (!pCurNode->parent())
+				{
+					delete pCurNode;
+					return true;
+				}
 
-			// otherwise, we just closed the current category.
-			// on the next loop iteration, we should get either the start of the next
-			// category or the closing tag of the parent (either the parent category
-			// or the "parent" leaf name)
-			else
-				curNode = (XmlNode *)QScopedPointer<XmlNode>(curNode)->parent();
+				// otherwise, we just closed the current category.
+				// on the next loop iteration, we should get either the start of the next
+				// category or the closing tag of the parent (either the parent category
+				// or the "parent" leaf name)
+				else
+					pCurNode = (XmlNode *)QScopedPointer<XmlNode>(pCurNode)->parent();
 
-			break;
+				break;
 
-		case QXmlStreamReader::Characters:
-			if (!xml.isWhitespace())
-				map[curNode->fullPath()] = xml.text().toString();
-			break;
-		default:
-			break;
+			case QXmlStreamReader::Characters:
+				if (!xml.isWhitespace())
+					map[pCurNode->fullPath()] = xml.text().toString();
+				break;
+			default:
+				break;
 		}
 	}
 
@@ -109,7 +116,8 @@ bool readSettingsXml(QIODevice &device, QMap<QString, QVariant> &map) {
 	return false;
 }
 
-bool writeSettingsXml(QIODevice &device, const QMap<QString, QVariant> &map) {
+bool writeSettingsXml(QIODevice &device, const QMap<QString, QVariant> &map)
+{
 	XmlNode *root = new XmlNode(rootName);
 
 	/************************************************************/
@@ -117,7 +125,8 @@ bool writeSettingsXml(QIODevice &device, const QMap<QString, QVariant> &map) {
 	// of this step is to put all the keys of one category next to each other.
 	// but we do not sort within the category. in this step, we place our results
 	// from the QStringList of QMap.keys() into a tree-like structure
-	foreach (const QString &unsplitKey, map.keys()) {
+	foreach (const QString &unsplitKey, map.keys())
+	{
 		QStringList segs = unsplitKey.split("/", QString::SkipEmptyParts);
 		QString val = map[unsplitKey].toString();
 
@@ -127,20 +136,26 @@ bool writeSettingsXml(QIODevice &device, const QMap<QString, QVariant> &map) {
 		// our tree looking for appropriate branches/leaves. on the way down to
 		// the specific leaf we want, we create & add nodes as needed.
 
-		for (int i = 0; i < segs.length(); i++) {
-			if (i == segs.length() - 1) {
+		for (int i = 0; i < segs.length(); i++)
+		{
+			if (i == segs.length() - 1)
+			{
 				// the last segment is a leaf that wasn't previously found.
 				// we don't keep the ref since it becomes a child of the parent
 				new XmlNode(segs[i], val, cur);
-			} else {
+			}
+			else
+			{
 				// search for the node for the current segment. create it as a
 				// child of the current node if it doesn't exist. then we use it
 				// for the next iteration
 				XmlNode *foundItem = 0;
-				foreach (QObject *object, cur->children()) {
+				foreach (QObject *object, cur->children())
+				{
 					XmlNode *child = (XmlNode *)object;
 					if (0 ==
-							QString::compare(child->tagName, segs[i], Qt::CaseInsensitive)) {
+							QString::compare(child->m_sTagName, segs[i], Qt::CaseInsensitive))
+					{
 						foundItem = child;
 						break;
 					}
@@ -179,13 +194,16 @@ bool writeSettingsXml(QIODevice &device, const QMap<QString, QVariant> &map) {
 	QList<XmlNode *> stack;
 	stack << root;
 
-	while (true) {
+	while (true)
+	{
 		// see step 1
 		XmlNode *cur;
-		while ((cur = stack.takeLast()) == 0) {
+		while ((cur = stack.takeLast()) == 0)
+		{
 			xml.writeEndElement();
 
-			if (stack.isEmpty()) {
+			if (stack.isEmpty())
+			{
 				xml.writeEndDocument();
 				delete root;
 				return true;
@@ -193,14 +211,14 @@ bool writeSettingsXml(QIODevice &device, const QMap<QString, QVariant> &map) {
 		}
 
 		// see step 2
-		xml.writeStartElement(cur->tagName);
+		xml.writeStartElement(cur->m_sTagName);
 		stack << 0; // required to close text-only elements as well as for nodes
-								// with children to go back up a level when children are
-								// processed.
+		// with children to go back up a level when children are
+		// processed.
 
 		// see step 3
 		if (cur->children().size() == 0)
-			xml.writeCharacters(cur->subtext);
+			xml.writeCharacters(cur->m_sSubtext);
 		else
 			for (int i = 0; i < cur->children().length(); i++)
 				stack << (XmlNode *)cur->children()[i];

@@ -4,6 +4,8 @@
 #
 #-------------------------------------------------
 
+DISTFILES = .astylerc
+
 QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -154,4 +156,5 @@ DISTFILES += \
     RELEASENOTES.md \
     BUILD.md \
     tr/iconnconfig_de_DE.ts \
-    tr/iconnconfig_de_DE.qm
+    tr/iconnconfig_de_DE.qm \
+    .astylerc

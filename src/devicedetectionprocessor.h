@@ -8,22 +8,20 @@
 #include <QEvent>
 #include <QWidget>
 
-class DeviceDetectionProcessor {
+class DeviceDetectionProcessor
+{
 public:
-	DeviceDetectionProcessor(QWidget *gui);
+	DeviceDetectionProcessor(QWidget *m_pGui);
 	~DeviceDetectionProcessor();
 	unsigned int getMidiInPortCount();
 	unsigned int getMidiOutPortCount();
 	void startDeviceDetection();
 
 private:
-	// Members
-	RtMidiIn *midiin = 0;
-	RtMidiOut *midiout = 0;
 
 	libusb_device **devs;
 
-	// methods
+	// Methods
 	bool isIconnectivityDevice(BYTE_VECTOR *message);
 
 	// MIDI-methods
@@ -37,9 +35,13 @@ private:
 	bool setupUSB();
 	void printUSBDevs();
 
-	QWidget *gui;
-
 	void sendProgressEvent(unsigned int progress);
+
+	// Members
+	RtMidiIn *m_pMidiin = 0;
+	RtMidiOut *m_pMidiout = 0;
+	QWidget *m_pGui;
+
 };
 
 #endif// DEVICEDETECTIONPROCESSOR_H

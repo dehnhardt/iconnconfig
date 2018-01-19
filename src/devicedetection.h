@@ -7,34 +7,36 @@
 #include <QCloseEvent>
 #include <QDialog>
 
-namespace Ui {
+namespace Ui
+{
 class DeviceDetection;
 }
 
-class DeviceDetection : public QDialog {
-  Q_OBJECT
+class DeviceDetection : public QDialog
+{
+	Q_OBJECT
 
 public:
-  explicit DeviceDetection(QWidget *parent = 0);
-  ~DeviceDetection();
-  void customEvent(QEvent *e);
+	explicit DeviceDetection(QWidget *parent = 0);
+	~DeviceDetection();
+	void customEvent(QEvent *e);
 
 private:
-  Ui::DeviceDetection *ui = 0;
-  DeviceDetectionProcessor *detectionProcessor = 0;
-  void writeSettings();
-  void readSettings();
+	Ui::DeviceDetection *m_pUi = 0;
+	DeviceDetectionProcessor *detectionProcessor = 0;
+	void writeSettings();
+	void readSettings();
 
 protected:
-  void closeEvent(QCloseEvent *event);
+	void closeEvent(QCloseEvent *event);
 
 private slots:
-  void startDeviceDetection();
-  void on_buttonBox_accepted();
-  void setProgressBar(int value);
+	void startDeviceDetection();
+	void on_buttonBox_accepted();
+	void setProgressBar(int value);
 
 signals:
-  void openDefaultDevice();
+	void openDefaultDevice();
 };
 
 #endif // DEVICEDETECTION_H

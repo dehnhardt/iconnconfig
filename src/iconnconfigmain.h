@@ -11,27 +11,34 @@
 #include <QSettings>
 #include <QToolBar>
 
-namespace Ui {
+namespace Ui
+{
 class MioMain;
 }
 
-class DeviceMenuMapper : public QObject {
+class DeviceMenuMapper : public QObject
+{
 public:
 	DeviceMenuMapper(Device *device) : device(device) {}
+	~DeviceMenuMapper();
 	Device *device;
 };
 
-class MioMain : public QMainWindow {
+class MioMain : public QMainWindow
+{
 	Q_OBJECT
 
 public:
 	explicit MioMain(QCommandLineParser *parser, QWidget *parent = 0);
 	~MioMain();
-	void setConfigurationFile(QString *file) { this->configurationFile = file; }
+	void setConfigurationFile(QString *file) { this->m_sConfigurationFile = file; }
 	void replacePanel(QWidget *w);
 
 public slots:
 	void openDefaultDevice();
+
+protected:
+	void closeEvent(QCloseEvent *event);
 
 private slots:
 	void on_actionQuit_triggered();
@@ -45,18 +52,6 @@ private slots:
 	void openAboutDialog();
 
 private:
-	// Members
-	Ui::MioMain *ui;
-	DeviceDetection *deviceDetectionWindow = 0;
-	QToolBar *toolBar = 0;
-	std::map<Qt::DockWidgetArea, std::vector<QDockWidget *>> dockWidgetAreas;
-	QString title;
-	Device *currentDevice = 0;
-	QString *configurationFile = 0;
-	QSettings *configuration = 0;
-	static int sigpipe[2];
-
-private:
 	// methods
 	void connectSignals();
 	void readSettings();
@@ -67,7 +62,7 @@ private:
 	void addDevicesToSelectionMenu(unsigned long defaultDeviceSN);
 
 	void addDock(QDockWidget *widget,
-							 Qt::DockWidgetArea area = Qt::NoDockWidgetArea);
+				 Qt::DockWidgetArea area = Qt::NoDockWidgetArea);
 
 	void clearDocWidgets();
 	void saveRestore(SaveRestore::SaveResstoreId saveRestoreId);
@@ -83,11 +78,23 @@ private:
 	static void handleSignal(int);
 	bool installSignalHandlers();
 
-protected:
-	void closeEvent(QCloseEvent *event);
+private:
+	// Members
+	Ui::MioMain *m_pUi;
+	DeviceDetection *m_pDeviceDetectionWindow = 0;
+	QToolBar *m_pToolBar = 0;
+	std::map<Qt::DockWidgetArea, std::vector<QDockWidget *>> m_DockWidgetAreasMap;
+	QString m_sTitle;
+	QString *m_sConfigurationFile = 0;
+	Device *m_pCurrentDevice = 0;
+
+	QSettings *m_pConfiguration = 0;
+
+	static int sigpipe[2];
 
 signals:
 	void deviceSelected(Device *d);
+
 };
 
 #endif // MIOMAIN_H

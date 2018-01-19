@@ -10,23 +10,27 @@
 
 typedef std::map<unsigned long, Device *> Devices;
 
-class Configuration {
+class Configuration
+{
 
 	// start singleton
 public:
-	static Configuration &getInstance() {
+	static Configuration &getInstance()
+	{
 		static Configuration instance;
 		return instance;
 	}
 
 private:
 	Configuration() {}
-	~Configuration() {
+	~Configuration()
+	{
 		/*if (settings)
 		  delete settings;*/
-		if (devices != 0) {
-			devices->clear();
-			delete devices;
+		if (m_pDevices != 0)
+		{
+			m_pDevices->clear();
+			delete m_pDevices;
 		}
 	}
 
@@ -37,14 +41,16 @@ public:
 
 public:
 	// getter
-	Devices *getDevices() {
-		if (devices == 0)
-			devices = new std::map<unsigned long, Device *>;
-		return devices;
+	Devices *getDevices()
+	{
+		if (m_pDevices == 0)
+			m_pDevices = new std::map<unsigned long, Device *>;
+		return m_pDevices;
 	}
 	QSettings *getSettings() { return new QSettings(); }
 
-	unsigned long getDefaultDevice() {
+	unsigned long getDefaultDevice()
+	{
 		unsigned long defaultDevice = 0;
 		QSettings *settings = new QSettings();
 		settings->beginGroup("Default Device");
@@ -54,12 +60,13 @@ public:
 		return defaultDevice;
 	}
 
-	bool getUsbDeviceDetection() { return enableUsbDetection; }
-	bool getMidiDeviceDetection() { return enableMidiDeviceDetection; }
+	bool getUsbDeviceDetection() { return m_bEnableUsbDetection; }
+	bool getMidiDeviceDetection() { return m_bEnableMidiDeviceDetection; }
 
 	// setter
-	void setDevices(Devices *devices) { this->devices = devices; }
-	void setDefaultDevice(int serialNumber) {
+	void setDevices(Devices *devices) { this->m_pDevices = devices; }
+	void setDefaultDevice(int serialNumber)
+	{
 		QSettings *settings = new QSettings();
 		settings->beginGroup("Default Device");
 		settings->setValue("serialNumber", serialNumber);
@@ -68,9 +75,9 @@ public:
 	}
 
 private:
-	Devices *devices;
-	bool enableUsbDetection = false;
-	bool enableMidiDeviceDetection = true;
+	Devices *m_pDevices;
+	bool m_bEnableUsbDetection = false;
+	bool m_bEnableMidiDeviceDetection = true;
 	// QSettings *settings = 0;
 };
 

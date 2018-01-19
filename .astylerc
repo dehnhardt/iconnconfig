@@ -1,0 +1,10 @@
+--style=break
+--indent=tab
+--indent-switches
+--indent-cases
+--indent-continuation=2
+--indent-col1-comments
+--remove-braces
+--keep-one-line-blocks
+--break-after-logical
+--align-pointer=name

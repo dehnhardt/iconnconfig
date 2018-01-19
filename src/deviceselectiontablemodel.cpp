@@ -7,12 +7,12 @@
 
 DeviceSelectionTableModel::DeviceSelectionTableModel(Devices *devices) {
   for (Devices::iterator it = devices->begin(); it != devices->end(); ++it)
-    tableData.push_back(it->second);
+    m_pTableData.push_back(it->second);
 }
 
 int DeviceSelectionTableModel::rowCount(const QModelIndex &parent
                                         __attribute__((unused))) const {
-  return tableData.size();
+  return m_pTableData.size();
 }
 
 int DeviceSelectionTableModel::columnCount(const QModelIndex &parent
@@ -23,7 +23,7 @@ int DeviceSelectionTableModel::columnCount(const QModelIndex &parent
 QVariant DeviceSelectionTableModel::data(const QModelIndex &index,
                                          int role) const {
   if (role == Qt::DisplayRole) {
-    Device *current = tableData.at(index.row());
+    Device *current = m_pTableData.at(index.row());
     switch (index.column()) {
     case 0:
       return QString(current->getDeviceName().c_str());
@@ -39,7 +39,7 @@ QVariant DeviceSelectionTableModel::data(const QModelIndex &index,
     }
   }
   if ((role == Qt::CheckStateRole) && (index.column() == 0)) {
-    Device *current = tableData.at(index.row());
+    Device *current = m_pTableData.at(index.row());
     return current->getDefault() ? Qt::Checked : Qt::Unchecked;
   }
   return QVariant::Invalid;
@@ -50,7 +50,7 @@ bool DeviceSelectionTableModel::setData(const QModelIndex &index,
   bool success = true;
 
   if (index.isValid()) {
-    Device *current = tableData.at(index.row());
+    Device *current = m_pTableData.at(index.row());
     if (role == Qt::CheckStateRole) {
       if (index.column() == 0) {
         if (current->getDefault()) {
@@ -59,10 +59,10 @@ bool DeviceSelectionTableModel::setData(const QModelIndex &index,
           current->setDefault(value.toBool());
           Configuration::getInstance().setDefaultDevice(
               current->getSerialNumber()->getLongValue());
-					for (unsigned int i = 0; i < tableData.size(); i++) {
+					for (unsigned int i = 0; i < m_pTableData.size(); i++) {
 						if ((int)i != index.row()) {
-              if (tableData.at(i)->getDefault()) {
-                tableData.at(i)->setDefault(false);
+              if (m_pTableData.at(i)->getDefault()) {
+                m_pTableData.at(i)->setDefault(false);
                 QModelIndex upd = createIndex(i, 0);
                 emit dataChanged(upd, upd);
               }

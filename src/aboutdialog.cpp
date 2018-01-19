@@ -6,38 +6,43 @@
 #include <QLabel>
 
 AboutDialog::AboutDialog(QWidget *parent)
-	: QDialog(parent), ui(new Ui::AboutDialog) {
-	ui->setupUi(this);
+	: QDialog(parent), m_pUi(new Ui::AboutDialog)
+{
+	m_pUi->setupUi(this);
 	setupScrollArea();
 	setupTable();
 }
 
-AboutDialog::~AboutDialog() { delete ui; }
+AboutDialog::~AboutDialog() { delete m_pUi; }
 
-void AboutDialog::setupScrollArea() {
-	layout = new QGridLayout();
-	ui->scrollAreaWidgetContents->setLayout(layout);
+void AboutDialog::setupScrollArea()
+{
+	m_pLlayout = new QGridLayout();
+	m_pUi->scrollAreaWidgetContents->setLayout(m_pLlayout);
 }
 
 void AboutDialog::addEntry(const QString label, const QString value,
-						   bool header) {
+						   bool header)
+{
 	int colspan = 1;
-	if (header) {
+	if (header)
+	{
 		colspan = 2;
 		QFrame *line = new QFrame(this);
 		line->setObjectName(QStringLiteral("line"));
 		line->setFrameShape(QFrame::HLine);
 		line->setFrameShadow(QFrame::Sunken);
-		layout->addWidget(line, row, 0, 1, colspan);
-		++row;
+		m_pLlayout->addWidget(line, m_iRow, 0, 1, colspan);
+		++m_iRow;
 	}
-	layout->addWidget(getLabel(label, header), row, 0, 1, colspan);
+	m_pLlayout->addWidget(getLabel(label, header), m_iRow, 0, 1, colspan);
 	if (!header)
-		layout->addWidget(getLabel(value), row, 1);
-	++row;
+		m_pLlayout->addWidget(getLabel(value), m_iRow, 1);
+	++m_iRow;
 }
 
-void AboutDialog::setupTable() {
+void AboutDialog::setupTable()
+{
 	addEntry(QApplication::applicationName(), NULL, true);
 	// Name
 	addEntry(tr("Application Name"), QApplication::applicationName());
@@ -82,8 +87,10 @@ void AboutDialog::setupTable() {
 				"work with QT-Version 4.8."));
 }
 
-QLabel *AboutDialog::getLabel(QLabel *label, const bool header) {
-	if (header) {
+QLabel *AboutDialog::getLabel(QLabel *label, const bool header)
+{
+	if (header)
+	{
 		QFont f = label->font();
 		f.setBold(true);
 		f.setPointSize(f.pointSize() + 2);
@@ -94,12 +101,14 @@ QLabel *AboutDialog::getLabel(QLabel *label, const bool header) {
 	return label;
 }
 
-QLabel *AboutDialog::getLabel(const char *text, const bool header) {
+QLabel *AboutDialog::getLabel(const char *text, const bool header)
+{
 	QLabel *l = new QLabel(text);
 	return getLabel(l, header);
 }
 
-QLabel *AboutDialog::getLabel(const QString text, const bool header) {
+QLabel *AboutDialog::getLabel(const QString text, const bool header)
+{
 	QLabel *l = new QLabel(text);
 	return getLabel(l, header);
 }
