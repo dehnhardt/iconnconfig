@@ -45,15 +45,15 @@ public:
 	static CommandAcceptedAnswers commandAcceptedAnswers;
 
 public:
-	SysExMessage(Command cmd, CommandFlags flags, Device *device);
-	SysExMessage(Command cmd, BYTE_VECTOR *message, Device *device);
+	SysExMessage(Command m_Command, CommandFlags flags, Device *m_pDevice);
+	SysExMessage(Command m_Command, BYTE_VECTOR *message, Device *m_pDevice);
 	virtual ~SysExMessage();
 
 	// methods
 	virtual BYTE_VECTOR *getMIDISysExMessage();
 	std::string getDataAsString();
 	long getDataAsLong();
-	Command parseAnswer(BYTE_VECTOR *answer);
+	Command parseAnswer(BYTE_VECTOR *m_pAnswer);
 	SysExMessage *getAnswer();
 	SysExMessage *query();
 	int execute();
@@ -63,28 +63,28 @@ public:
 
 	// getter
 	unsigned char getCmdflags() const;
-	Command getCommand() { return cmd; }
+	Command getCommand() { return m_Command; }
 
 	// setter
 	void setCmdflags(unsigned char value);
 
 protected:
-	virtual BYTE_VECTOR *getCommandData() { return commandData; }
-	virtual BYTE_VECTOR *getMessageData() { return new BYTE_VECTOR(); }
+	virtual BYTE_VECTOR *getCommandData() { return m_pCommandData; }
+	virtual BYTE_VECTOR *m_pGetMessageData() { return new BYTE_VECTOR(); }
 	virtual BYTE_VECTOR *getTransactionId() {
-		if (transactionId == 0) {
-			if (device != 0)
-				return this->device->nextTransactionId();
-			transactionId = new BYTE_VECTOR();
-			transactionId->push_back(0x00);
-			transactionId->push_back(0x01);
+		if (m_pTransactionId == 0) {
+			if (m_pDevice != 0)
+				return this->m_pDevice->nextTransactionId();
+			m_pTransactionId = new BYTE_VECTOR();
+			m_pTransactionId->push_back(0x00);
+			m_pTransactionId->push_back(0x01);
 		}
-		return transactionId;
+		return m_pTransactionId;
 	}
 	bool checkAnswerValid(long answerCommandId);
-	virtual void createAnswer(Command cmd __attribute__((unused)),
+	virtual void createAnswer(Command m_Command __attribute__((unused)),
 							  BYTE_VECTOR *message __attribute__((unused)),
-							  Device *device __attribute__((unused)));
+							  Device *m_pDevice __attribute__((unused)));
 	void readSettings();
 	void storeSettings();
 
@@ -92,23 +92,25 @@ protected:
 	virtual int getSettingsIndex() = 0;
 	virtual std::string getStorableValue() = 0;
 
+	void extractData(std::vector<unsigned char> *message);
+
+
 	// members
 protected:
-	Command cmd;
-	unsigned char cmdflags;
-	AcceptedAnswers acceptedAnswers;
-	Device *device = 0;
-	SysExMessage *answer;
-	BYTE_VECTOR *commandData = 0;
-	BYTE_VECTOR *transactionId = 0;
-	BYTE_VECTOR *deviceHeader = 0;
-	BYTE_VECTOR *resultData = 0;
-	BYTE_VECTOR *data = 0;
+	Command m_Command;
+	unsigned char m_iCmdflags;
+	AcceptedAnswers m_AcceptedAnswers;
+	Device *m_pDevice = 0;
+	SysExMessage *m_pAnswer;
+	BYTE_VECTOR *m_pCommandData = 0;
+	BYTE_VECTOR *m_pTransactionId = 0;
+	BYTE_VECTOR *m_pDeviceHeader = 0;
+	BYTE_VECTOR *m_pResultData = 0;
+	BYTE_VECTOR *m_pData = 0;
 
-	unsigned char commandVersionNumber = 0;
+	unsigned char m_iCommandVersionNumber = 0;
 
 	bool debug = false;
-	void extractData(std::vector<unsigned char> *message);
 };
 
 #endif// SYSEXMESSAGE_H

@@ -6,17 +6,17 @@
 
 class GetCommandList : public SysExMessage {
 public:
-	GetCommandList(Device *device);
+	GetCommandList(Device *m_pDevice);
 	GetCommandList(Command cmd, BYTE_VECTOR *message, Device *device)
 		: SysExMessage(cmd, message, device) {}
-	int getSettingsId() { return cmd; }
+	int getSettingsId() { return m_Command; }
 	int getSettingsIndex() { return 0; }
 	std::string getStorableValue() { return ""; }
 
 private:
 	void createAnswer(Command cmd, BYTE_VECTOR *message, Device *device) {
-		answer = new RetCommandList(cmd, message, device);
-		answer->parseAnswerData();
+		m_pAnswer = new RetCommandList(cmd, message, device);
+		m_pAnswer->parseAnswerData();
 	}
 };
 

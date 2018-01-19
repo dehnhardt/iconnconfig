@@ -12,13 +12,13 @@ class CentralWidget : public QDockWidget {
   Q_OBJECT
 
 public:
-  CentralWidget(QWidget *parent, Device *device);
+  CentralWidget(QWidget *parent, Device *m_pDevice);
   void replacePanel(QWidget *w);
 
 private:
-  QWidget *currentWidget = 0;
-  Device *device;
-  QGridLayout *l = 0;
+  QWidget *m_pCurrentWidget = 0;
+  Device *m_pDevice;
+  QGridLayout *m_pLayout = 0;
 };
 
 #endif // CENTRALWIDGET_H

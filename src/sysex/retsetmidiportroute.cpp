@@ -7,16 +7,16 @@ RetSetMidiPortRoute::RetSetMidiPortRoute(Device *device)
 				   device) {}
 
 void RetSetMidiPortRoute::parseAnswerData() {
-	portId = MIDI::byteJoin(data, 1, 2);
-	portRoutings = new BYTE_VECTOR(data->begin() + 3, data->end());
+	m_iPortId = MIDI::byteJoin(m_pData, 1, 2);
+	m_pPortRoutings = new BYTE_VECTOR(m_pData->begin() + 3, m_pData->end());
 }
 
 bool RetSetMidiPortRoute::isPortRouted(int portNumber) {
 	int byte = -1;
 	int bit = -1;
 	getPortByteAndBit(portNumber, byte, bit);
-	if (byte <= numerOfExpectedBytes) {
-		unsigned int byteVal = portRoutings->at(byte);
+	if (byte <= m_iNumerOfExpectedBytes) {
+		unsigned int byteVal = m_pPortRoutings->at(byte);
 		int mask = pow(2, bit);
 		return byteVal & mask;
 	}
@@ -29,41 +29,41 @@ void RetSetMidiPortRoute::setPortRouted(int portNumber, bool routed) {
 	int val = 0;
 	getPortByteAndBit(portNumber, byte, bit);
 	if (byte != -1 && bit != -1)
-		val = portRoutings->at(byte);
+		val = m_pPortRoutings->at(byte);
 	int mask = pow(2, bit);
 	if (routed) {
 		val |= mask;
 	} else {
 		val &= ~mask;
 	}
-	(*portRoutings)[byte] = val;
+	(*m_pPortRoutings)[byte] = val;
 }
 
 int RetSetMidiPortRoute::getTotalNumberOfPorts() const {
-	return totalNumberOfPorts;
+	return m_iTotalNumberOfPorts;
 }
 
 void RetSetMidiPortRoute::setTotalNumberOfPorts(int value) {
-	totalNumberOfPorts = value;
-	numerOfExpectedBytes = getNumberOfExpectedBytes(totalNumberOfPorts);
+	m_iTotalNumberOfPorts = value;
+	m_iNumerOfExpectedBytes = getNumberOfExpectedBytes(m_iTotalNumberOfPorts);
 }
 
-std::vector<unsigned char> *RetSetMidiPortRoute::getMessageData() {
-	this->commandData->at(0) = 0x40;
+std::vector<unsigned char> *RetSetMidiPortRoute::m_pGetMessageData() {
+	this->m_pCommandData->at(0) = 0x40;
 	BYTE_VECTOR *messageData = new BYTE_VECTOR();
 	messageData->push_back(0x01);
-	BYTE_VECTOR *portIdV = MIDI::byteSplit(portId, 2);
+	BYTE_VECTOR *portIdV = MIDI::byteSplit(m_iPortId, 2);
 	messageData->insert(messageData->end(), portIdV->begin(), portIdV->end());
-	messageData->insert(messageData->end(), portRoutings->begin(),
-						portRoutings->end());
+	messageData->insert(messageData->end(), m_pPortRoutings->begin(),
+						m_pPortRoutings->end());
 	return messageData;
 }
 
 void RetSetMidiPortRoute::getPortByteAndBit(int portNumber, int &byte,
 											int &bit) {
 	--portNumber;
-	if (numerOfExpectedBytes != -1 &&
-		(unsigned int)numerOfExpectedBytes >= portRoutings->size())
+	if (m_iNumerOfExpectedBytes != -1 &&
+		(unsigned int)m_iNumerOfExpectedBytes >= m_pPortRoutings->size())
 		byte = portNumber / 4;
 	bit = portNumber - (byte * 4);
 }

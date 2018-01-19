@@ -2,13 +2,13 @@
 
 GetInfo::GetInfo(Device *device)
 	: SysExMessage(Command::GET_INFO, SysExMessage::QUERY, device) {
-	retSetInfos = new std::map<DeviceInfoItem, RetSetInfo *>();
+	m_pRetSetInfos = new std::map<DeviceInfoItem, RetSetInfo *>();
 }
 
 GetInfo::GetInfo(Device *device, RetInfoList *infoList)
 	: SysExMessage(Command::GET_INFO, SysExMessage::QUERY, device),
-	  infoList(infoList) {
-	retSetInfos = new std::map<DeviceInfoItem, RetSetInfo *>();
+	  m_pInfoList(infoList) {
+	m_pRetSetInfos = new std::map<DeviceInfoItem, RetSetInfo *>();
 	std::vector<DeviceInfoItem> *implementedInfos =
 		infoList->getImplementedInfos();
 	for (std::vector<DeviceInfoItem>::iterator it = implementedInfos->begin();
@@ -16,21 +16,21 @@ GetInfo::GetInfo(Device *device, RetInfoList *infoList)
 		this->setInfoItem(*it);
 		execute();
 		RetSetInfo *info = (RetSetInfo *)getAnswer();
-		(*retSetInfos)[*it] = info;
+		(*m_pRetSetInfos)[*it] = info;
 	}
 }
 
-GetInfo::~GetInfo() { delete retSetInfos; }
+GetInfo::~GetInfo() { delete m_pRetSetInfos; }
 
-BYTE_VECTOR *GetInfo::getMessageData() {
+BYTE_VECTOR *GetInfo::m_pGetMessageData() {
 	BYTE_VECTOR *messageData = new BYTE_VECTOR();
-	messageData->push_back(this->infoItem);
+	messageData->push_back(this->m_InfoItem);
 	return messageData;
 }
 
 std::string GetInfo::getDataAsString() {
-	if (data && data->size() > 0) {
-		std::string result(data->begin() + 1, data->end());
+	if (m_pData && m_pData->size() > 0) {
+		std::string result(m_pData->begin() + 1, m_pData->end());
 		return result;
 	} else {
 		return std::string();
@@ -38,13 +38,13 @@ std::string GetInfo::getDataAsString() {
 }
 
 std::string GetInfo::getItemValue(SysExMessage::DeviceInfoItem item) {
-	RetSetInfo *i = (*retSetInfos)[item];
+	RetSetInfo *i = (*m_pRetSetInfos)[item];
 	return i->getValue();
 }
 
 std::map<SysExMessage::DeviceInfoItem, RetSetInfo *> *
 GetInfo::getRetSetInfos() {
-	return retSetInfos;
+	return m_pRetSetInfos;
 }
 
 void GetInfo::deviceInfoChanged(SysExMessage::DeviceInfoItem item,
@@ -55,6 +55,6 @@ void GetInfo::deviceInfoChanged(SysExMessage::DeviceInfoItem item,
 
 void GetInfo::createAnswer(Command cmd, std::vector<unsigned char> *message,
 						   Device *device) {
-	answer = new RetSetInfo(cmd, message, device);
-	answer->parseAnswerData();
+	m_pAnswer = new RetSetInfo(cmd, message, device);
+	m_pAnswer->parseAnswerData();
 }

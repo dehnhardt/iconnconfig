@@ -5,7 +5,7 @@ GetEthernetPortInfo::GetEthernetPortInfo(Device *device)
 	: SysExMessage(Command::GET_ETHERNET_PORT_INFO, SysExMessage::QUERY,
 				   device) {}
 
-BYTE_VECTOR *GetEthernetPortInfo::getMessageData() {
+BYTE_VECTOR *GetEthernetPortInfo::m_pGetMessageData() {
 	BYTE_VECTOR *messageData = new BYTE_VECTOR();
 	messageData->push_back(0x00);
 	messageData->push_back(0x01);
@@ -14,8 +14,8 @@ BYTE_VECTOR *GetEthernetPortInfo::getMessageData() {
 
 void GetEthernetPortInfo::createAnswer(Command cmd, BYTE_VECTOR *message,
 									   Device *device) {
-	answer = new RetSetEthernetPortInfo(cmd, message, device);
+	m_pAnswer = new RetSetEthernetPortInfo(cmd, message, device);
 	if (debug)
-		answer->setDebug(true);
-	answer->parseAnswerData();
+		m_pAnswer->setDebug(true);
+	m_pAnswer->parseAnswerData();
 }

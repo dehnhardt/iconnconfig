@@ -6,9 +6,11 @@
 #include <QIcon>
 #include <QWidget>
 
-class MultiInfoListEntry {
+class MultiInfoListEntry
+{
 public:
-	enum ListEntryCode {
+	enum ListEntryCode
+	{
 		NONE = -1,
 		SECTION = 0,
 		GLOBAL_DEVICE_INFO,

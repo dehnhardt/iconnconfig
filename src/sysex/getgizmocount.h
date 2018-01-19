@@ -6,18 +6,18 @@
 
 class GetGizmoCount : public SysExMessage {
 public:
-	GetGizmoCount(Device *device);
+	GetGizmoCount(Device *m_pDevice);
 	GetGizmoCount(Command cmd, BYTE_VECTOR *message, Device *device)
 		: SysExMessage(cmd, message, device) {}
 	virtual ~GetGizmoCount() {}
-	int getSettingsId() { return cmd; }
+	int getSettingsId() { return m_Command; }
 	int getSettingsIndex() { return 0; }
 	std::string getStorableValue() { return ""; }
 
 private:
 	void createAnswer(Command cmd, BYTE_VECTOR *message, Device *device) {
-		answer = new RetGizmoCount(cmd, message, device);
-		answer->parseAnswerData();
+		m_pAnswer = new RetGizmoCount(cmd, message, device);
+		m_pAnswer->parseAnswerData();
 	}
 };
 

@@ -5,11 +5,11 @@
 
 class RetSetEthernetPortInfo : public SysExMessage {
 public:
-	RetSetEthernetPortInfo(Device *device);
+	RetSetEthernetPortInfo(Device *m_pDevice);
 
 	RetSetEthernetPortInfo(Command cmd, BYTE_VECTOR *message, Device *device)
 		: SysExMessage(cmd, message, device) {
-		addresses = new std::map<int, std::string>();
+		m_pAddresses = new std::map<int, std::string>();
 	}
 
 	enum IPFlags {
@@ -22,8 +22,8 @@ public:
 
 public:
 	void parseAnswerData();
-	BYTE_VECTOR *getMessageData();
-	int getSettingsId() { return cmd; }
+	BYTE_VECTOR *m_pGetMessageData();
+	int getSettingsId() { return m_Command; }
 	int getSettingsIndex() { return 0; }
 	std::string getStorableValue() { return ""; }
 
@@ -36,16 +36,16 @@ public:
 
 public:
 	// setter
-	void setMethod(IPFlags method);
+	void setMethod(IPFlags m_MethodFlag);
 	void setAddress(int flags, std::string address);
 	void setBonjourName(const std::string &value);
 
 private:
-	BYTE_VECTOR *portId = 0;
-	std::string macAddress;
-	std::string bonjourName;
-	IPFlags method;
-	std::map<int, std::string> *addresses = 0;
+	BYTE_VECTOR *m_pPortId = 0;
+	std::string m_sMacAddress;
+	std::string m_sBonjourName;
+	IPFlags m_MethodFlag;
+	std::map<int, std::string> *m_pAddresses = 0;
 };
 
 #endif// RETSETETHERNETPORTINFO_H

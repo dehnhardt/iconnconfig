@@ -19,10 +19,6 @@ public:
 	~AboutDialog();
 
 private:
-	Ui::AboutDialog *m_pUi;
-	QGridLayout *m_pLlayout = 0;
-	int m_iRow = 0;
-
 	void setupTable();
 	QLabel *getLabel(const char *text, const bool header = false);
 	QLabel *getLabel(const QString text, const bool header = false);
@@ -30,6 +26,13 @@ private:
 	void addEntry(const QString label, const QString value,
 				  bool header = false);
 	void setupScrollArea();
+
+private:
+	// Members
+	Ui::AboutDialog *m_pUi;
+	QGridLayout *m_pLlayout = 0;
+	int m_iRow = 0;
+
 };
 
 #endif// ABOUTDIALOG_H

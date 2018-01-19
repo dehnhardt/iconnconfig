@@ -11,12 +11,12 @@
 
 EthernetInfoWidget::EthernetInfoWidget(
 	QWidget *parent, RetSetEthernetPortInfo *retSetEthernetPortInfo)
-	: QWidget(parent), retSetEthernetPortInfo(retSetEthernetPortInfo) {
+	: QWidget(parent), m_pRetSetEthernetPortInfo(retSetEthernetPortInfo) {
 
-	lo = new QGridLayout();
-	validateControls = new std::vector<IPAddressInput *>();
-	updateTimer = new QTimer(this);
-	updateTimer->setSingleShot(true);
+	m_pRootLayout = new QGridLayout();
+	m_pValidateControls = new std::vector<IPAddressInput *>();
+	r_mUpdateTimer = new QTimer(this);
+	r_mUpdateTimer->setSingleShot(true);
 
 	if (retSetEthernetPortInfo) {
 		createWidgets();
@@ -25,79 +25,79 @@ EthernetInfoWidget::EthernetInfoWidget(
 		createConnections();
 		setData();
 	}
-	setLayout(lo);
+	setLayout(m_pRootLayout);
 }
 
 EthernetInfoWidget::~EthernetInfoWidget() {
 
-	delete methodBox;
+	delete m_pMethodBox;
 
-	delete tl;
-	delete ipl1;
-	delete sml1;
-	delete gwl1;
-	delete ipl2;
-	delete sml2;
-	delete gwl2;
-	delete bjl;
-	delete macl;
+	delete m_pTl;
+	delete m_pIpl1;
+	delete m_pSml1;
+	delete m_pGwl1;
+	delete m_PIpl2;
+	delete m_pSml2;
+	delete m_pGwl2;
+	delete m_pBjl;
+	delete m_pMacl;
 
-	delete ip1;
-	delete sm1;
-	delete gw1;
-	delete ip2;
-	delete sm2;
-	delete gw2;
-	delete bj;
-	delete mac;
+	delete m_Ip1;
+	delete m_pSm1;
+	delete m_pGw1;
+	delete m_pIp2;
+	delete m_pSm2;
+	delete m_pGw2;
+	delete m_pBj;
+	delete m_pMac;
 
-	delete empty;
+	delete m_pEmpty;
 
-	delete lo;
-	delete staticLayout;
-	delete dhcpLayout;
-	delete infoLayout;
+	delete m_pRootLayout;
+	delete m_pStaticLayout;
+	delete m_pDhcpLayout;
+	delete m_pInfoLayout;
 
-	delete staticBox;
-	delete dhcpBox;
-	delete infoBox;
+	delete m_pStaticBox;
+	delete m_pDhcpBox;
+	delete m_pInfoBox;
 }
 
 void EthernetInfoWidget::createWidgets() {
 
 	iPAddressInputSignalMapper = new QSignalMapper();
 
-	lo = new QGridLayout();
-	staticLayout = new QGridLayout();
-	dhcpLayout = new QGridLayout();
-	infoLayout = new QGridLayout();
+	m_pRootLayout = new QGridLayout();
+	m_pStaticLayout = new QGridLayout();
+	m_pDhcpLayout = new QGridLayout();
+	m_pInfoLayout = new QGridLayout();
 
-	methodBox = new QComboBox(this);
+	m_pMethodBox = new QComboBox(this);
 
-	staticBox = new QGroupBox(tr("Static Address"), this);
-	dhcpBox = new QGroupBox(tr("DHCP Address"), this);
-	infoBox = new QGroupBox(tr("Info"), this);
+	m_pStaticBox = new QGroupBox(tr("Static Address"), this);
+	m_pDhcpBox = new QGroupBox(tr("DHCP Address"), this);
+	m_pInfoBox = new QGroupBox(tr("Info"), this);
 
-	tl = new QLabel(tr("Address Type"));
-	ipl1 = new QLabel(tr("Static IP"), staticBox);
-	sml1 = new QLabel(tr("Subnet Mask"), staticBox);
-	gwl1 = new QLabel(tr("Gateway"), staticBox);
-	ipl2 = new QLabel(tr("DHCP IP"), this);
-	sml2 = new QLabel(tr("Subnet Mask"), this);
-	gwl2 = new QLabel(tr("Gateway"), this);
-	bjl = new QLabel(tr("Bonjour Name"), infoBox);
-	macl = new QLabel(tr("MAC Address"), infoBox);
+	m_pTl = new QLabel(tr("Address Type"));
+	m_pIpl1 = new QLabel(tr("Static IP"), m_pStaticBox);
+	m_pSml1 = new QLabel(tr("Subnet Mask"), m_pStaticBox);
+	m_pGwl1 = new QLabel(tr("Gateway"), m_pStaticBox);
+	m_PIpl2 = new QLabel(tr("DHCP IP"), this);
+	m_pSml2 = new QLabel(tr("Subnet Mask"), this);
+	m_pGwl2 = new QLabel(tr("Gateway"), this);
+	m_pBjl = new QLabel(tr("Bonjour Name"), m_pInfoBox);
+	m_pMacl = new QLabel(tr("MAC Address"), m_pInfoBox);
 
-	ip1 = new IPAddressInput(staticBox);
-	sm1 = new IPAddressInput(staticBox);
-	gw1 = new IPAddressInput(staticBox);
-	ip2 = new QLineEdit(dhcpBox);
-	sm2 = new QLineEdit(dhcpBox);
-	gw2 = new QLineEdit(dhcpBox);
-	bj = new QLineEdit(infoBox);
-	mac = new QLineEdit(infoBox);
+	m_Ip1 = new IPAddressInput(m_pStaticBox);
+	m_pSm1 = new IPAddressInput(m_pStaticBox);
+	m_pGw1 = new IPAddressInput(m_pStaticBox);
+	m_pIp2 = new QLineEdit(m_pDhcpBox);
+	m_pSm2 = new QLineEdit(m_pDhcpBox);
+	m_pGw2 = new QLineEdit(m_pDhcpBox);
+	m_pBj = new QLineEdit(m_pInfoBox);
+	m_pMac = new QLineEdit(m_pInfoBox);
 
-	empty = new QWidget();
+	m_pEmpty = new QWidget();
 }
 
 void EthernetInfoWidget::setupWidgets() {
@@ -106,92 +106,92 @@ void EthernetInfoWidget::setupWidgets() {
 	QRegExp ipRegex("^" + ipRange + "\\." + ipRange + "\\." + ipRange + "\\." +
 					ipRange + "$");
 
-	validateControls->push_back(ip1);
-	validateControls->push_back(sm1);
-	validateControls->push_back(gw1);
+	m_pValidateControls->push_back(m_Ip1);
+	m_pValidateControls->push_back(m_pSm1);
+	m_pValidateControls->push_back(m_pGw1);
 
-	mac->setInputMask("nn:nn:nn:nn:nn:nn;_");
+	m_pMac->setInputMask("nn:nn:nn:nn:nn:nn;_");
 
-	dhcpBox->setDisabled(true);
-	infoBox->setDisabled(true);
-	empty->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+	m_pDhcpBox->setDisabled(true);
+	m_pInfoBox->setDisabled(true);
+	m_pEmpty->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 }
 
 void EthernetInfoWidget::setupLayout() {
 
-	lo->addWidget(tl, 0, 0);
-	lo->addWidget(methodBox, 0, 1);
+	m_pRootLayout->addWidget(m_pTl, 0, 0);
+	m_pRootLayout->addWidget(m_pMethodBox, 0, 1);
 
-	staticLayout->addWidget(ipl1, 0, 0);
-	staticLayout->addWidget(ip1, 0, 1);
+	m_pStaticLayout->addWidget(m_pIpl1, 0, 0);
+	m_pStaticLayout->addWidget(m_Ip1, 0, 1);
 
-	staticLayout->addWidget(sml1, 1, 0);
-	staticLayout->addWidget(sm1, 1, 1);
+	m_pStaticLayout->addWidget(m_pSml1, 1, 0);
+	m_pStaticLayout->addWidget(m_pSm1, 1, 1);
 
-	staticLayout->addWidget(gwl1, 2, 0);
-	staticLayout->addWidget(gw1, 2, 1);
+	m_pStaticLayout->addWidget(m_pGwl1, 2, 0);
+	m_pStaticLayout->addWidget(m_pGw1, 2, 1);
 
-	dhcpLayout->addWidget(ipl2, 0, 0);
-	dhcpLayout->addWidget(ip2, 0, 1);
+	m_pDhcpLayout->addWidget(m_PIpl2, 0, 0);
+	m_pDhcpLayout->addWidget(m_pIp2, 0, 1);
 
-	dhcpLayout->addWidget(sml2, 1, 0);
-	dhcpLayout->addWidget(sm2, 1, 1);
+	m_pDhcpLayout->addWidget(m_pSml2, 1, 0);
+	m_pDhcpLayout->addWidget(m_pSm2, 1, 1);
 
-	dhcpLayout->addWidget(gwl2, 2, 0);
-	dhcpLayout->addWidget(gw2, 2, 1);
+	m_pDhcpLayout->addWidget(m_pGwl2, 2, 0);
+	m_pDhcpLayout->addWidget(m_pGw2, 2, 1);
 
-	infoLayout->addWidget(bjl, 0, 0);
-	infoLayout->addWidget(bj, 0, 1);
-	infoLayout->addWidget(macl, 1, 0);
-	infoLayout->addWidget(mac, 1, 1);
+	m_pInfoLayout->addWidget(m_pBjl, 0, 0);
+	m_pInfoLayout->addWidget(m_pBj, 0, 1);
+	m_pInfoLayout->addWidget(m_pMacl, 1, 0);
+	m_pInfoLayout->addWidget(m_pMac, 1, 1);
 
-	staticBox->setLayout(staticLayout);
-	dhcpBox->setLayout(dhcpLayout);
-	infoBox->setLayout(infoLayout);
+	m_pStaticBox->setLayout(m_pStaticLayout);
+	m_pDhcpBox->setLayout(m_pDhcpLayout);
+	m_pInfoBox->setLayout(m_pInfoLayout);
 
-	lo->addWidget(staticBox, 1, 0, 1, 2);
-	lo->addWidget(dhcpBox, 2, 0, 1, 2);
-	lo->addWidget(infoBox, 3, 0, 1, 2);
-	lo->addWidget(empty, 3, 0, 1, 2);
+	m_pRootLayout->addWidget(m_pStaticBox, 1, 0, 1, 2);
+	m_pRootLayout->addWidget(m_pDhcpBox, 2, 0, 1, 2);
+	m_pRootLayout->addWidget(m_pInfoBox, 3, 0, 1, 2);
+	m_pRootLayout->addWidget(m_pEmpty, 3, 0, 1, 2);
 }
 
 void EthernetInfoWidget::setData() {
-	methodBox->addItem(tr("Static"), QVariant(static_cast<int>(
+	m_pMethodBox->addItem(tr("Static"), QVariant(static_cast<int>(
 										 RetSetEthernetPortInfo::STATIC)));
-	methodBox->addItem(tr("Dynamic"), QVariant(static_cast<int>(
+	m_pMethodBox->addItem(tr("Dynamic"), QVariant(static_cast<int>(
 										  RetSetEthernetPortInfo::DYNAMIC)));
 
-	ip1->setText(QString(retSetEthernetPortInfo
+	m_Ip1->setText(QString(m_pRetSetEthernetPortInfo
 							 ->getAddress(RetSetEthernetPortInfo::STATIC |
 										  RetSetEthernetPortInfo::ADDRESS)
 							 .c_str()));
-	sm1->setText(QString(retSetEthernetPortInfo
+	m_pSm1->setText(QString(m_pRetSetEthernetPortInfo
 							 ->getAddress(RetSetEthernetPortInfo::STATIC |
 										  RetSetEthernetPortInfo::SUBNET_MASK)
 							 .c_str()));
-	gw1->setText(QString(retSetEthernetPortInfo
+	m_pGw1->setText(QString(m_pRetSetEthernetPortInfo
 							 ->getAddress(RetSetEthernetPortInfo::STATIC |
 										  RetSetEthernetPortInfo::GATEWAY)
 							 .c_str()));
-	ip2->setText(QString(retSetEthernetPortInfo
+	m_pIp2->setText(QString(m_pRetSetEthernetPortInfo
 							 ->getAddress(RetSetEthernetPortInfo::DYNAMIC |
 										  RetSetEthernetPortInfo::ADDRESS)
 							 .c_str()));
-	sm2->setText(QString(retSetEthernetPortInfo
+	m_pSm2->setText(QString(m_pRetSetEthernetPortInfo
 							 ->getAddress(RetSetEthernetPortInfo::DYNAMIC |
 										  RetSetEthernetPortInfo::SUBNET_MASK)
 							 .c_str()));
-	gw2->setText(QString(retSetEthernetPortInfo
+	m_pGw2->setText(QString(m_pRetSetEthernetPortInfo
 							 ->getAddress(RetSetEthernetPortInfo::DYNAMIC |
 										  RetSetEthernetPortInfo::GATEWAY)
 							 .c_str()));
-	bj->setText(QString(retSetEthernetPortInfo->getBonjourName().c_str()));
-	mac->setText(QString(retSetEthernetPortInfo->getMacAddress().c_str()));
+	m_pBj->setText(QString(m_pRetSetEthernetPortInfo->getBonjourName().c_str()));
+	m_pMac->setText(QString(m_pRetSetEthernetPortInfo->getMacAddress().c_str()));
 
-	int index = methodBox->findData(
-		static_cast<int>(retSetEthernetPortInfo->getMethod()));
+	int index = m_pMethodBox->findData(
+		static_cast<int>(m_pRetSetEthernetPortInfo->getMethod()));
 	if (index != -1) {// -1 for not found
-		methodBox->setCurrentIndex(index);
+		m_pMethodBox->setCurrentIndex(index);
 		setStaticBoxEnabled(index);
 	}
 }
@@ -200,34 +200,34 @@ void EthernetInfoWidget::createConnections() {
 	connect(iPAddressInputSignalMapper, SIGNAL(mapped(QObject *)), this,
 			SLOT(editFinished(QObject *)));
 
-	connect(methodBox, SIGNAL(activated(int)), this,
+	connect(m_pMethodBox, SIGNAL(activated(int)), this,
 			SLOT(comboboxSelected(int)));
-	connect(this, SIGNAL(staticBoxDisabled(bool)), staticBox,
+	connect(this, SIGNAL(staticBoxDisabled(bool)), m_pStaticBox,
 			SLOT(setDisabled(bool)));
 
-	connect(ip1, SIGNAL(editingFinished()), iPAddressInputSignalMapper,
+	connect(m_Ip1, SIGNAL(editingFinished()), iPAddressInputSignalMapper,
 			SLOT(map()));
 	iPAddressInputSignalMapper->setMapping(
-		ip1,
-		new IPAddressInputMapper(ip1, RetSetEthernetPortInfo::STATIC |
+		m_Ip1,
+		new IPAddressInputMapper(m_Ip1, RetSetEthernetPortInfo::STATIC |
 										  RetSetEthernetPortInfo::ADDRESS));
-	connect(sm1, SIGNAL(editingFinished()), iPAddressInputSignalMapper,
+	connect(m_pSm1, SIGNAL(editingFinished()), iPAddressInputSignalMapper,
 			SLOT(map()));
 	iPAddressInputSignalMapper->setMapping(
-		sm1,
-		new IPAddressInputMapper(sm1, RetSetEthernetPortInfo::STATIC |
+		m_pSm1,
+		new IPAddressInputMapper(m_pSm1, RetSetEthernetPortInfo::STATIC |
 										  RetSetEthernetPortInfo::SUBNET_MASK));
-	connect(gw1, SIGNAL(editingFinished()), iPAddressInputSignalMapper,
+	connect(m_pGw1, SIGNAL(editingFinished()), iPAddressInputSignalMapper,
 			SLOT(map()));
 	iPAddressInputSignalMapper->setMapping(
-		gw1,
-		new IPAddressInputMapper(gw1, RetSetEthernetPortInfo::STATIC |
+		m_pGw1,
+		new IPAddressInputMapper(m_pGw1, RetSetEthernetPortInfo::STATIC |
 										  RetSetEthernetPortInfo::GATEWAY));
 
-	connect(this, SIGNAL(staticBoxDisabled(bool)), staticBox,
+	connect(this, SIGNAL(staticBoxDisabled(bool)), m_pStaticBox,
 			SLOT(setDisabled(bool)));
 
-	connect(updateTimer, SIGNAL(timeout()), this, SLOT(updateEthernetConfig()));
+	connect(r_mUpdateTimer, SIGNAL(timeout()), this, SLOT(updateEthernetConfig()));
 }
 
 void EthernetInfoWidget::setStaticBoxEnabled(int selected) {
@@ -237,7 +237,7 @@ void EthernetInfoWidget::setStaticBoxEnabled(int selected) {
 
 bool EthernetInfoWidget::ipAddressControlsValid() {
 	std::vector<IPAddressInput *>::iterator it;
-	for (it = validateControls->begin(); it != validateControls->end(); ++it) {
+	for (it = m_pValidateControls->begin(); it != m_pValidateControls->end(); ++it) {
 		IPAddressInput *input = (*it);
 		if (!input->getValid())
 			return false;
@@ -247,26 +247,26 @@ bool EthernetInfoWidget::ipAddressControlsValid() {
 
 void EthernetInfoWidget::comboboxSelected(int selected) {
 	setStaticBoxEnabled(selected);
-	retSetEthernetPortInfo->setMethod(
+	m_pRetSetEthernetPortInfo->setMethod(
 		static_cast<RetSetEthernetPortInfo::IPFlags>(
-			methodBox->itemData(selected).Int));
-	updateTimer->start(1000);
+			m_pMethodBox->itemData(selected).Int));
+	r_mUpdateTimer->start(1000);
 }
 
 void EthernetInfoWidget::editFinished(QObject *object) {
 	IPAddressInputMapper *m = dynamic_cast<IPAddressInputMapper *>(object);
 	std::cout << "Edit finished" << std::endl;
 	if (m->input->getValid()) {
-		retSetEthernetPortInfo->setAddress(m->flags,
+		m_pRetSetEthernetPortInfo->setAddress(m->flags,
 										   m->input->text().toStdString());
-		updateTimer->start(1000);
+		r_mUpdateTimer->start(1000);
 	}
 }
 
 void EthernetInfoWidget::updateEthernetConfig() {
 	if (ipAddressControlsValid()) {
 		std::cout << "all controls valid" << std::endl;
-		retSetEthernetPortInfo->execute();
+		m_pRetSetEthernetPortInfo->execute();
 	} else {
 		std::cout << "at least one control invalid" << std::endl;
 	}

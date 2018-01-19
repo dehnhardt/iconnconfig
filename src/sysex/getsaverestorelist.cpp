@@ -7,8 +7,8 @@ GetSaveRestoreList::GetSaveRestoreList(Device *device)
 
 void GetSaveRestoreList::createAnswer(Command cmd, BYTE_VECTOR *message,
 									  Device *device) {
-	answer = new RetSaveRestoreList(cmd, message, device);
+	m_pAnswer = new RetSaveRestoreList(cmd, message, device);
 	if (debug)
-		answer->setDebug(true);
-	answer->parseAnswerData();
+		m_pAnswer->setDebug(true);
+	m_pAnswer->parseAnswerData();
 }

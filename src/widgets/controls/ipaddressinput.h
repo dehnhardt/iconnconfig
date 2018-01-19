@@ -9,16 +9,16 @@ class IPAddressInput : public QLineEdit {
 
 public:
 	IPAddressInput(QWidget *parent);
-
 	bool getValid() const;
+
+private:
+	QString m_sIpRange;
+	QRegExp m_IpRegex;
+	bool m_bValid = false;
 
 private slots:
 	void validate(QString text);
 
-private:
-	QString ipRange;
-	QRegExp ipRegex;
-	bool valid = false;
 };
 
 #endif // IPADDRESSINPUT_H

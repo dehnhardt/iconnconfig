@@ -7,9 +7,9 @@
 class GetDevice : public SysExMessage {
 public:
 	GetDevice();
-	GetDevice(Device *device);
+	GetDevice(Device *m_pDevice);
 	~GetDevice();
-	int getSettingsId() { return cmd; }
+	int getSettingsId() { return m_Command; }
 	int getSettingsIndex() { return 0; }
 	std::string getStorableValue() { return ""; }
 };

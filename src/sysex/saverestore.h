@@ -12,18 +12,18 @@ public:
 		SET_TO_FACTORY_DEFAULT = 3
 	};
 
-	SaveRestore(Device *device);
+	SaveRestore(Device *m_pDevice);
 	SaveRestore(Command cmd, BYTE_VECTOR *message, Device *device)
 		: SysExMessage(cmd, message, device) {}
 
-	void setSaveRestoreId(SaveResstoreId saveRestoreId);
-	BYTE_VECTOR *getMessageData();
-	int getSettingsId() { return cmd; }
+	void setSaveRestoreId(SaveResstoreId m_SaveRestoreId);
+	BYTE_VECTOR *m_pGetMessageData();
+	int getSettingsId() { return m_Command; }
 	int getSettingsIndex() { return 0; }
 	std::string getStorableValue() { return ""; }
 
 private:
-	SaveResstoreId saveRestoreId = NONE;
+	SaveResstoreId m_SaveRestoreId = NONE;
 };
 
 #endif// SAVERESTORE_H

@@ -8,12 +8,12 @@
 PortButton::PortButton(const long value, const QString iconText,
 											 const QString &text, const MidiPortType midiPortType,
 											 QWidget *parent)
-		: QToolButton(parent), value(value), iconText(iconText),
-			midiPortType(midiPortType) {
-	icon = PortDisplayHelper::getPortIcon(midiPortType);
+		: QToolButton(parent), m_iValue(value), m_sIconText(iconText),
+			m_MidiPortType(midiPortType) {
+	m_Icon = PortDisplayHelper::getPortIcon(midiPortType);
 	//	setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 	setToolButtonStyle(Qt::ToolButtonIconOnly);
-	setIcon(icon);
+	setIcon(m_Icon);
   setText(text);
 	setToolTip(text);
   setCheckable(true);
@@ -24,7 +24,7 @@ PortButton::PortButton(const long value, const QString iconText,
 
 void PortButton::paintEvent(QPaintEvent *event) {
   QToolButton::paintEvent(event);
-	if (iconText == "")
+	if (m_sIconText == "")
 		return;
   QPainter painter(this);
   QRect rect = event->rect();
@@ -32,7 +32,7 @@ void PortButton::paintEvent(QPaintEvent *event) {
 
 	int top = 0;
 
-	switch (midiPortType) {
+	switch (m_MidiPortType) {
 	case DIN:
 		top = rect1.top() + 10;
 		break;
@@ -63,9 +63,9 @@ void PortButton::paintEvent(QPaintEvent *event) {
     painter.setPen(penHText);
   }
   if (rect1.intersects(rect))
-		painter.drawText(iconRect, Qt::AlignCenter, iconText);
+		painter.drawText(iconRect, Qt::AlignCenter, m_sIconText);
 }
 
-long PortButton::getValue() const { return value; }
+long PortButton::getValue() const { return m_iValue; }
 
 void PortButton::setValue(long value) { value = value; }

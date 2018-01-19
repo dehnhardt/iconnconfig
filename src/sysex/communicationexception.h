@@ -21,48 +21,48 @@ public:
 
 	CommunicationException(CommunicationErrorCode code = UNKNOWN,
 						   Device *device = 0)
-		: std::runtime_error("CommunicationException"), code(code),
-		  device(device) {}
+		: std::runtime_error("CommunicationException"), m_code(code),
+		  m_pDevice(device) {}
 
 	CommunicationException(RtMidiError error)
 		: std::runtime_error("CommunicationException") {
 		switch (error.getType()) {
 		case RtMidiError::INVALID_PARAMETER:
-			code = INVALID_PARAMETER;
+			m_code = INVALID_PARAMETER;
 			break;
 		case RtMidiError::NO_DEVICES_FOUND:
-			code = NO_DEVICES_FOUND;
+			m_code = NO_DEVICES_FOUND;
 			break;
 		case RtMidiError::INVALID_DEVICE:
-			code = INVALID_DEVICE;
+			m_code = INVALID_DEVICE;
 			break;
 		case RtMidiError::INVALID_USE:
-			code = INVALID_USE;
+			m_code = INVALID_USE;
 			break;
 		default:
 			break;
 		}
-		errorString = error.getMessage();
+		m_sErrorString = error.getMessage();
 	}
 
 	virtual ~CommunicationException();
 	// getter
-	CommunicationErrorCode getErrorCode() { return code; }
+	CommunicationErrorCode getErrorCode() { return m_code; }
 	std::string getErrorMessage() {
-		if (errorString.size() > 0)
-			return errorString;
+		if (m_sErrorString.size() > 0)
+			return m_sErrorString;
 		std::stringstream e;
 		e << "Error when communicationg with device. Reason: ";
-		switch (code) {
+		switch (m_code) {
 		case UNKNOWN:
 			e << " unknown. ";
 			break;
 		case ANSWER_TIMEOOUT:
 			e << " timeout while waiting for the answer. ";
-			if (device)
+			if (m_pDevice)
 				e << std::endl
 				  << "Query: " << MIDI::printMessageToHexString(
-									  device->getLastSendMessage());
+									  m_pDevice->getLastSendMessage());
 			break;
 		case INVALID_PARAMETER:
 			e << " the port number given is invalid. ";
@@ -82,9 +82,9 @@ public:
 	}
 
 private:
-	CommunicationErrorCode code = UNKNOWN;
-	Device *device = 0;
-	std::string errorString;
+	CommunicationErrorCode m_code = UNKNOWN;
+	Device *m_pDevice = 0;
+	std::string m_sErrorString;
 };
 
 #endif// COMMUNICATIONEXCEPTION_H

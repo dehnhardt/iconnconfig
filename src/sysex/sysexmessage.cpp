@@ -32,35 +32,35 @@
  */
 
 SysExMessage::SysExMessage(Command cmd, CommandFlags flags, Device *device)
-	: cmd(cmd), cmdflags(flags), device(device) {
-	if (this->device != 0)
-		this->deviceHeader = this->device->getDeviceHeader();
+	: m_Command(cmd), m_iCmdflags(flags), m_pDevice(device) {
+	if (this->m_pDevice != 0)
+		this->m_pDeviceHeader = this->m_pDevice->getDeviceHeader();
 	else
-		deviceHeader = new BYTE_VECTOR();
-	commandData = new BYTE_VECTOR();
-	commandData->push_back(flags);
-	commandData->push_back(static_cast<unsigned char>(cmd));
-	acceptedAnswers = commandAcceptedAnswers[cmd];
+		m_pDeviceHeader = new BYTE_VECTOR();
+	m_pCommandData = new BYTE_VECTOR();
+	m_pCommandData->push_back(flags);
+	m_pCommandData->push_back(static_cast<unsigned char>(cmd));
+	m_AcceptedAnswers = commandAcceptedAnswers[cmd];
 }
 
 SysExMessage::SysExMessage(Command cmd, std::vector<unsigned char> *message,
 						   Device *device)
-	: cmd(cmd), device(device) {
-	if (this->device != 0)
-		this->deviceHeader = this->device->getDeviceHeader();
+	: m_Command(cmd), m_pDevice(device) {
+	if (this->m_pDevice != 0)
+		this->m_pDeviceHeader = this->m_pDevice->getDeviceHeader();
 	else
-		deviceHeader = new BYTE_VECTOR();
-	cmdflags = (*message)[14];
-	commandData = new BYTE_VECTOR();
-	commandData->push_back(cmdflags);
-	commandData->push_back(static_cast<unsigned char>(cmd));
-	acceptedAnswers = commandAcceptedAnswers[cmd];
+		m_pDeviceHeader = new BYTE_VECTOR();
+	m_iCmdflags = (*message)[14];
+	m_pCommandData = new BYTE_VECTOR();
+	m_pCommandData->push_back(m_iCmdflags);
+	m_pCommandData->push_back(static_cast<unsigned char>(cmd));
+	m_AcceptedAnswers = commandAcceptedAnswers[cmd];
 	extractData(message);
 }
 
 SysExMessage::~SysExMessage() {
-	delete commandData;
-	delete deviceHeader;
+	delete m_pCommandData;
+	delete m_pDeviceHeader;
 }
 
 void SysExMessage::extractData(std::vector<unsigned char> *message) {
@@ -68,7 +68,7 @@ void SysExMessage::extractData(std::vector<unsigned char> *message) {
 		new BYTE_VECTOR(message->begin() + Device::DATA_LENGTH_OFFSET,
 						message->begin() + Device::DATA_LENGTH_OFFSET +
 							Device::DATA_LENGTH_LENGTH));
-	data = new BYTE_VECTOR(message->begin() + Device::DATA_OFFSET,
+	m_pData = new BYTE_VECTOR(message->begin() + Device::DATA_OFFSET,
 						   message->begin() + Device::DATA_OFFSET + dataLength);
 }
 
@@ -77,13 +77,13 @@ BYTE_VECTOR *SysExMessage::getMIDISysExMessage() {
 	BYTE_VECTOR *message = new BYTE_VECTOR();
 	BYTE_VECTOR *manufacturerHeader = Device::getManufacturerHeader();
 
-	BYTE_VECTOR *md = getMessageData();
+	BYTE_VECTOR *md = m_pGetMessageData();
 	unsigned long mdSize = md->size();
 	BYTE_VECTOR *bodyLength = MIDI::byteSplit(mdSize, 2);
 	BYTE_VECTOR *transactionId = getTransactionId();
 
-	body->reserve(deviceHeader->size() + 6 + mdSize);
-	body->insert(body->end(), deviceHeader->begin(), deviceHeader->end());
+	body->reserve(m_pDeviceHeader->size() + 6 + mdSize);
+	body->insert(body->end(), m_pDeviceHeader->begin(), m_pDeviceHeader->end());
 	body->insert(body->end(), transactionId->begin(), transactionId->end());
 	body->insert(body->end(), getCommandData()->begin(),
 				 getCommandData()->end());
@@ -93,7 +93,7 @@ BYTE_VECTOR *SysExMessage::getMIDISysExMessage() {
 	}
 	unsigned char cs = MIDI::RolandChecksum(body);
 
-	message->reserve(manufacturerHeader->size() + deviceHeader->size() +
+	message->reserve(manufacturerHeader->size() + m_pDeviceHeader->size() +
 					 mdSize + 4);
 	message->push_back(SYSEX_START);
 	message->insert(message->end(), manufacturerHeader->begin(),
@@ -131,8 +131,8 @@ Command SysExMessage::parseAnswer(BYTE_VECTOR *answer) {
 }
 
 bool SysExMessage::checkAnswerValid(long answerCommandId) {
-	if (std::find(acceptedAnswers.begin(), acceptedAnswers.end(),
-				  answerCommandId) == acceptedAnswers.end())
+	if (std::find(m_AcceptedAnswers.begin(), m_AcceptedAnswers.end(),
+				  answerCommandId) == m_AcceptedAnswers.end())
 		throw ProtocolException(ProtocolException::WRONG_ANSWER);
 	return true;
 }
@@ -141,8 +141,8 @@ void SysExMessage::createAnswer(Command cmd,
 								std::vector<unsigned char> *message,
 								Device *device) {
 	if (cmd == ACK) {
-		answer = new Ack(cmd, message, device);
-		answer->parseAnswerData();
+		m_pAnswer = new Ack(cmd, message, device);
+		m_pAnswer->parseAnswerData();
 	}
 }
 
@@ -154,20 +154,20 @@ void SysExMessage::storeSettings() {
 	getStorableValue();
 }
 
-unsigned char SysExMessage::getCmdflags() const { return cmdflags; }
+unsigned char SysExMessage::getCmdflags() const { return m_iCmdflags; }
 
-void SysExMessage::setCmdflags(unsigned char value) { cmdflags = value; }
+void SysExMessage::setCmdflags(unsigned char value) { m_iCmdflags = value; }
 
 int SysExMessage::execute() {
-	if (device == 0)
+	if (m_pDevice == 0)
 		return -1;
 	BYTE_VECTOR *message = getMIDISysExMessage();
 	if (debug)
 		MIDI::printMessage(message);
-	device->sentSysex(message);
+	m_pDevice->sentSysex(message);
 	try {
 		BYTE_VECTOR *answerMessage = 0;
-		answerMessage = device->retrieveSysex();
+		answerMessage = m_pDevice->retrieveSysex();
 		if (answerMessage != nullptr) {
 			Command cmd = parseAnswer(answerMessage);
 			if (cmd == CMD_ERROR)
@@ -176,8 +176,8 @@ int SysExMessage::execute() {
 				std::cout << "c: ";
 				MIDI::printMessage(answerMessage);
 			}
-			if (cmd != this->cmd)
-				createAnswer(cmd, answerMessage, device);
+			if (cmd != this->m_Command)
+				createAnswer(cmd, answerMessage, m_pDevice);
 			return 0;
 		}
 	} catch (...) {
@@ -189,9 +189,9 @@ int SysExMessage::execute() {
 
 void SysExMessage::setDebug(bool debug) { this->debug = debug; }
 
-void SysExMessage::printRawData() { MIDI::printMessage(data); }
+void SysExMessage::printRawData() { MIDI::printMessage(m_pData); }
 
-SysExMessage *SysExMessage::getAnswer() { return answer; }
+SysExMessage *SysExMessage::getAnswer() { return m_pAnswer; }
 
 SysExMessage *SysExMessage::query() {
 	try {
@@ -200,18 +200,18 @@ SysExMessage *SysExMessage::query() {
 		throw;
 	}
 
-	return answer;
+	return m_pAnswer;
 }
 
 std::string SysExMessage::getDataAsString() {
-	std::string string2(data->begin(), data->end());
+	std::string string2(m_pData->begin(), m_pData->end());
 	return string2;
 }
 
 long SysExMessage::getDataAsLong() {
 	long result = -1;
-	if (data->size() < 11) {
-		result = MIDI::byteJoin(data);
+	if (m_pData->size() < 11) {
+		result = MIDI::byteJoin(m_pData);
 	}
 	return result;
 }

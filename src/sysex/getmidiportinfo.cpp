@@ -3,16 +3,16 @@
 GetMidiPortInfo::GetMidiPortInfo(Device *device)
 	: SysExMessage(GET_MIDI_PORT_INFO, SysExMessage::QUERY, device) {}
 
-BYTE_VECTOR *GetMidiPortInfo::getMessageData() {
+BYTE_VECTOR *GetMidiPortInfo::m_pGetMessageData() {
 	BYTE_VECTOR *messageData =
-		MIDI::byteSplit(static_cast<unsigned long>(portNumber), 2);
+		MIDI::byteSplit(static_cast<unsigned long>(m_iPortNumber), 2);
 	return messageData;
 }
 
 void GetMidiPortInfo::createAnswer(Command cmd, BYTE_VECTOR *message,
 								   Device *device) {
-	answer = new RetSetMidiPortInfo(cmd, message, device);
+	m_pAnswer = new RetSetMidiPortInfo(cmd, message, device);
 	if (debug)
-		answer->setDebug(true);
-	answer->parseAnswerData();
+		m_pAnswer->setDebug(true);
+	m_pAnswer->parseAnswerData();
 }

@@ -11,8 +11,8 @@ class RetSetInfo : public SysExMessage {
 
 public:
 	// Constructors
-	RetSetInfo(Device *device);
-	RetSetInfo(CommandFlags flags, Device *device);
+	RetSetInfo(Device *m_pDevice);
+	RetSetInfo(CommandFlags flags, Device *m_pDevice);
 	RetSetInfo(Command cmd, BYTE_VECTOR *message, Device *device)
 		: SysExMessage(cmd, message, device) {}
 
@@ -23,21 +23,21 @@ public:
 	std::string getItemName();
 
 	// setter
-	bool setValue(std::string value);
+	bool setValue(std::string m_sValue);
 
 	// methods
-	int getSettingsId() { return cmd; }
+	int getSettingsId() { return m_Command; }
 	int getSettingsIndex() { return 0; }
 	std::string getStorableValue() { return ""; }
 
 protected:
 	void parseAnswerData();
-	BYTE_VECTOR *getMessageData();
+	BYTE_VECTOR *m_pGetMessageData();
 
 private:
 	// variables
-	SysExMessage::DeviceInfoItem infoItem;
-	std::string value;
+	SysExMessage::DeviceInfoItem m_InfoItem;
+	std::string m_sValue;
 };
 
 #endif// RETSETINFO_H

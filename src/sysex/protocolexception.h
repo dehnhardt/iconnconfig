@@ -21,17 +21,17 @@ public:
 	};
 
 	ProtocolException(ProtocolErrorCode code = UNKNOWN, Device *device = 0)
-		: std::runtime_error("CommunicationException"), code(code),
-		  device(device) {}
+		: std::runtime_error("CommunicationException"), m_ErrorCode(code),
+		  m_pDevice(device) {}
 
 	virtual ~ProtocolException();
 
 	// getter
-	ProtocolErrorCode getErrorCode() { return code; }
+	ProtocolErrorCode getErrorCode() { return m_ErrorCode; }
 	std::string getErrorMessage() {
 		std::stringstream e;
 		e << "Protocol error. Reason: ";
-		switch (code) {
+		switch (m_ErrorCode) {
 		case UNKNOWN:
 			e << " unknown";
 			break;
@@ -60,21 +60,21 @@ public:
 			break;
 		}
 		e << std::endl;
-		if (device) {
+		if (m_pDevice) {
 			e << "Query: "
-			  << MIDI::printMessageToHexString(device->getLastSendMessage())
+			  << MIDI::printMessageToHexString(m_pDevice->getLastSendMessage())
 			  << std::endl;
 
 			e << "Answer: "
-			  << MIDI::printMessageToHexString(device->getLastRetrieveMessage())
+			  << MIDI::printMessageToHexString(m_pDevice->getLastRetrieveMessage())
 			  << std::endl;
 		}
 		return e.str();
 	}
 
 private:
-	ProtocolErrorCode code = UNKNOWN;
-	Device *device;
+	ProtocolErrorCode m_ErrorCode = UNKNOWN;
+	Device *m_pDevice;
 };
 
 #endif// PROTOCOLEXCEPTION_H

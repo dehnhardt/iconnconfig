@@ -16,7 +16,7 @@
 
 DeviceInfoWidget::DeviceInfoWidget(MioMain *parent, Device *device,
 								   GetInfo *deviceInfo, QString windowTitle)
-	: MultiInfoWidget(parent, device, windowTitle), deviceInfo(deviceInfo) {
+	: MultiInfoWidget(parent, device, windowTitle), m_pDeviceInfo(deviceInfo) {
 	infoSections = new std::vector<MultiInfoListEntry *>();
 	if (device->getCommands()->isCommandSupported(Command::GET_INFO_LIST))
 		infoSections->push_back(
@@ -40,7 +40,7 @@ void DeviceInfoWidget::deviceInfoChanged(SysExMessage::DeviceInfoItem item,
 	std::cout << "DeviceInfoWidget: deviceInfoChanged " << item << " value "
 			  << value << std::endl;
 	std::map<SysExMessage::DeviceInfoItem, RetSetInfo *> *retSetInfos =
-		this->deviceInfo->getRetSetInfos();
+		this->m_pDeviceInfo->getRetSetInfos();
 	if (retSetInfos) {
 		RetSetInfo *info = (*retSetInfos)[item];
 		info->setValue(value);
@@ -51,7 +51,7 @@ QWidget *DeviceInfoWidget::createWidget(MultiInfoListEntry *entry) {
 	switch (entry->entryCode) {
 	case MultiInfoListEntry::GLOBAL_DEVICE_INFO: {
 		InfoTableWidget *w = new InfoTableWidget(
-			this->parentWidget(), this->deviceInfo->getRetSetInfos());
+			this->parentWidget(), this->m_pDeviceInfo->getRetSetInfos());
 		connect(w, SIGNAL(deviceInfoChanged(SysExMessage::DeviceInfoItem,
 											std::string)),
 				this, SLOT(deviceInfoChanged(SysExMessage::DeviceInfoItem,

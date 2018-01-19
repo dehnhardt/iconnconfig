@@ -7,7 +7,7 @@ enum MidiPortType { NONE, DIN, USB_DEVICE, USB_HOST, ETHERNET };
 
 class RetSetMidiPortInfo : public SysExMessage {
 public:
-	RetSetMidiPortInfo(Device *device);
+	RetSetMidiPortInfo(Device *m_pDevice);
 
 	RetSetMidiPortInfo(Command cmd, BYTE_VECTOR *message, Device *device)
 		: SysExMessage(cmd, message, device) {}
@@ -35,24 +35,24 @@ public:
 
 public:
 	// methods
-	int getSettingsId() { return cmd; }
+	int getSettingsId() { return m_Command; }
 	int getSettingsIndex() { return 0; }
 	std::string getStorableValue() { return ""; }
 
 private:
-	long portId;
-	MidiPortType portType;
-	bool inputEnabled;
-	bool outputEnabled;
+	long m_iPortId;
+	MidiPortType m_PortType;
+	bool m_bInputEnabled;
+	bool m_bOutputEnabled;
 
-	int jackNumber = 0;
-	int usbDevicePort = 0;
-	int usbHostPort = 0;
-	int ethernetSession = 0;
+	int m_iJackNumber = 0;
+	int m_iUsbDevicePort = 0;
+	int m_iUsbHostPort = 0;
+	int m_iEthernetSession = 0;
 
-	int portNameLength = 0;
-	std::string portName;
-	std::string portTypeName;
+	int m_iPortNameLength = 0;
+	std::string m_sPortName;
+	std::string m_sPortTypeName;
 };
 
 #endif// RETSETMIDIPORTINFO_H

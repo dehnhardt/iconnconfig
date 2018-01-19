@@ -4,7 +4,7 @@ Ack::Ack(Command cmd, std::vector<unsigned char> *message, Device *device)
 	: SysExMessage(cmd, message, device) {}
 
 void Ack::checkResult() {
-	switch (this->result) {
+	switch (this->m_cResult) {
 	case COMMAND_ACCEPTED:
 #ifdef __MIO_DEBUG__
 		std::cout << "Command accepted" << std::endl;
@@ -26,8 +26,8 @@ void Ack::checkResult() {
 }
 
 void Ack::parseAnswerData() {
-	if (data->size() == 3) {
-		this->result = data->at(2);
+	if (m_pData->size() == 3) {
+		this->m_cResult = m_pData->at(2);
 	}
 	checkResult();
 }

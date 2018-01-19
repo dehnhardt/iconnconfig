@@ -5,21 +5,21 @@
 
 class RetInfoList : public SysExMessage {
 public:
-	RetInfoList(Device *device);
+	RetInfoList(Device *m_pDevice);
 	RetInfoList(Command cmd, BYTE_VECTOR *message, Device *device)
 		: SysExMessage(cmd, message, device) {}
 
 	std::vector<DeviceInfoItem> *getImplementedInfos() {
-		return implementedInfos;
+		return m_pImplementedInfos;
 	}
 	bool isInfoImplemented(DeviceInfoItem info);
 	void parseAnswerData();
-	int getSettingsId() { return cmd; }
+	int getSettingsId() { return m_Command; }
 	int getSettingsIndex() { return 0; }
 	std::string getStorableValue() { return ""; }
 
 private:
-	std::vector<DeviceInfoItem> *implementedInfos = 0;
+	std::vector<DeviceInfoItem> *m_pImplementedInfos = 0;
 };
 
 #endif// IMPLEMENTEDINFOS_H

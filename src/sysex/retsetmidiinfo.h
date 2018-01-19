@@ -5,7 +5,7 @@
 
 class RetSetMidiInfo : public SysExMessage {
 public:
-	RetSetMidiInfo(Device *device);
+	RetSetMidiInfo(Device *m_pDevice);
 
 	RetSetMidiInfo(Command cmd, BYTE_VECTOR *message, Device *device)
 		: SysExMessage(cmd, message, device) {}
@@ -34,7 +34,7 @@ public:
 
 public:
 	// methods
-	int getSettingsId() { return cmd; }
+	int getSettingsId() { return m_Command; }
 	int getSettingsIndex() { return 0; }
 	std::string getStorableValue() { return ""; }
 
@@ -42,20 +42,20 @@ protected:
 	void parseAnswerData();
 
 private:
-	int midiPorts = 0;
-	int currentCommunicationPort = 0;
-	int dinPorts = 0;
-	int usbDeviceJacks = 0;
-	int usbHostJacks = 0;
-	int ethernetJacks = 0;
-	int usbMidiDevicePorts = 0;
-	int usbMidiHostPorts = 0;
-	int rtpMidiSessions = 0;
-	int rtpMidiConnections = 0;
-	int maximumSupportedUsbHostPorts = 0;
+	int m_iMidiPorts = 0;
+	int m_iCurrentCommunicationPort = 0;
+	int m_iDinPorts = 0;
+	int m_iUsbDeviceJacks = 0;
+	int m_iUsbHostJacks = 0;
+	int m_iEthernetJacks = 0;
+	int m_iUsbMidiDevicePorts = 0;
+	int m_iUsbMidiHostPorts = 0;
+	int m_iRtpMidiSessions = 0;
+	int m_iRtpMidiConnections = 0;
+	int m_iMaximumSupportedUsbHostPorts = 0;
 
-	bool enableRoutingBetweenHostJacks = false;
-	bool enableRunningStatusOnDin = false;
+	bool m_bEnableRoutingBetweenHostJacks = false;
+	bool m_bEnableRunningStatusOnDin = false;
 };
 
 #endif// RETSETMIDIINFO_H

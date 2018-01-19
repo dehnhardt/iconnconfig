@@ -5,10 +5,10 @@ RetCommandList::RetCommandList(Device *device)
 	: SysExMessage(Command::RET_COMMAND_LIST, SysExMessage::QUERY, device) {}
 
 bool RetCommandList::isCommandSupported(const Command cmd) {
-	if (!supportedCommands)
+	if (!m_pSupportedCommands)
 		return false;
 	std::vector<Command>::iterator it;
-	for (it = supportedCommands->begin(); it != supportedCommands->end();
+	for (it = m_pSupportedCommands->begin(); it != m_pSupportedCommands->end();
 		 it++) {
 		if (*it == cmd)
 			return true;
@@ -17,13 +17,13 @@ bool RetCommandList::isCommandSupported(const Command cmd) {
 }
 
 void RetCommandList::parseAnswerData() {
-	supportedCommands = new std::vector<Command>();
-	unsigned int nCommandsSize = data->size();
+	m_pSupportedCommands = new std::vector<Command>();
+	unsigned int nCommandsSize = m_pData->size();
 	Command c;
 	for (unsigned int i = 0; i < nCommandsSize; ++i) {
-		int val = data->at(i);
+		int val = m_pData->at(i);
 		c = static_cast<Command>(val);
 		if ((val != 0) && (val < 0x40))
-			supportedCommands->push_back(c);
+			m_pSupportedCommands->push_back(c);
 	}
 }

@@ -5,64 +5,64 @@ RetSetMidiPortInfo::RetSetMidiPortInfo(Device *device)
 				   device) {}
 
 void RetSetMidiPortInfo::parseAnswerData() {
-	portId = MIDI::byteJoin(data, 1, 2);
-	portType = (MidiPortType)data->at(3);
-	jackNumber = data->at(4);
+	m_iPortId = MIDI::byteJoin(m_pData, 1, 2);
+	m_PortType = (MidiPortType)m_pData->at(3);
+	m_iJackNumber = m_pData->at(4);
 
-	switch (portType) {
+	switch (m_PortType) {
 	case NONE:
 		break;
 	case DIN:
-		portTypeName = "DIN-Port";
+		m_sPortTypeName = "DIN-Port";
 		break;
 	case USB_DEVICE:
-		usbDevicePort = data->at(5);
-		portTypeName = "USB-Device-Port";
+		m_iUsbDevicePort = m_pData->at(5);
+		m_sPortTypeName = "USB-Device-Port";
 		break;
 	case USB_HOST:
-		usbHostPort = data->at(5);
-		portTypeName = "USB-Host-Port";
+		m_iUsbHostPort = m_pData->at(5);
+		m_sPortTypeName = "USB-Host-Port";
 		break;
 	case ETHERNET:
-		ethernetSession = data->at(5);
-		portTypeName = "Ethernet-Port";
+		m_iEthernetSession = m_pData->at(5);
+		m_sPortTypeName = "Ethernet-Port";
 		break;
 	}
-	portNameLength = data->at(8);
-	int portFlags = data->at(9);
-	inputEnabled = ((portFlags & 0x01) == 0x01);
-	outputEnabled = ((portFlags & 0x02) == 0x02);
-	portName = std::string(data->begin() + 10, data->end());
+	m_iPortNameLength = m_pData->at(8);
+	int portFlags = m_pData->at(9);
+	m_bInputEnabled = ((portFlags & 0x01) == 0x01);
+	m_bOutputEnabled = ((portFlags & 0x02) == 0x02);
+	m_sPortName = std::string(m_pData->begin() + 10, m_pData->end());
 }
 
-long RetSetMidiPortInfo::getPortId() const { return portId; }
+long RetSetMidiPortInfo::getPortId() const { return m_iPortId; }
 
-MidiPortType RetSetMidiPortInfo::getPortType() const { return portType; }
+MidiPortType RetSetMidiPortInfo::getPortType() const { return m_PortType; }
 
-bool RetSetMidiPortInfo::getInputEnabled() const { return inputEnabled; }
+bool RetSetMidiPortInfo::getInputEnabled() const { return m_bInputEnabled; }
 
-bool RetSetMidiPortInfo::getOutputEnabled() const { return outputEnabled; }
+bool RetSetMidiPortInfo::getOutputEnabled() const { return m_bOutputEnabled; }
 
-int RetSetMidiPortInfo::getJackNumber() const { return jackNumber; }
+int RetSetMidiPortInfo::getJackNumber() const { return m_iJackNumber; }
 
-int RetSetMidiPortInfo::getUsbDevicePort() const { return usbDevicePort; }
+int RetSetMidiPortInfo::getUsbDevicePort() const { return m_iUsbDevicePort; }
 
-int RetSetMidiPortInfo::getUsbHostPort() const { return usbHostPort; }
+int RetSetMidiPortInfo::getUsbHostPort() const { return m_iUsbHostPort; }
 
-void RetSetMidiPortInfo::setUsbHostPort(int value) { usbHostPort = value; }
+void RetSetMidiPortInfo::setUsbHostPort(int value) { m_iUsbHostPort = value; }
 
-int RetSetMidiPortInfo::getEthernetSession() const { return ethernetSession; }
+int RetSetMidiPortInfo::getEthernetSession() const { return m_iEthernetSession; }
 
 int RetSetMidiPortInfo::getPortNumberOfType() const {
-	switch (portType) {
+	switch (m_PortType) {
 	case DIN:
-		return jackNumber;
+		return m_iJackNumber;
 	case USB_DEVICE:
-		return usbDevicePort;
+		return m_iUsbDevicePort;
 	case USB_HOST:
-		return usbHostPort;
+		return m_iUsbHostPort;
 	case ETHERNET:
-		return ethernetSession;
+		return m_iEthernetSession;
 	case NONE:
 		return 0;
 	}
@@ -70,23 +70,23 @@ int RetSetMidiPortInfo::getPortNumberOfType() const {
 }
 
 int RetSetMidiPortInfo::getJackNumberOfType() const {
-	switch (portType) {
+	switch (m_PortType) {
 	case DIN:
 		return 0;
 	case USB_DEVICE:
-		return jackNumber;
+		return m_iJackNumber;
 	case USB_HOST:
-		return jackNumber;
+		return m_iJackNumber;
 	case ETHERNET:
-		return jackNumber;
+		return m_iJackNumber;
 	case NONE:
 		return 0;
 	}
 	return 0;
 }
 
-std::string RetSetMidiPortInfo::getPortName() const { return portName; }
+std::string RetSetMidiPortInfo::getPortName() const { return m_sPortName; }
 
 void RetSetMidiPortInfo::setPortName(const std::string &value) {
-	portName = value;
+	m_sPortName = value;
 }

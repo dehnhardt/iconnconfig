@@ -6,24 +6,24 @@ RetSetInfo::RetSetInfo(Device *device)
 RetSetInfo::RetSetInfo(CommandFlags flags, Device *device)
 		: SysExMessage(Command::RET_SET_INFO, flags, device) {}
 
-SysExMessage::DeviceInfoItem RetSetInfo::getInfoItem() { return infoItem; }
+SysExMessage::DeviceInfoItem RetSetInfo::getInfoItem() { return m_InfoItem; }
 
-std::string RetSetInfo::getValue() { return value; }
+std::string RetSetInfo::getValue() { return m_sValue; }
 
 void RetSetInfo::parseAnswerData() {
-	this->infoItem = (SysExMessage::DeviceInfoItem)data->at(0);
-	this->value = std::string(data->begin() + 1, data->end());
+	this->m_InfoItem = (SysExMessage::DeviceInfoItem)m_pData->at(0);
+	this->m_sValue = std::string(m_pData->begin() + 1, m_pData->end());
 }
 
-std::vector<unsigned char> *RetSetInfo::getMessageData() {
+std::vector<unsigned char> *RetSetInfo::m_pGetMessageData() {
 	BYTE_VECTOR *messageData = new BYTE_VECTOR();
-	messageData->push_back(this->infoItem);
-	messageData->insert(messageData->end(), value.begin(), value.end());
+	messageData->push_back(this->m_InfoItem);
+	messageData->insert(messageData->end(), m_sValue.begin(), m_sValue.end());
 	return messageData;
 }
 
 bool RetSetInfo::isItemEditable() {
-	switch (infoItem) {
+	switch (m_InfoItem) {
 	case DEVICE_NAME:
 		return true;
 	default:
@@ -32,7 +32,7 @@ bool RetSetInfo::isItemEditable() {
 }
 
 std::string RetSetInfo::getItemName() {
-	switch (infoItem) {
+	switch (m_InfoItem) {
 	case ACCESSORY_NAME:
 		return tr("Accessory Name").toStdString();
 	case MANUFACTURER_NAME:
@@ -53,8 +53,8 @@ std::string RetSetInfo::getItemName() {
 }
 
 bool RetSetInfo::setValue(std::string value) {
-	this->value = value;
-	this->commandData->at(0) = 0x40;
+	this->m_sValue = value;
+	this->m_pCommandData->at(0) = 0x40;
 	execute();
 	return true;
 }

@@ -5,9 +5,9 @@
 
 class Ack : public SysExMessage {
 public:
-	Ack(Command cmd, BYTE_VECTOR *message, Device *device);
+	Ack(Command m_Command, BYTE_VECTOR *message, Device *m_pDevice);
 	void checkResult();
-	int getSettingsId() { return cmd; }
+	int getSettingsId() { return m_Command; }
 	int getSettingsIndex() { return 0; }
 	std::string getStorableValue() { return ""; }
 
@@ -15,7 +15,7 @@ protected:
 	void parseAnswerData();
 
 private:
-	unsigned char result;
+	unsigned char m_cResult;
 };
 
 #endif// ACK_H

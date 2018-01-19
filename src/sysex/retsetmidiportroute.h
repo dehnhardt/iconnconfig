@@ -5,7 +5,7 @@
 
 class RetSetMidiPortRoute : public SysExMessage {
 public:
-	RetSetMidiPortRoute(Device *device);
+	RetSetMidiPortRoute(Device *m_pDevice);
 
 	RetSetMidiPortRoute(Command cmd, BYTE_VECTOR *message, Device *device)
 		: SysExMessage(cmd, message, device) {}
@@ -16,19 +16,20 @@ public:
 
 	int getTotalNumberOfPorts() const;
 	void setTotalNumberOfPorts(int value);
-	BYTE_VECTOR *getMessageData();
+	BYTE_VECTOR *m_pGetMessageData();
 
-	int getSettingsId() { return cmd; }
+	int getSettingsId() { return m_Command; }
 	int getSettingsIndex() { return 0; }
 	std::string getStorableValue() { return ""; }
 
 private:
-	long portId;
-	int totalNumberOfPorts = -1;
-	int numerOfExpectedBytes = -1;
-	BYTE_VECTOR *portRoutings = 0;
 	int getNumberOfExpectedBytes(int totalPortNumber);
 	void getPortByteAndBit(int portNumber, int &byte, int &bit);
+
+	long m_iPortId;
+	int m_iTotalNumberOfPorts = -1;
+	int m_iNumerOfExpectedBytes = -1;
+	BYTE_VECTOR *m_pPortRoutings = 0;
 };
 
 #endif// RETSETMIDIPORTROUTE_H

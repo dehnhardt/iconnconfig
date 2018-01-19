@@ -10,17 +10,19 @@
 #include <QTimer>
 #include <QWidget>
 
-class PortButtonMapper : public QObject {
+class PortButtonMapper : public QObject
+{
 public:
 	PortButtonMapper(PortButton *portButton) : portButton(portButton) {}
 	PortButton *portButton;
 };
 
-class PortRoutingWidget : public QWidget {
+class PortRoutingWidget : public QWidget
+{
 	Q_OBJECT
 public:
 	explicit PortRoutingWidget(Device *device, int portNumber,
-														 QWidget *parent = 0);
+							   QWidget *parent = 0);
 	virtual ~PortRoutingWidget();
 signals:
 
@@ -54,7 +56,7 @@ private:
 	void createSignalMapper();
 	void createMidiPortSections(Device *device);
 	void createMidiPorts(int line,
-											 std::vector<RetSetMidiPortInfo *> *midiPortInfos);
+						 std::vector<RetSetMidiPortInfo *> *midiPortInfos);
 	int getButtonLineIndex(PortButton *b);
 	bool isButtonChecked(int row);
 	void setButtonsChecked(int row, bool checked);

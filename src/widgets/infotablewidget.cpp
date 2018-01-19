@@ -6,7 +6,7 @@
 InfoTableWidget::InfoTableWidget(
     QWidget *parent,
     std::map<SysExMessage::DeviceInfoItem, RetSetInfo *> *retSetInfos)
-    : QWidget(parent), retSetInfos(retSetInfos) {
+    : QWidget(parent), m_pRetSetInfos(retSetInfos) {
 
   QGridLayout *lo = new QGridLayout();
   QPalette qp;
@@ -14,7 +14,7 @@ InfoTableWidget::InfoTableWidget(
   setLayout(lo);
 
   int i = 0;
-  if (this->retSetInfos) {
+  if (this->m_pRetSetInfos) {
     setupTable();
     for (std::map<SysExMessage::DeviceInfoItem, RetSetInfo *>::iterator it =
              retSetInfos->begin();
@@ -36,24 +36,24 @@ InfoTableWidget::InfoTableWidget(
         value->setFlags(value->flags() & ~Qt::ItemIsEditable);
         value->setForeground(qp.dark());
       }
-      tw->setItem(i, 0, name);
-      tw->setItem(i, 1, value);
-      tw->setItem(i, 2, itemType);
+      m_pTableWidget->setItem(i, 0, name);
+      m_pTableWidget->setItem(i, 1, value);
+      m_pTableWidget->setItem(i, 2, itemType);
       ++i;
     }
-    lo->addWidget(tw, 0, 0);
-    connect(tw, SIGNAL(cellChanged(int, int)), this,
+    lo->addWidget(m_pTableWidget, 0, 0);
+    connect(m_pTableWidget, SIGNAL(cellChanged(int, int)), this,
             SLOT(onDeviceInfoChanged(int, int)));
   }
 }
 
 void InfoTableWidget::setupTable() {
-  tw = new QTableWidget(retSetInfos->size(), 3, this);
-  tw->setHorizontalHeaderItem(0, new QTableWidgetItem(tr("Name")));
-  tw->setHorizontalHeaderItem(1, new QTableWidgetItem(tr("Value")));
-  tw->verticalHeader()->hide();
+  m_pTableWidget = new QTableWidget(m_pRetSetInfos->size(), 3, this);
+  m_pTableWidget->setHorizontalHeaderItem(0, new QTableWidgetItem(tr("Name")));
+  m_pTableWidget->setHorizontalHeaderItem(1, new QTableWidgetItem(tr("Value")));
+  m_pTableWidget->verticalHeader()->hide();
 	//  tw->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
-  tw->setColumnHidden(2, true);
+  m_pTableWidget->setColumnHidden(2, true);
 }
 
 /**
@@ -68,8 +68,8 @@ void InfoTableWidget::onDeviceInfoChanged(int row, int column) {
   if (column == 1) {
     std::string val;
     int i = -1;
-    val = tw->item(row, column)->text().toStdString();
-    i = tw->item(row, 2)->text().toInt();
+    val = m_pTableWidget->item(row, column)->text().toStdString();
+    i = m_pTableWidget->item(row, 2)->text().toInt();
     SysExMessage::DeviceInfoItem item = (SysExMessage::DeviceInfoItem)i;
     if (i > 0)
       emit deviceInfoChanged(item, val);

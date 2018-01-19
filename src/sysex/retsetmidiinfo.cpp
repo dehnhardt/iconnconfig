@@ -4,67 +4,67 @@ RetSetMidiInfo::RetSetMidiInfo(Device *device)
 	: SysExMessage(Command::RET_SET_MIDI_INFO, SysExMessage::QUERY, device) {}
 
 void RetSetMidiInfo::parseAnswerData() {
-	if (data->size() < 15)
+	if (m_pData->size() < 15)
 		return;
-	commandVersionNumber = this->data->at(0);
-	midiPorts = static_cast<int>(MIDI::byteJoin(this->data, 1, 2));
-	currentCommunicationPort = static_cast<int>(MIDI::byteJoin(data, 3, 2));
-	dinPorts = this->data->at(5);
-	usbDeviceJacks = this->data->at(6);
-	usbHostJacks = this->data->at(7);
-	ethernetJacks = this->data->at(8);
-	usbMidiDevicePorts = this->data->at(9);
-	usbMidiHostPorts = this->data->at(10);
-	rtpMidiSessions = this->data->at(11);
-	rtpMidiConnections = this->data->at(12);
-	int flags = this->data->at(13);
-	enableRoutingBetweenHostJacks = ((flags & 1) == 1);
-	enableRunningStatusOnDin = ((flags & 2) == 2);
-	maximumSupportedUsbHostPorts = this->data->at(14);
+	m_iCommandVersionNumber = this->m_pData->at(0);
+	m_iMidiPorts = static_cast<int>(MIDI::byteJoin(this->m_pData, 1, 2));
+	m_iCurrentCommunicationPort = static_cast<int>(MIDI::byteJoin(m_pData, 3, 2));
+	m_iDinPorts = this->m_pData->at(5);
+	m_iUsbDeviceJacks = this->m_pData->at(6);
+	m_iUsbHostJacks = this->m_pData->at(7);
+	m_iEthernetJacks = this->m_pData->at(8);
+	m_iUsbMidiDevicePorts = this->m_pData->at(9);
+	m_iUsbMidiHostPorts = this->m_pData->at(10);
+	m_iRtpMidiSessions = this->m_pData->at(11);
+	m_iRtpMidiConnections = this->m_pData->at(12);
+	int flags = this->m_pData->at(13);
+	m_bEnableRoutingBetweenHostJacks = ((flags & 1) == 1);
+	m_bEnableRunningStatusOnDin = ((flags & 2) == 2);
+	m_iMaximumSupportedUsbHostPorts = this->m_pData->at(14);
 }
 
 void RetSetMidiInfo::setMaximumSupportedUsbHostPorts(int value) {
-	maximumSupportedUsbHostPorts = value;
+	m_iMaximumSupportedUsbHostPorts = value;
 }
 
 bool RetSetMidiInfo::getEnableRunningStatusOnDin() const {
-	return enableRunningStatusOnDin;
+	return m_bEnableRunningStatusOnDin;
 }
 
 void RetSetMidiInfo::setEnableRunningStatusOnDin(bool value) {
-	enableRunningStatusOnDin = value;
+	m_bEnableRunningStatusOnDin = value;
 }
 
 bool RetSetMidiInfo::getEnableRoutingBetweenHostJacks() const {
-	return enableRoutingBetweenHostJacks;
+	return m_bEnableRoutingBetweenHostJacks;
 }
 
 void RetSetMidiInfo::setEnableRoutingBetweenHostJacks(bool value) {
-	enableRoutingBetweenHostJacks = value;
+	m_bEnableRoutingBetweenHostJacks = value;
 }
 
 int RetSetMidiInfo::getMaximumSupportedUsbHostPorts() const {
-	return maximumSupportedUsbHostPorts;
+	return m_iMaximumSupportedUsbHostPorts;
 }
 
-int RetSetMidiInfo::getRtpMidiConnections() const { return rtpMidiConnections; }
+int RetSetMidiInfo::getRtpMidiConnections() const { return m_iRtpMidiConnections; }
 
-int RetSetMidiInfo::getRtpMidiSessions() const { return rtpMidiSessions; }
+int RetSetMidiInfo::getRtpMidiSessions() const { return m_iRtpMidiSessions; }
 
-int RetSetMidiInfo::getUsbMidiHostPorts() const { return usbMidiHostPorts; }
+int RetSetMidiInfo::getUsbMidiHostPorts() const { return m_iUsbMidiHostPorts; }
 
-int RetSetMidiInfo::getUsbMidiDevicePorts() const { return usbMidiDevicePorts; }
+int RetSetMidiInfo::getUsbMidiDevicePorts() const { return m_iUsbMidiDevicePorts; }
 
-int RetSetMidiInfo::getEthernetJacks() const { return ethernetJacks; }
+int RetSetMidiInfo::getEthernetJacks() const { return m_iEthernetJacks; }
 
-int RetSetMidiInfo::getUsbHostJacks() const { return usbHostJacks; }
+int RetSetMidiInfo::getUsbHostJacks() const { return m_iUsbHostJacks; }
 
-int RetSetMidiInfo::getUsbDeviceJacks() const { return usbDeviceJacks; }
+int RetSetMidiInfo::getUsbDeviceJacks() const { return m_iUsbDeviceJacks; }
 
-int RetSetMidiInfo::getDinPorts() const { return dinPorts; }
+int RetSetMidiInfo::getDinPorts() const { return m_iDinPorts; }
 
 int RetSetMidiInfo::getCurrentCommunicationPort() const {
-	return currentCommunicationPort;
+	return m_iCurrentCommunicationPort;
 }
 
-int RetSetMidiInfo::getMidiPorts() const { return midiPorts; }
+int RetSetMidiInfo::getMidiPorts() const { return m_iMidiPorts; }
