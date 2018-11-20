@@ -1,8 +1,7 @@
-#mioconfit
 
 ## v.01.
 ### Linux
-*Tested only with MIO10* 
+*Tested only with MIO10 and iConnect Audio 4+ (where only MIDI-Configuration works...)* 
 * what works
   * Searching for devices on all alsa ports
   * Setting the device name
