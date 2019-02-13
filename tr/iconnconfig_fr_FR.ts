@@ -147,7 +147,7 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
     <name>DeviceWidget</name>
     <message>
         <source>Information</source>
-        <translation type="vanished">Informations/translation>
+        <translation type="vanished">Informations</translation>
     </message>
     <message>
         <source>Hello</source>
