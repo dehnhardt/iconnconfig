@@ -158,4 +158,6 @@ DISTFILES += \
     BUILD.md \
     tr/iconnconfig_de_DE.ts \
     tr/iconnconfig_de_DE.qm \
+    tr/iconnconfig_fr_FR.ts \
+    tr/iconnconfig_fr_FR.qm \
     .astylerc
