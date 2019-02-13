@@ -9,37 +9,37 @@
         <translation>Über...</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="43"/>
+        <location filename="../src/aboutdialog.cpp" line="48"/>
         <source>Application Name</source>
         <translation>Name der Anwendung</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="45"/>
+        <location filename="../src/aboutdialog.cpp" line="50"/>
         <source>Version</source>
         <translation>Version</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="47"/>
+        <location filename="../src/aboutdialog.cpp" line="52"/>
         <source>Author</source>
         <translation>Autor</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="49"/>
+        <location filename="../src/aboutdialog.cpp" line="54"/>
         <source>Organization</source>
         <translation>Organisation</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="51"/>
+        <location filename="../src/aboutdialog.cpp" line="56"/>
         <source>License</source>
         <translation>Lizenz</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="53"/>
+        <location filename="../src/aboutdialog.cpp" line="58"/>
         <source>Used Software</source>
         <translation>Benutzte Software und Bibliotheken</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="55"/>
+        <location filename="../src/aboutdialog.cpp" line="60"/>
         <source>RtMIDI</source>
         <translation>RtMidi</translation>
     </message>
@@ -48,51 +48,51 @@
         <translation type="vanished">Alle MIDI Ein- uund Ausgabe ist über die RtMidi Bibliothek realisiert. Diese ist an der &lt;a href=&apos;https://ccrma.stanford.edu/software/stk/classRtMidi.html&apos;&gt;Stanford Universität &lt;/a&gt; erstellt worden &lt;br/&gt;Copyright ©1995--2016 Perry R. Cook and Gary P. Scavone. All Rights Reserved.</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="56"/>
+        <location filename="../src/aboutdialog.cpp" line="61"/>
         <source>All midi in- and output is realized with the RtMidi Library. Created at &lt;a href=&apos;https://ccrma.stanford.edu/software/stk/classRtMidi.html&apos;&gt;Stanford University&lt;/a&gt; &lt;br/&gt;Copyright ©1995--2016 Perry R. Cook and Gary P. Scavone. All Rights Reserved.</source>
         <translation>Alle MIDI Ein- und Ausgaben sind über die RtMidi Bibliothek realisiert. Diese ist an der &lt;a href=&apos;https://ccrma.stanford.edu/software/stk/classRtMidi.html&apos;&gt;Stanford Universität &lt;/a&gt; erstellt worden &lt;br/&gt;Copyright ©1995--2016 Perry R. Cook and Gary P. Scavone. All Rights Reserved.</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="63"/>
+        <location filename="../src/aboutdialog.cpp" line="68"/>
         <source>Used Icons</source>
         <translation>Benutzte Icons</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="65"/>
+        <location filename="../src/aboutdialog.cpp" line="70"/>
         <source>USB Device Jack Icon</source>
         <translation>USB-Device Buchse</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="65"/>
+        <location filename="../src/aboutdialog.cpp" line="70"/>
         <source>Downloaded from the &lt;a href=&apos;https://thenounproject.com/&apos;&gt;NOUN Project&lt;/a&gt;&lt;br/&gt;
 Created by Okan Benn</source>
         <translation>Aus dem &lt;a href=&apos;https://thenounproject.com/&apos;&gt;NOUN Project&lt;/a&gt;&lt;br/&gt;
 Erstellt von Okan Benn</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="70"/>
+        <location filename="../src/aboutdialog.cpp" line="75"/>
         <source>Ethernet Jack Icon</source>
         <translation>Ethernet Buchse</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="70"/>
+        <location filename="../src/aboutdialog.cpp" line="75"/>
         <source>Downloaded from the &lt;a href=&apos;https://thenounproject.com/&apos;&gt;NOUN Project&lt;/a&gt;&lt;br/&gt;
 Created by Michael Wohlwend</source>
         <translation>Aus dem &lt;a href=&apos;https://thenounproject.com/&apos;&gt;NOUN Project&lt;/a&gt;&lt;br/&gt;
 Erstelt von Michael Wohlwend</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="74"/>
+        <location filename="../src/aboutdialog.cpp" line="79"/>
         <source>Credits</source>
         <translation>Mein Dank an</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="76"/>
+        <location filename="../src/aboutdialog.cpp" line="81"/>
         <source>RTP-Driver</source>
         <translation>RTP-Treiber</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="77"/>
+        <location filename="../src/aboutdialog.cpp" line="82"/>
         <source>Ralf Beck created an RTP-Driver which I use often to connect to the MIO10 when doing boring programming routines in front of an exciting film.
 As well he provided a patch to make MioConfig work with QT-Version 4.8.</source>
         <translation>Ralf Beck hat einen RTP-Treiber für die MIIO-Geräte entwickelt, welchen ich regelmäßig benutzt habe um vor dem TV langweilige Routineprogrammtätigkeiten für diese Anwendung zu machen.
@@ -141,6 +141,29 @@ Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm un
         <location filename="../src/widgets/deviceinfowidget.h" line="15"/>
         <source>Device Information</source>
         <translation>Geräteinformationen</translation>
+    </message>
+</context>
+<context>
+    <name>DeviceSelectionTableModel</name>
+    <message>
+        <location filename="../src/deviceselectiontablemodel.cpp" line="89"/>
+        <source>Default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/deviceselectiontablemodel.cpp" line="92"/>
+        <source>Device Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/deviceselectiontablemodel.cpp" line="94"/>
+        <source>Device Model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/deviceselectiontablemodel.cpp" line="96"/>
+        <source>Serial Number</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -340,47 +363,51 @@ Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm un
         <translation type="obsolete">Gerät öffnen</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="165"/>
+        <location filename="../src/iconnconfigmain.cpp" line="185"/>
         <source>Save current settings to device</source>
         <translation>Momentane Einstellungen in das Gerät schreiben</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="174"/>
+        <location filename="../src/iconnconfigmain.cpp" line="196"/>
         <source>Restore settings from device</source>
         <translation>Einstellungen des Gerätes auslesen</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="183"/>
+        <location filename="../src/iconnconfigmain.cpp" line="207"/>
         <source>Reset settings to factory default</source>
         <translation>Alle Einstellungen auf Werkeinstellungen zurücksetzen</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="197"/>
+        <location filename="../src/iconnconfigmain.cpp" line="223"/>
         <source>Device Actions</source>
         <translation>Geräte Funktionen</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="235"/>
-        <source>Store current setings to device?</source>
-        <translation>Alle Einstellungen im Gerät sichern?</translation>
+        <location filename="../src/iconnconfigmain.cpp" line="263"/>
+        <source>Store current settings to device?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="245"/>
+        <source>Store current setings to device?</source>
+        <translation type="vanished">Alle Einstellungen im Gerät sichern?</translation>
+    </message>
+    <message>
+        <location filename="../src/iconnconfigmain.cpp" line="274"/>
         <source>Waiting 10 seconds for device to be responsive again</source>
         <translation>Warte 10 Sekunden auf das Gerät</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="246"/>
+        <location filename="../src/iconnconfigmain.cpp" line="275"/>
         <source>Exit application</source>
         <translation>Anwendung beenden</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="271"/>
+        <location filename="../src/iconnconfigmain.cpp" line="302"/>
         <source>Read all settings from device?</source>
         <translation>Alle Einstellungen vom Gerät lesen?</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="283"/>
+        <location filename="../src/iconnconfigmain.cpp" line="316"/>
         <source>Reset all settings to factory default?</source>
         <translation>Alle Einstellungen auf Werkeinstellungen zurücksetzen?</translation>
     </message>
@@ -416,7 +443,7 @@ Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm un
 <context>
     <name>main</name>
     <message>
-        <location filename="../src/main.cpp" line="34"/>
+        <location filename="../src/main.cpp" line="40"/>
         <source>filename to read settings from.</source>
         <translation>Name der Datei aus der die Einstellungen gelesen werden sollen</translation>
     </message>

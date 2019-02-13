@@ -86,14 +86,14 @@ QVariant DeviceSelectionTableModel::headerData(int section,
   if (role == Qt::DisplayRole && orientation == Qt::Horizontal) {
     switch (section) {
     case 0:
-      return QString("Default");
+      return tr("Default");
       break;
     case 1:
-      return QString("Device Name");
+      return tr("Device Name");
     case 2:
-      return QString("Device Model");
+      return tr("Device Model");
     case 3:
-      return QString("Serial Number");
+      return tr("Serial Number");
     default:
       return QVariant::Invalid;
     }
