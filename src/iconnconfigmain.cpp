@@ -260,7 +260,7 @@ void MioMain::openDeviceGUI(Device *d)
 void MioMain::storeToDevice()
 {
 	QMessageBox msgBox;
-	msgBox.setText(tr("Store current setings to device?"));
+	msgBox.setText(tr("Store current settings to device?"));
 	msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
 	msgBox.setDefaultButton(QMessageBox::Save);
 	int ret = msgBox.exec();
