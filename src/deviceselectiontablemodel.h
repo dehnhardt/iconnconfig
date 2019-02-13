@@ -6,6 +6,8 @@
 
 class DeviceSelectionTableModel : public QAbstractTableModel
 {
+	Q_OBJECT
+
 public:
 	DeviceSelectionTableModel(Devices *devices);
 

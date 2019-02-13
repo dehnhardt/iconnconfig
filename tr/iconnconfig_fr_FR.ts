@@ -9,37 +9,37 @@
         <translation>À propos...</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="43"/>
+        <location filename="../src/aboutdialog.cpp" line="48"/>
         <source>Application Name</source>
-        <translation>Nom de l'application</translation>
+        <translation>Nom de l&apos;application</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="45"/>
+        <location filename="../src/aboutdialog.cpp" line="50"/>
         <source>Version</source>
         <translation>Version</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="47"/>
+        <location filename="../src/aboutdialog.cpp" line="52"/>
         <source>Author</source>
         <translation>Auteur</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="49"/>
+        <location filename="../src/aboutdialog.cpp" line="54"/>
         <source>Organization</source>
         <translation>Organisation</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="51"/>
+        <location filename="../src/aboutdialog.cpp" line="56"/>
         <source>License</source>
         <translation>Licence</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="53"/>
+        <location filename="../src/aboutdialog.cpp" line="58"/>
         <source>Used Software</source>
         <translation>Logiciels utilisés</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="55"/>
+        <location filename="../src/aboutdialog.cpp" line="60"/>
         <source>RtMIDI</source>
         <translation>RtMidi</translation>
     </message>
@@ -48,60 +48,60 @@
         <translation type="vanished">Toutes les entrées et sorties MIDI sont réalisées avec la bibliothèque RtMidi. Créée à l&apos;&lt;a href=&apos;https://ccrma.stanford.edu/software/stk/classRtMidi.html&apos;&gt;université Stanford&lt;/a&gt; &lt;br/&gt;Copyright ©1995--2016 Perry R. Cook et Gary P. Scavone. Tout droit réservé.</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="56"/>
+        <location filename="../src/aboutdialog.cpp" line="61"/>
         <source>All midi in- and output is realized with the RtMidi Library. Created at &lt;a href=&apos;https://ccrma.stanford.edu/software/stk/classRtMidi.html&apos;&gt;Stanford University&lt;/a&gt; &lt;br/&gt;Copyright ©1995--2016 Perry R. Cook and Gary P. Scavone. All Rights Reserved.</source>
         <translation>Toutes les entrées et sorties MIDI sont réalisées avec la bibliothèque RtMidi. Créée à l&apos;&lt;a href=&apos;https://ccrma.stanford.edu/software/stk/classRtMidi.html&apos;&gt;université Stanford&lt;/a&gt; &lt;br/&gt;Copyright ©1995--2016 Perry R. Cook et Gary P. Scavone. Tout droit réservé.</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="63"/>
+        <location filename="../src/aboutdialog.cpp" line="68"/>
         <source>Used Icons</source>
         <translation>Icônes utilisés</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="65"/>
+        <location filename="../src/aboutdialog.cpp" line="70"/>
         <source>USB Device Jack Icon</source>
         <translation>Icône Jack périphérique USB</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="65"/>
+        <location filename="../src/aboutdialog.cpp" line="70"/>
         <source>Downloaded from the &lt;a href=&apos;https://thenounproject.com/&apos;&gt;NOUN Project&lt;/a&gt;&lt;br/&gt;
 Created by Okan Benn</source>
         <translation>Téléchargé depuis le &lt;a href=&apos;https://thenounproject.com/&apos;&gt;Projet NOUN&lt;/a&gt;&lt;br/&gt;
 Erstellt von Okan Benn</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="70"/>
+        <location filename="../src/aboutdialog.cpp" line="75"/>
         <source>Ethernet Jack Icon</source>
         <translation>Icône Jack Ethernet</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="70"/>
+        <location filename="../src/aboutdialog.cpp" line="75"/>
         <source>Downloaded from the &lt;a href=&apos;https://thenounproject.com/&apos;&gt;NOUN Project&lt;/a&gt;&lt;br/&gt;
 Created by Michael Wohlwend</source>
         <translation>Téléchargé depuis le &lt;a href=&apos;https://thenounproject.com/&apos;&gt;Projet NOUN&lt;/a&gt;&lt;br/&gt;
 Erstelt von Michael Wohlwend</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="74"/>
+        <location filename="../src/aboutdialog.cpp" line="79"/>
         <source>Credits</source>
         <translation>Crédits</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="76"/>
+        <location filename="../src/aboutdialog.cpp" line="81"/>
         <source>RTP-Driver</source>
         <translation>Pilote RTP</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="77"/>
+        <location filename="../src/aboutdialog.cpp" line="82"/>
         <source>Ralf Beck created an RTP-Driver which I use often to connect to the MIO10 when doing boring programming routines in front of an exciting film.
 As well he provided a patch to make MioConfig work with QT-Version 4.8.</source>
-        <translation>Ralf Beck a crée le pilote-RTP-Driver que j'utilise souvent pour connecter au MIO10 lorsque je fais des routines ennyueuses de programmation en face d'un super film.
+        <translation>Ralf Beck a crée le pilote-RTP-Driver que j&apos;utilise souvent pour connecter au MIO10 lorsque je fais des routines ennyueuses de programmation en face d&apos;un super film.
 Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-Version.</translation>
     </message>
     <message>
         <source>Ralf Beck created an RTP-Driver which I use often to connect to the MIO10 when doing boring programming routines in front of an exciting film.
 As well he provided a patch to make MioConfig work with QT-Version 4.8</source>
-        <translation type="vanished">Ralf Beck a crée le pilote-RTP-Driver que j'utilise souvent pour connecter au MIO10 lorsque je fais des routines ennyueuses de programmation en face d'un super film.
+        <translation type="vanished">Ralf Beck a crée le pilote-RTP-Driver que j&apos;utilise souvent pour connecter au MIO10 lorsque je fais des routines ennyueuses de programmation en face d&apos;un super film.
 Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-Version.</translation>
     </message>
 </context>
@@ -141,6 +141,29 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
         <location filename="../src/widgets/deviceinfowidget.h" line="15"/>
         <source>Device Information</source>
         <translation>Information de périphérique</translation>
+    </message>
+</context>
+<context>
+    <name>DeviceSelectionTableModel</name>
+    <message>
+        <location filename="../src/deviceselectiontablemodel.cpp" line="89"/>
+        <source>Default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/deviceselectiontablemodel.cpp" line="92"/>
+        <source>Device Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/deviceselectiontablemodel.cpp" line="94"/>
+        <source>Device Model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/deviceselectiontablemodel.cpp" line="96"/>
+        <source>Serial Number</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -340,47 +363,51 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
         <translation type="obsolete">ouvrir le périphérique</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="165"/>
+        <location filename="../src/iconnconfigmain.cpp" line="185"/>
         <source>Save current settings to device</source>
         <translation>Sauvegarder les paramètres actuels dans le périphérique</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="174"/>
+        <location filename="../src/iconnconfigmain.cpp" line="196"/>
         <source>Restore settings from device</source>
         <translation>Restaurer les paramètres depuis le périphérique</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="183"/>
+        <location filename="../src/iconnconfigmain.cpp" line="207"/>
         <source>Reset settings to factory default</source>
         <translation>Réinitialiser les paramètres au défaut d&apos;usine</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="197"/>
+        <location filename="../src/iconnconfigmain.cpp" line="223"/>
         <source>Device Actions</source>
         <translation>Actions du périphérique</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="235"/>
-        <source>Store current setings to device?</source>
-        <translation>Stocker les paramètres actuels dans le périphérique ?</translation>
+        <location filename="../src/iconnconfigmain.cpp" line="263"/>
+        <source>Store current settings to device?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="245"/>
+        <source>Store current setings to device?</source>
+        <translation type="vanished">Stocker les paramètres actuels dans le périphérique ?</translation>
+    </message>
+    <message>
+        <location filename="../src/iconnconfigmain.cpp" line="274"/>
         <source>Waiting 10 seconds for device to be responsive again</source>
         <translation>Attendre 10 secondes pour que le périphérique soit de nouveau réactif</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="246"/>
+        <location filename="../src/iconnconfigmain.cpp" line="275"/>
         <source>Exit application</source>
         <translation>Quitter l&apos;application</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="271"/>
+        <location filename="../src/iconnconfigmain.cpp" line="302"/>
         <source>Read all settings from device?</source>
         <translation>Lire tous les parapètres depuis le périphérique ?</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="283"/>
+        <location filename="../src/iconnconfigmain.cpp" line="316"/>
         <source>Reset all settings to factory default?</source>
         <translation>Réinitialiser tous les paramètres aux valeurs d&apos;usine ?</translation>
     </message>
@@ -416,7 +443,7 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
 <context>
     <name>main</name>
     <message>
-        <location filename="../src/main.cpp" line="34"/>
+        <location filename="../src/main.cpp" line="40"/>
         <source>filename to read settings from.</source>
         <translation>nom du fichier dans lequel lire les paramètres.</translation>
     </message>

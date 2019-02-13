@@ -15,11 +15,17 @@ int main(int argc, char *argv[]) {
 	QCoreApplication::setApplicationVersion("0.1.5-alpha");
 
 	QTranslator mioConfigTranslator;
+	QTranslator qtTranslator;
 	QString l = "iconnconfig_" + QLocale::system().name();
 	if (mioConfigTranslator.load(QLocale(), QLatin1String("iconnconfig"),
 								 QLatin1String("_"),
 								 QLatin1String(":/translations/tr"))) {
 		app.installTranslator(&mioConfigTranslator);
+
+		qtTranslator.load(QLocale(), QLatin1String("qt"),
+                          QLatin1String("_"),
+                          QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+		app.installTranslator(&qtTranslator);
 	}
 
 	QCommandLineParser *parser = new QCommandLineParser();
