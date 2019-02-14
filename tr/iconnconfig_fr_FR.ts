@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="de_DE">
+<TS version="2.1" language="fr_FR">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -121,7 +121,7 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
     <name>DeviceInfoWidget</name>
     <message>
         <source>Device Info</source>
-        <translation type="vanished">Informationen de périphérique</translation>
+        <translation type="vanished">Informations de périphérique</translation>
     </message>
     <message>
         <location filename="../src/widgets/deviceinfowidget.cpp" line="24"/>
@@ -148,22 +148,22 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
     <message>
         <location filename="../src/deviceselectiontablemodel.cpp" line="89"/>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>Défaut</translation>
     </message>
     <message>
         <location filename="../src/deviceselectiontablemodel.cpp" line="92"/>
         <source>Device Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom du périphérique</translation>
     </message>
     <message>
         <location filename="../src/deviceselectiontablemodel.cpp" line="94"/>
         <source>Device Model</source>
-        <translation type="unfinished"></translation>
+        <translation>Modèle de périphérique</translation>
     </message>
     <message>
         <location filename="../src/deviceselectiontablemodel.cpp" line="96"/>
         <source>Serial Number</source>
-        <translation type="unfinished"></translation>
+        <translation>Numéro de série</translation>
     </message>
 </context>
 <context>
@@ -385,11 +385,7 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
     <message>
         <location filename="../src/iconnconfigmain.cpp" line="263"/>
         <source>Store current settings to device?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Store current setings to device?</source>
-        <translation type="vanished">Stocker les paramètres actuels dans le périphérique ?</translation>
+        <translation>Stocker les paramètres actuels dans le périphérique ?</translation>
     </message>
     <message>
         <location filename="../src/iconnconfigmain.cpp" line="274"/>
