@@ -101,17 +101,17 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
     <message>
         <location filename="../src/aboutdialog.cpp" line="88"/>
         <source>Translations</source>
-        <translation type="unfinished"></translation>
+        <translation>Traductions</translation>
     </message>
     <message>
         <location filename="../src/aboutdialog.cpp" line="89"/>
         <source>French: </source>
-        <translation type="unfinished"></translation>
+        <translation>Français</translation>
     </message>
     <message>
         <location filename="../src/aboutdialog.cpp" line="90"/>
         <source>General help from</source>
-        <translation type="unfinished"></translation>
+        <translation>Aide générale de</translation>
     </message>
     <message>
         <source>Ralf Beck created an RTP-Driver which I use often to connect to the MIO10 when doing boring programming routines in front of an exciting film.
