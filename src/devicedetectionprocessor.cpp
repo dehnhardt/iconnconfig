@@ -1,6 +1,7 @@
 #include "devicedetectionprocessor.h"
 #include "config/configuration.h"
 #include "events/events.h"
+#include "sysex/communicationexception.h"
 #include "sysex/getdevice.h"
 #include "sysex/midi.h"
 
@@ -21,11 +22,11 @@ DeviceDetectionProcessor::DeviceDetectionProcessor(QWidget *gui) : m_pGui(gui)
 DeviceDetectionProcessor::~DeviceDetectionProcessor()
 {
 	if (Configuration::getInstance().getUsbDeviceDetection())
-		libusb_exit(NULL);
+		libusb_exit(nullptr);
 	if (Configuration::getInstance().getMidiDeviceDetection())
 	{
-		m_pMidiin = NULL;
-		m_pMidiout = NULL;
+		m_pMidiin = nullptr;
+		m_pMidiout = nullptr;
 	}
 }
 
@@ -85,7 +86,7 @@ unsigned long DeviceDetectionProcessor::detectDevices()
 #ifdef __MIO_DEBUG__
 	std::cout << "Out ports: " << std::dec << nOutPortCount
 			  << ", in ports: " << nInPortCount
-			  << " - combinations to probe:  " << nOutPortCount * nInPortCount
+			  << " - combinations to probe:  " << nOutPortCount *nInPortCount
 			  << std::endl;
 #endif //__MIO_DEBUG__
 	GetDevice *q = new GetDevice();
@@ -101,6 +102,7 @@ unsigned long DeviceDetectionProcessor::detectDevices()
 		// and each input signal
 		for (unsigned int j = 0; j < nInPortCount; j++)
 		{
+			QCoreApplication::processEvents();
 			unsigned int progress = (i * nInPortCount) + j + 1;
 			if( bDeviceFound )
 			{
@@ -170,7 +172,7 @@ unsigned long DeviceDetectionProcessor::detectDevices()
 	}
 	sendProgressEvent(getMidiInPortCount() * getMidiOutPortCount());
 
-	Device *d = 0;
+	Device *d = nullptr;
 	try
 	{
 		d = devices->at(defaultDeviceSerialNumber);
@@ -193,7 +195,14 @@ unsigned long DeviceDetectionProcessor::detectDevices()
 		for (Devices::iterator it = devices->begin(); it != devices->end(); ++it)
 		{
 			d = it->second;
-			d->queryDeviceInfo();
+			try
+			{
+				d->queryDeviceInfo();
+			}
+			catch(...)
+			{
+				continue;
+			}
 		}
 		Configuration::getInstance().setDevices(devices);
 	}
@@ -257,7 +266,7 @@ bool DeviceDetectionProcessor::setupUSB()
 {
 	int r;
 
-	r = libusb_init(NULL);
+	r = libusb_init(nullptr);
 	if (r < 0)
 		return false;
 
@@ -272,11 +281,11 @@ void DeviceDetectionProcessor::printUSBDevs()
 	int i = 0, j = 0;
 	uint8_t path[8];
 
-	cnt = libusb_get_device_list(NULL, &devs);
+	cnt = libusb_get_device_list(nullptr, &devs);
 	if (cnt < 0)
 		return;
 
-	while ((dev = devs[i++]) != NULL)
+	while ((dev = devs[i++]) != nullptr)
 	{
 		struct libusb_device_descriptor desc;
 		int r = libusb_get_device_descriptor(dev, &desc);
