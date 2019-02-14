@@ -9,7 +9,7 @@ MIDI::MIDI() {}
 
 RtMidiIn *MIDI::createMidiIn(const std::string clientName) {
 	// RtMidiIn constructor
-	RtMidiIn *midiin = 0;
+	RtMidiIn *midiin = nullptr;
 	try {
 		midiin = new RtMidiIn(RtMidi::LINUX_ALSA, clientName);
 	} catch (RtMidiError &error) {
@@ -21,8 +21,9 @@ RtMidiIn *MIDI::createMidiIn(const std::string clientName) {
 }
 
 RtMidiOut *
-MIDI::createMidiOut(const std::string clientName) {// RtMidiOut constructor
-	RtMidiOut *midiout = 0;
+MIDI::createMidiOut(const std::string clientName) // RtMidiOut constructor
+{
+	RtMidiOut *midiout = nullptr;
 	try {
 		midiout = new RtMidiOut(RtMidi::LINUX_ALSA, clientName);
 	} catch (RtMidiError &error) {
@@ -102,16 +103,15 @@ std::string MIDI::decodeIp(BYTE_VECTOR *data, unsigned long offset) {
 }
 
 BYTE_VECTOR *MIDI::encodeIpAddress(std::string ipAddress) {
-	BYTE_VECTOR *result = 0;
+	BYTE_VECTOR *result = nullptr;
 
 	unsigned long lAddress = 0L;
 	std::istringstream ss(ipAddress);
 	std::string token;
 	std::vector<std::string> ipParts;
 
-	while (std::getline(ss, token, '.')) {
+	while (std::getline(ss, token, '.'))
 		ipParts.push_back(std::string(token));
-	}
 	for (std::vector<std::string>::iterator it = ipParts.begin();
 		 it != ipParts.end(); ++it) {
 		if (it != ipParts.begin())
