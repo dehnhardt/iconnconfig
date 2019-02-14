@@ -51,8 +51,8 @@ public:
 	SetType type;
 
 private:
-	SysExMessage *message = 0;
-	DeviceStructure *deviceStructure = 0;
+	SysExMessage *message = nullptr;
+	DeviceStructure *deviceStructure = nullptr;
 };
 
 class Device
@@ -84,7 +84,7 @@ public:
 
 	BYTE_VECTOR *retrieveSysex();
 	BYTE_VECTOR *nextTransactionId();
-	BYTE_VECTOR *saveRestoreList = 0;
+	BYTE_VECTOR *saveRestoreList = nullptr;
 
 	bool loadConfigurationFromDevice();
 
@@ -141,13 +141,13 @@ private:
 
 	unsigned int m_iTransactionId = 0;
 
-	BYTE_VECTOR *m_pLastSendMessage = 0;
-	BYTE_VECTOR *m_pLastRetrieveMessage = 0;
+	BYTE_VECTOR *m_pLastSendMessage = nullptr;
+	BYTE_VECTOR *m_pLastRetrieveMessage = nullptr;
 
 	bool m_bIsDefault = false;
 
-	RtMidiIn *midiin = 0;
-	RtMidiOut *midiout = 0;
+	RtMidiIn *midiin = nullptr;
+	RtMidiOut *midiout = nullptr;
 
 	MIDISysexValue *m_pSerialNumber;
 	MIDISysexValue *m_pProductId;
@@ -160,16 +160,16 @@ private:
 	std::string m_sHardwareVersion;
 	std::string m_sModelNumber;
 
-	RetSetMidiInfo *m_pMidiInfo = 0;
-	RetCommandList *m_pCommands = 0;
-	RetInfoList *m_pRetInfoList = 0;
-	GetInfo *m_pDeviceInfo = 0;
-	std::map<int, std::vector<RetSetMidiPortInfo *> *> *m_pMidiPortInfos = 0;
+	RetSetMidiInfo *m_pMidiInfo = nullptr;
+	RetCommandList *m_pCommands = nullptr;
+	RetInfoList *m_pRetInfoList = nullptr;
+	GetInfo *m_pDeviceInfo = nullptr;
+	std::map<int, std::vector<RetSetMidiPortInfo *> *> *m_pMidiPortInfos = nullptr;
 
-	DeviceStructure *m_pInformationTree = 0;
+	DeviceStructure *m_pInformationTree = nullptr;
 
-	BYTE_VECTOR *m_pDeviceHeader = 0;
-	BYTE_VECTOR *m_pFullHeader = 0;
+	BYTE_VECTOR *m_pDeviceHeader = nullptr;
+	BYTE_VECTOR *m_pFullHeader = nullptr;
 
 };
 

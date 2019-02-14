@@ -52,7 +52,7 @@ Device::~Device() { disconnect(); }
 
 BYTE_VECTOR *Device::getManufacturerHeader()
 {
-	if (Device::manufacturerHeader == 0)
+	if (Device::manufacturerHeader == nullptr)
 	{
 		manufacturerHeader = new BYTE_VECTOR();
 		manufacturerHeader->push_back(MANUFACTURER_SYSEX_ID[0]);
@@ -64,7 +64,7 @@ BYTE_VECTOR *Device::getManufacturerHeader()
 
 BYTE_VECTOR *Device::getDeviceHeader()
 {
-	if (m_pDeviceHeader == 0)
+	if (m_pDeviceHeader == nullptr)
 	{
 		m_pDeviceHeader = new BYTE_VECTOR();
 		m_pDeviceHeader->reserve(m_pProductId->getByteValue()->size() +
@@ -81,7 +81,7 @@ BYTE_VECTOR *Device::getDeviceHeader()
 
 BYTE_VECTOR *Device::getFullHeader()
 {
-	if (m_pFullHeader == 0)
+	if (m_pFullHeader == nullptr)
 	{
 		m_pFullHeader = new BYTE_VECTOR();
 		m_pFullHeader->reserve(Device::getManufacturerHeader()->size() +
@@ -152,14 +152,14 @@ void Device::disconnect()
 		if (midiin->isPortOpen())
 			midiin->closePort();
 		delete midiin;
-		midiin = 0;
+		midiin = nullptr;
 	}
 	if (midiout)
 	{
 		if (midiout->isPortOpen())
 			midiout->closePort();
 		delete midiout;
-		midiout = 0;
+		midiout = nullptr;
 	}
 }
 
@@ -230,7 +230,7 @@ bool Device::checkSysex(BYTE_VECTOR *data)
 void Device::requestMidiPortInfos()
 {
 	int midiPorts = getMidiInfo()->getMidiPorts();
-	if (m_pMidiPortInfos == 0)
+	if (m_pMidiPortInfos == nullptr)
 	{
 		m_pMidiPortInfos =
 				new std::map<int, std::vector<RetSetMidiPortInfo *> *>();
@@ -238,9 +238,9 @@ void Device::requestMidiPortInfos()
 	GetMidiPortInfo *info = new GetMidiPortInfo(this);
 	for (int i = 1; i <= midiPorts; ++i)
 	{
-		std::vector<RetSetMidiPortInfo *> *v = 0;
+		std::vector<RetSetMidiPortInfo *> *v = nullptr;
 		info->setPortNumer(i);
-		RetSetMidiPortInfo *midiPortInfo = 0;
+		RetSetMidiPortInfo *midiPortInfo = nullptr;
 		try
 		{
 			midiPortInfo = dynamic_cast<RetSetMidiPortInfo *>(info->query());
@@ -258,7 +258,7 @@ void Device::requestMidiPortInfos()
 		{
 			v = m_pMidiPortInfos->at(portType);
 		}
-		catch (const std::out_of_range &oor)
+		catch (const std::out_of_range __attribute__((unused)) &oor  )
 		{
 			v = new std::vector<RetSetMidiPortInfo *>();
 			m_pMidiPortInfos->insert(
@@ -266,7 +266,7 @@ void Device::requestMidiPortInfos()
 							v));
 		}
 
-		if (v == 0)
+		if (v == nullptr)
 		{
 			v = new std::vector<RetSetMidiPortInfo *>();
 			m_pMidiPortInfos->insert(
@@ -347,7 +347,7 @@ bool Device::queryDeviceInfo()
 		this->m_pMidiInfo = dynamic_cast<RetSetMidiInfo *>(getMidiInfo->query());
 	}
 	if (m_pCommands->isCommandSupported(Command::GET_MIDI_PORT_INFO) &&
-			this->m_pMidiInfo != 0)
+			this->m_pMidiInfo != nullptr)
 		requestMidiPortInfos();
 	if (m_pCommands->isCommandSupported(Command::GET_SAVE_RESTORE_LIST))
 	{
@@ -379,7 +379,7 @@ bool Device::isDeviceValid()
 
 SysExMessage *Device::getSysExMessage(Command cmd)
 {
-	SysExMessage *m = 0;
+	SysExMessage *m = nullptr;
 	switch (cmd)
 	{
 		case GET_COMMAND_LIST:
@@ -395,7 +395,7 @@ SysExMessage *Device::getSysExMessage(Command cmd)
 			m = new GetMidiInfo(this);
 			break;
 		default:
-			return NULL;
+			return nullptr;
 	}
 	addCommandToStructure(cmd, new DeviceStructureContainer(m));
 	return m;
@@ -434,7 +434,7 @@ bool Device::getDebug() const { return debug; }
 
 void Device::setDebug(bool value) { debug = value; }
 
-bool Device::hasMidiSupport() { return (getMidiInfo() != 0); }
+bool Device::hasMidiSupport() { return (getMidiInfo() != nullptr); }
 
 BYTE_VECTOR *Device::nextTransactionId()
 {
@@ -451,4 +451,4 @@ bool Device::loadConfigurationFromDevice()
 	return true;
 }
 
-BYTE_VECTOR *Device::manufacturerHeader = 0;
+BYTE_VECTOR *Device::manufacturerHeader = nullptr;
