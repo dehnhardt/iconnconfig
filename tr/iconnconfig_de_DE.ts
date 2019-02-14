@@ -99,6 +99,21 @@ As well he provided a patch to make MioConfig work with QT-Version 4.8.</source>
 Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm unter der QT-Version 4.8. zu programmieren.</translation>
     </message>
     <message>
+        <location filename="../src/aboutdialog.cpp" line="88"/>
+        <source>Translations</source>
+        <translation>Übersetzungen</translation>
+    </message>
+    <message>
+        <location filename="../src/aboutdialog.cpp" line="89"/>
+        <source>French: </source>
+        <translation>Französisch:</translation>
+    </message>
+    <message>
+        <location filename="../src/aboutdialog.cpp" line="90"/>
+        <source>General help from</source>
+        <translation>Weitere Hilfe von</translation>
+    </message>
+    <message>
         <source>Ralf Beck created an RTP-Driver which I use often to connect to the MIO10 when doing boring programming routines in front of an exciting film.
 As well he provided a patch to make MioConfig work with QT-Version 4.8</source>
         <translation type="vanished">Ralf Beck hat einen RTP-Treiber für die MIIO-Geräte entwickelt, welchen ich regelmäßig benutzt habe um vor dem TV langweilige Routineprogrammtätigkeiten für diese Anwendung zu machen.
@@ -148,22 +163,22 @@ Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm un
     <message>
         <location filename="../src/deviceselectiontablemodel.cpp" line="89"/>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>Standard</translation>
     </message>
     <message>
         <location filename="../src/deviceselectiontablemodel.cpp" line="92"/>
         <source>Device Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Name des Gerätes</translation>
     </message>
     <message>
         <location filename="../src/deviceselectiontablemodel.cpp" line="94"/>
         <source>Device Model</source>
-        <translation type="unfinished"></translation>
+        <translation>Modell</translation>
     </message>
     <message>
         <location filename="../src/deviceselectiontablemodel.cpp" line="96"/>
         <source>Serial Number</source>
-        <translation type="unfinished"></translation>
+        <translation>Seriennummer</translation>
     </message>
 </context>
 <context>
@@ -385,7 +400,7 @@ Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm un
     <message>
         <location filename="../src/iconnconfigmain.cpp" line="263"/>
         <source>Store current settings to device?</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle Einstellungen in Gerät speichern?</translation>
     </message>
     <message>
         <source>Store current setings to device?</source>

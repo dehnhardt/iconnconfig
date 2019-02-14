@@ -99,6 +99,21 @@ As well he provided a patch to make MioConfig work with QT-Version 4.8.</source>
 Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-Version.</translation>
     </message>
     <message>
+        <location filename="../src/aboutdialog.cpp" line="88"/>
+        <source>Translations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/aboutdialog.cpp" line="89"/>
+        <source>French: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/aboutdialog.cpp" line="90"/>
+        <source>General help from</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Ralf Beck created an RTP-Driver which I use often to connect to the MIO10 when doing boring programming routines in front of an exciting film.
 As well he provided a patch to make MioConfig work with QT-Version 4.8</source>
         <translation type="vanished">Ralf Beck a crée le pilote-RTP-Driver que j&apos;utilise souvent pour connecter au MIO10 lorsque je fais des routines ennyueuses de programmation en face d&apos;un super film.

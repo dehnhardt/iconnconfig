@@ -43,7 +43,7 @@ void AboutDialog::addEntry(const QString label, const QString value,
 
 void AboutDialog::setupTable()
 {
-	addEntry(QApplication::applicationName(), NULL, true);
+	addEntry(QApplication::applicationName(), nullptr, true);
 	// Name
 	addEntry(tr("Application Name"), QApplication::applicationName());
 	// Version
@@ -55,7 +55,7 @@ void AboutDialog::setupTable()
 	// License
 	addEntry(tr("License"), LICENSE);
 	// Used Software
-	addEntry(tr("Used Software"), NULL, true);
+	addEntry(tr("Used Software"), nullptr, true);
 	// RtMIDI
 	addEntry(tr("RtMIDI"),
 			 tr("All midi in- and output is realized with the RtMidi "
@@ -65,7 +65,7 @@ void AboutDialog::setupTable()
 				"<br/>Copyright ©1995--2016 Perry R. Cook and Gary P. Scavone. "
 				"All Rights Reserved."));
 	// Icons
-	addEntry(tr("Used Icons"), NULL, true);
+	addEntry(tr("Used Icons"), nullptr, true);
 	// USB Host
 	addEntry(tr("USB Device Jack Icon"), tr("Downloaded from the <a "
 											"href='https://thenounproject.com/"
@@ -76,7 +76,7 @@ void AboutDialog::setupTable()
 										  "href='https://thenounproject.com/"
 										  "'>NOUN Project</a><br/>"
 										  "\nCreated by Michael Wohlwend"));
-	addEntry(tr("Credits"), NULL, true);
+	addEntry(tr("Credits"), nullptr, true);
 	// Ralf Beck - MTP-Driver
 	addEntry(tr("RTP-Driver"),
 			 tr("Ralf Beck created an RTP-Driver which I use "
@@ -85,6 +85,10 @@ void AboutDialog::setupTable()
 				"film."
 				"\nAs well he provided a patch to make MioConfig "
 				"work with QT-Version 4.8."));
+	addEntry(tr("Translations"),
+			 tr("French: ") + "Olivier Humbert" );
+	addEntry(tr("General help from"),
+			 "JP Cimalando" );
 }
 
 QLabel *AboutDialog::getLabel(QLabel *label, const bool header)
