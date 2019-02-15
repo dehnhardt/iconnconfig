@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Name=iConnConfig
+Comment=Icon devices configuration application
+Comment[fr]=Application de configuration pour périphériques Icon
+Exec=iConnConfig
+Terminal=false
+Icon=iconnconfig
+Type=Application
+Categories=AudioVideo;Audio;
