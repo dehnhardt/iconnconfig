@@ -8,27 +8,28 @@
 #include <QTableWidget>
 #include <QWidget>
 
-class InfoTableWidget : public QWidget
-{
+class InfoTableWidget : public QWidget {
 	Q_OBJECT
-public:
+  public:
 	explicit InfoTableWidget(
-			QWidget *parent,
-			std::map<SysExMessage::DeviceInfoItem, RetSetInfo *> *m_pRetSetInfos);
+		QWidget *parent,
+		std::map<SysExMessage::DeviceInfoItem, RetSetInfo *> *m_pRetSetInfos);
 
-public slots:
+  public slots:
 	void onDeviceInfoChanged(int row, int column);
 
-signals:
-	void deviceInfoChanged(SysExMessage::DeviceInfoItem item, std::string value);
+  signals:
+	void deviceInfoChanged(SysExMessage::DeviceInfoItem item,
+						   std::string value);
 
-private:
+  private:
 	void setupTable();
 	void setUpTableItems();
 
-private:
-	std::map<SysExMessage::DeviceInfoItem, RetSetInfo *> *m_pRetSetInfos = 0;
-	QTableWidget *m_pTableWidget = 0;
+  private:
+	std::map<SysExMessage::DeviceInfoItem, RetSetInfo *> *m_pRetSetInfos =
+		nullptr;
+	QTableWidget *m_pTableWidget = nullptr;
 };
 
 #endif // INFOTABLEWIDGET_H

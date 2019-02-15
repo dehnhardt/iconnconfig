@@ -4,56 +4,61 @@
 #include <QHeaderView>
 
 InfoTableWidget::InfoTableWidget(
-    QWidget *parent,
-    std::map<SysExMessage::DeviceInfoItem, RetSetInfo *> *retSetInfos)
-    : QWidget(parent), m_pRetSetInfos(retSetInfos) {
+	QWidget *parent,
+	std::map<SysExMessage::DeviceInfoItem, RetSetInfo *> *retSetInfos)
+	: QWidget(parent), m_pRetSetInfos(retSetInfos) {
 
-  QGridLayout *lo = new QGridLayout();
-  QPalette qp;
+	QGridLayout *lo = new QGridLayout();
+	QPalette qp;
 
-  setLayout(lo);
+	setLayout(lo);
 
-  int i = 0;
-  if (this->m_pRetSetInfos) {
-    setupTable();
-    for (std::map<SysExMessage::DeviceInfoItem, RetSetInfo *>::iterator it =
-             retSetInfos->begin();
-         it != retSetInfos->end(); ++it) {
-      SysExMessage::DeviceInfoItem infoItem = it->first;
+	int i = 0;
+	if (this->m_pRetSetInfos) {
+		setupTable();
+		for (std::map<SysExMessage::DeviceInfoItem, RetSetInfo *>::iterator it =
+				 retSetInfos->begin();
+			 it != retSetInfos->end(); ++it) {
+			SysExMessage::DeviceInfoItem infoItem = it->first;
 
-      RetSetInfo *info = it->second;
+			RetSetInfo *info = it->second;
 
-      QTableWidgetItem *name =
-          new QTableWidgetItem(info->getItemName().c_str());
-      QTableWidgetItem *value = new QTableWidgetItem(info->getValue().c_str());
-      QTableWidgetItem *itemType =
-          new QTableWidgetItem(QString::number((int)infoItem));
+			QTableWidgetItem *name =
+				new QTableWidgetItem(info->getItemName().c_str());
+			QTableWidgetItem *value =
+				new QTableWidgetItem(info->getValue().c_str());
+			QTableWidgetItem *itemType = new QTableWidgetItem(
+				QString::number(static_cast<int>(infoItem)));
 
-      name->setForeground(qp.dark());
-      name->setFlags(name->flags() & ~Qt::ItemIsEditable);
+			name->setForeground(qp.dark());
+			name->setFlags(name->flags() & ~Qt::ItemIsEditable);
 
-      if (!info->isItemEditable()) {
-        value->setFlags(value->flags() & ~Qt::ItemIsEditable);
-        value->setForeground(qp.dark());
-      }
-      m_pTableWidget->setItem(i, 0, name);
-      m_pTableWidget->setItem(i, 1, value);
-      m_pTableWidget->setItem(i, 2, itemType);
-      ++i;
-    }
-    lo->addWidget(m_pTableWidget, 0, 0);
-    connect(m_pTableWidget, SIGNAL(cellChanged(int, int)), this,
-            SLOT(onDeviceInfoChanged(int, int)));
-  }
+			if (!info->isItemEditable()) {
+				value->setFlags(value->flags() & ~Qt::ItemIsEditable);
+				value->setForeground(qp.dark());
+			}
+			m_pTableWidget->setItem(i, 0, name);
+			m_pTableWidget->setItem(i, 1, value);
+			m_pTableWidget->setItem(i, 2, itemType);
+			++i;
+		}
+		lo->addWidget(m_pTableWidget, 0, 0);
+		connect(m_pTableWidget, SIGNAL(cellChanged(int, int)), this,
+				SLOT(onDeviceInfoChanged(int, int)));
+	}
 }
 
 void InfoTableWidget::setupTable() {
-  m_pTableWidget = new QTableWidget(m_pRetSetInfos->size(), 3, this);
-  m_pTableWidget->setHorizontalHeaderItem(0, new QTableWidgetItem(tr("Name")));
-  m_pTableWidget->setHorizontalHeaderItem(1, new QTableWidgetItem(tr("Value")));
-  m_pTableWidget->verticalHeader()->hide();
-	//  tw->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
-  m_pTableWidget->setColumnHidden(2, true);
+	m_pTableWidget =
+		new QTableWidget(static_cast<int>(m_pRetSetInfos->size()), 3, this);
+	m_pTableWidget->setHorizontalHeaderItem(0,
+											new QTableWidgetItem(tr("Name")));
+	m_pTableWidget->setHorizontalHeaderItem(1,
+											new QTableWidgetItem(tr("Value")));
+	m_pTableWidget->verticalHeader()->hide();
+	m_pTableWidget->horizontalHeader()->setSectionResizeMode(
+		QHeaderView::ResizeMode::ResizeToContents);
+	m_pTableWidget->setColumnHidden(2, true);
 }
 
 /**
@@ -63,15 +68,16 @@ void InfoTableWidget::setupTable() {
  * @param column
  */
 void InfoTableWidget::onDeviceInfoChanged(int row, int column) {
-  std::cout << "InfoTableWidget: Row " << row << " column " << column
-            << std::endl;
-  if (column == 1) {
-    std::string val;
-    int i = -1;
-    val = m_pTableWidget->item(row, column)->text().toStdString();
-    i = m_pTableWidget->item(row, 2)->text().toInt();
-    SysExMessage::DeviceInfoItem item = (SysExMessage::DeviceInfoItem)i;
-    if (i > 0)
-      emit deviceInfoChanged(item, val);
-  }
+	std::cout << "InfoTableWidget: Row " << row << " column " << column
+			  << std::endl;
+	if (column == 1) {
+		std::string val;
+		int i = -1;
+		val = m_pTableWidget->item(row, column)->text().toStdString();
+		i = m_pTableWidget->item(row, 2)->text().toInt();
+		SysExMessage::DeviceInfoItem item =
+			static_cast<SysExMessage::DeviceInfoItem>(i);
+		if (i > 0)
+			emit deviceInfoChanged(item, val);
+	}
 }
