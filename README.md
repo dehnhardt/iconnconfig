@@ -42,3 +42,6 @@ Later I found the complete documentation for sysex-data from IConnectivity.
 * (2017-08-05) Translations, translations....
 * (2017-08-12) Tested with iConnect Audio 4+: MIDI functionality works, audio is to come
 * (2017-09-05) Enhanced error messages 
+* (2019-02-13) French translations added by Olivier Humbert
+* (2019-02-13) Fixes in translation code from JP Cimalando
+* (2019-02-14) Fix bug in error handling, Fix wrong calculation of command id, All initializations of pointers changed from 0 or NULL to nullptr
