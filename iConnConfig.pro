@@ -84,7 +84,8 @@ SOURCES +=\
     src/iconnconfigmain.cpp \
     src/sysex/getgizmocount.cpp \
     src/sysex/retgizmocount.cpp \
-    src/sysex/getmidiportfilter.cpp
+    src/sysex/getmidiportfilter.cpp \
+    src/sysex/retsetmidiportfilter.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
@@ -138,7 +139,8 @@ HEADERS  += \
     src/iconnconfigmain.h \
     src/sysex/getgizmocount.h \
     src/sysex/retgizmocount.h \
-    src/sysex/getmidiportfilter.h
+    src/sysex/getmidiportfilter.h \
+    src/sysex/retsetmidiportfilter.h
 
 FORMS    += \
     src/devicedetection.ui \
