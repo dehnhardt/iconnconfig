@@ -9,21 +9,22 @@
 class DeviceInfoWidget : public MultiInfoWidget {
 	Q_OBJECT
 
-public:
-  explicit DeviceInfoWidget(MioMain *parent = 0, Device *device = 0,
-							GetInfo *m_pDeviceInfo = 0,
-                            QString windowTitle = tr("Device Information"));
-  ~DeviceInfoWidget();
+  public:
+	explicit DeviceInfoWidget(MioMain *parent = nullptr,
+							  Device *device = nullptr,
+							  GetInfo *m_pDeviceInfo = nullptr,
+							  QString windowTitle = tr("Device Information"));
+	~DeviceInfoWidget();
 
-public slots:
-  void deviceInfoChanged(SysExMessage::DeviceInfoItem, std::string);
+  public slots:
+	void deviceInfoChanged(SysExMessage::DeviceInfoItem, std::string);
 
-protected:
-  void setInfoSections();
-  QWidget *createWidget(MultiInfoListEntry *entry);
+  protected:
+	void setInfoSections();
+	QWidget *createWidget(MultiInfoListEntry *entry);
 
-private:
-  GetInfo *m_pDeviceInfo = 0;
+  private:
+	GetInfo *m_pDeviceInfo = nullptr;
 };
 
 #endif // DEVICEINFOWIDGET_H

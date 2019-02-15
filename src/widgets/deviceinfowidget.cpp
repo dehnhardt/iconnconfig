@@ -8,7 +8,6 @@
 #include "multiinfolistentry.h"
 
 #include <QGridLayout>
-#include <QHeaderView>
 #include <QLabel>
 #include <QListWidgetItem>
 #include <QScrollArea>
@@ -52,10 +51,12 @@ QWidget *DeviceInfoWidget::createWidget(MultiInfoListEntry *entry) {
 	case MultiInfoListEntry::GLOBAL_DEVICE_INFO: {
 		InfoTableWidget *w = new InfoTableWidget(
 			this->parentWidget(), this->m_pDeviceInfo->getRetSetInfos());
-		connect(w, SIGNAL(deviceInfoChanged(SysExMessage::DeviceInfoItem,
-											std::string)),
-				this, SLOT(deviceInfoChanged(SysExMessage::DeviceInfoItem,
-											 std::string)));
+		connect(
+			w,
+			SIGNAL(
+				deviceInfoChanged(SysExMessage::DeviceInfoItem, std::string)),
+			this,
+			SLOT(deviceInfoChanged(SysExMessage::DeviceInfoItem, std::string)));
 		return w;
 	};
 	case MultiInfoListEntry::NETWORK_INFO: {
@@ -64,7 +65,7 @@ QWidget *DeviceInfoWidget::createWidget(MultiInfoListEntry *entry) {
 			new GetEthernetPortInfo(this->device);
 		getEthernetPortInfo->setDebug(true);
 		RetSetEthernetPortInfo *retSetEthernetPortInfo =
-			(RetSetEthernetPortInfo *)getEthernetPortInfo->query();
+			static_cast<RetSetEthernetPortInfo *>(getEthernetPortInfo->query());
 		retSetEthernetPortInfo->setDebug(true);
 		EthernetInfoWidget *w =
 			new EthernetInfoWidget(this, retSetEthernetPortInfo);
