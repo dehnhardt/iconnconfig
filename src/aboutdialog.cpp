@@ -2,12 +2,15 @@
 #include "config/configuration.h"
 #include "ui_aboutdialog.h"
 
+#include <QBitmap>
 #include <QFrame>
+#include <QIcon>
+#include <QImage>
 #include <QLabel>
+#include <QPicture>
 
 AboutDialog::AboutDialog(QWidget *parent)
-	: QDialog(parent), m_pUi(new Ui::AboutDialog)
-{
+	: QDialog(parent), m_pUi(new Ui::AboutDialog) {
 	m_pUi->setupUi(this);
 	setupScrollArea();
 	setupTable();
@@ -15,18 +18,15 @@ AboutDialog::AboutDialog(QWidget *parent)
 
 AboutDialog::~AboutDialog() { delete m_pUi; }
 
-void AboutDialog::setupScrollArea()
-{
+void AboutDialog::setupScrollArea() {
 	m_pLlayout = new QGridLayout();
 	m_pUi->scrollAreaWidgetContents->setLayout(m_pLlayout);
 }
 
 void AboutDialog::addEntry(const QString label, const QString value,
-						   bool header)
-{
+						   bool header) {
 	int colspan = 1;
-	if (header)
-	{
+	if (header) {
 		colspan = 2;
 		QFrame *line = new QFrame(this);
 		line->setObjectName(QStringLiteral("line"));
@@ -41,8 +41,17 @@ void AboutDialog::addEntry(const QString label, const QString value,
 	++m_iRow;
 }
 
-void AboutDialog::setupTable()
-{
+void AboutDialog::addEntry(QLabel *label, const QString value) {
+	m_pLlayout->addWidget(label, m_iRow, 0);
+	m_pLlayout->addWidget(getLabel(value), m_iRow, 1);
+	++m_iRow;
+}
+
+void AboutDialog::setupTable() {
+	QIcon icon(":/pixmaps/appicon");
+	QLabel *iconLabel = new QLabel;
+	iconLabel->setPixmap(icon.pixmap(60, 60));
+	addEntry(iconLabel, nullptr);
 	addEntry(QApplication::applicationName(), nullptr, true);
 	// Name
 	addEntry(tr("Application Name"), QApplication::applicationName());
@@ -85,16 +94,12 @@ void AboutDialog::setupTable()
 				"film."
 				"\nAs well he provided a patch to make MioConfig "
 				"work with QT-Version 4.8."));
-	addEntry(tr("Translations"),
-			 tr("French: ") + "Olivier Humbert" );
-	addEntry(tr("General help from"),
-			 "JP Cimalando" );
+	addEntry(tr("Translations"), tr("French: ") + "Olivier Humbert");
+	addEntry(tr("General help from"), "JP Cimalando");
 }
 
-QLabel *AboutDialog::getLabel(QLabel *label, const bool header)
-{
-	if (header)
-	{
+QLabel *AboutDialog::getLabel(QLabel *label, const bool header) {
+	if (header) {
 		QFont f = label->font();
 		f.setBold(true);
 		f.setPointSize(f.pointSize() + 2);
@@ -105,14 +110,12 @@ QLabel *AboutDialog::getLabel(QLabel *label, const bool header)
 	return label;
 }
 
-QLabel *AboutDialog::getLabel(const char *text, const bool header)
-{
+QLabel *AboutDialog::getLabel(const char *text, const bool header) {
 	QLabel *l = new QLabel(text);
 	return getLabel(l, header);
 }
 
-QLabel *AboutDialog::getLabel(const QString text, const bool header)
-{
+QLabel *AboutDialog::getLabel(const QString text, const bool header) {
 	QLabel *l = new QLabel(text);
 	return getLabel(l, header);
 }

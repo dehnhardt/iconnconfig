@@ -7,5 +7,6 @@
         <file alias="readfrom">resources/readfromdevice.xpm</file>
         <file alias="saveto">resources/savetodevice.xpm</file>
         <file alias="restore">resources/restore.xpm</file>
+        <file alias="appicon">resources/iconnconfig.xpm</file>
     </qresource>
 </RCC>
