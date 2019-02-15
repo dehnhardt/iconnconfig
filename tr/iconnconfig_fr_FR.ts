@@ -173,7 +173,7 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
     <message>
         <location filename="../src/deviceselectiontablemodel.cpp" line="94"/>
         <source>Device Model</source>
-        <translation>Modèle de périphérique</translation>
+        <translation>Modèle de périph.</translation>
     </message>
     <message>
         <location filename="../src/deviceselectiontablemodel.cpp" line="96"/>
