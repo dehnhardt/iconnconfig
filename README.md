@@ -45,3 +45,4 @@ Later I found the complete documentation for sysex-data from IConnectivity.
 * (2019-02-13) French translations added by Olivier Humbert
 * (2019-02-13) Fixes in translation code from JP Cimalando
 * (2019-02-14) Fix bug in error handling, Fix wrong calculation of command id, All initializations of pointers changed from 0 or NULL to nullptr
+* (2019-02-15) Application icon added (Thank again to Olivier Humbert). Device recognition made significantly faster by only querying inputs and outputs of the same physical ports.
