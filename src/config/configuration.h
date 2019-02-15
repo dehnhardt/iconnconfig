@@ -10,47 +10,41 @@
 
 typedef std::map<unsigned long, Device *> Devices;
 
-class Configuration
-{
+class Configuration {
 
 	// start singleton
-public:
-	static Configuration &getInstance()
-	{
+  public:
+	static Configuration &getInstance() {
 		static Configuration instance;
 		return instance;
 	}
 
-private:
+  private:
 	Configuration() {}
-	~Configuration()
-	{
+	~Configuration() {
 		/*if (settings)
 		  delete settings;*/
-		if (m_pDevices != 0)
-		{
+		if (m_pDevices != nullptr) {
 			m_pDevices->clear();
 			delete m_pDevices;
 		}
 	}
 
-public:
+  public:
 	Configuration(Configuration const &) = delete;
 	void operator=(Configuration const &) = delete;
 	// end singleton
 
-public:
+  public:
 	// getter
-	Devices *getDevices()
-	{
-		if (m_pDevices == 0)
+	Devices *getDevices() {
+		if (m_pDevices == nullptr)
 			m_pDevices = new std::map<unsigned long, Device *>;
 		return m_pDevices;
 	}
 	QSettings *getSettings() { return new QSettings(); }
 
-	unsigned long getDefaultDevice()
-	{
+	unsigned long getDefaultDevice() {
 		unsigned long defaultDevice = 0;
 		QSettings *settings = new QSettings();
 		settings->beginGroup("Default Device");
@@ -65,20 +59,20 @@ public:
 
 	// setter
 	void setDevices(Devices *devices) { this->m_pDevices = devices; }
-	void setDefaultDevice(int serialNumber)
-	{
+	void setDefaultDevice(long serialNumber) {
 		QSettings *settings = new QSettings();
 		settings->beginGroup("Default Device");
-		settings->setValue("serialNumber", serialNumber);
+		settings->setValue("serialNumber",
+						   static_cast<qlonglong>(serialNumber));
 		settings->endGroup();
 		delete settings;
 	}
 
-private:
+  private:
 	Devices *m_pDevices;
 	bool m_bEnableUsbDetection = false;
 	bool m_bEnableMidiDeviceDetection = true;
 	// QSettings *settings = 0;
 };
 
-#endif// CONFIGURATION_H
+#endif // CONFIGURATION_H
