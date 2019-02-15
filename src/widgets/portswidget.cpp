@@ -40,7 +40,7 @@ void PortsWidget::getMidiPortSections(Device *device) {
 		 ++it) {
 		int section = it->first;
 		int jack = section & 255;
-		MidiPortType portType = (MidiPortType)(section >> 8);
+		MidiPortType portType = static_cast<MidiPortType>(section >> 8);
 		std::string portTypeName =
 			PortDisplayHelper::getMidiPortTypeName(portType);
 		if (jack > 0)
@@ -54,8 +54,9 @@ void PortsWidget::getMidiPortSections(Device *device) {
 
 QWidget *PortsWidget::createWidget(MultiInfoListEntry *entry) {
 	std::cout << "create PortsWidget" << std::endl;
-	RetSetMidiPortInfo *midiPortInfo = (RetSetMidiPortInfo *)entry->message;
-	int portNumber = midiPortInfo->getPortId();
+	RetSetMidiPortInfo *midiPortInfo =
+		static_cast<RetSetMidiPortInfo *>(entry->message);
+	int portNumber = static_cast<int>(midiPortInfo->getPortId());
 	PortRoutingWidget *w =
 		new PortRoutingWidget(device, portNumber, this->parentWidget());
 	QScrollArea *a = new QScrollArea(this);
