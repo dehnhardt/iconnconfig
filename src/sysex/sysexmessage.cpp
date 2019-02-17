@@ -116,8 +116,8 @@ Command SysExMessage::parseAnswer(BYTE_VECTOR *answer) {
 	try {
 		checkAnswerValid(command);
 		if (debug)
-			std::cout << "Answer (command: " << command << ") accepted "
-					  << std::endl;
+			std::cout << "Answer (command: " << std::hex << command
+					  << ") accepted " << std::endl;
 		extractData(answer);
 		return static_cast<Command>(command);
 	} catch (...) {
@@ -176,7 +176,7 @@ int SysExMessage::execute() {
 				throw(new ProtocolException(ProtocolException::UNKNOWN));
 			// return -3;
 			if (debug) {
-				std::cout << "Command number "
+				std::cout << std::hex << "Command number "
 						  << (MIDI::byteJoin(answerMessage, 14, 2) & 1023)
 						  << "\n";
 				std::cout << "c: ";
