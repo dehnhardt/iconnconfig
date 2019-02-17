@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PortFilterSettingsWidget</class>
+ <widget class="QWidget" name="PortFilterSettingsWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>869</width>
+    <height>518</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="grprMidiSystemMessagesFilter">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>250</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Enable System Message Filters</string>
+     </property>
+     <widget class="QWidget" name="verticalLayoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>191</width>
+        <height>212</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetMaximumSize</enum>
+       </property>
+       <item>
+        <widget class="QCheckBox" name="m_pCbFilterMidiResetEvents">
+         <property name="text">
+          <string>Reset</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="m_pCbFilterMidiActiveSensingEvents">
+         <property name="text">
+          <string>Active Sensing</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="m_pCbFilterRealtimeEvents">
+         <property name="text">
+          <string>Realtime Events</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="m_pCbFilterTuneRequestEvents">
+         <property name="text">
+          <string>Tune Request</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="m_pCbFilterSongSelectEvents">
+         <property name="text">
+          <string>Song Select</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="m_pCbFilterSongPositionPointer">
+         <property name="text">
+          <string>Song Position Pointer</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="m_pCbFilterMidiTimeCodeEvents">
+         <property name="text">
+          <string>Midi Time Code</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="m_pCbFilterSysexEvents">
+         <property name="text">
+          <string>System Exclusive</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QGroupBox" name="m_pGrpMidiControllerFilter">
+     <property name="title">
+      <string>Configure MIDI Controller Filter</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QTableWidget" name="m_pTblMidiControllerFilter">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="columnCount">
+         <number>17</number>
+        </property>
+        <column>
+         <property name="text">
+          <string>Midi Controller</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string notr="true">1</string>
+         </property>
+         <property name="toolTip">
+          <string>MIDI Channel</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string notr="true">2</string>
+         </property>
+         <property name="toolTip">
+          <string>MIDI Channel</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string notr="true">3</string>
+         </property>
+         <property name="toolTip">
+          <string>MIDI Channel</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string notr="true">4</string>
+         </property>
+         <property name="toolTip">
+          <string>MIDI Channel</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string notr="true">5</string>
+         </property>
+         <property name="toolTip">
+          <string>MIDI Channel</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string notr="true">6</string>
+         </property>
+         <property name="toolTip">
+          <string>MIDI Channel</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string notr="true">7</string>
+         </property>
+         <property name="toolTip">
+          <string>MIDI Channel</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string notr="true">8</string>
+         </property>
+         <property name="toolTip">
+          <string>MIDI Channel</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string notr="true">9</string>
+         </property>
+         <property name="toolTip">
+          <string>MIDI Channel</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string notr="true">10</string>
+         </property>
+         <property name="toolTip">
+          <string>MIDI Channel</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string notr="true">11</string>
+         </property>
+         <property name="toolTip">
+          <string>MIDI Channel</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string notr="true">12</string>
+         </property>
+         <property name="toolTip">
+          <string>MIDI Channel</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string notr="true">13</string>
+         </property>
+         <property name="toolTip">
+          <string>MIDI Channel</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string notr="true">14</string>
+         </property>
+         <property name="toolTip">
+          <string>MIDI Channel</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string notr="true">15</string>
+         </property>
+         <property name="toolTip">
+          <string>MIDI Channel</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string notr="true">16</string>
+         </property>
+         <property name="toolTip">
+          <string>MIDI Channel</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="2">
+    <widget class="QGroupBox" name="m_pGrpMidiChannelMessageFilter">
+     <property name="title">
+      <string>Enable Channel Message Filter</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0">
+       <widget class="QTableWidget" name="m_pTblChannelMessageFilter">
+        <row>
+         <property name="text">
+          <string>Channel 1</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Channel 2</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Channel 3</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Channel 4</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Channel 5</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Channel 6</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Channel 7</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Channel 8</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Channel 9</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Channel 10</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Channel 11</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Channel 12</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Channel 13</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Channel 14</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Channel 15</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Channel 16</string>
+         </property>
+        </row>
+        <column>
+         <property name="text">
+          <string>Pich Bend</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Channel Pressure</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Program Change</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Control Change</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Poly Key Pressure</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Note on/off</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

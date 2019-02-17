@@ -10,43 +10,41 @@
 #include <QTimer>
 #include <QWidget>
 
-class PortButtonMapper : public QObject
-{
-public:
+class PortButtonMapper : public QObject {
+  public:
 	PortButtonMapper(PortButton *portButton) : portButton(portButton) {}
 	PortButton *portButton;
 };
 
-class PortRoutingWidget : public QWidget
-{
+class PortRoutingWidget : public QWidget {
 	Q_OBJECT
-public:
+  public:
 	explicit PortRoutingWidget(Device *device, int portNumber,
-							   QWidget *parent = 0);
+							   QWidget *parent = nullptr);
 	virtual ~PortRoutingWidget();
-signals:
+  signals:
 
-public slots:
+  public slots:
 
-protected slots:
+  protected slots:
 	void lineButtonClicked(QObject *object);
 	void portButtonClicked(QObject *object);
 	void updateRouting();
 
-private:
+  private:
 	// members
 	Device *device;
-	QGridLayout *layout = 0;
+	QGridLayout *layout = nullptr;
 	int portNumber = 0;
-	RetSetMidiPortRoute *midiPortRoute = 0;
-	QTimer *updateTimer = 0;
+	RetSetMidiPortRoute *midiPortRoute = nullptr;
+	QTimer *updateTimer = nullptr;
 
 	std::vector<std::vector<PortButton *> *> *buttonLines;
 
-	QSignalMapper *lineButtonSignalMapper = 0;
-	QSignalMapper *portButtonSignalMapper = 0;
+	QSignalMapper *lineButtonSignalMapper = nullptr;
+	QSignalMapper *portButtonSignalMapper = nullptr;
 
-private:
+  private:
 	// methods
 	void createWidgets();
 	void setupWidgets();

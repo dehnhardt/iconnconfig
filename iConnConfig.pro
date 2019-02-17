@@ -85,7 +85,10 @@ SOURCES +=\
     src/sysex/getgizmocount.cpp \
     src/sysex/retgizmocount.cpp \
     src/sysex/getmidiportfilter.cpp \
-    src/sysex/retsetmidiportfilter.cpp
+    src/sysex/retsetmidiportfilter.cpp \
+    src/widgets/portfilterwidget.cpp \
+    src/widgets/controls/midicontrollerselect.cpp \
+    src/widgets/portfiltersettingswidget.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
@@ -140,13 +143,17 @@ HEADERS  += \
     src/sysex/getgizmocount.h \
     src/sysex/retgizmocount.h \
     src/sysex/getmidiportfilter.h \
-    src/sysex/retsetmidiportfilter.h
+    src/sysex/retsetmidiportfilter.h \
+    src/widgets/portfilterwidget.h \
+    src/widgets/controls/midicontrollerselect.h \
+    src/widgets/portfiltersettingswidget.h
 
 FORMS    += \
     src/devicedetection.ui \
     src/widgets/multiinfowidget.ui \
     src/aboutdialog.ui \
-    src/iconnconfigmain.ui
+    src/iconnconfigmain.ui \
+    src/widgets/portfiltersettingswidget.ui
 
 unix:!macx: LIBS += -lasound \
                     -lpthread \

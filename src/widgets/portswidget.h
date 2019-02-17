@@ -10,15 +10,15 @@
 class PortsWidget : public MultiInfoWidget {
 	Q_OBJECT
 
-public:
-  explicit PortsWidget(MioMain *parent = 0, Device *device = 0,
-                       QString windowTitle = tr("Ports"));
-  ~PortsWidget();
+  public:
+	explicit PortsWidget(MioMain *parent = nullptr, Device *device = nullptr,
+						 QString windowTitle = tr("MIDI-Ports"));
+	~PortsWidget();
 
-protected:
-  QWidget *createWidget(MultiInfoListEntry *entry);
+  protected:
+	QWidget *createWidget(MultiInfoListEntry *entry);
 
-private:
+  private:
 	void getMidiPortSections(Device *device);
 	void getMidiPorts(std::vector<RetSetMidiPortInfo *> *midiPortInfos);
 };
