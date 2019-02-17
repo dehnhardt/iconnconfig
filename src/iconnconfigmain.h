@@ -11,36 +11,35 @@
 #include <QSettings>
 #include <QToolBar>
 
-namespace Ui
-{
+namespace Ui {
 class MioMain;
 }
 
-class DeviceMenuMapper : public QObject
-{
-public:
+class DeviceMenuMapper : public QObject {
+  public:
 	DeviceMenuMapper(Device *device) : device(device) {}
 	~DeviceMenuMapper();
 	Device *device;
 };
 
-class MioMain : public QMainWindow
-{
+class MioMain : public QMainWindow {
 	Q_OBJECT
 
-public:
-	explicit MioMain(QCommandLineParser *parser, QWidget *parent = 0);
+  public:
+	explicit MioMain(QCommandLineParser *parser, QWidget *parent = nullptr);
 	~MioMain();
-	void setConfigurationFile(QString *file) { this->m_sConfigurationFile = file; }
+	void setConfigurationFile(QString *file) {
+		this->m_sConfigurationFile = file;
+	}
 	void replacePanel(QWidget *w);
 
-public slots:
+  public slots:
 	void openDefaultDevice();
 
-protected:
+  protected:
 	void closeEvent(QCloseEvent *event);
 
-private slots:
+  private slots:
 	void on_actionQuit_triggered();
 	void openDetectionWindow();
 	void openDeviceGUI(QObject *m);
@@ -51,7 +50,7 @@ private slots:
 	void signalAction(int);
 	void openAboutDialog();
 
-private:
+  private:
 	// methods
 	void connectSignals();
 	void readSettings();
@@ -78,23 +77,23 @@ private:
 	static void handleSignal(int);
 	bool installSignalHandlers();
 
-private:
+  private:
 	// Members
 	Ui::MioMain *m_pUi;
-	DeviceDetection *m_pDeviceDetectionWindow = 0;
-	QToolBar *m_pToolBar = 0;
-	std::map<Qt::DockWidgetArea, std::vector<QDockWidget *>> m_DockWidgetAreasMap;
+	DeviceDetection *m_pDeviceDetectionWindow = nullptr;
+	QToolBar *m_pToolBar = nullptr;
+	std::map<Qt::DockWidgetArea, std::vector<QDockWidget *>>
+		m_DockWidgetAreasMap;
 	QString m_sTitle;
-	QString *m_sConfigurationFile = 0;
-	Device *m_pCurrentDevice = 0;
+	QString *m_sConfigurationFile = nullptr;
+	Device *m_pCurrentDevice = nullptr;
 
-	QSettings *m_pConfiguration = 0;
+	QSettings *m_pConfiguration = nullptr;
 
 	static int sigpipe[2];
 
-signals:
+  signals:
 	void deviceSelected(Device *d);
-
 };
 
 #endif // MIOMAIN_H

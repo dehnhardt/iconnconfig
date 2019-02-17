@@ -4,7 +4,7 @@
 #include "sysexmessage.h"
 
 class RetSetMidiPortRoute : public SysExMessage {
-public:
+  public:
 	RetSetMidiPortRoute(Device *m_pDevice);
 
 	RetSetMidiPortRoute(Command cmd, BYTE_VECTOR *message, Device *device)
@@ -22,14 +22,14 @@ public:
 	int getSettingsIndex() { return 0; }
 	std::string getStorableValue() { return ""; }
 
-private:
+  private:
 	int getNumberOfExpectedBytes(int totalPortNumber);
 	void getPortByteAndBit(int portNumber, int &byte, int &bit);
 
 	long m_iPortId;
 	int m_iTotalNumberOfPorts = -1;
 	int m_iNumerOfExpectedBytes = -1;
-	BYTE_VECTOR *m_pPortRoutings = 0;
+	BYTE_VECTOR *m_pPortRoutings = nullptr;
 };
 
-#endif// RETSETMIDIPORTROUTE_H
+#endif // RETSETMIDIPORTROUTE_H

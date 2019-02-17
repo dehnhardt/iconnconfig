@@ -6,19 +6,19 @@
 #include <QToolButton>
 
 class PortButton : public QToolButton {
-public:
+  public:
 	PortButton(const long val, const QString m_sIconText, const QString &text,
-						 const MidiPortType m_MidiPortType, QWidget *parent = nullptr);
+			   const MidiPortType m_MidiPortType, QWidget *parent = nullptr);
 
 	long getValue() const;
 	void setValue(long m_iValue);
 
-protected:
+  protected:
 	void paintEvent(QPaintEvent *event);
 
-private:
+  private:
 	long m_iValue = 0;
-	QString m_sIconText = 0;
+	QString m_sIconText = nullptr;
 	MidiPortType m_MidiPortType;
 	QIcon m_Icon;
 };
