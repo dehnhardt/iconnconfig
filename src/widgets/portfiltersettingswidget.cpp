@@ -49,6 +49,11 @@ void PortFilterSettingsWidget::setMidiControllerFilter(
 		new MidiControllerFilterTM(midiControllerFilter);
 
 	ui->m_pTblMidiControllerFilter->setModel(midiChannelMessagesFilterTM);
+	for (int i = 0; i < static_cast<int>(sizeof(*midiControllerFilter)); i++) {
+		QModelIndex modelIndex =
+			ui->m_pTblMidiControllerFilter->model()->index(i, 0, QModelIndex());
+		ui->m_pTblMidiControllerFilter->openPersistentEditor(modelIndex);
+	}
 	/*
 		int filterCount = sizeof(*midiControllerFilter);
 		// ui->m_pTblMidiControllerFilter->setRowCount(filterCount);

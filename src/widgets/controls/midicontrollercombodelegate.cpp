@@ -9,8 +9,67 @@
 #include <iostream>
 
 MidiControllerComboDelegate::MidiControllerComboDelegate(QObject *parent)
-	: QItemDelegate(parent) {
-	comboBox = static_cast<QComboBox *>(createCbEditor(nullptr));
+	: QStyledItemDelegate(parent) {
+	hashedData.insert(0, "Bank Select");
+	hashedData.insert(1, "Modulation");
+	hashedData.insert(2, "Breath Controller");
+	hashedData.insert(3, "Undefined");
+	hashedData.insert(4, "Foot Controller");
+	hashedData.insert(5, "Portamento Time");
+	hashedData.insert(6, "Data Entry Most Significant Bit(MSB)");
+	hashedData.insert(7, "Volume");
+	hashedData.insert(8, "Balance");
+	hashedData.insert(9, "Undefined");
+	hashedData.insert(10, "Pan");
+	hashedData.insert(11, "Expression");
+	hashedData.insert(12, "Effect Controller 1");
+	hashedData.insert(13, "Effect Controller 2");
+	hashedData.insert(14, "Undefined");
+	hashedData.insert(15, "Undefined");
+	hashedData.insert(16, "General Purpose");
+	hashedData.insert(17, "General Purpose");
+	hashedData.insert(18, "General Purpose");
+	hashedData.insert(19, "General Purpose");
+	hashedData.insert(64, "Damper Pedal / Sustain Pedal");
+	hashedData.insert(65, "Portamento On/Off Switch");
+	hashedData.insert(66, "Sostenuto On/Off Switch");
+	hashedData.insert(67, "Soft Pedal On/Off Switch");
+	hashedData.insert(68, "Legato FootSwitch");
+	hashedData.insert(69, "Hold 2");
+	hashedData.insert(70, "Sound Controller 1");
+	hashedData.insert(71, "Sound Controller 2");
+	hashedData.insert(72, "Sound Controller 3");
+	hashedData.insert(73, "Sound Controller 4");
+	hashedData.insert(74, "Sound Controller 5");
+	hashedData.insert(75, "Sound Controller 6");
+	hashedData.insert(76, "Sound Controller 7");
+	hashedData.insert(77, "Sound Controller 8");
+	hashedData.insert(78, "Sound Controller 9");
+	hashedData.insert(79, "Sound Controller 10");
+	hashedData.insert(80, "General Purpose MIDI CC Controller");
+	hashedData.insert(81, "General Purpose MIDI CC Controller");
+	hashedData.insert(82, "General Purpose MIDI CC Controller");
+	hashedData.insert(83, "General Purpose MIDI CC Controller");
+	hashedData.insert(84, "Portamento CC Control");
+	hashedData.insert(91, "Effect 1 Depth");
+	hashedData.insert(92, "Effect 2 Depth");
+	hashedData.insert(93, "Effect 3 Depth");
+	hashedData.insert(94, "Effect 4 Depth");
+	hashedData.insert(95, "Effect 5 Depth");
+	hashedData.insert(96, "(+1) Data Increment");
+	hashedData.insert(97, "(-1) Data Decrement");
+	hashedData.insert(98, "Non-Registered Parameter Number LSB (NRPN)");
+	hashedData.insert(99, "Non-Registered Parameter Number MSB (NRPN)");
+	hashedData.insert(100, "Registered Parameter Number LSB (RPN)");
+	hashedData.insert(101, "Registered Parameter Number MSB (RPN)");
+	hashedData.insert(120, "All Sound Off");
+	hashedData.insert(121, "Reset All Controllers");
+	hashedData.insert(122, "Local On/Off Switch");
+	hashedData.insert(123, "All Notes Off");
+	hashedData.insert(124, "Omni Mode Off");
+	hashedData.insert(125, "Omni Mode On");
+	hashedData.insert(126, "Mono Mode");
+	hashedData.insert(127, "Poly Mode");
 }
 
 QWidget *MidiControllerComboDelegate::createEditor(
@@ -18,8 +77,8 @@ QWidget *MidiControllerComboDelegate::createEditor(
 	const QModelIndex & /* index */) const {
 
 	std::cout << "create Editor" << std::endl;
-
-	return createCbEditor(parent);
+	QComboBox *comboBox = createCbEditor(parent);
+	return comboBox;
 }
 
 void MidiControllerComboDelegate::setEditorData(
@@ -43,68 +102,11 @@ void MidiControllerComboDelegate::updateEditorGeometry(
 	editor->setGeometry(option.rect);
 }
 
-QWidget *MidiControllerComboDelegate::createCbEditor(QWidget *parent) const {
+QComboBox *MidiControllerComboDelegate::createCbEditor(QWidget *parent) const {
 	QComboBox *editor = new QComboBox(parent);
-
-	editor->addItem("Bank Select", 0);
-	editor->addItem("Modulation", 1);
-	editor->addItem("Breath Controller", 2);
-	editor->addItem("Undefined", 3);
-	editor->addItem("Foot Controller", 4);
-	editor->addItem("Portamento Time", 5);
-	editor->addItem("Data Entry Most Significant Bit(MSB)", 6);
-	editor->addItem("Volume", 7);
-	editor->addItem("Balance", 8);
-	editor->addItem("Undefined", 9);
-	editor->addItem("Pan", 10);
-	editor->addItem("Expression", 11);
-	editor->addItem("Effect Controller 1", 12);
-	editor->addItem("Effect Controller 2", 13);
-	editor->addItem("Undefined", 14);
-	editor->addItem("Undefined", 15);
-	editor->addItem("General Purpose", 16);
-	editor->addItem("General Purpose", 17);
-	editor->addItem("General Purpose", 18);
-	editor->addItem("General Purpose", 19);
-	editor->addItem("Damper Pedal / Sustain Pedal", 64);
-	editor->addItem("Portamento On/Off Switch", 65);
-	editor->addItem("Sostenuto On/Off Switch", 66);
-	editor->addItem("Soft Pedal On/Off Switch", 67);
-	editor->addItem("Legato FootSwitch", 68);
-	editor->addItem("Hold 2", 69);
-	editor->addItem("Sound Controller 1", 70);
-	editor->addItem("Sound Controller 2", 71);
-	editor->addItem("Sound Controller 3", 72);
-	editor->addItem("Sound Controller 4", 73);
-	editor->addItem("Sound Controller 5", 74);
-	editor->addItem("Sound Controller 6", 75);
-	editor->addItem("Sound Controller 7", 76);
-	editor->addItem("Sound Controller 8", 77);
-	editor->addItem("Sound Controller 9", 78);
-	editor->addItem("Sound Controller 10", 79);
-	editor->addItem("General Purpose MIDI CC Controller", 80);
-	editor->addItem("General Purpose MIDI CC Controller", 81);
-	editor->addItem("General Purpose MIDI CC Controller", 82);
-	editor->addItem("General Purpose MIDI CC Controller", 83);
-	editor->addItem("Portamento CC Control", 84);
-	editor->addItem("Effect 1 Depth", 91);
-	editor->addItem("Effect 2 Depth", 92);
-	editor->addItem("Effect 3 Depth", 93);
-	editor->addItem("Effect 4 Depth", 94);
-	editor->addItem("Effect 5 Depth", 95);
-	editor->addItem("(+1) Data Increment", 96);
-	editor->addItem("(-1) Data Decrement", 97);
-	editor->addItem("Non-Registered Parameter Number LSB (NRPN)", 98);
-	editor->addItem("Non-Registered Parameter Number MSB (NRPN)", 99);
-	editor->addItem("Registered Parameter Number LSB (RPN)", 100);
-	editor->addItem("Registered Parameter Number MSB (RPN)", 101);
-	editor->addItem("All Sound Off", 120);
-	editor->addItem("Reset All Controllers", 121);
-	editor->addItem("Local On/Off Switch", 122);
-	editor->addItem("All Notes Off", 123);
-	editor->addItem("Omni Mode Off", 124);
-	editor->addItem("Omni Mode On", 125);
-	editor->addItem("Mono Mode", 126);
-	editor->addItem("Poly Mode", 127);
+	QMap<int, QString>::const_iterator it;
+	for (it = hashedData.begin(); it != hashedData.end(); ++it) {
+		editor->addItem(it.value(), it.key());
+	}
 	return editor;
 }

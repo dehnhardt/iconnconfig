@@ -2,8 +2,8 @@
 #define MIDICONTROLLERCOMBODELEGATE_H
 
 #include <QComboBox>
-#include <QItemDelegate>
 #include <QObject>
+#include <QStyledItemDelegate>
 
 #include <string>
 #include <vector>
@@ -12,7 +12,7 @@ class QModelIndex;
 class QWidget;
 class QVariant;
 
-class MidiControllerComboDelegate : public QItemDelegate {
+class MidiControllerComboDelegate : public QStyledItemDelegate {
   public:
 	MidiControllerComboDelegate(QObject *parent = nullptr);
 
@@ -24,10 +24,10 @@ class MidiControllerComboDelegate : public QItemDelegate {
 	void updateEditorGeometry(QWidget *editor,
 							  const QStyleOptionViewItem &option,
 							  const QModelIndex &index) const;
-	QComboBox *comboBox = nullptr;
 
   private:
-	QWidget *createCbEditor(QWidget *parent) const;
+	QComboBox *createCbEditor(QWidget *parent) const;
+	QMap<int, QString> hashedData;
 };
 
 #endif // MIDICONTROLLERCOMBODELEGATE_H
