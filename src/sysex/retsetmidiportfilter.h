@@ -27,13 +27,13 @@ typedef struct {
 
 typedef struct {
 	unsigned int midiContollerNumber;
-	bool channel[16];
+	bool channel[MIDI_CHANNELS];
 } MIDIControllerFilter;
 
 typedef struct {
 	unsigned int numberOfControllerFilters;
 	MIDISystemMessagesFilter *midiSystemMessagesFilter;
-	MIDIChannelMessagesFilter *midiChannelMessagesFilter[16];
+	MIDIChannelMessagesFilter *midiChannelMessagesFilter[MIDI_CHANNELS];
 	MIDIControllerFilter **midiControllerFilter;
 } MIDIPortFilter;
 
@@ -41,7 +41,8 @@ class RetSetMidiPortFilter : public SysExMessage {
   public:
 	RetSetMidiPortFilter(Device *device);
 	RetSetMidiPortFilter(Command cmd, BYTE_VECTOR *message, Device *device)
-		: SysExMessage(cmd, message, device) {}
+	    : SysExMessage(cmd, message, device) {}
+	~RetSetMidiPortFilter();
 
   public: // Methods
 	void parseAnswerData();
@@ -54,12 +55,16 @@ class RetSetMidiPortFilter : public SysExMessage {
 	int getSettingsIndex() { return 0; }
 	std::string getStorableValue() { return ""; }
 	BYTE_VECTOR *m_pGetMessageData();
+	MIDIPortFilter *getMidiPortFilter() { return m_pMidiPortFilter; }
+	void setMidiPortFilter(MIDIPortFilter *midiPortFilter) {
+		m_pMidiPortFilter = midiPortFilter;
+	}
 
   private:
 	long m_iPortId;
 	unsigned int m_iCommandVersion;
 	PortFilterDirection m_portFilterDirection;
-	MIDIPortFilter m_midiPortFilter;
+	MIDIPortFilter *m_pMidiPortFilter = nullptr;
 };
 
 #endif // RETSETMIDIPORTFILTER_H

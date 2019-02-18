@@ -10,7 +10,7 @@
 #if defined(__WINDOWS_MM__)
 #include <windows.h>
 #define SLEEP(milliseconds) Sleep((DWORD)milliseconds)
-#else// Unix variants
+#else // Unix variants
 #include <unistd.h>
 #define SLEEP(milliseconds)                                                    \
 	usleep(static_cast<unsigned long>(milliseconds * 1000.0))
@@ -18,23 +18,24 @@
 
 #ifdef __LINUX_ALSA__
 #include <alsa/seq_event.h>
-#endif//__LINUX_ALSA__
+#endif //__LINUX_ALSA__
 
 #define SYSEX_START 0xf0
 #define SYSEX_END 0xf7
 #define WAIT_TIME 10
 #define WAIT_LOOPS 20
+#define MIDI_CHANNELS 16
 
 #define BYTE_VECTOR std::vector<unsigned char>
 #ifdef __LINUX_ALSA__
 enum midiEventType { MIDI_EVENT_SYSEX = SND_SEQ_EVENT_SYSEX };
-#endif// __LINUX_ALSA__
+#endif // __LINUX_ALSA__
 
 class MIDI {
-public:
+  public:
 	MIDI();
 
-public:
+  public:
 	// Helper Methods
 	static unsigned char RolandChecksum(std::vector<unsigned char> *message);
 	static BYTE_VECTOR *byteSplit(unsigned long val, unsigned long length);
@@ -64,7 +65,7 @@ public:
 };
 
 class MIDISysexValue {
-public:
+  public:
 	MIDISysexValue(long val, unsigned long length)
 		: m_iLongValue(val), m_iByteLength(length) {}
 	MIDISysexValue(long val) : m_iLongValue(val) {}
@@ -76,16 +77,16 @@ public:
 
 	long getLongValue() { return m_iLongValue; }
 	BYTE_VECTOR *getByteValue() {
-		if (m_pByteValue == 0)
-			m_pByteValue = MIDI::byteSplit(static_cast<unsigned long>(m_iLongValue),
-										m_iByteLength);
+		if (m_pByteValue == nullptr)
+			m_pByteValue = MIDI::byteSplit(
+				static_cast<unsigned long>(m_iLongValue), m_iByteLength);
 		return m_pByteValue;
 	}
 
-private:
+  private:
 	long m_iLongValue;
-	BYTE_VECTOR *m_pByteValue = 0;
+	BYTE_VECTOR *m_pByteValue = nullptr;
 	unsigned long m_iByteLength;
 };
 
-#endif// MIDI_H
+#endif // MIDI_H

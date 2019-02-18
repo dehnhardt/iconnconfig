@@ -5,19 +5,23 @@ RetSetMidiPortFilter::RetSetMidiPortFilter(Device *device)
 	: SysExMessage(Command::RET_SET_MIDI_PORT_FILTER, SysExMessage::QUERY,
 				   device) {}
 
+RetSetMidiPortFilter::~RetSetMidiPortFilter() { delete m_pMidiPortFilter; }
+
 void RetSetMidiPortFilter::parseAnswerData() {
+	if (!m_pMidiPortFilter)
+		m_pMidiPortFilter = new MIDIPortFilter();
 	m_iCommandVersion = m_pData->at(0);
 	m_iPortId = MIDI::byteJoin(m_pData, 1, 2);
 	m_portFilterDirection = m_pData->at(3) == 1 ? PortFilterDirection::INPUT
 												: PortFilterDirection::OUTPUT;
-	m_midiPortFilter.numberOfControllerFilters = m_pData->at(4);
-	m_midiPortFilter.midiControllerFilter =
-		new MIDIControllerFilter *[m_midiPortFilter.numberOfControllerFilters];
+	m_pMidiPortFilter->numberOfControllerFilters = m_pData->at(4);
+	m_pMidiPortFilter->midiControllerFilter = new MIDIControllerFilter
+		*[m_pMidiPortFilter->numberOfControllerFilters];
 	parseMidiSystemMessagesFilter();
 	for (unsigned int i = 0; i < 16; i++) {
 		parseMidiChannelMessagesFilter(i);
 	}
-	for (unsigned int i = 0; i < m_midiPortFilter.numberOfControllerFilters;
+	for (unsigned int i = 0; i < m_pMidiPortFilter->numberOfControllerFilters;
 		 i++) {
 		parseMidiControllerFilter(i);
 	}
@@ -35,7 +39,7 @@ void RetSetMidiPortFilter::parseMidiSystemMessagesFilter() {
 	midiSystemMessagesFilter->filterMidiSongPositionPointerEvents = filter & 4;
 	midiSystemMessagesFilter->filterMidiTimeCodeEvents = filter & 2;
 	midiSystemMessagesFilter->filterMidiSysExEvents = filter & 1;
-	m_midiPortFilter.midiSystemMessagesFilter = midiSystemMessagesFilter;
+	m_pMidiPortFilter->midiSystemMessagesFilter = midiSystemMessagesFilter;
 }
 
 void RetSetMidiPortFilter::parseMidiChannelMessagesFilter(
@@ -49,7 +53,7 @@ void RetSetMidiPortFilter::parseMidiChannelMessagesFilter(
 	midiChannelMessagesFilter->filterMidiControlChangeEvents = filter & 4;
 	midiChannelMessagesFilter->filterMidiPolyKeyPressureEvents = filter & 2;
 	midiChannelMessagesFilter->filterMidiNoteOnOffEvents = filter & 1;
-	m_midiPortFilter.midiChannelMessagesFilter[midiChannel] =
+	m_pMidiPortFilter->midiChannelMessagesFilter[midiChannel] =
 		midiChannelMessagesFilter;
 }
 
@@ -80,7 +84,7 @@ void RetSetMidiPortFilter::parseMidiControllerFilter(
 				static_cast<long>(
 					pow(2.0, static_cast<double>(midiChannelMask)));
 		}
-		m_midiPortFilter.midiControllerFilter[contollerFilterNumber] =
+		m_pMidiPortFilter->midiControllerFilter[contollerFilterNumber] =
 			midiControllerFilter;
 	}
 }

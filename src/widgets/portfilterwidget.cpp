@@ -10,6 +10,7 @@ PortFilterWidget::PortFilterWidget(Device *device, unsigned int portNumber,
 
 	createWidgets();
 	retrieveData();
+	loadData();
 
 	/*buttonLines = new std::vector<std::vector<PortButton *> *>;
 	updateTimer = new QTimer(this);
@@ -28,7 +29,24 @@ PortFilterWidget::PortFilterWidget(Device *device, unsigned int portNumber,
 
 PortFilterWidget::~PortFilterWidget() {}
 
-void PortFilterWidget::loadData() {}
+void PortFilterWidget::loadData() {
+	// Input Filter
+	m_pInputFilterWidget->setMIDISystemMessagesFilter(
+		m_pMidiPortFilterIn->getMidiPortFilter()->midiSystemMessagesFilter);
+	m_pInputFilterWidget->setMidiControllerFilter(
+		m_pMidiPortFilterIn->getMidiPortFilter()->midiControllerFilter);
+	m_pInputFilterWidget->setMidiChannelMessagesFilter(
+		m_pMidiPortFilterIn->getMidiPortFilter()->midiChannelMessagesFilter);
+
+	// Output Filter
+	m_pOutputFilterWidget->setMIDISystemMessagesFilter(
+		m_pMidiPortFilterOut->getMidiPortFilter()->midiSystemMessagesFilter);
+	m_pOutputFilterWidget->setMidiControllerFilter(
+		m_pMidiPortFilterOut->getMidiPortFilter()->midiControllerFilter);
+	m_pOutputFilterWidget->setMidiChannelMessagesFilter(
+		m_pMidiPortFilterOut->getMidiPortFilter()->midiChannelMessagesFilter);
+}
+
 void PortFilterWidget::createWidgets() {
 	QGridLayout *gridLayout = new QGridLayout();
 	setLayout(gridLayout);

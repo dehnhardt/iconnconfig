@@ -88,7 +88,8 @@ SOURCES +=\
     src/sysex/retsetmidiportfilter.cpp \
     src/widgets/portfilterwidget.cpp \
     src/widgets/controls/midicontrollerselect.cpp \
-    src/widgets/portfiltersettingswidget.cpp
+    src/widgets/portfiltersettingswidget.cpp \
+    src/widgets/controls/midicontrollercombodelegate.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
@@ -146,7 +147,8 @@ HEADERS  += \
     src/sysex/retsetmidiportfilter.h \
     src/widgets/portfilterwidget.h \
     src/widgets/controls/midicontrollerselect.h \
-    src/widgets/portfiltersettingswidget.h
+    src/widgets/portfiltersettingswidget.h \
+    src/widgets/controls/midicontrollercombodelegate.h
 
 FORMS    += \
     src/devicedetection.ui \
