@@ -39,7 +39,7 @@ class MidiControllerFilterTM : public QAbstractTableModel {
   public:
 	MidiControllerFilterTM(MIDIControllerFilter **midiControllerFilter);
 
-	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+	int rowCount(const QModelIndex & /* parent */) const override;
 	int columnCount(const QModelIndex & /*parent*/) const override;
 	QVariant data(const QModelIndex &index,
 				  int role = Qt::DisplayRole) const override;
@@ -53,4 +53,23 @@ class MidiControllerFilterTM : public QAbstractTableModel {
 	MIDIControllerFilter **m_ppMidiControllerFilter;
 };
 
+class MidiChannelMessagesFilterTM : public QAbstractTableModel {
+  public:
+	MidiChannelMessagesFilterTM(
+		MIDIChannelMessagesFilter **midiChannelMessagesFilter);
+
+	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+	int columnCount(const QModelIndex & /*parent*/) const override;
+	QVariant data(const QModelIndex &index,
+				  int role = Qt::DisplayRole) const override;
+	QVariant headerData(int section, Qt::Orientation orientation,
+						int role) const override;
+	bool setData(const QModelIndex &index, const QVariant &value,
+				 int role = Qt::EditRole) override;
+	Qt::ItemFlags flags(const QModelIndex &index) const override;
+
+  private:
+	MIDIChannelMessagesFilter **m_ppMidiChannelMessagesFilter;
+	Qt::CheckState boolToCheckState(bool value) const;
+};
 #endif // PORTFILTERSETTINGSWIDGET_H

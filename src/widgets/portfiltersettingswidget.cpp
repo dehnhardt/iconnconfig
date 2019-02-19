@@ -14,10 +14,8 @@ PortFilterSettingsWidget::PortFilterSettingsWidget(QWidget *parent)
 		QHeaderView::ResizeToContents);
 	ui->m_pTblMidiControllerFilter->verticalHeader()->setSectionResizeMode(
 		QHeaderView::ResizeToContents);
-	/*	ui->m_pTblChannelMessageFilter->horizontalHeader()->setSectionResizeMode(
-			QHeaderView::ResizeToContents);
-		ui->m_pTblChannelMessageFilter->verticalHeader()->setSectionResizeMode(
-			QHeaderView::ResizeToContents);*/
+	ui->m_pTblMidiChannelMessageFilter->horizontalHeader()
+		->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
 
 PortFilterSettingsWidget::~PortFilterSettingsWidget() { delete ui; }
@@ -45,73 +43,19 @@ void PortFilterSettingsWidget::setMIDISystemMessagesFilter(
 void PortFilterSettingsWidget::setMidiControllerFilter(
 	MIDIControllerFilter **midiControllerFilter) {
 
-	MidiControllerFilterTM *midiChannelMessagesFilterTM =
-		new MidiControllerFilterTM(midiControllerFilter);
-
-	ui->m_pTblMidiControllerFilter->setModel(midiChannelMessagesFilterTM);
+	ui->m_pTblMidiControllerFilter->setModel(
+		new MidiControllerFilterTM(midiControllerFilter));
 	for (int i = 0; i < static_cast<int>(sizeof(*midiControllerFilter)); i++) {
 		QModelIndex modelIndex =
 			ui->m_pTblMidiControllerFilter->model()->index(i, 0, QModelIndex());
 		ui->m_pTblMidiControllerFilter->openPersistentEditor(modelIndex);
 	}
-	/*
-		int filterCount = sizeof(*midiControllerFilter);
-		// ui->m_pTblMidiControllerFilter->setRowCount(filterCount);
-		for (int i = 0; i < filterCount; i++) {
-			bool allchecked = true;
-			for (int column = 0; column < MIDI_CHANNELS; column++) {
-				QTableWidgetItem *item = new QTableWidgetItem();
-				allchecked &= midiControllerFilter[i]->channel[column - 1];
-				item->setCheckState(midiControllerFilter[i]->channel[column - 1]
-										? Qt::Checked
-										: Qt::Unchecked);
-				ui->m_pTblMidiControllerFilter->setItem(i, column + 2, item);
-			}
-			QTableWidgetItem *item = new QTableWidgetItem();
-			item->setCheckState(allchecked ? Qt::Checked : Qt::Unchecked);
-			ui->m_pTblMidiControllerFilter->setItem(i, 1, item);
-		}*/
 }
 
 void PortFilterSettingsWidget::setMidiChannelMessagesFilter(
 	MIDIChannelMessagesFilter **midiChannelMessagesFilter) {
-	/*
-	for (int midiChannel = 0; midiChannel < MIDI_CHANNELS; midiChannel++) {
-		MIDIChannelMessagesFilter *currentMidiChannelMessagesFilter =
-			midiChannelMessagesFilter[midiChannel];
-
-		// filterMidiNoteOnOffEventsItem
-		ui->m_pTblChannelMessageFilter->setItem(
-			midiChannel, 0,
-			getCheckStateItem(
-				currentMidiChannelMessagesFilter->filterMidiPitchBendEvents));
-		// filterMidiChannelPressureEvents
-		ui->m_pTblChannelMessageFilter->setItem(
-			midiChannel, 1,
-			getCheckStateItem(currentMidiChannelMessagesFilter
-								  ->filterMidiChannelPressureEvents));
-		// filterMidiProgrammChangeEventsItem
-		ui->m_pTblChannelMessageFilter->setItem(
-			midiChannel, 2,
-			getCheckStateItem(currentMidiChannelMessagesFilter
-								  ->filterMidiProgrammChangeEvents));
-		// filterMidiControlChangeEventsItem
-		ui->m_pTblChannelMessageFilter->setItem(
-			midiChannel, 3,
-			getCheckStateItem(currentMidiChannelMessagesFilter
-								  ->filterMidiControlChangeEvents));
-		// filterMidiPolyKeyPressureEventsItem
-		ui->m_pTblChannelMessageFilter->setItem(
-			midiChannel, 4,
-			getCheckStateItem(currentMidiChannelMessagesFilter
-								  ->filterMidiPolyKeyPressureEvents));
-		// filterMidiNoteOnOffEventsItem
-		ui->m_pTblChannelMessageFilter->setItem(
-			midiChannel, 5,
-			getCheckStateItem(
-				currentMidiChannelMessagesFilter->filterMidiNoteOnOffEvents));
-	}
-	*/
+	ui->m_pTblMidiChannelMessageFilter->setModel(
+		new MidiChannelMessagesFilterTM(midiChannelMessagesFilter));
 }
 
 MIDISystemMessagesFilter *
@@ -245,4 +189,132 @@ Qt::ItemFlags MidiControllerFilterTM::flags(const QModelIndex &index) const {
 		return Qt::ItemIsUserCheckable | Qt::ItemIsEnabled |
 			   Qt::ItemIsSelectable;
 	return Qt::ItemIsEditable | QAbstractTableModel::flags(index);
+}
+
+MidiChannelMessagesFilterTM::MidiChannelMessagesFilterTM(
+	MIDIChannelMessagesFilter **midiChannelMessagesFilter) {
+	this->m_ppMidiChannelMessagesFilter = midiChannelMessagesFilter;
+}
+
+int MidiChannelMessagesFilterTM::rowCount(const QModelIndex &) const {
+	return MIDI_CHANNELS + 1;
+}
+
+int MidiChannelMessagesFilterTM::columnCount(const QModelIndex &) const {
+	return 7;
+}
+
+QVariant MidiChannelMessagesFilterTM::data(const QModelIndex &index,
+										   int role) const {
+	MIDIChannelMessagesFilter *midiChannelMessagesFilter =
+		this->m_ppMidiChannelMessagesFilter[index.row()];
+	switch (role) {
+	case Qt::DisplayRole:
+		if (index.column() == 0) {
+			return QString::number(index.row());
+		}
+		break;
+	case Qt::EditRole:
+		if (index.column() == 0) {
+			return QString::number(index.row());
+		}
+		break;
+	case Qt::CheckStateRole:
+		if (index.column() > 0) {
+			switch (index.column()) {
+			case 1:
+				return boolToCheckState(
+					midiChannelMessagesFilter->filterMidiPitchBendEvents);
+			case 2:
+				return boolToCheckState(
+					midiChannelMessagesFilter->filterMidiChannelPressureEvents);
+			case 3:
+				return boolToCheckState(
+					midiChannelMessagesFilter->filterMidiProgrammChangeEvents);
+			case 4:
+				return boolToCheckState(
+					midiChannelMessagesFilter->filterMidiControlChangeEvents);
+			case 5:
+				return boolToCheckState(
+					midiChannelMessagesFilter->filterMidiPolyKeyPressureEvents);
+			case 6:
+				return boolToCheckState(
+					midiChannelMessagesFilter->filterMidiNoteOnOffEvents);
+			}
+		}
+	}
+	return QVariant();
+}
+
+QVariant MidiChannelMessagesFilterTM::headerData(int section,
+												 Qt::Orientation orientation,
+												 int role) const {
+	if (role == Qt::DisplayRole && orientation == Qt::Horizontal) {
+		switch (section) {
+		case 0:
+			return QString(tr("MIDI-Channel"));
+		case 1:
+			return QString(tr("Pitch Bend"));
+		case 2:
+			return QString(tr("Channel Pressure"));
+		case 3:
+			return QString(tr("Program Change"));
+		case 4:
+			return QString(tr("Control Change"));
+		case 5:
+			return QString(tr("Poly Key Pressure"));
+		case 6:
+			return QString(tr("Note On / Note Off"));
+		default:
+			return QVariant();
+		}
+	}
+	return QVariant();
+}
+
+bool MidiChannelMessagesFilterTM::setData(const QModelIndex &index,
+										  const QVariant &value, int role) {
+	MIDIChannelMessagesFilter *midiChannelMessagesFilter =
+		this->m_ppMidiChannelMessagesFilter[index.row()];
+	int column = index.column();
+	if (role == Qt::CheckStateRole && column > 0 && column < 7)
+		switch (column) {
+		case 1:
+			midiChannelMessagesFilter->filterMidiPitchBendEvents =
+				value.toBool();
+			break;
+		case 2:
+			midiChannelMessagesFilter->filterMidiChannelPressureEvents =
+				value.toBool();
+			break;
+		case 3:
+			midiChannelMessagesFilter->filterMidiProgrammChangeEvents =
+				value.toBool();
+			break;
+		case 4:
+			midiChannelMessagesFilter->filterMidiControlChangeEvents =
+				value.toBool();
+			break;
+		case 5:
+			midiChannelMessagesFilter->filterMidiPolyKeyPressureEvents =
+				value.toBool();
+			break;
+		case 6:
+			midiChannelMessagesFilter->filterMidiNoteOnOffEvents =
+				value.toBool();
+			break;
+		}
+	return false;
+}
+
+Qt::ItemFlags
+MidiChannelMessagesFilterTM::flags(const QModelIndex &index) const {
+	if (index.column() > 0)
+		return Qt::ItemIsUserCheckable | Qt::ItemIsEnabled |
+			   Qt::ItemIsSelectable;
+	return QAbstractTableModel::flags(index);
+}
+
+Qt::CheckState MidiChannelMessagesFilterTM::boolToCheckState(bool value) const {
+	return value ? Qt::Checked : Qt::Unchecked;
 }

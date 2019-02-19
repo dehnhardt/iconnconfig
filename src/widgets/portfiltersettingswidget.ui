@@ -45,7 +45,7 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0">
-       <widget class="QTableView" name="tableView_2"/>
+       <widget class="QTableView" name="m_pTblMidiChannelMessageFilter"/>
       </item>
      </layout>
     </widget>
@@ -73,7 +73,7 @@
         <x>10</x>
         <y>30</y>
         <width>191</width>
-        <height>191</height>
+        <height>212</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
