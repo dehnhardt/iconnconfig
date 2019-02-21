@@ -64,7 +64,7 @@ SysExMessage::~SysExMessage() {
 }
 
 void SysExMessage::extractData(std::vector<unsigned char> *message) {
-	long dataLength = MIDI::byteJoin(
+	long dataLength = MIDI::byteJoin7bit(
 		new BYTE_VECTOR(message->begin() + Device::DATA_LENGTH_OFFSET,
 						message->begin() + Device::DATA_LENGTH_OFFSET +
 							Device::DATA_LENGTH_LENGTH));
@@ -80,7 +80,7 @@ BYTE_VECTOR *SysExMessage::getMIDISysExMessage() {
 
 	BYTE_VECTOR *md = m_pGetMessageData();
 	unsigned long mdSize = md->size();
-	BYTE_VECTOR *bodyLength = MIDI::byteSplit(mdSize, 2);
+	BYTE_VECTOR *bodyLength = MIDI::byteSplit7bit(mdSize, 2);
 	BYTE_VECTOR *transactionId = getTransactionId();
 
 	body->reserve(m_pDeviceHeader->size() + 6 + mdSize);
@@ -111,7 +111,7 @@ Command SysExMessage::parseAnswer(BYTE_VECTOR *answer) {
 	std::cout << "Answer: " << std::dec << answer->size() << std::endl;
 	BYTE_VECTOR *commandBytes =
 		new BYTE_VECTOR(answer->begin() + 14, answer->begin() + 16);
-	long cb = MIDI::byteJoin(commandBytes);
+	long cb = MIDI::byteJoin7bit(commandBytes);
 	int command = cb & 1023;
 	try {
 		checkAnswerValid(command);
@@ -177,7 +177,7 @@ int SysExMessage::execute() {
 			// return -3;
 			if (debug) {
 				std::cout << std::hex << "Command number "
-						  << (MIDI::byteJoin(answerMessage, 14, 2) & 1023)
+						  << (MIDI::byteJoin7bit(answerMessage, 14, 2) & 1023)
 						  << "\n";
 				std::cout << "c: ";
 				MIDI::printMessage(answerMessage);
@@ -198,12 +198,12 @@ void SysExMessage::setDebug(bool debug) { this->debug = debug; }
 void SysExMessage::printRawData() { MIDI::printMessage(m_pData); }
 
 unsigned int SysExMessage::getCommandNumber() {
-	long commandBytes = MIDI::byteJoin(m_pCommandData);
+	long commandBytes = MIDI::byteJoin7bit(m_pCommandData);
 	return static_cast<unsigned int>(commandBytes & 1023);
 }
 
 bool SysExMessage::isWriteCommand() {
-	long commandBytes = MIDI::byteJoin(m_pCommandData);
+	long commandBytes = MIDI::byteJoin7bit(m_pCommandData);
 	return (commandBytes & 80192) == 1;
 }
 
@@ -227,7 +227,7 @@ std::string SysExMessage::getDataAsString() {
 long SysExMessage::getDataAsLong() {
 	long result = -1;
 	if (m_pData->size() < 11)
-		result = MIDI::byteJoin(m_pData);
+		result = MIDI::byteJoin7bit(m_pData);
 	return result;
 }
 

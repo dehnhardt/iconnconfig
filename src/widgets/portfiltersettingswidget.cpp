@@ -16,12 +16,16 @@ PortFilterSettingsWidget::PortFilterSettingsWidget(QWidget *parent)
 		QHeaderView::ResizeToContents);
 	ui->m_pTblMidiChannelMessageFilter->horizontalHeader()
 		->setSectionResizeMode(QHeaderView::ResizeToContents);
+	ui->m_pTblMidiChannelMessageFilter->verticalHeader()->setSectionResizeMode(
+		QHeaderView::ResizeToContents);
+	createConnections();
 }
 
 PortFilterSettingsWidget::~PortFilterSettingsWidget() { delete ui; }
 
 void PortFilterSettingsWidget::setMIDISystemMessagesFilter(
 	MIDISystemMessagesFilter *midiSystemMessagesFilter) {
+	this->m_pMidiSystemMessagesFilter = midiSystemMessagesFilter;
 	ui->m_pCbFilterMidiActiveSensingEvents->setChecked(
 		midiSystemMessagesFilter->filterMidiActiveSensingEvents);
 	ui->m_pCbFilterMidiRealtimeEvents->setChecked(
@@ -45,7 +49,9 @@ void PortFilterSettingsWidget::setMidiControllerFilter(
 
 	ui->m_pTblMidiControllerFilter->setModel(
 		new MidiControllerFilterTM(midiControllerFilter));
-	for (int i = 0; i < static_cast<int>(sizeof(*midiControllerFilter)); i++) {
+	int numberOfMidiContollers =
+		static_cast<int>(sizeof(*midiControllerFilter));
+	for (int i = 0; i < numberOfMidiContollers; i++) {
 		QModelIndex modelIndex =
 			ui->m_pTblMidiControllerFilter->model()->index(i, 0, QModelIndex());
 		ui->m_pTblMidiControllerFilter->openPersistentEditor(modelIndex);
@@ -81,14 +87,80 @@ PortFilterSettingsWidget::getMIDISystemMessagesFilter() {
 	return midiSystemMessagesFilter;
 }
 
-MIDIControllerFilter **PortFilterSettingsWidget::getMidiControllerFiler() {
-	return nullptr;
+MIDIPortFilter *PortFilterSettingsWidget::getMidiPortFilter() {
+	MIDIPortFilter *filter = new MIDIPortFilter();
+	return filter;
 }
 
 QTableWidgetItem *PortFilterSettingsWidget::getCheckStateItem(bool checked) {
 	QTableWidgetItem *item = new QTableWidgetItem();
 	item->setCheckState(checked ? Qt::Checked : Qt::Unchecked);
 	return item;
+}
+
+void PortFilterSettingsWidget::createConnections() {
+	connect(ui->m_pCbFilterMidiResetEvents, &QCheckBox::stateChanged, this,
+			[=](int state) {
+				checkboxUpdated(state, ui->m_pCbFilterMidiResetEvents);
+			});
+	connect(ui->m_pCbFilterMidiActiveSensingEvents, &QCheckBox::stateChanged,
+			this, [=](int state) {
+				checkboxUpdated(state, ui->m_pCbFilterMidiActiveSensingEvents);
+			});
+	connect(ui->m_pCbFilterMidiRealtimeEvents, &QCheckBox::stateChanged, this,
+			[=](int state) {
+				checkboxUpdated(state, ui->m_pCbFilterMidiRealtimeEvents);
+			});
+	connect(ui->m_pCbFilterMidiTuneRequestEvents, &QCheckBox::stateChanged,
+			this, [=](int state) {
+				checkboxUpdated(state, ui->m_pCbFilterMidiTuneRequestEvents);
+			});
+	connect(ui->m_pCbFilterMidiSongSelectEvents, &QCheckBox::stateChanged, this,
+			[=](int state) {
+				checkboxUpdated(state, ui->m_pCbFilterMidiSongSelectEvents);
+			});
+	connect(ui->m_pCbFilterMidiSongPositionPointer, &QCheckBox::stateChanged,
+			this, [=](int state) {
+				checkboxUpdated(state, ui->m_pCbFilterMidiSongPositionPointer);
+			});
+	connect(ui->m_pCbFilterMidiTimeCodeEvents, &QCheckBox::stateChanged, this,
+			[=](int state) {
+				checkboxUpdated(state, ui->m_pCbFilterMidiTimeCodeEvents);
+			});
+	connect(ui->m_pCbFilterMidiSysexEvents, &QCheckBox::stateChanged, this,
+			[=](int state) {
+				checkboxUpdated(state, ui->m_pCbFilterMidiSysexEvents);
+			});
+}
+
+void PortFilterSettingsWidget::checkboxUpdated(int state, QCheckBox *checkBox) {
+	if (checkBox->objectName() == "m_pCbFilterMidiResetEvents") {
+		this->m_pMidiSystemMessagesFilter->filterMidiResetEvents = state;
+	}
+	if (checkBox->objectName() == "m_pCbFilterMidiActiveSensingEvents") {
+		this->m_pMidiSystemMessagesFilter->filterMidiActiveSensingEvents =
+			state;
+	}
+	if (checkBox->objectName() == "m_pCbFilterMidiRealtimeEvents") {
+		this->m_pMidiSystemMessagesFilter->filterMidiRealtimeEvents = state;
+	}
+	if (checkBox->objectName() == "m_pCbFilterMidiTuneRequestEvents") {
+		this->m_pMidiSystemMessagesFilter->filterMidiTuneRequestEvents = state;
+	}
+	if (checkBox->objectName() == "m_pCbFilterMidiSongSelectEvents") {
+		this->m_pMidiSystemMessagesFilter->filterMidiSongSelectEvents = state;
+	}
+	if (checkBox->objectName() == "m_pCbFilterMidiSongPositionPointer") {
+		this->m_pMidiSystemMessagesFilter->filterMidiSongPositionPointerEvents =
+			state;
+	}
+	if (checkBox->objectName() == "m_pCbFilterMidiTimeCodeEvents") {
+		this->m_pMidiSystemMessagesFilter->filterMidiTimeCodeEvents = state;
+	}
+	if (checkBox->objectName() == "m_pCbFilterMidiSysexEvents") {
+		this->m_pMidiSystemMessagesFilter->filterMidiSysExEvents = state;
+	}
+	emit filterDataChanged(PortFilterDirection::INPUT);
 }
 
 // MidiChannelMessagesFilterTM
@@ -109,16 +181,10 @@ int MidiControllerFilterTM::columnCount(const QModelIndex &) const {
 
 QVariant MidiControllerFilterTM::data(const QModelIndex &index,
 									  int role) const {
-
-	MIDIControllerFilter *midiControllerFilter =
-		m_ppMidiControllerFilter[index.row()];
+	int row = index.row();
+	MIDIControllerFilter *midiControllerFilter = m_ppMidiControllerFilter[row];
 	switch (role) {
 	case Qt::DisplayRole:
-		if (index.column() == 0) {
-			return midiControllerFilter->midiContollerNumber;
-		}
-		break;
-	case Qt::EditRole:
 		if (index.column() == 0) {
 			return midiControllerFilter->midiContollerNumber;
 		}
@@ -148,10 +214,13 @@ QVariant MidiControllerFilterTM::headerData(int section,
 		case 0:
 			return QString(tr("MIDI-Controller"));
 		case 1:
-			return QString(tr("Filter all Channels"));
+			return QString(tr("all"));
 		default:
 			return QString::number(section - 1);
 		}
+	}
+	if (role == Qt::DisplayRole && orientation == Qt::Vertical) {
+		return QString::number(section + 1);
 	}
 	return QVariant();
 }
@@ -197,7 +266,7 @@ MidiChannelMessagesFilterTM::MidiChannelMessagesFilterTM(
 }
 
 int MidiChannelMessagesFilterTM::rowCount(const QModelIndex &) const {
-	return MIDI_CHANNELS + 1;
+	return MIDI_CHANNELS;
 }
 
 int MidiChannelMessagesFilterTM::columnCount(const QModelIndex &) const {
@@ -211,12 +280,7 @@ QVariant MidiChannelMessagesFilterTM::data(const QModelIndex &index,
 	switch (role) {
 	case Qt::DisplayRole:
 		if (index.column() == 0) {
-			return QString::number(index.row());
-		}
-		break;
-	case Qt::EditRole:
-		if (index.column() == 0) {
-			return QString::number(index.row());
+			return QString::number(index.row() + 1);
 		}
 		break;
 	case Qt::CheckStateRole:
@@ -256,7 +320,7 @@ QVariant MidiChannelMessagesFilterTM::headerData(int section,
 		case 1:
 			return QString(tr("Pitch Bend"));
 		case 2:
-			return QString(tr("Channel Pressure"));
+			return QString(tr("Mono Key Pressure"));
 		case 3:
 			return QString(tr("Program Change"));
 		case 4:
@@ -277,7 +341,7 @@ bool MidiChannelMessagesFilterTM::setData(const QModelIndex &index,
 	MIDIChannelMessagesFilter *midiChannelMessagesFilter =
 		this->m_ppMidiChannelMessagesFilter[index.row()];
 	int column = index.column();
-	if (role == Qt::CheckStateRole && column > 0 && column < 7)
+	if ((role == Qt::CheckStateRole) && (column > 0) && (column < 7)) {
 		switch (column) {
 		case 1:
 			midiChannelMessagesFilter->filterMidiPitchBendEvents =
@@ -304,6 +368,8 @@ bool MidiChannelMessagesFilterTM::setData(const QModelIndex &index,
 				value.toBool();
 			break;
 		}
+		return true;
+	}
 	return false;
 }
 
@@ -316,5 +382,8 @@ MidiChannelMessagesFilterTM::flags(const QModelIndex &index) const {
 }
 
 Qt::CheckState MidiChannelMessagesFilterTM::boolToCheckState(bool value) const {
-	return value ? Qt::Checked : Qt::Unchecked;
+	if (value)
+		return Qt::Checked;
+	else
+		return Qt::Unchecked;
 }

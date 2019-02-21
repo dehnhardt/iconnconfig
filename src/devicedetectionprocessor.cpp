@@ -125,7 +125,7 @@ unsigned long DeviceDetectionProcessor::detectDevices() {
 	   // test for iConnectivity device
 				if (isIconnectivityDevice(message)) {
 					serialNumber = static_cast<unsigned long>(
-						MIDI::byteJoin(message, 7, 5));
+						MIDI::byteJoin7bit(message, 7, 5));
 					std::cout << "device with serial number " << serialNumber
 							  << " detected... (" << m_pMidiout->getPortName(i)
 							  << ":" << i << " - " << m_pMidiin->getPortName(j)
@@ -134,7 +134,7 @@ unsigned long DeviceDetectionProcessor::detectDevices() {
 					m_pMidiout->closePort();
 					if (devices->find(serialNumber) == devices->end()) {
 						unsigned int productId = static_cast<unsigned int>(
-							MIDI::byteJoin(message, 5, 2));
+							MIDI::byteJoin7bit(message, 5, 2));
 						Device *device =
 							new Device(j, i, serialNumber, productId);
 						devices->insert(

@@ -440,7 +440,7 @@ BYTE_VECTOR *Device::nextTransactionId()
 {
 	if (m_iTransactionId > 16000)
 		m_iTransactionId = 0;
-	BYTE_VECTOR *v = MIDI::byteSplit(++m_iTransactionId, 2);
+	BYTE_VECTOR *v = MIDI::byteSplit7bit(++m_iTransactionId, 2);
 	return v;
 }
 

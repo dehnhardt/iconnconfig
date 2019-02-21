@@ -5,7 +5,7 @@ GetMidiPortRoute::GetMidiPortRoute(Device *device)
 	: SysExMessage(Command::GET_MIDI_PORT_ROUTE, SysExMessage::QUERY, device) {}
 
 BYTE_VECTOR *GetMidiPortRoute::m_pGetMessageData() {
-	BYTE_VECTOR *messageData = MIDI::byteSplit(m_iPortNumber, 2);
+	BYTE_VECTOR *messageData = MIDI::byteSplit7bit(m_iPortNumber, 2);
 	return messageData;
 }
 

@@ -32,6 +32,7 @@ typedef struct {
 
 typedef struct {
 	unsigned int numberOfControllerFilters;
+	PortFilterDirection portFilterDirection;
 	MIDISystemMessagesFilter *midiSystemMessagesFilter;
 	MIDIChannelMessagesFilter *midiChannelMessagesFilter[MIDI_CHANNELS];
 	MIDIControllerFilter **midiControllerFilter;
@@ -41,7 +42,7 @@ class RetSetMidiPortFilter : public SysExMessage {
   public:
 	RetSetMidiPortFilter(Device *device);
 	RetSetMidiPortFilter(Command cmd, BYTE_VECTOR *message, Device *device)
-	    : SysExMessage(cmd, message, device) {}
+		: SysExMessage(cmd, message, device) {}
 	~RetSetMidiPortFilter();
 
   public: // Methods
@@ -49,6 +50,10 @@ class RetSetMidiPortFilter : public SysExMessage {
 	void parseMidiSystemMessagesFilter();
 	void parseMidiChannelMessagesFilter(unsigned int midiChannel);
 	void parseMidiControllerFilter(unsigned int contollerFilterNumber);
+
+	BYTE_VECTOR *createMidiSystemMessagesFilterData();
+	BYTE_VECTOR *createMidiChannelMessagesFilterData();
+	BYTE_VECTOR *createMidiControllerFilterData();
 
   public: // Getter and Setter
 	int getSettingsId() { return m_Command; }
@@ -63,7 +68,6 @@ class RetSetMidiPortFilter : public SysExMessage {
   private:
 	long m_iPortId;
 	unsigned int m_iCommandVersion;
-	PortFilterDirection m_portFilterDirection;
 	MIDIPortFilter *m_pMidiPortFilter = nullptr;
 };
 

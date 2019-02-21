@@ -4,30 +4,43 @@
 
 #include <src/sysex/getmidiportfilter.h>
 
-PortFilterWidget::PortFilterWidget(Device *device, unsigned int portNumber,
+PortFilterWidget::PortFilterWidget(Device *device, int portNumber,
 								   QWidget *parent)
 	: QWidget(parent), device(device), portNumber(portNumber) {
+	m_pUpdateTimerInFilter = new QTimer(this);
+	m_pUpdateTimerOutFilter = new QTimer(this);
+	m_pUpdateTimerInFilter->setSingleShot(true);
+	m_pUpdateTimerOutFilter->setSingleShot(true);
 
 	createWidgets();
 	retrieveData();
 	loadData();
-
-	/*buttonLines = new std::vector<std::vector<PortButton *> *>;
-	updateTimer = new QTimer(this);
-	updateTimer->setSingleShot(true);
-	createSignalMapper();
-	createWidgets();
-	loadData();
-	connect(lineButtonSignalMapper, SIGNAL(mapped(QObject *)), this,
-			SLOT(lineButtonClicked(QObject *)));
-
-	connect(portButtonSignalMapper, SIGNAL(mapped(QObject *)), this,
-			SLOT(portButtonClicked(QObject *)));
-
-	connect(updateTimer, SIGNAL(timeout()), this, SLOT(updateRouting()));*/
+	createConnections();
 }
 
-PortFilterWidget::~PortFilterWidget() {}
+PortFilterWidget::~PortFilterWidget() {
+	delete m_pUpdateTimerInFilter;
+	delete m_pUpdateTimerOutFilter;
+}
+
+void PortFilterWidget::midiPortFilterUpdated(PortFilterDirection direction) {
+	switch (direction) {
+	case PortFilterDirection::INPUT:
+		m_pUpdateTimerInFilter->start(1000);
+		break;
+	case PortFilterDirection::OUTPUT:
+		m_pUpdateTimerOutFilter->start(1000);
+		break;
+	}
+}
+
+void PortFilterWidget::updateInFilter() {
+	/*MIDI::printMessage(m_pMidiPortFilterIn->m_pGetMessageData());
+	std::cout << std::endl;*/
+	m_pMidiPortFilterIn->execute();
+}
+
+void PortFilterWidget::updateOutFilter() { m_pMidiPortFilterIn->execute(); }
 
 void PortFilterWidget::loadData() {
 	// Input Filter
@@ -47,6 +60,13 @@ void PortFilterWidget::loadData() {
 		m_pMidiPortFilterOut->getMidiPortFilter()->midiChannelMessagesFilter);
 }
 
+void PortFilterWidget::createConnections() {
+	connect(m_pInputFilterWidget, &PortFilterSettingsWidget::filterDataChanged,
+			this, &PortFilterWidget::midiPortFilterUpdated);
+	connect(m_pUpdateTimerInFilter, &QTimer::timeout, this,
+			&PortFilterWidget::updateInFilter);
+}
+
 void PortFilterWidget::createWidgets() {
 	QGridLayout *gridLayout = new QGridLayout();
 	setLayout(gridLayout);
@@ -64,7 +84,7 @@ void PortFilterWidget::createWidgets() {
 void PortFilterWidget::retrieveData() {
 	GetMidiPortFilter *getMidiPortFilter = new GetMidiPortFilter(device);
 	getMidiPortFilter->setDebug(true);
-	getMidiPortFilter->setPortNumer(portNumber);
+	getMidiPortFilter->setPortNumer(static_cast<unsigned int>(portNumber));
 	getMidiPortFilter->setPortFilterDirection(PortFilterDirection::INPUT);
 	getMidiPortFilter->setDebug(true);
 	getMidiPortFilter->setCmdflags(0x40);

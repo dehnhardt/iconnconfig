@@ -44,11 +44,11 @@ unsigned char MIDI::RolandChecksum(BYTE_VECTOR *message) {
 	return static_cast<unsigned char>(sum == 0 ? sum : 128 - sum);
 }
 
-BYTE_VECTOR *MIDI::byteSplit(unsigned long val) {
-	return MIDI::byteSplit(val, 0);
+BYTE_VECTOR *MIDI::byteSplit7bit(unsigned long val) {
+	return MIDI::byteSplit7bit(val, 0);
 }
 
-BYTE_VECTOR *MIDI::byteSplit(unsigned long val, unsigned long size) {
+BYTE_VECTOR *MIDI::byteSplit7bit(unsigned long val, unsigned long size) {
 	BYTE_VECTOR *bytes = new BYTE_VECTOR();
 	bytes->reserve(size);
 	while (val > 0) {
@@ -67,12 +67,35 @@ BYTE_VECTOR *MIDI::byteSplit(unsigned long val, unsigned long size) {
 	return bytes;
 }
 
-long MIDI::byteJoin(BYTE_VECTOR *message) {
-	return byteJoin(message, 0, message->size());
+BYTE_VECTOR *MIDI::byteSplit8bit(long val) {
+	return MIDI::byteSplit8bit(val, 0);
 }
 
-long MIDI::byteJoin(BYTE_VECTOR *message, unsigned long start,
-					unsigned long length) {
+BYTE_VECTOR *MIDI::byteSplit8bit(long val, unsigned long size) {
+	BYTE_VECTOR *bytes = new BYTE_VECTOR();
+	bytes->reserve(size);
+	while (val > 0) {
+		unsigned char c = val & 0xff;
+		val >>= 8;
+		bytes->push_back(c);
+	}
+	if (size > 0) {
+		unsigned long nLength = bytes->size();
+		if (nLength < size) {
+			for (unsigned long i = nLength; i < size; i++)
+				bytes->push_back(0x00);
+		}
+	}
+	std::reverse(bytes->begin(), bytes->end());
+	return bytes;
+}
+
+long MIDI::byteJoin7bit(BYTE_VECTOR *message) {
+	return byteJoin7bit(message, 0, message->size());
+}
+
+long MIDI::byteJoin7bit(BYTE_VECTOR *message, unsigned long start,
+						unsigned long length) {
 	unsigned long cnt;
 	long current = 0;
 
@@ -86,9 +109,28 @@ long MIDI::byteJoin(BYTE_VECTOR *message, unsigned long start,
 	return current;
 }
 
+long MIDI::byteJoin8bit(BYTE_VECTOR *message) {
+	return byteJoin8bit(message, 0, message->size());
+}
+
+long MIDI::byteJoin8bit(BYTE_VECTOR *message, unsigned long start,
+						unsigned long length) {
+	unsigned long cnt;
+	long current = 0;
+
+	if (start + length > message->size())
+		return -1;
+
+	for (cnt = start; cnt < start + length; cnt++) {
+		current <<= 8;
+		current += message->at(cnt);
+	}
+	return current;
+}
+
 std::string MIDI::decodeIp(BYTE_VECTOR *data, unsigned long offset) {
 
-	long address = MIDI::byteJoin(data, offset, 5);
+	long address = MIDI::byteJoin7bit(data, offset, 5);
 	int a1 = address & 255;
 	address >>= 8;
 	int a2 = address & 255;
@@ -119,7 +161,7 @@ BYTE_VECTOR *MIDI::encodeIpAddress(std::string ipAddress) {
 		token = (*it);
 		lAddress += static_cast<unsigned long>(std::stol(token));
 	}
-	result = MIDI::byteSplit(lAddress, 5);
+	result = MIDI::byteSplit7bit(lAddress, 5);
 	return result;
 }
 

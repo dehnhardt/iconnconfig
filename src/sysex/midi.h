@@ -38,11 +38,17 @@ class MIDI {
   public:
 	// Helper Methods
 	static unsigned char RolandChecksum(std::vector<unsigned char> *message);
-	static BYTE_VECTOR *byteSplit(unsigned long val, unsigned long length);
-	static BYTE_VECTOR *byteSplit(unsigned long val);
-	static long byteJoin(BYTE_VECTOR *message);
-	static long byteJoin(BYTE_VECTOR *message, unsigned long start,
-						 unsigned long end);
+	static BYTE_VECTOR *byteSplit7bit(unsigned long val, unsigned long length);
+	static BYTE_VECTOR *byteSplit7bit(unsigned long val);
+	static BYTE_VECTOR *byteSplit8bit(long val, unsigned long length);
+	static BYTE_VECTOR *byteSplit8bit(long val);
+	static long byteJoin7bit(BYTE_VECTOR *message);
+	static long byteJoin7bit(BYTE_VECTOR *message, unsigned long start,
+							 unsigned long end);
+	static long byteJoin8bit(BYTE_VECTOR *message);
+	static long byteJoin8bit(BYTE_VECTOR *message, unsigned long start,
+							 unsigned long end);
+
 	static std::string decodeIp(BYTE_VECTOR *data, unsigned long offset);
 	static BYTE_VECTOR *encodeIpAddress(std::string ipAddress);
 	static void printMessage(BYTE_VECTOR *v);
@@ -72,13 +78,13 @@ class MIDISysexValue {
 	// TODO setting the byte value does not set the correct long value
 	MIDISysexValue(BYTE_VECTOR *val) {
 		m_pByteValue = val;
-		m_iLongValue = MIDI::byteJoin(m_pByteValue);
+		m_iLongValue = MIDI::byteJoin7bit(m_pByteValue);
 	}
 
 	long getLongValue() { return m_iLongValue; }
 	BYTE_VECTOR *getByteValue() {
 		if (m_pByteValue == nullptr)
-			m_pByteValue = MIDI::byteSplit(
+			m_pByteValue = MIDI::byteSplit7bit(
 				static_cast<unsigned long>(m_iLongValue), m_iByteLength);
 		return m_pByteValue;
 	}

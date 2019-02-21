@@ -4,6 +4,7 @@
 #include "../sysex/retsetmidiportfilter.h"
 
 #include <QAbstractTableModel>
+#include <QCheckBox>
 #include <QTableWidget>
 #include <QWidget>
 
@@ -26,13 +27,21 @@ class PortFilterSettingsWidget : public QWidget {
 		MIDIChannelMessagesFilter **midiChannelMessagesFilter);
 
 	MIDISystemMessagesFilter *getMIDISystemMessagesFilter();
-	MIDIControllerFilter **getMidiControllerFiler();
+	MIDIPortFilter *getMidiPortFilter();
+
+  signals:
+	void filterDataChanged(PortFilterDirection direction);
 
   private: // Methods
 	QTableWidgetItem *getCheckStateItem(bool checked);
+	void createConnections();
 
   private: // Members
 	Ui::PortFilterSettingsWidget *ui;
+	MIDISystemMessagesFilter *m_pMidiSystemMessagesFilter = nullptr;
+
+  private slots:
+	void checkboxUpdated(int state, QCheckBox *checkBox);
 };
 
 class MidiControllerFilterTM : public QAbstractTableModel {
@@ -48,6 +57,10 @@ class MidiControllerFilterTM : public QAbstractTableModel {
 	bool setData(const QModelIndex &index, const QVariant &value,
 				 int role = Qt::EditRole) override;
 	Qt::ItemFlags flags(const QModelIndex &index) const override;
+
+	MIDIControllerFilter **getMidiControllerFilter() {
+		return m_ppMidiControllerFilter;
+	}
 
   private:
 	MIDIControllerFilter **m_ppMidiControllerFilter;
@@ -67,6 +80,9 @@ class MidiChannelMessagesFilterTM : public QAbstractTableModel {
 	bool setData(const QModelIndex &index, const QVariant &value,
 				 int role = Qt::EditRole) override;
 	Qt::ItemFlags flags(const QModelIndex &index) const override;
+	MIDIChannelMessagesFilter **getMidiChannelMessagesFilter() {
+		return m_ppMidiChannelMessagesFilter;
+	}
 
   private:
 	MIDIChannelMessagesFilter **m_ppMidiChannelMessagesFilter;

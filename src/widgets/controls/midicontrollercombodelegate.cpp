@@ -58,10 +58,10 @@ MidiControllerComboDelegate::MidiControllerComboDelegate(QObject *parent)
 	hashedData.insert(95, "Effect 5 Depth");
 	hashedData.insert(96, "(+1) Data Increment");
 	hashedData.insert(97, "(-1) Data Decrement");
-	hashedData.insert(98, "Non-Registered Parameter Number LSB (NRPN)");
-	hashedData.insert(99, "Non-Registered Parameter Number MSB (NRPN)");
-	hashedData.insert(100, "Registered Parameter Number LSB (RPN)");
-	hashedData.insert(101, "Registered Parameter Number MSB (RPN)");
+	hashedData.insert(98, "Non-Registered Param. Num. LSB (NRPN)");
+	hashedData.insert(99, "Non-Registered Param. Num. MSB (NRPN)");
+	hashedData.insert(100, "Registered Param. Num. LSB (RPN)");
+	hashedData.insert(101, "Registered Param. Num. MSB (RPN)");
 	hashedData.insert(120, "All Sound Off");
 	hashedData.insert(121, "Reset All Controllers");
 	hashedData.insert(122, "Local On/Off Switch");

@@ -23,7 +23,7 @@
       </sizepolicy>
      </property>
      <property name="title">
-      <string>Configure MIDI Controller Filter</string>
+      <string>Configure MIDI Controller Messages to Filter</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
@@ -41,7 +41,7 @@
       </sizepolicy>
      </property>
      <property name="title">
-      <string>Enable Channel Message Filter</string>
+      <string>Channel Messages to Filter</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0">
@@ -65,7 +65,7 @@
       </size>
      </property>
      <property name="title">
-      <string>Enable System Message Filters</string>
+      <string>System Messages to Filter </string>
      </property>
      <widget class="QWidget" name="verticalLayoutWidget">
       <property name="geometry">
@@ -73,15 +73,21 @@
         <x>10</x>
         <y>30</y>
         <width>191</width>
-        <height>212</height>
+        <height>198</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
+       <property name="spacing">
+        <number>0</number>
+       </property>
        <property name="sizeConstraint">
         <enum>QLayout::SetMaximumSize</enum>
        </property>
        <item>
         <widget class="QCheckBox" name="m_pCbFilterMidiResetEvents">
+         <property name="accessibleName">
+          <string comment="reset"/>
+         </property>
          <property name="text">
           <string>Reset</string>
          </property>
@@ -89,6 +95,9 @@
        </item>
        <item>
         <widget class="QCheckBox" name="m_pCbFilterMidiActiveSensingEvents">
+         <property name="accessibleName">
+          <string extracomment="active sensing"/>
+         </property>
          <property name="text">
           <string>Active Sensing</string>
          </property>
@@ -96,6 +105,9 @@
        </item>
        <item>
         <widget class="QCheckBox" name="m_pCbFilterMidiRealtimeEvents">
+         <property name="accessibleName">
+          <string comment="realtime events"/>
+         </property>
          <property name="text">
           <string>Realtime Events</string>
          </property>
@@ -103,6 +115,9 @@
        </item>
        <item>
         <widget class="QCheckBox" name="m_pCbFilterMidiTuneRequestEvents">
+         <property name="accessibleName">
+          <string comment="tune request"/>
+         </property>
          <property name="text">
           <string>Tune Request</string>
          </property>
@@ -110,6 +125,9 @@
        </item>
        <item>
         <widget class="QCheckBox" name="m_pCbFilterMidiSongSelectEvents">
+         <property name="accessibleName">
+          <string comment="song select"/>
+         </property>
          <property name="text">
           <string>Song Select</string>
          </property>
@@ -117,6 +135,9 @@
        </item>
        <item>
         <widget class="QCheckBox" name="m_pCbFilterMidiSongPositionPointer">
+         <property name="accessibleName">
+          <string comment="song position pointer"/>
+         </property>
          <property name="text">
           <string>Song Position Pointer</string>
          </property>
@@ -124,6 +145,9 @@
        </item>
        <item>
         <widget class="QCheckBox" name="m_pCbFilterMidiTimeCodeEvents">
+         <property name="accessibleName">
+          <string comment="midi time code"/>
+         </property>
          <property name="text">
           <string>Midi Time Code</string>
          </property>
@@ -131,6 +155,9 @@
        </item>
        <item>
         <widget class="QCheckBox" name="m_pCbFilterMidiSysexEvents">
+         <property name="accessibleName">
+          <string comment="system exclusive"/>
+         </property>
          <property name="text">
           <string>System Exclusive</string>
          </property>

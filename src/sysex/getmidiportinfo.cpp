@@ -5,7 +5,7 @@ GetMidiPortInfo::GetMidiPortInfo(Device *device)
 
 BYTE_VECTOR *GetMidiPortInfo::m_pGetMessageData() {
 	BYTE_VECTOR *messageData =
-		MIDI::byteSplit(static_cast<unsigned long>(m_iPortNumber), 2);
+		MIDI::byteSplit7bit(static_cast<unsigned long>(m_iPortNumber), 2);
 	return messageData;
 }
 

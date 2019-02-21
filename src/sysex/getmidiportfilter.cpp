@@ -7,7 +7,7 @@ GetMidiPortFilter::GetMidiPortFilter(Device *device)
 
 BYTE_VECTOR *GetMidiPortFilter::m_pGetMessageData() {
 	BYTE_VECTOR *messageData =
-		MIDI::byteSplit(static_cast<unsigned long>(m_iPortNumber), 2);
+		MIDI::byteSplit7bit(static_cast<unsigned long>(m_iPortNumber), 2);
 	messageData->push_back(static_cast<unsigned char>(m_iPortFilterDirection));
 	return messageData;
 }

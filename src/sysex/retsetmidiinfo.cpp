@@ -7,8 +7,8 @@ void RetSetMidiInfo::parseAnswerData() {
 	if (m_pData->size() < 15)
 		return;
 	m_iCommandVersionNumber = this->m_pData->at(0);
-	m_iMidiPorts = static_cast<int>(MIDI::byteJoin(this->m_pData, 1, 2));
-	m_iCurrentCommunicationPort = static_cast<int>(MIDI::byteJoin(m_pData, 3, 2));
+	m_iMidiPorts = static_cast<int>(MIDI::byteJoin7bit(this->m_pData, 1, 2));
+	m_iCurrentCommunicationPort = static_cast<int>(MIDI::byteJoin7bit(m_pData, 3, 2));
 	m_iDinPorts = this->m_pData->at(5);
 	m_iUsbDeviceJacks = this->m_pData->at(6);
 	m_iUsbHostJacks = this->m_pData->at(7);
