@@ -78,6 +78,8 @@ QWidget *MidiControllerComboDelegate::createEditor(
 
 	std::cout << "create Editor" << std::endl;
 	QComboBox *comboBox = createCbEditor(parent);
+	connect(comboBox, QOverload<int>::of(&QComboBox::activated), this,
+			&MidiControllerComboDelegate::commitAndCloseEditor);
 	return comboBox;
 }
 
@@ -100,6 +102,12 @@ void MidiControllerComboDelegate::updateEditorGeometry(
 	QWidget *editor, const QStyleOptionViewItem &option,
 	const QModelIndex & /* index */) const {
 	editor->setGeometry(option.rect);
+}
+
+void MidiControllerComboDelegate::commitAndCloseEditor() {
+	QComboBox *editor = qobject_cast<QComboBox *>(sender());
+	emit commitData(editor);
+	emit closeEditor(editor);
 }
 
 QComboBox *MidiControllerComboDelegate::createCbEditor(QWidget *parent) const {

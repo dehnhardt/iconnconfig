@@ -16,7 +16,8 @@ class PortFilterSettingsWidget : public QWidget {
 	Q_OBJECT
 
   public:
-	explicit PortFilterSettingsWidget(QWidget *parent = nullptr);
+	explicit PortFilterSettingsWidget(PortFilterDirection portFilterDirection,
+									  QWidget *parent = nullptr);
 	~PortFilterSettingsWidget();
 
   public: // getter and setter
@@ -30,7 +31,7 @@ class PortFilterSettingsWidget : public QWidget {
 	MIDIPortFilter *getMidiPortFilter();
 
   signals:
-	void filterDataChanged(PortFilterDirection direction);
+	void filterDataChanged(PortFilterDirection portFilterDirection);
 
   private: // Methods
 	QTableWidgetItem *getCheckStateItem(bool checked);
@@ -39,12 +40,18 @@ class PortFilterSettingsWidget : public QWidget {
   private: // Members
 	Ui::PortFilterSettingsWidget *ui;
 	MIDISystemMessagesFilter *m_pMidiSystemMessagesFilter = nullptr;
+	PortFilterDirection portFilterDirection;
 
   private slots:
 	void checkboxUpdated(int state, QCheckBox *checkBox);
 };
 
+/* ************************
+ * MidiControllerFilterTM *
+ **************************/
+
 class MidiControllerFilterTM : public QAbstractTableModel {
+	Q_OBJECT
   public:
 	MidiControllerFilterTM(MIDIControllerFilter **midiControllerFilter);
 
@@ -62,11 +69,19 @@ class MidiControllerFilterTM : public QAbstractTableModel {
 		return m_ppMidiControllerFilter;
 	}
 
+  signals:
+	void modelDataChanged();
+
   private:
 	MIDIControllerFilter **m_ppMidiControllerFilter;
 };
 
+/* *****************************
+ * MidiChannelMessagesFilterTM *
+ *******************************/
+
 class MidiChannelMessagesFilterTM : public QAbstractTableModel {
+	Q_OBJECT
   public:
 	MidiChannelMessagesFilterTM(
 		MIDIChannelMessagesFilter **midiChannelMessagesFilter);
@@ -83,6 +98,9 @@ class MidiChannelMessagesFilterTM : public QAbstractTableModel {
 	MIDIChannelMessagesFilter **getMidiChannelMessagesFilter() {
 		return m_ppMidiChannelMessagesFilter;
 	}
+
+  signals:
+	void modelDataChanged();
 
   private:
 	MIDIChannelMessagesFilter **m_ppMidiChannelMessagesFilter;

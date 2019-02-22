@@ -25,6 +25,9 @@ class MidiControllerComboDelegate : public QStyledItemDelegate {
 							  const QStyleOptionViewItem &option,
 							  const QModelIndex &index) const;
 
+  private slots:
+	void commitAndCloseEditor();
+
   private:
 	QComboBox *createCbEditor(QWidget *parent) const;
 	QMap<int, QString> hashedData;

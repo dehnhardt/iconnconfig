@@ -35,12 +35,14 @@ void PortFilterWidget::midiPortFilterUpdated(PortFilterDirection direction) {
 }
 
 void PortFilterWidget::updateInFilter() {
-	/*MIDI::printMessage(m_pMidiPortFilterIn->m_pGetMessageData());
-	std::cout << std::endl;*/
+	std::cout << "updateInFilter" << std::endl;
 	m_pMidiPortFilterIn->execute();
 }
 
-void PortFilterWidget::updateOutFilter() { m_pMidiPortFilterIn->execute(); }
+void PortFilterWidget::updateOutFilter() {
+	std::cout << "updateOutFilter" << std::endl;
+	m_pMidiPortFilterOut->execute();
+}
 
 void PortFilterWidget::loadData() {
 	// Input Filter
@@ -63,8 +65,12 @@ void PortFilterWidget::loadData() {
 void PortFilterWidget::createConnections() {
 	connect(m_pInputFilterWidget, &PortFilterSettingsWidget::filterDataChanged,
 			this, &PortFilterWidget::midiPortFilterUpdated);
+	connect(m_pOutputFilterWidget, &PortFilterSettingsWidget::filterDataChanged,
+			this, &PortFilterWidget::midiPortFilterUpdated);
 	connect(m_pUpdateTimerInFilter, &QTimer::timeout, this,
 			&PortFilterWidget::updateInFilter);
+	connect(m_pUpdateTimerOutFilter, &QTimer::timeout, this,
+			&PortFilterWidget::updateOutFilter);
 }
 
 void PortFilterWidget::createWidgets() {
@@ -72,8 +78,10 @@ void PortFilterWidget::createWidgets() {
 	setLayout(gridLayout);
 	m_pFilterDirectionTabWidget = new QTabWidget(this);
 	m_pFilterDirectionTabWidget->setTabPosition(QTabWidget::West);
-	m_pInputFilterWidget = new PortFilterSettingsWidget(this);
-	m_pOutputFilterWidget = new PortFilterSettingsWidget(this);
+	m_pInputFilterWidget =
+		new PortFilterSettingsWidget(PortFilterDirection::INPUT, this);
+	m_pOutputFilterWidget =
+		new PortFilterSettingsWidget(PortFilterDirection::OUTPUT, this);
 	m_pFilterDirectionTabWidget->addTab(m_pInputFilterWidget,
 										tr("Input Filter"));
 	m_pFilterDirectionTabWidget->addTab(m_pOutputFilterWidget,
