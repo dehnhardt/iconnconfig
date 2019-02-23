@@ -19,7 +19,10 @@ PortButton::PortButton(const long value, const QString iconText,
 	setCheckable(true);
 	setMinimumSize(35, 35);
 	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-	setIconSize(QSize(25, 25));
+	if (m_MidiPortType == USB_DEVICE)
+		setIconSize(QSize(32, 35));
+	else
+		setIconSize(QSize(25, 25));
 }
 
 void PortButton::paintEvent(QPaintEvent *event) {
@@ -43,7 +46,7 @@ void PortButton::paintEvent(QPaintEvent *event) {
 		top = rect1.top() + 4;
 		break;
 	default:
-		top = rect1.top() + 3;
+		top = rect1.top() + 1;
 		break;
 	}
 
