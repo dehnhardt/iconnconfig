@@ -240,7 +240,7 @@ bool MidiControllerFilterTM::setData(const QModelIndex &index,
 	MIDIControllerFilter *midiControllerFilter =
 		m_ppMidiControllerFilter[index.row()];
 	if (role == Qt::EditRole) {
-		if (!checkIndex(index))
+		if (!hasIndex(index.row(), index.column()))
 			return false;
 		if (index.column() == 0) {
 			midiControllerFilter->midiContollerNumber = value.toUInt();
