@@ -55,11 +55,12 @@ class RetSetMidiPortFilter : public SysExMessage {
 	BYTE_VECTOR *createMidiChannelMessagesFilterData();
 	BYTE_VECTOR *createMidiControllerFilterData();
 
+	BYTE_VECTOR *m_pGetMessageData();
+
   public: // Getter and Setter
 	int getSettingsId() { return m_Command; }
 	int getSettingsIndex() { return 0; }
 	std::string getStorableValue() { return ""; }
-	BYTE_VECTOR *m_pGetMessageData();
 	MIDIPortFilter *getMidiPortFilter() { return m_pMidiPortFilter; }
 	void setMidiPortFilter(MIDIPortFilter *midiPortFilter) {
 		m_pMidiPortFilter = midiPortFilter;

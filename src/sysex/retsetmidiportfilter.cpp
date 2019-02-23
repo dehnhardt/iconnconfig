@@ -185,7 +185,7 @@ std::vector<unsigned char> *RetSetMidiPortFilter::m_pGetMessageData() {
 		createMidiControllerFilterData();
 	BYTE_VECTOR *messageData = new BYTE_VECTOR();
 	// Command Version Number
-	messageData->push_back(0x01);
+	messageData->push_back(m_iCommandVersionNumber);
 	// Portnumber
 	messageData->insert(messageData->end(), portIdV->begin(), portIdV->end());
 	// Filter Direction
