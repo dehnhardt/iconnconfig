@@ -7,6 +7,8 @@
 #include <QObject>
 #include <QWidget>
 
+class QListWidgetItem;
+
 class MultiInfoListEntry : public QObject {
 	Q_OBJECT
 
@@ -34,6 +36,7 @@ class MultiInfoListEntry : public QObject {
 	bool enabled = true;
 	bool selectable = true;
 	SysExMessage *message = nullptr;
+	QListWidgetItem *m_pListWidgetItem = nullptr;
 
   public slots:
 	void changeName(std::string name);

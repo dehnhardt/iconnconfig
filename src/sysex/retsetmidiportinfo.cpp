@@ -28,8 +28,8 @@ void RetSetMidiPortInfo::parseAnswerData() {
 		m_sPortTypeName = "Ethernet-Port";
 		break;
 	}
-	m_iPortNameLength = m_pData->at(8);
-	m_bPortNameWritable = m_iPortNameLength > 0;
+	m_iMaxPortNameLength = m_pData->at(8);
+	m_bPortNameWritable = m_iMaxPortNameLength > 0;
 	int portFlags = m_pData->at(9);
 	m_bInputEnabled = ((portFlags & 0x01) == 0x01);
 	m_bOutputEnabled = ((portFlags & 0x02) == 0x02);
@@ -73,7 +73,7 @@ std::vector<unsigned char> *RetSetMidiPortInfo::m_pGetMessageData() {
 	if (!m_bPortNameWritable)
 		data->push_back(0);
 	else
-		data->push_back(static_cast<unsigned char>(m_iPortNameLength));
+		data->push_back(static_cast<unsigned char>(m_iMaxPortNameLength));
 	unsigned char portFlags = 0;
 	if (m_bInputEnabled)
 		portFlags += 1;
@@ -145,6 +145,10 @@ int RetSetMidiPortInfo::getJackNumberOfType() const {
 }
 
 std::string RetSetMidiPortInfo::getPortName() const { return m_sPortName; }
+
+int RetSetMidiPortInfo::getMaxPortNameLength() const {
+	return m_iMaxPortNameLength;
+}
 
 void RetSetMidiPortInfo::setInputEnabled(bool enabled) {
 	this->m_bInputEnabled = enabled;

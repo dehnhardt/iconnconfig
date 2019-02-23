@@ -10,7 +10,7 @@ class RetSetMidiPortInfo : public SysExMessage {
 	RetSetMidiPortInfo(Device *m_pDevice);
 
 	RetSetMidiPortInfo(Command cmd, BYTE_VECTOR *message, Device *device)
-	    : SysExMessage(cmd, message, device) {}
+		: SysExMessage(cmd, message, device) {}
 
 	void parseAnswerData() override;
 
@@ -29,6 +29,7 @@ class RetSetMidiPortInfo : public SysExMessage {
 	int getPortNumberOfType() const;
 	int getJackNumberOfType() const;
 	std::string getPortName() const;
+	int getMaxPortNameLength() const;
 
   public:
 	// setter
@@ -55,7 +56,7 @@ class RetSetMidiPortInfo : public SysExMessage {
 	unsigned char m_iUsbHostPort = 0;
 	unsigned char m_iEthernetSession = 0;
 
-	int m_iPortNameLength = 0;
+	int m_iMaxPortNameLength = 0;
 	bool m_bPortNameWritable = 0;
 	std::string m_sPortName;
 	std::string m_sPortTypeName;

@@ -42,6 +42,7 @@ void MultiInfoWidget::createInfoSections() {
 	for (it = infoSections->begin(); it != infoSections->end(); ++it) {
 		MultiInfoListEntry *entry = (*it);
 		QListWidgetItem *item = new QListWidgetItem();
+		entry->m_pListWidgetItem = item;
 		if (entry->index == -1)
 			item->setText(QString(entry->name.c_str()));
 		else {

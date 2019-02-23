@@ -1,5 +1,7 @@
 #include "multiinfolistentry.h"
 
+#include <QListWidgetItem>
+
 MultiInfoListEntry::MultiInfoListEntry(QObject *parent) : QObject(parent) {}
 
 MultiInfoListEntry::MultiInfoListEntry(
@@ -18,4 +20,5 @@ MultiInfoListEntry::~MultiInfoListEntry() {}
 void MultiInfoListEntry::changeName(std::string name) {
 	std::cout << "Change name to " << name << std::endl;
 	this->name = name;
+	m_pListWidgetItem->setText(QString(name.c_str()));
 }
