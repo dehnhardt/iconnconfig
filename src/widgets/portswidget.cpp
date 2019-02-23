@@ -7,13 +7,14 @@
 #include "portroutingwidget.h"
 
 #include <QLabel>
+#include <QListWidgetItem>
 #include <QScrollArea>
 
 PortsWidget::PortsWidget(MioMain *parent, Device *device, QString windowTitle)
 	: MultiInfoWidget(parent, device, windowTitle) {
 	infoSections = new std::vector<MultiInfoListEntry *>();
 	if (device->getCommands()->isCommandSupported(
-			Command::GET_MIDI_PORT_ROUTE)) {
+			Command::GET_MIDI_PORT_INFO)) {
 		getMidiPortSections(device);
 	}
 }
