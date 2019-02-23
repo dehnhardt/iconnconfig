@@ -572,6 +572,64 @@ Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm un
     </message>
 </context>
 <context>
+    <name>PortInfoWidget</name>
+    <message>
+        <location filename="../src/widgets/portinfowidget.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portinfowidget.ui" line="22"/>
+        <source>Icon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portinfowidget.ui" line="29"/>
+        <source>Portnumber:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portinfowidget.ui" line="56"/>
+        <source>Port Id:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portinfowidget.ui" line="74"/>
+        <source>Usb Device Jack</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portinfowidget.ui" line="81"/>
+        <source>USB Host Jack</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portinfowidget.ui" line="88"/>
+        <source>Ethernet Jack</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portinfowidget.ui" line="95"/>
+        <source>Jack Specific</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portinfowidget.ui" line="119"/>
+        <source>Port Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portinfowidget.ui" line="165"/>
+        <source>Input Enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portinfowidget.ui" line="172"/>
+        <source>Output Enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>PortSettingWidget</name>
     <message>
         <source>PortSettings</source>
@@ -585,12 +643,12 @@ Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm un
         <translation type="vanished">Anschlüsse</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portswidget.cpp" line="68"/>
+        <location filename="../src/widgets/portswidget.cpp" line="74"/>
         <source>Port Routing</source>
         <translation>MIDI-Routing</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portswidget.cpp" line="74"/>
+        <location filename="../src/widgets/portswidget.cpp" line="80"/>
         <source>Port Filter</source>
         <translation>MIDI-Filter</translation>
     </message>
