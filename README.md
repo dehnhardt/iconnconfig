@@ -48,3 +48,4 @@ Later I found the complete documentation for sysex-data from IConnectivity.
 * (2019-02-15) Application icon added (Thank again to Olivier Humbert). Device recognition made significantly faster by only querying inputs and outputs of the same physical ports.
 * (2019-02-22) Added portfilter configuration for system messages, channel messages and controllers for in- and output ports
 * (2019-02-22) Changed the portrouting panel slightly
+* (2019-02-23) Add portinfo widget. Port name and status can now be changed
