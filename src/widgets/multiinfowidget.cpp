@@ -8,8 +8,8 @@ MultiInfoWidget::MultiInfoWidget(MioMain *parent, Device *device,
 	ui->setupUi(this);
 	setWindowTitle(windowTitle);
 	connect(this, SIGNAL(visibilityChanged(bool)), this, SLOT(visible(bool)));
-	// hack to delete the titlebar
 
+	// hack to delete the titlebar
 	QWidget *lTitleBar = titleBarWidget();
 	setTitleBarWidget(new QWidget());
 	delete lTitleBar;
@@ -18,7 +18,8 @@ MultiInfoWidget::MultiInfoWidget(MioMain *parent, Device *device,
 MultiInfoWidget::~MultiInfoWidget() { delete ui; }
 
 void MultiInfoWidget::on_infoList_currentRowChanged(int currentRow) {
-	MultiInfoListEntry *selectedInfo = infoSections->at(currentRow);
+	MultiInfoListEntry *selectedInfo =
+		infoSections->at(static_cast<unsigned long>(currentRow));
 	if (!selectedInfo->enabled)
 		return;
 	if (selectedInfo->widget == nullptr) {
@@ -26,7 +27,7 @@ void MultiInfoWidget::on_infoList_currentRowChanged(int currentRow) {
 	}
 	if (selectedInfo->widget) {
 		QWidget *w = selectedInfo->widget;
-		((MioMain *)this->parentWidget())->replacePanel(w);
+		(static_cast<MioMain *>(this->parentWidget()))->replacePanel(w);
 		emit infoTabChanged(currentRow);
 	}
 }
@@ -64,7 +65,8 @@ void MultiInfoWidget::createInfoSections() {
 
 int MultiInfoWidget::getFirstSelectableRow() {
 	for (int i = 0; i < this->ui->infoList->count(); ++i) {
-		MultiInfoListEntry *selectedInfo = infoSections->at(i);
+		MultiInfoListEntry *selectedInfo =
+			infoSections->at(static_cast<unsigned long>(i));
 		if (selectedInfo->enabled)
 			return i;
 	}

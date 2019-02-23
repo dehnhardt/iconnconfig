@@ -3,6 +3,7 @@
 #include "../sysex/retsetmidiinfo.h"
 #include "portdisplayhelper.h"
 #include "portfilterwidget.h"
+#include "portinfowidget.h"
 #include "portroutingwidget.h"
 
 #include <QLabel>
@@ -59,6 +60,10 @@ QWidget *PortsWidget::createWidget(MultiInfoListEntry *entry) {
 		static_cast<RetSetMidiPortInfo *>(entry->message);
 	int portNumber = static_cast<int>(midiPortInfo->getPortId());
 	QTabWidget *portTabWidget = new QTabWidget(this);
+	PortInfoWidget *portInfoWidget = new PortInfoWidget(midiPortInfo);
+	connect(portInfoWidget, &PortInfoWidget::changePortName, entry,
+			&MultiInfoListEntry::changeName);
+	portTabWidget->addTab(portInfoWidget, "MIDI-Port Info");
 	if (device->getCommands()->isCommandSupported(
 			Command::GET_MIDI_PORT_ROUTE)) {
 		PortRoutingWidget *w =

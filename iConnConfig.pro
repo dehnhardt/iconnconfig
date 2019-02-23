@@ -48,7 +48,7 @@ SOURCES +=\
     src/devicedetectionprocessor.cpp \
     src/sysex/sysexmessage.cpp \
     src/deviceselectiontablemodel.cpp \
-    src/widgets/portsettingwidget.cpp \
+    # src/widgets/portsettingwidget.cpp \
     src/widgets/deviceinfowidget.cpp \
     src/widgets/portswidget.cpp \
     src/widgets/multiinfowidget.cpp \
@@ -89,7 +89,8 @@ SOURCES +=\
     src/widgets/portfilterwidget.cpp \
     src/widgets/controls/midicontrollerselect.cpp \
     src/widgets/portfiltersettingswidget.cpp \
-    src/widgets/controls/midicontrollercombodelegate.cpp
+    src/widgets/controls/midicontrollercombodelegate.cpp \
+    src/widgets/portinfowidget.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
@@ -104,7 +105,7 @@ HEADERS  += \
     src/deviceselectiontablemodel.h \
     src/events/events.h \
     src/device.h \
-    src/widgets/portsettingwidget.h \
+    # src/widgets/portsettingwidget.h \
     src/widgets/deviceinfowidget.h \
     src/widgets/portswidget.h \
     src/widgets/multiinfowidget.h \
@@ -148,14 +149,16 @@ HEADERS  += \
     src/widgets/portfilterwidget.h \
     src/widgets/controls/midicontrollerselect.h \
     src/widgets/portfiltersettingswidget.h \
-    src/widgets/controls/midicontrollercombodelegate.h
+    src/widgets/controls/midicontrollercombodelegate.h \
+    src/widgets/portinfowidget.h
 
 FORMS    += \
     src/devicedetection.ui \
     src/widgets/multiinfowidget.ui \
     src/aboutdialog.ui \
     src/iconnconfigmain.ui \
-    src/widgets/portfiltersettingswidget.ui
+    src/widgets/portfiltersettingswidget.ui \
+    src/widgets/portinfowidget.ui
 
 unix:!macx: LIBS += -lasound \
                     -lpthread \

@@ -4,13 +4,14 @@
 #include "../sysex/sysexmessage.h"
 
 #include <QIcon>
+#include <QObject>
 #include <QWidget>
 
-class MultiInfoListEntry
-{
-public:
-	enum ListEntryCode
-	{
+class MultiInfoListEntry : public QObject {
+	Q_OBJECT
+
+  public:
+	enum ListEntryCode {
 		NONE = -1,
 		SECTION = 0,
 		GLOBAL_DEVICE_INFO,
@@ -19,18 +20,23 @@ public:
 		PORT_ROUTING
 	};
 
-public:
-	MultiInfoListEntry();
-	MultiInfoListEntry(ListEntryCode entryCode, std::string name, int index = -1);
+  public:
+	explicit MultiInfoListEntry(QObject *parent = nullptr);
+	MultiInfoListEntry(ListEntryCode entryCode, std::string name,
+					   int index = -1, QObject *parent = nullptr);
+	virtual ~MultiInfoListEntry();
 
 	ListEntryCode entryCode = NONE;
 	std::string name;
 	QIcon icon;
 	int index = -1;
-	QWidget *widget = 0;
+	QWidget *widget = nullptr;
 	bool enabled = true;
 	bool selectable = true;
-	SysExMessage *message = 0;
+	SysExMessage *message = nullptr;
+
+  public slots:
+	void changeName(std::string name);
 };
 
 #endif // MULTIINFOLISTENTRY_H
