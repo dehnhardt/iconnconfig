@@ -314,6 +314,57 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
     </message>
 </context>
 <context>
+    <name>MidiChannelMessagesFilterTM</name>
+    <message>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="329"/>
+        <source>MIDI-Channel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="331"/>
+        <source>Pitch Bend</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="333"/>
+        <source>Mono Key Pressure</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="335"/>
+        <source>Program Change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="337"/>
+        <source>Control Change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="339"/>
+        <source>Poly Key Pressure</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="341"/>
+        <source>Note On / Note Off</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MidiControllerFilterTM</name>
+    <message>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="225"/>
+        <source>MIDI-Controller</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="227"/>
+        <source>all</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MioMain</name>
     <message>
         <source>MioMain</source>
@@ -444,205 +495,70 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="32"/>
-        <source>Enable System Message Filters</source>
+        <location filename="../src/widgets/portfiltersettingswidget.ui" line="26"/>
+        <source>Channel Messages to Filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="50"/>
-        <source>Reset</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="57"/>
-        <source>Active Sensing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="64"/>
-        <source>Realtime Events</source>
+        <location filename="../src/widgets/portfiltersettingswidget.ui" line="47"/>
+        <source>Configure MIDI Controller Messages to Filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/widgets/portfiltersettingswidget.ui" line="71"/>
+        <source>System Messages to Filter </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portfiltersettingswidget.ui" line="101"/>
+        <source>Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portfiltersettingswidget.ui" line="111"/>
+        <source>Active Sensing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portfiltersettingswidget.ui" line="121"/>
+        <source>Realtime Events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portfiltersettingswidget.ui" line="131"/>
         <source>Tune Request</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="78"/>
+        <location filename="../src/widgets/portfiltersettingswidget.ui" line="141"/>
         <source>Song Select</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="85"/>
+        <location filename="../src/widgets/portfiltersettingswidget.ui" line="151"/>
         <source>Song Position Pointer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="92"/>
+        <location filename="../src/widgets/portfiltersettingswidget.ui" line="161"/>
         <source>Midi Time Code</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="99"/>
+        <location filename="../src/widgets/portfiltersettingswidget.ui" line="171"/>
         <source>System Exclusive</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="110"/>
-        <source>Configure MIDI Controller Filter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="126"/>
-        <source>Midi Controller</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="134"/>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="142"/>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="150"/>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="158"/>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="166"/>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="174"/>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="182"/>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="190"/>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="198"/>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="206"/>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="214"/>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="222"/>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="230"/>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="238"/>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="246"/>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="254"/>
-        <source>MIDI Channel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="265"/>
-        <source>Enable Channel Message Filter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="272"/>
-        <source>Channel 1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="277"/>
-        <source>Channel 2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="282"/>
-        <source>Channel 3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="287"/>
-        <source>Channel 4</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="292"/>
-        <source>Channel 5</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="297"/>
-        <source>Channel 6</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="302"/>
-        <source>Channel 7</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="307"/>
-        <source>Channel 8</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="312"/>
-        <source>Channel 9</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="317"/>
-        <source>Channel 10</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="322"/>
-        <source>Channel 11</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="327"/>
-        <source>Channel 12</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="332"/>
-        <source>Channel 13</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="337"/>
-        <source>Channel 14</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="342"/>
-        <source>Channel 15</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="347"/>
-        <source>Channel 16</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="352"/>
-        <source>Pich Bend</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="357"/>
-        <source>Channel Pressure</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="362"/>
-        <source>Program Change</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="367"/>
-        <source>Control Change</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="372"/>
-        <source>Poly Key Pressure</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/widgets/portfiltersettingswidget.ui" line="377"/>
-        <source>Note on/off</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>PortFilterWidget</name>
     <message>
-        <location filename="../src/widgets/portfilterwidget.cpp" line="40"/>
+        <location filename="../src/widgets/portfilterwidget.cpp" line="86"/>
         <source>Input Filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfilterwidget.cpp" line="42"/>
+        <location filename="../src/widgets/portfilterwidget.cpp" line="88"/>
         <source>Output Filter</source>
         <translation type="unfinished"></translation>
     </message>
