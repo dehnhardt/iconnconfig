@@ -108,8 +108,10 @@ unsigned long DeviceDetectionProcessor::detectDevices() {
 			std::cmatch mIn;
 			std::regex_search(currentInputPortName.c_str(), mIn, re);
 			std::cout << "InputPort " << mIn[1] << std::endl;
-			if (mIn[1] != mOut[1])
+            if (mIn[1] != mOut[1]){
+                m_pMidiin->closePort();
 				continue;
+            }
 			m_pMidiout->sendMessage(qMessage);
 			// pause a little
 			BYTE_VECTOR *message = new BYTE_VECTOR;
