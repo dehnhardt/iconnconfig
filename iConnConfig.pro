@@ -90,7 +90,11 @@ SOURCES +=\
     src/widgets/controls/midicontrollerselect.cpp \
     src/widgets/portfiltersettingswidget.cpp \
     src/widgets/controls/midicontrollercombodelegate.cpp \
-    src/widgets/portinfowidget.cpp
+    src/widgets/portinfowidget.cpp \
+    src/widgets/portremapsettingswidget.cpp \
+    src/widgets/portremapwidget.cpp \
+    src/sysex/retsetmidiportremap.cpp \
+    src/sysex/getmidiportremap.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
@@ -150,7 +154,11 @@ HEADERS  += \
     src/widgets/controls/midicontrollerselect.h \
     src/widgets/portfiltersettingswidget.h \
     src/widgets/controls/midicontrollercombodelegate.h \
-    src/widgets/portinfowidget.h
+    src/widgets/portinfowidget.h \
+    src/widgets/portremapsettingswidget.h \
+    src/widgets/portremapwidget.h \
+    src/sysex/retsetmidiportremap.h \
+    src/sysex/getmidiportremap.h
 
 FORMS    += \
     src/devicedetection.ui \
@@ -158,7 +166,8 @@ FORMS    += \
     src/aboutdialog.ui \
     src/iconnconfigmain.ui \
     src/widgets/portfiltersettingswidget.ui \
-    src/widgets/portinfowidget.ui
+    src/widgets/portinfowidget.ui \
+    src/widgets/portremapsettingswidget.ui
 
 unix:!macx: LIBS += -lasound \
                     -lpthread \
