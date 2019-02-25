@@ -21,7 +21,7 @@ class GetMidiPortRemap : public SysExMessage {
 	void setPortNumer(unsigned int portNumber) {
 		this->m_iPortNumber = portNumber;
 	}
-    void setPortRemapDirection(PortRemapDirection portRemapDirection) {
+    void setPortRemapDirection(PortDirection portRemapDirection) {
         this->m_iPortRemapDirection = portRemapDirection;
 	}
 
@@ -30,7 +30,7 @@ class GetMidiPortRemap : public SysExMessage {
 
   private:
 	unsigned int m_iPortNumber;
-    PortRemapDirection m_iPortRemapDirection;
+    PortDirection m_iPortRemapDirection;
 };
 
 #endif // GETMIDIPORTREMAP_H
