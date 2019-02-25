@@ -66,7 +66,6 @@ class RetSetMidiPortFilter : public SysExMessage {
 
   private:
 	long m_iPortId;
-	unsigned int m_iCommandVersion;
 	MIDIPortFilter *m_pMidiPortFilter = nullptr;
 };
 

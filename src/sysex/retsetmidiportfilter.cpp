@@ -10,13 +10,10 @@ RetSetMidiPortFilter::~RetSetMidiPortFilter() { delete m_pMidiPortFilter; }
 void RetSetMidiPortFilter::parseAnswerData() {
 	if (!m_pMidiPortFilter)
 		m_pMidiPortFilter = new MIDIPortFilter();
-	m_iCommandVersion = m_pData->at(0);
+	m_iCommandVersionNumber = m_pData->at(0);
 	m_iPortId = MIDI::byteJoin7bit(m_pData, 1, 2);
-	/*m_portFilterDirection = m_pData->at(3) == 1 ? PortFilterDirection::INPUT
-												: PortFilterDirection::OUTPUT;*/
-	m_pMidiPortFilter->portFilterDirection = m_pData->at(3) == 1
-												 ? PortFilterDirection::INPUT
-												 : PortFilterDirection::OUTPUT;
+	m_pMidiPortFilter->portFilterDirection =
+		m_pData->at(3) == 1 ? PortDirection::INPUT : PortDirection::OUTPUT;
 	m_pMidiPortFilter->numberOfControllerFilters = m_pData->at(4);
 	m_pMidiPortFilter->midiControllerFilter = new MIDIControllerFilter
 		*[m_pMidiPortFilter->numberOfControllerFilters];
