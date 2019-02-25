@@ -4,8 +4,8 @@
 
 #include <QLabel>
 
-PortFilterSettingsWidget::PortFilterSettingsWidget(
-	PortFilterDirection direction, QWidget *parent)
+PortFilterSettingsWidget::PortFilterSettingsWidget(PortDirection direction,
+												   QWidget *parent)
 	: QWidget(parent), ui(new Ui::PortFilterSettingsWidget),
 	  portFilterDirection(direction) {
 	ui->setupUi(this);
@@ -326,18 +326,16 @@ QVariant MidiChannelMessagesFilterTM::headerData(int section,
 	if (role == Qt::DisplayRole && orientation == Qt::Vertical) {
 		switch (section) {
 		case 0:
-			return QString(tr("MIDI-Channel"));
-		case 1:
 			return QString(tr("Pitch Bend"));
-		case 2:
+		case 1:
 			return QString(tr("Mono Key Pressure"));
-		case 3:
+		case 2:
 			return QString(tr("Program Change"));
-		case 4:
+		case 3:
 			return QString(tr("Control Change"));
-		case 5:
+		case 4:
 			return QString(tr("Poly Key Pressure"));
-		case 6:
+		case 5:
 			return QString(tr("Note On / Note Off"));
 		default:
 			return QVariant();

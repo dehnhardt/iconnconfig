@@ -23,12 +23,12 @@ PortFilterWidget::~PortFilterWidget() {
 	delete m_pUpdateTimerOutFilter;
 }
 
-void PortFilterWidget::midiPortFilterUpdated(PortFilterDirection direction) {
+void PortFilterWidget::midiPortFilterUpdated(PortDirection direction) {
 	switch (direction) {
-	case PortFilterDirection::INPUT:
+	case PortDirection::INPUT:
 		m_pUpdateTimerInFilter->start(1000);
 		break;
-	case PortFilterDirection::OUTPUT:
+	case PortDirection::OUTPUT:
 		m_pUpdateTimerOutFilter->start(1000);
 		break;
 	}
@@ -79,9 +79,9 @@ void PortFilterWidget::createWidgets() {
 	m_pFilterDirectionTabWidget = new QTabWidget(this);
 	m_pFilterDirectionTabWidget->setTabPosition(QTabWidget::West);
 	m_pInputFilterWidget =
-		new PortFilterSettingsWidget(PortFilterDirection::INPUT, this);
+		new PortFilterSettingsWidget(PortDirection::INPUT, this);
 	m_pOutputFilterWidget =
-		new PortFilterSettingsWidget(PortFilterDirection::OUTPUT, this);
+		new PortFilterSettingsWidget(PortDirection::OUTPUT, this);
 	m_pFilterDirectionTabWidget->addTab(m_pInputFilterWidget,
 										tr("Input Filter"));
 	m_pFilterDirectionTabWidget->addTab(m_pOutputFilterWidget,
@@ -93,12 +93,12 @@ void PortFilterWidget::retrieveData() {
 	GetMidiPortFilter *getMidiPortFilter = new GetMidiPortFilter(device);
 	getMidiPortFilter->setDebug(true);
 	getMidiPortFilter->setPortNumer(static_cast<unsigned int>(portNumber));
-	getMidiPortFilter->setPortFilterDirection(PortFilterDirection::INPUT);
+	getMidiPortFilter->setPortFilterDirection(PortDirection::INPUT);
 	getMidiPortFilter->setDebug(true);
 	getMidiPortFilter->setCmdflags(0x40);
 	m_pMidiPortFilterIn =
 		static_cast<RetSetMidiPortFilter *>(getMidiPortFilter->query());
-	getMidiPortFilter->setPortFilterDirection(PortFilterDirection::OUTPUT);
+	getMidiPortFilter->setPortFilterDirection(PortDirection::OUTPUT);
 	m_pMidiPortFilterOut =
 		static_cast<RetSetMidiPortFilter *>(getMidiPortFilter->query());
 }

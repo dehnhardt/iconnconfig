@@ -3,8 +3,6 @@
 
 #include "sysexmessage.h"
 
-enum PortFilterDirection { INPUT = 1, OUTPUT };
-
 typedef struct {
 	bool filterMidiResetEvents;
 	bool filterMidiActiveSensingEvents;
@@ -32,7 +30,7 @@ typedef struct {
 
 typedef struct {
 	unsigned int numberOfControllerFilters;
-	PortFilterDirection portFilterDirection;
+	PortDirection portFilterDirection;
 	MIDISystemMessagesFilter *midiSystemMessagesFilter;
 	MIDIChannelMessagesFilter *midiChannelMessagesFilter[MIDI_CHANNELS];
 	MIDIControllerFilter **midiControllerFilter;
