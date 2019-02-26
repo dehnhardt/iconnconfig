@@ -78,7 +78,7 @@ QWidget *PortsWidget::createWidget(MultiInfoListEntry *entry) {
 			Command::GET_MIDI_PORT_FILTER)) {
 		PortFilterWidget *portFilterWidget =
 			new PortFilterWidget(device, portNumber, this->parentWidget());
-		portTabWidget->addTab(portFilterWidget, tr("Port Filter"));
+		portTabWidget->addTab(portFilterWidget, tr("MIDI-Port Filter"));
 	}
 	if (device->getCommands()->isCommandSupported(
 			Command::GET_MIDI_PORT_REMAP)) {

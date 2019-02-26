@@ -316,54 +316,108 @@ Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm un
 <context>
     <name>MidiChannelMessagesFilterTM</name>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="329"/>
         <source>MIDI-Channel</source>
-        <translation>MIDI Kanal</translation>
+        <translation type="vanished">MIDI Kanal</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="331"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="332"/>
         <source>Pitch Bend</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="333"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="334"/>
         <source>Mono Key Pressure</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="335"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="336"/>
         <source>Program Change</source>
         <translation>Programmwechsel</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="337"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="338"/>
         <source>Control Change</source>
         <translation>Controllerwechsel</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="339"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="340"/>
         <source>Poly Key Pressure</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="341"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="342"/>
         <source>Note On / Note Off</source>
         <translatorcomment>Note an / Note aus</translatorcomment>
         <translation></translation>
     </message>
 </context>
 <context>
+    <name>MidiChannelMessagesRemapTM</name>
+    <message>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="255"/>
+        <source>Pitch Bend</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="257"/>
+        <source>Mono Key Pressure</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="259"/>
+        <source>Program Change</source>
+        <translation>Programmwechsel</translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="261"/>
+        <source>Control Change</source>
+        <translation>Controllerwechsel</translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="263"/>
+        <source>Poly Key Pressure</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="265"/>
+        <source>Note On / Note Off</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="267"/>
+        <source>Map to Channel</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
     <name>MidiControllerFilterTM</name>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="225"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="227"/>
         <source>MIDI-Controller</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="227"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="229"/>
         <source>all</source>
-        <translatorcomment>alle</translatorcomment>
-        <translation></translation>
+        <translation>alle</translation>
+    </message>
+</context>
+<context>
+    <name>MidiControllerRemapTM</name>
+    <message>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="135"/>
+        <source>MIDI-Controller Source</source>
+        <translation>Quell-Controller Nummer</translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="137"/>
+        <source>MIDI-Controller Destination</source>
+        <translation>Ziel-Controller Nummer</translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="139"/>
+        <source>all</source>
+        <translation>alle</translation>
     </message>
 </context>
 <context>
@@ -576,57 +630,88 @@ Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm un
     <message>
         <location filename="../src/widgets/portinfowidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/widgets/portinfowidget.ui" line="22"/>
         <source>Icon</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/widgets/portinfowidget.ui" line="29"/>
         <source>Portnumber:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nummer des Ports:</translation>
     </message>
     <message>
         <location filename="../src/widgets/portinfowidget.ui" line="56"/>
         <source>Port Id:</source>
-        <translation type="unfinished"></translation>
+        <translation>Laufende Nummer des Anschlusses:</translation>
     </message>
     <message>
         <location filename="../src/widgets/portinfowidget.ui" line="74"/>
         <source>Usb Device Jack</source>
-        <translation type="unfinished"></translation>
+        <translation>USB Geräte Anschluss</translation>
     </message>
     <message>
         <location filename="../src/widgets/portinfowidget.ui" line="81"/>
         <source>USB Host Jack</source>
-        <translation type="unfinished"></translation>
+        <translation>USB Host Anschluss</translation>
     </message>
     <message>
         <location filename="../src/widgets/portinfowidget.ui" line="88"/>
         <source>Ethernet Jack</source>
-        <translation type="unfinished"></translation>
+        <translation>Netzwerk Anschluss</translation>
     </message>
     <message>
         <location filename="../src/widgets/portinfowidget.ui" line="95"/>
         <source>Jack Specific</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/widgets/portinfowidget.ui" line="119"/>
         <source>Port Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Name des Anschlusses:</translation>
     </message>
     <message>
         <location filename="../src/widgets/portinfowidget.ui" line="165"/>
         <source>Input Enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Eingang aktiviert</translation>
     </message>
     <message>
         <location filename="../src/widgets/portinfowidget.ui" line="172"/>
         <source>Output Enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausgang aktiviert</translation>
+    </message>
+</context>
+<context>
+    <name>PortRemapSettingsWidget</name>
+    <message>
+        <location filename="../src/widgets/portremapsettingswidget.ui" line="14"/>
+        <source>Form</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portremapsettingswidget.ui" line="26"/>
+        <source>Configure MIDI Controller Messages to Remap</source>
+        <translation>zu ändernde MIDI System Nachrichten</translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portremapsettingswidget.ui" line="44"/>
+        <source>Channel Messages to Remap</source>
+        <translation>zu ändernde MIDI Kanal Nachrichten</translation>
+    </message>
+</context>
+<context>
+    <name>PortRemapWidget</name>
+    <message>
+        <location filename="../src/widgets/portremapwidget.cpp" line="81"/>
+        <source>Input Remap</source>
+        <translation>Mapping des Eingangs</translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portremapwidget.cpp" line="83"/>
+        <source>Output Remap</source>
+        <translation>Mapping des Ausgangs</translation>
     </message>
 </context>
 <context>
@@ -643,14 +728,27 @@ Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm un
         <translation type="vanished">Anschlüsse</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portswidget.cpp" line="74"/>
         <source>Port Routing</source>
-        <translation>MIDI-Routing</translation>
+        <translation type="vanished">MIDI-Routing</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portswidget.cpp" line="80"/>
+        <location filename="../src/widgets/portswidget.cpp" line="75"/>
+        <source>MIDI-Port Routing</source>
+        <translation>Routen des MIDI Anschlusses</translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portswidget.cpp" line="81"/>
+        <source>MIDI-Port Filter</source>
+        <translation>Filtern des MIDI Anschlusses</translation>
+    </message>
+    <message>
         <source>Port Filter</source>
-        <translation>MIDI-Filter</translation>
+        <translation type="vanished">MIDI-Filter</translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/portswidget.cpp" line="87"/>
+        <source>MIDI-Port Remap</source>
+        <translation>Mapping des MIDI Anschlusses</translation>
     </message>
     <message>
         <location filename="../src/widgets/portswidget.h" line="15"/>
