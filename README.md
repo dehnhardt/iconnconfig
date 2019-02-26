@@ -32,7 +32,7 @@ Later I found the complete documentation for sysex-data from IConnectivity.
 * (2017-05-22) Update of method (static, dhcp) for IP-connection implemented (still struggling with verifying static IP-Adresses)
 * (2017-06-01) Reading and Displaying the Midi port routings works
 * (2017-06-04) Applied a patch from Ralf Beck to make it compile with qt 4.8
-* (2017-06-06) Added methods to update port routings
+* (2017-06-06) Added methods to update port routings. [Port routing](https://github.com/dehnhardt/wikis/blob/master/mioconfig/pictures/PortRoutingSettings.png) complete.
 * (2017-06-07) Save settings to device and restore settings from device works
 * (2017-06-12) Saving of static IP-address, netmask and gateway works
 * (2017-06-14) Release of version v0.1-beta
@@ -46,6 +46,7 @@ Later I found the complete documentation for sysex-data from IConnectivity.
 * (2019-02-13) Fixes in translation code from JP Cimalando
 * (2019-02-14) Fix bug in error handling, Fix wrong calculation of command id, All initializations of pointers changed from 0 or NULL to nullptr
 * (2019-02-15) Application icon added (Thank again to Olivier Humbert). Device recognition made significantly faster by only querying inputs and outputs of the same physical ports.
-* (2019-02-22) Added portfilter configuration for system messages, channel messages and controllers for in- and output ports
+* (2019-02-22) Added [portfilter configuration](https://github.com/dehnhardt/wikis/blob/master/mioconfig/pictures/PortFilterSettings.png) for system messages, channel messages and controllers for in- and output ports
 * (2019-02-22) Changed the portrouting panel slightly
-* (2019-02-23) Add portinfo widget. Port name and status can now be changed
+* (2019-02-23) Add [portinfo widget](https://github.com/dehnhardt/wikis/blob/master/mioconfig/pictures/PortSettings.png). Port name and status can now be changed
+* (2019-02-26) Add [portmapping widget](https://github.com/dehnhardt/wikis/blob/master/mioconfig/pictures/PortRemapSettings.png) for in- and output ports. 
