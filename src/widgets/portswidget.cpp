@@ -4,6 +4,7 @@
 #include "portdisplayhelper.h"
 #include "portfilterwidget.h"
 #include "portinfowidget.h"
+#include "portremapwidget.h"
 #include "portroutingwidget.h"
 
 #include <QLabel>
@@ -71,13 +72,19 @@ QWidget *PortsWidget::createWidget(MultiInfoListEntry *entry) {
 			new PortRoutingWidget(device, portNumber, this->parentWidget());
 		QScrollArea *a = new QScrollArea(portTabWidget);
 		a->setWidget(w);
-		portTabWidget->addTab(a, tr("Port Routing"));
+		portTabWidget->addTab(a, tr("MIDI-Port Routing"));
 	}
 	if (device->getCommands()->isCommandSupported(
 			Command::GET_MIDI_PORT_FILTER)) {
 		PortFilterWidget *portFilterWidget =
 			new PortFilterWidget(device, portNumber, this->parentWidget());
 		portTabWidget->addTab(portFilterWidget, tr("Port Filter"));
+	}
+	if (device->getCommands()->isCommandSupported(
+			Command::GET_MIDI_PORT_REMAP)) {
+		PortRemapWidget *portRemapWidget =
+			new PortRemapWidget(device, portNumber, this->parentWidget());
+		portTabWidget->addTab(portRemapWidget, tr("MIDI-Port Remap"));
 	}
 	return portTabWidget;
 }

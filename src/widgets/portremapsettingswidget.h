@@ -16,7 +16,7 @@ class PortRemapSettingsWidget : public QWidget {
 	Q_OBJECT
 
   public:
-    explicit PortRemapSettingsWidget(PortRemapDirection portRemapDirection,
+    explicit PortRemapSettingsWidget(PortDirection portRemapDirection,
 									  QWidget *parent = nullptr);
     ~PortRemapSettingsWidget();
 
@@ -28,7 +28,7 @@ class PortRemapSettingsWidget : public QWidget {
     MIDIPortRemap *getMidiPortRemap();
 
   signals:
-    void remapDataChanged(PortRemapDirection portRemapDirection);
+    void remapDataChanged(PortDirection portRemapDirection);
 
   private: // Methods
 	QTableWidgetItem *getCheckStateItem(bool checked);
@@ -36,7 +36,7 @@ class PortRemapSettingsWidget : public QWidget {
 
   private: // Members
     Ui::PortRemapSettingsWidget *ui;
-    PortRemapDirection portRemapDirection;
+    PortDirection portRemapDirection;
 
 };
 

@@ -29,7 +29,7 @@ void RetSetMidiPortRemap::parseAnswerData() {
 void RetSetMidiPortRemap::parseMidiChannelMessagesRemap(
 	unsigned int midiChannel) {
 	unsigned int remap = static_cast<unsigned int>(
-		MIDI::byteJoin8bit(m_pData, 7 + 2 * midiChannel, 2));
+		MIDI::byteJoin8bit(m_pData, 5 + 2 * midiChannel, 2));
 	MIDIChannelMessagesRemap *midiChannelMessagesRemap =
 		new MIDIChannelMessagesRemap();
 	midiChannelMessagesRemap->remapMidiPitchBendEvents = remap & 8192;

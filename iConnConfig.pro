@@ -94,7 +94,8 @@ SOURCES +=\
     src/widgets/portremapsettingswidget.cpp \
     src/widgets/portremapwidget.cpp \
     src/sysex/retsetmidiportremap.cpp \
-    src/sysex/getmidiportremap.cpp
+    src/sysex/getmidiportremap.cpp \
+    src/widgets/controls/midichannelcombodelegate.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
@@ -158,7 +159,8 @@ HEADERS  += \
     src/widgets/portremapsettingswidget.h \
     src/widgets/portremapwidget.h \
     src/sysex/retsetmidiportremap.h \
-    src/sysex/getmidiportremap.h
+    src/sysex/getmidiportremap.h \
+    src/widgets/controls/midichannelcombodelegate.h
 
 FORMS    += \
     src/devicedetection.ui \
