@@ -104,6 +104,7 @@ class SysExMessage {
 	// members
   protected:
 	Command m_Command;
+	unsigned int m_iDataLength = 0;
 	unsigned char m_iCmdflags;
 	AcceptedAnswers m_AcceptedAnswers;
 	Device *m_pDevice = nullptr;

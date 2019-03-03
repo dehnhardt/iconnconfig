@@ -8,6 +8,7 @@
 #include "sysex/protocolexception.h"
 #include "sysex/retcommandlist.h"
 #include "ui_iconnconfigmain.h"
+#include "widgets/audioportswidget.h"
 #include "widgets/centralwidget.h"
 #include "widgets/deviceinfowidget.h"
 #include "widgets/multiinfowidget.h"
@@ -212,9 +213,14 @@ void MioMain::openDeviceGUI(Device *d) {
 		new DeviceInfoWidget(this, d, d->getDeviceInfo());
 	this->addDock(deviceInfoWidget, Qt::LeftDockWidgetArea);
 
-	PortsWidget *portsWidget = new PortsWidget(this, d);
-	this->addDock(portsWidget, Qt::LeftDockWidgetArea);
-
+	if (d->hasMidiSupport()) {
+		PortsWidget *portsWidget = new PortsWidget(this, d);
+		this->addDock(portsWidget, Qt::LeftDockWidgetArea);
+	}
+	if (d->hasAudioSupport()) {
+		AudioPortsWidget *audioPortsWidget = new AudioPortsWidget(this, d);
+		this->addDock(audioPortsWidget, Qt::LeftDockWidgetArea);
+	}
 	addDeviceToolButtons();
 
 	QSettings *settings = Configuration::getInstance().getSettings();

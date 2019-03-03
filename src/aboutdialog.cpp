@@ -85,6 +85,11 @@ void AboutDialog::setupTable() {
 										  "href='https://thenounproject.com/"
 										  "'>NOUN Project</a><br/>"
 										  "\nCreated by Michael Wohlwend"));
+	// XLR Jack
+	addEntry(tr("XLR Jack Icon"), tr("Downloaded from the <a "
+									 "href='https://thenounproject.com/"
+									 "'>NOUN Project</a><br/>"
+									 "\nCreated by Chad Wimberly"));
 	addEntry(tr("Credits"), nullptr, true);
 	// Ralf Beck - MTP-Driver
 	addEntry(tr("RTP-Driver"),

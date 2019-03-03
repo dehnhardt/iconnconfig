@@ -8,5 +8,6 @@
         <file alias="saveto">resources/savetodevice.xpm</file>
         <file alias="restore">resources/restore.xpm</file>
         <file alias="appicon">resources/iconnconfig.xpm</file>
+        <file alias="xlrjack">resources/xlrjack.xpm</file>
     </qresource>
 </RCC>

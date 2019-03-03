@@ -18,28 +18,25 @@ class RetSetMidiInfo;
 class RetSetMidiPortInfo;
 class GetInfo;
 class DeviceStructureContainer;
+class RetSetAudioGlobalParm;
 
 typedef std::map<unsigned int, DeviceStructureContainer *> DeviceStructure;
 
-class DeviceStructureContainer
-{
+class DeviceStructureContainer {
 
-public:
+  public:
 	DeviceStructureContainer() {}
 	DeviceStructureContainer(SysExMessage *message) { setMessage(message); }
-	DeviceStructureContainer(DeviceStructure *structure)
-	{
+	DeviceStructureContainer(DeviceStructure *structure) {
 		setStructure(structure);
 	}
 
-	void setMessage(SysExMessage *message)
-	{
+	void setMessage(SysExMessage *message) {
 		this->message = message;
 		type = MESSAGE;
 	}
 
-	void setStructure(DeviceStructure *deviceStructure)
-	{
+	void setStructure(DeviceStructure *deviceStructure) {
 		this->deviceStructure = deviceStructure;
 		type = STRUCTURE;
 	}
@@ -50,24 +47,23 @@ public:
 	enum SetType { MESSAGE, STRUCTURE };
 	SetType type;
 
-private:
+  private:
 	SysExMessage *message = nullptr;
 	DeviceStructure *deviceStructure = nullptr;
 };
 
-class Device
-{
-public:
+class Device {
+  public:
 	Device(unsigned int m_iInPortNumber, unsigned int m_iOutPortNumber,
 		   unsigned long m_pSerialNumber, unsigned int m_pProductId);
 	Device(Device *device);
 
 	~Device();
 
-public:
+  public:
 	SysExMessage *getSysExMessage(Command cmd);
 
-public:
+  public:
 	static const long MANUFACTURER_USB_ID = 0x2321;
 	static const char MESSAGE_CLASS = 0x7e;
 	static constexpr char MANUFACTURER_SYSEX_ID[3] = {0x00, 0x01, 0x73};
@@ -92,6 +88,7 @@ public:
 	bool getDebug() const;
 
 	bool hasMidiSupport();
+	bool hasAudioSupport();
 
 	static BYTE_VECTOR *getManufacturerHeader();
 	BYTE_VECTOR *getDeviceHeader();
@@ -115,19 +112,23 @@ public:
 	RetCommandList *getCommands() { return m_pCommands; }
 	GetInfo *getDeviceInfo() { return m_pDeviceInfo; }
 	RetSetMidiInfo *getMidiInfo() { return m_pMidiInfo; }
+	RetSetAudioGlobalParm *getAudioGlobalParm() { return m_pGlobalAudioParam; }
 	MIDI_PORT_INFOS *getMidiPortInfos() const;
 	BYTE_VECTOR *getLastSendMessage() const;
 	BYTE_VECTOR *getLastRetrieveMessage() const;
 
 	// setter
 	void setDebug(bool value);
-	void setDeviceInformation(std::string m_sModelName, std::string m_sDeviceName);
+	void setDeviceInformation(std::string m_sModelName,
+							  std::string m_sDeviceName);
 	void setDefault(bool isDefault) { this->m_bIsDefault = isDefault; }
 
 	void setLastSendMessage(BYTE_VECTOR *value);
 	void setLastRetrieveMessage(BYTE_VECTOR *value);
 
-private:
+	RetSetAudioGlobalParm *getGlobalAudioParam() const;
+
+  private:
 	bool setupMidi();
 	bool checkSysex(BYTE_VECTOR *data);
 	void requestMidiPortInfos();
@@ -161,16 +162,17 @@ private:
 	std::string m_sModelNumber;
 
 	RetSetMidiInfo *m_pMidiInfo = nullptr;
+	RetSetAudioGlobalParm *m_pGlobalAudioParam = nullptr;
+
 	RetCommandList *m_pCommands = nullptr;
 	RetInfoList *m_pRetInfoList = nullptr;
 	GetInfo *m_pDeviceInfo = nullptr;
-	std::map<int, std::vector<RetSetMidiPortInfo *> *> *m_pMidiPortInfos = nullptr;
+	MIDI_PORT_INFOS *m_pMidiPortInfos = nullptr;
 
 	DeviceStructure *m_pInformationTree = nullptr;
 
 	BYTE_VECTOR *m_pDeviceHeader = nullptr;
 	BYTE_VECTOR *m_pFullHeader = nullptr;
-
 };
 
 void midiOutErrorCallback(RtMidiError::Type type, const std::string &errorText,
@@ -178,4 +180,4 @@ void midiOutErrorCallback(RtMidiError::Type type, const std::string &errorText,
 void midiinErrorCallback(RtMidiError::Type type, const std::string &errorText,
 						 void *userData);
 
-#endif// DEVICE_H
+#endif // DEVICE_H

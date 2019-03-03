@@ -64,13 +64,13 @@ SysExMessage::~SysExMessage() {
 }
 
 void SysExMessage::extractData(std::vector<unsigned char> *message) {
-	long dataLength = MIDI::byteJoin7bit(
+	m_iDataLength = static_cast<unsigned int>(MIDI::byteJoin7bit(
 		new BYTE_VECTOR(message->begin() + Device::DATA_LENGTH_OFFSET,
 						message->begin() + Device::DATA_LENGTH_OFFSET +
-							Device::DATA_LENGTH_LENGTH));
+							Device::DATA_LENGTH_LENGTH)));
 	m_pData =
 		new BYTE_VECTOR(message->begin() + Device::DATA_OFFSET,
-						message->begin() + Device::DATA_OFFSET + dataLength);
+						message->begin() + Device::DATA_OFFSET + m_iDataLength);
 }
 
 BYTE_VECTOR *SysExMessage::getMIDISysExMessage() {
@@ -254,4 +254,7 @@ CommandAcceptedAnswers SysExMessage::commandAcceptedAnswers = {
 	{RET_SET_MIDI_PORT_REMAP, AcceptedAnswers{ACK}},
 	{GET_MIDI_PORT_ROUTE, AcceptedAnswers{RET_SET_MIDI_PORT_ROUTE, ACK}},
 	{RET_SET_MIDI_PORT_ROUTE, AcceptedAnswers{ACK}},
-};
+	{GET_AUDIO_GLOBAL_PARM, AcceptedAnswers{RET_SET_AUDIO_GLOBAL_PARM}},
+	{RET_SET_AUDIO_GLOBAL_PARM, AcceptedAnswers{ACK}},
+	{GET_AUDIO_PORT_PARM, AcceptedAnswers{RET_SET_AUDIO_PORT_PARM, ACK}},
+	{RET_SET_AUDIO_PORT_PARM, AcceptedAnswers{ACK}}};

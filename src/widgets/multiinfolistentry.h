@@ -19,7 +19,8 @@ class MultiInfoListEntry : public QObject {
 		GLOBAL_DEVICE_INFO,
 		NETWORK_INFO,
 		MIDI_INFO,
-		PORT_ROUTING
+		PORT_ROUTING,
+		AUDIO_INFO
 	};
 
   public:

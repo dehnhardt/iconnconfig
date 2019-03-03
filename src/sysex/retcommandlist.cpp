@@ -18,12 +18,14 @@ bool RetCommandList::isCommandSupported(const Command cmd) {
 
 void RetCommandList::parseAnswerData() {
 	m_pSupportedCommands = new std::vector<Command>();
-	unsigned int nCommandsSize = m_pData->size();
+	unsigned int nCommandsSize = static_cast<unsigned int>(m_pData->size());
+	nCommandsSize = m_iDataLength;
 	Command c;
-	for (unsigned int i = 0; i < nCommandsSize; ++i) {
-		int val = m_pData->at(i);
+	for (unsigned int i = 0; i < nCommandsSize; i += 2) {
+		unsigned int val =
+			static_cast<unsigned int>(MIDI::byteJoin8bit(m_pData, i, 2));
 		c = static_cast<Command>(val);
-		if ((val != 0) && (val < 0x40))
+		if (val != 0)
 			m_pSupportedCommands->push_back(c);
 	}
 }

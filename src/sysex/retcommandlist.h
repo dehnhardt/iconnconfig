@@ -6,7 +6,7 @@
 #include <vector>
 
 class RetCommandList : public SysExMessage {
-public:
+  public:
 	RetCommandList(Device *m_pDevice);
 	RetCommandList(Command cmd, BYTE_VECTOR *message, Device *device)
 		: SysExMessage(cmd, message, device) {}
@@ -17,8 +17,8 @@ public:
 	int getSettingsIndex() { return 0; }
 	std::string getStorableValue() { return ""; }
 
-private:
-	std::vector<Command> *m_pSupportedCommands = 0;
+  private:
+	std::vector<Command> *m_pSupportedCommands = nullptr;
 };
 
-#endif// GETCOMMANDS_H
+#endif // GETCOMMANDS_H

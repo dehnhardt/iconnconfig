@@ -4,6 +4,7 @@
 #include "../sysex/retsetethernetportinfo.h"
 #include "../sysex/retsetmidiinfo.h"
 #include "ethernetinfowidget.h"
+#include "globalaudioconfigurationwidget.h"
 #include "infotablewidget.h"
 #include "multiinfolistentry.h"
 
@@ -29,6 +30,13 @@ DeviceInfoWidget::DeviceInfoWidget(MioMain *parent, Device *device,
 				new MultiInfoListEntry(MultiInfoListEntry::NETWORK_INFO,
 									   tr("Network").toStdString(), i));
 		}
+	}
+	if (device->hasAudioSupport()) {
+		infoSections->push_back(new MultiInfoListEntry(
+			MultiInfoListEntry::SECTION, tr("Audio").toStdString()));
+		infoSections->push_back(new MultiInfoListEntry(
+			MultiInfoListEntry::AUDIO_INFO,
+			tr("Global Audio Konfiguration").toStdString()));
 	}
 }
 
@@ -72,6 +80,12 @@ QWidget *DeviceInfoWidget::createWidget(MultiInfoListEntry *entry) {
 		a->setWidget(w);
 		return a;
 	};
+	case MultiInfoListEntry::AUDIO_INFO: {
+		GlobalAudioConfigurationWidget *globalAudioConfigurationWidget =
+			new GlobalAudioConfigurationWidget(device->getGlobalAudioParam(),
+											   this);
+		return globalAudioConfigurationWidget;
+	}
 	default: {
 		QWidget *w = new QWidget(this->parentWidget());
 		QGridLayout *lo = new QGridLayout();

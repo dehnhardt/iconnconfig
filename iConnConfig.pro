@@ -95,7 +95,14 @@ SOURCES +=\
     src/widgets/portremapwidget.cpp \
     src/sysex/retsetmidiportremap.cpp \
     src/sysex/getmidiportremap.cpp \
-    src/widgets/controls/midichannelcombodelegate.cpp
+    src/widgets/controls/midichannelcombodelegate.cpp \
+    src/widgets/globalaudioconfigurationwidget.cpp \
+    src/widgets/audioportswidget.cpp \
+    src/sysex/getaudioportparm.cpp \
+    src/sysex/retsetaudioportparm.cpp \
+    src/sysex/getaudioglobalparm.cpp \
+    src/sysex/retsetaudioglobalparm.cpp \
+    src/widgets/audioportparmwidget.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
@@ -160,7 +167,14 @@ HEADERS  += \
     src/widgets/portremapwidget.h \
     src/sysex/retsetmidiportremap.h \
     src/sysex/getmidiportremap.h \
-    src/widgets/controls/midichannelcombodelegate.h
+    src/widgets/controls/midichannelcombodelegate.h \
+    src/widgets/globalaudioconfigurationwidget.h \
+    src/widgets/audioportswidget.h \
+    src/sysex/getaudioportparm.h \
+    src/sysex/retsetaudioportparm.h \
+    src/sysex/getaudioglobalparm.h \
+    src/sysex/retsetaudioglobalparm.h \
+    src/widgets/audioportparmwidget.h
 
 FORMS    += \
     src/devicedetection.ui \
@@ -169,7 +183,9 @@ FORMS    += \
     src/iconnconfigmain.ui \
     src/widgets/portfiltersettingswidget.ui \
     src/widgets/portinfowidget.ui \
-    src/widgets/portremapsettingswidget.ui
+    src/widgets/portremapsettingswidget.ui \
+    src/widgets/globalaudioconfiguration.ui \
+    src/widgets/audioportparmwidget.ui
 
 unix:!macx: LIBS += -lasound \
                     -lpthread \

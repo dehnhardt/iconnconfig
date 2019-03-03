@@ -5,6 +5,7 @@ RetSetMidiPortInfo::RetSetMidiPortInfo(Device *device)
 				   device) {}
 
 void RetSetMidiPortInfo::parseAnswerData() {
+	m_iCommandVersionNumber = m_pData->at(0);
 	m_iPortId = MIDI::byteJoin7bit(m_pData, 1, 2);
 	m_PortType = static_cast<MidiPortType>(m_pData->at(3));
 	m_iJackNumber = m_pData->at(4);
