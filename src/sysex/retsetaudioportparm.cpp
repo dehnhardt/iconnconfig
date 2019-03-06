@@ -81,6 +81,7 @@ RetSetAudioPortParm::getAudioPortTypeName(AudioPortType audioPortType) {
 	case APT_ANALOGUE:
 		return "Analogue";
 	}
+	return "none";
 }
 
 std::string RetSetAudioPortParm::getAudioPortTypeName() {
