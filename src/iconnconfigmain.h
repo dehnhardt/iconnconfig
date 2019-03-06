@@ -15,13 +15,6 @@ namespace Ui {
 class MioMain;
 }
 
-class DeviceMenuMapper : public QObject {
-  public:
-	DeviceMenuMapper(Device *device) : device(device) {}
-	~DeviceMenuMapper();
-	Device *device;
-};
-
 class MioMain : public QMainWindow {
 	Q_OBJECT
 
@@ -42,7 +35,6 @@ class MioMain : public QMainWindow {
   private slots:
 	void on_actionQuit_triggered();
 	void openDetectionWindow();
-	void openDeviceGUI(QObject *m);
 	void openDeviceGUI(Device *d);
 	void storeToDevice();
 	void restoreFromDevice();
@@ -61,7 +53,7 @@ class MioMain : public QMainWindow {
 	void addDevicesToSelectionMenu(unsigned long defaultDeviceSN);
 
 	void addDock(QDockWidget *widget,
-				 Qt::DockWidgetArea area = Qt::NoDockWidgetArea);
+	             Qt::DockWidgetArea area = Qt::NoDockWidgetArea);
 
 	void clearDocWidgets();
 	void saveRestore(SaveRestore::SaveResstoreId saveRestoreId);
@@ -83,7 +75,7 @@ class MioMain : public QMainWindow {
 	DeviceDetection *m_pDeviceDetectionWindow = nullptr;
 	QToolBar *m_pToolBar = nullptr;
 	std::map<Qt::DockWidgetArea, std::vector<QDockWidget *>>
-		m_DockWidgetAreasMap;
+	    m_DockWidgetAreasMap;
 	QString m_sTitle;
 	QString *m_sConfigurationFile = nullptr;
 	Device *m_pCurrentDevice = nullptr;
