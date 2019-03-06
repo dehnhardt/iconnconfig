@@ -10,12 +10,6 @@
 #include <QTimer>
 #include <QWidget>
 
-class PortButtonMapper : public QObject {
-  public:
-	PortButtonMapper(PortButton *portButton) : portButton(portButton) {}
-	PortButton *portButton;
-};
-
 class PortRoutingWidget : public QWidget {
 	Q_OBJECT
   public:
@@ -27,8 +21,8 @@ class PortRoutingWidget : public QWidget {
   public slots:
 
   protected slots:
-	void lineButtonClicked(QObject *object);
-	void portButtonClicked(QObject *object);
+	void lineButtonClicked(PortButton *b);
+	void portButtonClicked(PortButton *b);
 	void updateRouting();
 
   private:
@@ -41,9 +35,6 @@ class PortRoutingWidget : public QWidget {
 
 	std::vector<std::vector<PortButton *> *> *buttonLines;
 
-	QSignalMapper *lineButtonSignalMapper = nullptr;
-	QSignalMapper *portButtonSignalMapper = nullptr;
-
   private:
 	// methods
 	void createWidgets();
@@ -51,7 +42,6 @@ class PortRoutingWidget : public QWidget {
 	void setupLayout();
 	void retrieveData();
 	void loadData();
-	void createSignalMapper();
 	void createMidiPortSections(Device *device);
 	void createMidiPorts(int line,
 						 std::vector<RetSetMidiPortInfo *> *midiPortInfos);
