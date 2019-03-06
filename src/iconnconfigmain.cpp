@@ -25,6 +25,7 @@
 #include <QPixmap>
 #include <QProgressDialog>
 #include <QSettings>
+#include <QSignalMapper>
 #include <QSocketNotifier>
 #include <QStyle>
 #include <QTimer>
@@ -83,6 +84,7 @@ void MioMain::openDefaultDevice() {
 }
 
 void MioMain::addDevicesToSelectionMenu(unsigned long defaultDeviceSN) {
+	QSignalMapper *signalMapper = new QSignalMapper();
 	Devices *devices = Configuration::getInstance().getDevices();
 	QActionGroup *devicesGroup = new QActionGroup(this);
 	devicesGroup->setExclusive(true);
@@ -92,11 +94,13 @@ void MioMain::addDevicesToSelectionMenu(unsigned long defaultDeviceSN) {
 			QString::fromStdString(d->getDeviceName()));
 		a->setCheckable(true);
 		devicesGroup->addAction(a);
-		connect(a, &QAction::triggered, this,
-				[this, d](bool) { openDeviceGUI(d); });
+		connect(a, SIGNAL(triggered()), signalMapper, SLOT(map()));
+		signalMapper->setMapping(a, new DeviceMenuMapper(d));
 		if (it->first == defaultDeviceSN)
 			a->setChecked(true);
 	}
+	connect(signalMapper, SIGNAL(mapped(QObject *)), this,
+			SLOT(openDeviceGUI(QObject *)));
 }
 
 void MioMain::openDeviceGUI(QObject *o) {
