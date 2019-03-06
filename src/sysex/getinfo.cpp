@@ -15,7 +15,7 @@ GetInfo::GetInfo(Device *device, RetInfoList *infoList)
 		 it < implementedInfos->end(); ++it) {
 		this->setInfoItem(*it);
 		execute();
-		RetSetInfo *info = (RetSetInfo *)getAnswer();
+		RetSetInfo *info = dynamic_cast<RetSetInfo *>(getAnswer());
 		(*m_pRetSetInfos)[*it] = info;
 	}
 }

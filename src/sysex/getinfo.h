@@ -5,12 +5,10 @@
 #include "retsetinfo.h"
 #include "sysexmessage.h"
 
-#include <QtCore/QCoreApplication>
-
 class GetInfo : public SysExMessage {
 	Q_DECLARE_TR_FUNCTIONS(InfoItem)
 
-public:
+  public:
 	GetInfo(Device *m_pDevice);
 	GetInfo(Device *m_pDevice, RetInfoList *m_pInfoList);
 	GetInfo(Command cmd, BYTE_VECTOR *message, Device *device)
@@ -30,15 +28,15 @@ public:
 	std::string getStorableValue() { return ""; }
 
 	// methods
-private:
-	void createAnswer(Command m_Command, BYTE_VECTOR *message, Device *m_pDevice);
+  private:
+	void createAnswer(Command m_Command, BYTE_VECTOR *message,
+					  Device *m_pDevice);
 	void setInfoData(DeviceInfoItem item, std::string value);
 
-private:
+  private:
 	DeviceInfoItem m_InfoItem = DEVICE_NAME;
-	RetInfoList *m_pInfoList = 0;
+	RetInfoList *m_pInfoList = nullptr;
 	std::map<DeviceInfoItem, RetSetInfo *> *m_pRetSetInfos;
-
 };
 
-#endif// DEVICEINFO_H
+#endif // DEVICEINFO_H

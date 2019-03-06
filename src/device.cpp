@@ -312,11 +312,10 @@ bool Device::queryDeviceInfo() {
 		saveRestoreList = l->getSaveRestoreList();
 	}
 	if (m_pCommands->isCommandSupported(Command::GET_AUDIO_GLOBAL_PARM)) {
-		GetAudioGlobalParm *getAudioGlobalParam =
-			new GetAudioGlobalParm(this);
+		GetAudioGlobalParm *getAudioGlobalParam = new GetAudioGlobalParm(this);
 		getAudioGlobalParam->setDebug(true);
-		m_pGlobalAudioParam = dynamic_cast<RetSetAudioGlobalParm *>(
-			getAudioGlobalParam->query());
+		m_pGlobalAudioParam =
+			dynamic_cast<RetSetAudioGlobalParm *>(getAudioGlobalParam->query());
 	}
 	return true;
 }

@@ -98,6 +98,9 @@ void GlobalAudioConfigurationWidget::createConnections() {
 
 	connect(m_pUpdateTimer, &QTimer::timeout, this,
 			&GlobalAudioConfigurationWidget::save);
+
+	// connect( this, &GlobalAudioConfigurationWidget::changeAudioConfiguration,
+	// dev)
 }
 
 void GlobalAudioConfigurationWidget::valueEdited(QWidget *widget,
