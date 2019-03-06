@@ -61,6 +61,8 @@ MioMain::MioMain(QCommandLineParser *parser, QWidget *parent)
 MioMain::~MioMain() {
 	if (m_pDeviceDetectionWindow)
 		delete m_pDeviceDetectionWindow;
+	if (m_pCentralDeviceWidget)
+		delete m_pCentralDeviceWidget;
 	delete m_pUi;
 }
 
@@ -194,8 +196,9 @@ void MioMain::openDeviceGUI(Device *d) {
 	}
 	setWindowTitle(this->m_sTitle + QString(": ") +
 				   QString::fromStdString(d->getDeviceName()));
-	CentralWidget *centralWidget = new CentralWidget(this, d);
-	this->addDock(centralWidget);
+
+	m_pCentralDeviceWidget = new CentralWidget(this, d);
+	this->addDock(m_pCentralDeviceWidget);
 
 	DeviceInfoWidget *deviceInfoWidget =
 		new DeviceInfoWidget(this, d, d->getDeviceInfo());

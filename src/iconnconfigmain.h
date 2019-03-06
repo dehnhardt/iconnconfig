@@ -53,7 +53,7 @@ class MioMain : public QMainWindow {
 	void addDevicesToSelectionMenu(unsigned long defaultDeviceSN);
 
 	void addDock(QDockWidget *widget,
-	             Qt::DockWidgetArea area = Qt::NoDockWidgetArea);
+				 Qt::DockWidgetArea area = Qt::NoDockWidgetArea);
 
 	void clearDocWidgets();
 	void saveRestore(SaveRestore::SaveResstoreId saveRestoreId);
@@ -74,8 +74,9 @@ class MioMain : public QMainWindow {
 	Ui::MioMain *m_pUi;
 	DeviceDetection *m_pDeviceDetectionWindow = nullptr;
 	QToolBar *m_pToolBar = nullptr;
+	CentralWidget *m_pCentralDeviceWidget = nullptr;
 	std::map<Qt::DockWidgetArea, std::vector<QDockWidget *>>
-	    m_DockWidgetAreasMap;
+		m_DockWidgetAreasMap;
 	QString m_sTitle;
 	QString *m_sConfigurationFile = nullptr;
 	Device *m_pCurrentDevice = nullptr;

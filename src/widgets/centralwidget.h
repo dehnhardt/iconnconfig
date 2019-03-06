@@ -9,16 +9,22 @@
 #include <QWidget>
 
 class CentralWidget : public QDockWidget {
-  Q_OBJECT
+	Q_OBJECT
 
-public:
-  CentralWidget(QWidget *parent, Device *m_pDevice);
-  void replacePanel(QWidget *w);
+  public:
+	CentralWidget(QWidget *parent, Device *m_pDevice);
+	void replacePanel(QWidget *w);
 
-private:
-  QWidget *m_pCurrentWidget = 0;
-  Device *m_pDevice;
-  QGridLayout *m_pLayout = 0;
+  private:
+	QWidget *m_pCurrentWidget = nullptr;
+	Device *m_pDevice;
+	QGridLayout *m_pLayout = nullptr;
+
+  public slots:
+	void deviceAudioConfigChanged();
+
+  signals:
+	void changeAudioConfig();
 };
 
 #endif // CENTRALWIDGET_H
