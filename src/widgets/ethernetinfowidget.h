@@ -13,14 +13,6 @@
 #include <QTimer>
 #include <QWidget>
 
-class IPAddressInputMapper : public QObject {
-  public:
-	IPAddressInputMapper(IPAddressInput *input, int flags)
-		: input(input), flags(flags) {}
-	IPAddressInput *input;
-	int flags;
-};
-
 class EthernetInfoWidget : public QWidget {
 	Q_OBJECT
   public:

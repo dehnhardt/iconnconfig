@@ -65,8 +65,6 @@ EthernetInfoWidget::~EthernetInfoWidget() {
 
 void EthernetInfoWidget::createWidgets() {
 
-	// iPAddressInputSignalMapper = new QSignalMapper();
-
 	m_pRootLayout = new QGridLayout();
 	m_pStaticLayout = new QGridLayout();
 	m_pDhcpLayout = new QGridLayout();
@@ -254,8 +252,6 @@ void EthernetInfoWidget::comboboxSelected(int selected) {
 }
 
 void EthernetInfoWidget::editFinished(IPAddressInput *input, int flags) {
-	// IPAddressInputMapper *m = dynamic_cast<IPAddressInputMapper *>(object);
-	// std::cout << "Edit finished" << std::endl;
 	if (input->getValid()) {
 		m_pRetSetEthernetPortInfo->setAddress(flags,
 											  input->text().toStdString());
