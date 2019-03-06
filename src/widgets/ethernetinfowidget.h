@@ -13,35 +13,33 @@
 #include <QTimer>
 #include <QWidget>
 
-class IPAddressInputMapper : public QObject
-{
-public:
+class IPAddressInputMapper : public QObject {
+  public:
 	IPAddressInputMapper(IPAddressInput *input, int flags)
 		: input(input), flags(flags) {}
 	IPAddressInput *input;
 	int flags;
 };
 
-class EthernetInfoWidget : public QWidget
-{
+class EthernetInfoWidget : public QWidget {
 	Q_OBJECT
-public:
-	explicit EthernetInfoWidget(QWidget *parent,
-								RetSetEthernetPortInfo *m_pRetSetEthernetPortInfo);
+  public:
+	explicit EthernetInfoWidget(
+		QWidget *parent, RetSetEthernetPortInfo *m_pRetSetEthernetPortInfo);
 
 	virtual ~EthernetInfoWidget();
 
-signals:
+  signals:
 	void staticBoxDisabled(bool disabled);
 
-public slots:
+  public slots:
 	void comboboxSelected(int selected);
 
-private slots:
-	void editFinished(QObject *object);
+  private slots:
+	void editFinished(IPAddressInput *input, int flags);
 	void updateEthernetConfig();
 
-private:
+  private:
 	void createWidgets();
 	void setupWidgets();
 	void setupLayout();
@@ -51,49 +49,48 @@ private:
 	bool ipAddressControlsValid();
 
 	// Members
-private:
-	RetSetEthernetPortInfo *m_pRetSetEthernetPortInfo = 0;
-	QTimer *r_mUpdateTimer = 0;
+  private:
+	RetSetEthernetPortInfo *m_pRetSetEthernetPortInfo = nullptr;
+	QTimer *r_mUpdateTimer = nullptr;
 
-	QSignalMapper *iPAddressInputSignalMapper = 0;
+	QSignalMapper *iPAddressInputSignalMapper = nullptr;
 
-	QRegExpValidator *regValidator = 0;
+	QRegExpValidator *regValidator = nullptr;
 
-	QGridLayout *m_pRootLayout = 0;
-	QGridLayout *m_pStaticLayout = 0;
-	QGridLayout *m_pDhcpLayout = 0;
-	QGridLayout *m_pInfoLayout = 0;
+	QGridLayout *m_pRootLayout = nullptr;
+	QGridLayout *m_pStaticLayout = nullptr;
+	QGridLayout *m_pDhcpLayout = nullptr;
+	QGridLayout *m_pInfoLayout = nullptr;
 
-	QLabel *m_pTl   = 0;
-	QLabel *m_pIpl1 = 0;
-	QLabel *m_pSml1 = 0;
-	QLabel *m_pGwl1 = 0;
-	QLabel *m_PIpl2 = 0;
-	QLabel *m_pSml2 = 0;
-	QLabel *m_pGwl2 = 0;
-	QLabel *m_pBjl  = 0;
-	QLabel *m_pMacl = 0;
+	QLabel *m_pTl = nullptr;
+	QLabel *m_pIpl1 = nullptr;
+	QLabel *m_pSml1 = nullptr;
+	QLabel *m_pGwl1 = nullptr;
+	QLabel *m_PIpl2 = nullptr;
+	QLabel *m_pSml2 = nullptr;
+	QLabel *m_pGwl2 = nullptr;
+	QLabel *m_pBjl = nullptr;
+	QLabel *m_pMacl = nullptr;
 
-	QComboBox *m_pMethodBox = 0;
+	QComboBox *m_pMethodBox = nullptr;
 
-	QGroupBox *m_pStaticBox = 0;
-	QGroupBox *m_pDhcpBox = 0;
-	QGroupBox *m_pInfoBox = 0;
+	QGroupBox *m_pStaticBox = nullptr;
+	QGroupBox *m_pDhcpBox = nullptr;
+	QGroupBox *m_pInfoBox = nullptr;
 
-	IPAddressInput *m_Ip1 = 0;
-	IPAddressInput *m_pSm1 = 0;
-	IPAddressInput *m_pGw1 = 0;
+	IPAddressInput *m_Ip1 = nullptr;
+	IPAddressInput *m_pSm1 = nullptr;
+	IPAddressInput *m_pGw1 = nullptr;
 
-	QLineEdit *m_pIp2 = 0;
-	QLineEdit *m_pSm2 = 0;
-	QLineEdit *m_pGw2 = 0;
-	QLineEdit *m_pBj = 0;
-	QLineEdit *m_pMac = 0;
+	QLineEdit *m_pIp2 = nullptr;
+	QLineEdit *m_pSm2 = nullptr;
+	QLineEdit *m_pGw2 = nullptr;
+	QLineEdit *m_pBj = nullptr;
+	QLineEdit *m_pMac = nullptr;
 
-	QWidget *m_pEmpty = 0;
+	QWidget *m_pEmpty = nullptr;
 
 	std::vector<IPAddressInput *> *m_pValidateControls;
-
 };
 
 #endif // ETHERNETINFOWIDGET_H
