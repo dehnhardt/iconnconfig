@@ -157,40 +157,44 @@ void EthernetInfoWidget::setupLayout() {
 
 void EthernetInfoWidget::setData() {
 	m_pMethodBox->addItem(tr("Static"), QVariant(static_cast<int>(
-										 RetSetEthernetPortInfo::STATIC)));
+											RetSetEthernetPortInfo::STATIC)));
 	m_pMethodBox->addItem(tr("Dynamic"), QVariant(static_cast<int>(
-										  RetSetEthernetPortInfo::DYNAMIC)));
+											 RetSetEthernetPortInfo::DYNAMIC)));
 
 	m_Ip1->setText(QString(m_pRetSetEthernetPortInfo
-							 ->getAddress(RetSetEthernetPortInfo::STATIC |
-										  RetSetEthernetPortInfo::ADDRESS)
-							 .c_str()));
-	m_pSm1->setText(QString(m_pRetSetEthernetPortInfo
-							 ->getAddress(RetSetEthernetPortInfo::STATIC |
-										  RetSetEthernetPortInfo::SUBNET_MASK)
-							 .c_str()));
+							   ->getAddress(RetSetEthernetPortInfo::STATIC |
+											RetSetEthernetPortInfo::ADDRESS)
+							   .c_str()));
+	m_pSm1->setText(
+		QString(m_pRetSetEthernetPortInfo
+					->getAddress(RetSetEthernetPortInfo::STATIC |
+								 RetSetEthernetPortInfo::SUBNET_MASK)
+					.c_str()));
 	m_pGw1->setText(QString(m_pRetSetEthernetPortInfo
-							 ->getAddress(RetSetEthernetPortInfo::STATIC |
-										  RetSetEthernetPortInfo::GATEWAY)
-							 .c_str()));
+								->getAddress(RetSetEthernetPortInfo::STATIC |
+											 RetSetEthernetPortInfo::GATEWAY)
+								.c_str()));
 	m_pIp2->setText(QString(m_pRetSetEthernetPortInfo
-							 ->getAddress(RetSetEthernetPortInfo::DYNAMIC |
-										  RetSetEthernetPortInfo::ADDRESS)
-							 .c_str()));
-	m_pSm2->setText(QString(m_pRetSetEthernetPortInfo
-							 ->getAddress(RetSetEthernetPortInfo::DYNAMIC |
-										  RetSetEthernetPortInfo::SUBNET_MASK)
-							 .c_str()));
+								->getAddress(RetSetEthernetPortInfo::DYNAMIC |
+											 RetSetEthernetPortInfo::ADDRESS)
+								.c_str()));
+	m_pSm2->setText(
+		QString(m_pRetSetEthernetPortInfo
+					->getAddress(RetSetEthernetPortInfo::DYNAMIC |
+								 RetSetEthernetPortInfo::SUBNET_MASK)
+					.c_str()));
 	m_pGw2->setText(QString(m_pRetSetEthernetPortInfo
-							 ->getAddress(RetSetEthernetPortInfo::DYNAMIC |
-										  RetSetEthernetPortInfo::GATEWAY)
-							 .c_str()));
-	m_pBj->setText(QString(m_pRetSetEthernetPortInfo->getBonjourName().c_str()));
-	m_pMac->setText(QString(m_pRetSetEthernetPortInfo->getMacAddress().c_str()));
+								->getAddress(RetSetEthernetPortInfo::DYNAMIC |
+											 RetSetEthernetPortInfo::GATEWAY)
+								.c_str()));
+	m_pBj->setText(
+		QString(m_pRetSetEthernetPortInfo->getBonjourName().c_str()));
+	m_pMac->setText(
+		QString(m_pRetSetEthernetPortInfo->getMacAddress().c_str()));
 
 	int index = m_pMethodBox->findData(
 		static_cast<int>(m_pRetSetEthernetPortInfo->getMethod()));
-	if (index != -1) {// -1 for not found
+	if (index != -1) { // -1 for not found
 		m_pMethodBox->setCurrentIndex(index);
 		setStaticBoxEnabled(index);
 	}
@@ -210,24 +214,25 @@ void EthernetInfoWidget::createConnections() {
 	iPAddressInputSignalMapper->setMapping(
 		m_Ip1,
 		new IPAddressInputMapper(m_Ip1, RetSetEthernetPortInfo::STATIC |
-										  RetSetEthernetPortInfo::ADDRESS));
+											RetSetEthernetPortInfo::ADDRESS));
 	connect(m_pSm1, SIGNAL(editingFinished()), iPAddressInputSignalMapper,
 			SLOT(map()));
 	iPAddressInputSignalMapper->setMapping(
-		m_pSm1,
-		new IPAddressInputMapper(m_pSm1, RetSetEthernetPortInfo::STATIC |
-										  RetSetEthernetPortInfo::SUBNET_MASK));
+		m_pSm1, new IPAddressInputMapper(
+					m_pSm1, RetSetEthernetPortInfo::STATIC |
+								RetSetEthernetPortInfo::SUBNET_MASK));
 	connect(m_pGw1, SIGNAL(editingFinished()), iPAddressInputSignalMapper,
 			SLOT(map()));
 	iPAddressInputSignalMapper->setMapping(
 		m_pGw1,
 		new IPAddressInputMapper(m_pGw1, RetSetEthernetPortInfo::STATIC |
-										  RetSetEthernetPortInfo::GATEWAY));
+											 RetSetEthernetPortInfo::GATEWAY));
 
 	connect(this, SIGNAL(staticBoxDisabled(bool)), m_pStaticBox,
 			SLOT(setDisabled(bool)));
 
-	connect(r_mUpdateTimer, SIGNAL(timeout()), this, SLOT(updateEthernetConfig()));
+	connect(r_mUpdateTimer, SIGNAL(timeout()), this,
+			SLOT(updateEthernetConfig()));
 }
 
 void EthernetInfoWidget::setStaticBoxEnabled(int selected) {
@@ -237,7 +242,8 @@ void EthernetInfoWidget::setStaticBoxEnabled(int selected) {
 
 bool EthernetInfoWidget::ipAddressControlsValid() {
 	std::vector<IPAddressInput *>::iterator it;
-	for (it = m_pValidateControls->begin(); it != m_pValidateControls->end(); ++it) {
+	for (it = m_pValidateControls->begin(); it != m_pValidateControls->end();
+		 ++it) {
 		IPAddressInput *input = (*it);
 		if (!input->getValid())
 			return false;
@@ -249,7 +255,7 @@ void EthernetInfoWidget::comboboxSelected(int selected) {
 	setStaticBoxEnabled(selected);
 	m_pRetSetEthernetPortInfo->setMethod(
 		static_cast<RetSetEthernetPortInfo::IPFlags>(
-			m_pMethodBox->itemData(selected).Int));
+			m_pMethodBox->itemData(selected).toInt()));
 	r_mUpdateTimer->start(1000);
 }
 
@@ -258,7 +264,7 @@ void EthernetInfoWidget::editFinished(QObject *object) {
 	std::cout << "Edit finished" << std::endl;
 	if (m->input->getValid()) {
 		m_pRetSetEthernetPortInfo->setAddress(m->flags,
-										   m->input->text().toStdString());
+											  m->input->text().toStdString());
 		r_mUpdateTimer->start(1000);
 	}
 }
