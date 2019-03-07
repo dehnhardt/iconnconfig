@@ -50,4 +50,6 @@ Later I found the complete documentation for sysex-data from IConnectivity.
 * (2019-02-22) Changed the portrouting panel slightly
 * (2019-02-23) Add [portinfo widget](https://github.com/dehnhardt/wikis/blob/master/mioconfig/pictures/PortSettings.png). Port name and status can now be changed
 * (2019-02-26) Add [portmapping widget](https://github.com/dehnhardt/wikis/blob/master/mioconfig/pictures/PortRemapSettings.png) for in- and output ports. 
-* __(2019-02-26) MIDI configuration is complete__ Branch v0.3-beta
+* __(2019-02-26) MIDI configuration is complete__ _Branch v0.3-beta_
+* (2019-05-03) Global audio settings can be configured
+* (2019-03-07) Audioport parameter can now be configured
