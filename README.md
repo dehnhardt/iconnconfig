@@ -12,6 +12,11 @@ Later I found the complete documentation for sysex-data from IConnectivity.
   * IP Configuration
 * MIDI Configuration
   * MIDI Routing
+  * MIDI Filtering
+  * MIDI Controller and Channel Remapping
+* Audio Configuration
+  * Global Audio Parameter
+  * Audio Port Parameter
  
 ## Tested Devices
 * MIO 10
@@ -51,5 +56,5 @@ Later I found the complete documentation for sysex-data from IConnectivity.
 * (2019-02-23) Add [portinfo widget](https://github.com/dehnhardt/wikis/blob/master/mioconfig/pictures/PortSettings.png). Port name and status can now be changed
 * (2019-02-26) Add [portmapping widget](https://github.com/dehnhardt/wikis/blob/master/mioconfig/pictures/PortRemapSettings.png) for in- and output ports. 
 * __(2019-02-26) MIDI configuration is complete__ _Branch v0.3-beta_
-* (2019-05-03) Global audio settings can be configured
-* (2019-03-07) Audioport parameter can now be configured
+* (2019-05-03) [Global audio settings](https://github.com/dehnhardt/wikis/blob/master/mioconfig/pictures/GlobalAudioParm.png) can be configured
+* (2019-03-07) [Audioport parameter](https://github.com/dehnhardt/wikis/blob/master/mioconfig/pictures/AudioPortParm.png) can now be configured
