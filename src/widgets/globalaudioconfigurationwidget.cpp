@@ -1,4 +1,6 @@
 #include "globalaudioconfigurationwidget.h"
+#include "../iconnconfigmain.h"
+#include "centralwidget.h"
 #include "ui_globalaudioconfiguration.h"
 
 #include <QMessageBox>
@@ -10,7 +12,6 @@ GlobalAudioConfigurationWidget::GlobalAudioConfigurationWidget(
 	ui->setupUi(this);
 	m_pUpdateTimer = new QTimer();
 	m_pUpdateTimer->setSingleShot(true);
-
 	loadData();
 	createConnections();
 }
@@ -99,8 +100,9 @@ void GlobalAudioConfigurationWidget::createConnections() {
 	connect(m_pUpdateTimer, &QTimer::timeout, this,
 			&GlobalAudioConfigurationWidget::save);
 
-	// connect( this, &GlobalAudioConfigurationWidget::changeAudioConfiguration,
-	// dev)
+	CentralWidget *w = MioMain::getMainWin()->getCentralDeviceWidget();
+	connect(this, &GlobalAudioConfigurationWidget::changeAudioConfiguration, w,
+			&CentralWidget::changeAudioConfig);
 }
 
 void GlobalAudioConfigurationWidget::valueEdited(QWidget *widget,

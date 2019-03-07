@@ -91,7 +91,7 @@ class RetSetAudioPortParm : public SysExMessage {
 	bool m_bPortIOSEnabled = false;
 	bool m_bPortPCEnabled = false;
 	bool m_bPortSupportsIOS = false;
-	bool m_bPortSupportsPD = false;
+	bool m_bPortSupportsPC = false;
 
 	AudioPortConfiguration **m_pAudioPortConfigurations = nullptr;
 	std::string m_sPortName;

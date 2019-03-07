@@ -3,6 +3,7 @@
 
 #include "../sysex/retsetaudioportparm.h"
 
+#include <QTimer>
 #include <QWidget>
 
 namespace Ui {
@@ -19,12 +20,16 @@ class AudioPortParmWidget : public QWidget {
 	void setData();
 	void setCurrentAudioConfiguration();
 
-  public slots:
-	void audioConfigurationChanged();
-
   private:
 	Ui::AudioPortParmWidget *ui;
 	RetSetAudioPortParm *m_pRetSetAudioPortParm = nullptr;
+	QTimer *m_pUpdateTimer = nullptr;
+
+	void createConnections();
+	bool checkTotalNumberOfAudioChannels();
+
+  public slots:
+	void audioConfigurationChanged();
 };
 
 #endif // AUDIOPORTPARMWIDGET_H

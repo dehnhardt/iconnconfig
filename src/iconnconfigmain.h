@@ -26,21 +26,11 @@ class MioMain : public QMainWindow {
 	}
 	void replacePanel(QWidget *w);
 
-  public slots:
-	void openDefaultDevice();
+	CentralWidget *getCentralDeviceWidget() const;
+	static MioMain *getMainWin();
 
   protected:
 	void closeEvent(QCloseEvent *event);
-
-  private slots:
-	void on_actionQuit_triggered();
-	void openDetectionWindow();
-	void openDeviceGUI(Device *d);
-	void storeToDevice();
-	void restoreFromDevice();
-	void resetToFactoryDefaults();
-	void signalAction(int);
-	void openAboutDialog();
 
   private:
 	// methods
@@ -64,7 +54,6 @@ class MioMain : public QMainWindow {
 
 	void readConfigurationFromFile();
 	void writeConfigurtionToFile();
-
 	// signalling
 	static void handleSignal(int);
 	bool installSignalHandlers();
@@ -83,10 +72,25 @@ class MioMain : public QMainWindow {
 
 	QSettings *m_pConfiguration = nullptr;
 
+  private:
+	static MioMain *pMainWindow;
 	static int sigpipe[2];
 
   signals:
 	void deviceSelected(Device *d);
+
+  public slots:
+	void openDefaultDevice();
+
+  private slots:
+	void on_actionQuit_triggered();
+	void openDetectionWindow();
+	void openDeviceGUI(Device *d);
+	void storeToDevice();
+	void restoreFromDevice();
+	void resetToFactoryDefaults();
+	void signalAction(int);
+	void openAboutDialog();
 };
 
 #endif // MIOMAIN_H

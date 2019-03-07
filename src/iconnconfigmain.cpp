@@ -33,9 +33,12 @@
 
 int MioMain::sigpipe[2];
 
+MioMain *MioMain::pMainWindow = nullptr;
+
 MioMain::MioMain(QCommandLineParser *parser, QWidget *parent)
 	: QMainWindow(parent), m_pUi(new Ui::MioMain) {
 	m_pUi->setupUi(this);
+	pMainWindow = this;
 	setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::ForceTabbedDocks |
 				   QMainWindow::VerticalTabs);
 	if (parser->isSet("filename")) {
@@ -400,6 +403,9 @@ bool MioMain::readDevicesFromSettings() {
 }
 void MioMain::on_actionQuit_triggered() { close(); }
 
+// kind of singleton reference.
+MioMain *MioMain::getMainWin() { return pMainWindow; }
+
 /******************************************************************************
  *************** Methods for handling ladish events ***************************
  *****************************************************************************/
@@ -440,6 +446,10 @@ bool MioMain::installSignalHandlers() {
 	/* optional: register more signals to handle: */
 
 	return true;
+}
+
+CentralWidget *MioMain::getCentralDeviceWidget() const {
+	return m_pCentralDeviceWidget;
 }
 
 /* Slot to give response to the incoming pipe message;

@@ -49,7 +49,7 @@ void RetSetAudioPortParm::parseAnswerData() {
 	case APT_USB_DEVICE:
 		c = m_pData->at(offset);
 		m_bPortSupportsIOS = (c & 1) != 0;
-		m_bPortSupportsPD = (c & 2) != 0;
+		m_bPortSupportsPC = (c & 2) != 0;
 		m_bPortIOSEnabled = (c & 4) != 0;
 		m_bPortPCEnabled = (c & 8) != 0;
 		break;
@@ -64,7 +64,42 @@ void RetSetAudioPortParm::parseAnswerData() {
 }
 
 std::vector<unsigned char> *RetSetAudioPortParm::m_pGetMessageData() {
-	return new BYTE_VECTOR();
+	BYTE_VECTOR *data = new BYTE_VECTOR();
+	BYTE_VECTOR *totalNumberOfAudioPorts =
+		MIDI::byteSplit7bit(static_cast<unsigned long>(m_iPortId), 2);
+	this->m_pCommandData->at(0) = 0x40;
+	data->push_back(m_iCommandVersionNumber);
+	data->insert(data->end(), totalNumberOfAudioPorts->begin(),
+				 totalNumberOfAudioPorts->end());
+	data->push_back(m_audioPortType);
+	data->push_back(static_cast<unsigned char>(m_iInputChannels));
+	data->push_back(static_cast<unsigned char>(m_iOutputChannels));
+	data->push_back(0);
+	data->push_back(static_cast<unsigned char>(m_iMaxPortNameLength));
+	data->push_back(static_cast<unsigned char>(m_sPortName.size()));
+	data->insert(data->end(), m_sPortName.begin(), m_sPortName.end());
+	data->push_back(static_cast<unsigned char>(m_iDeviceSpecficPortNumer));
+	unsigned char c = 0;
+	switch (m_audioPortType) {
+	case APT_USB_DEVICE:
+		if (m_bPortSupportsIOS)
+			c += 1;
+		if (m_bPortSupportsPC)
+			c += 2;
+		if (m_bPortIOSEnabled)
+			c += 4;
+		if (m_bPortPCEnabled)
+			c += 8;
+		data->push_back(c);
+		break;
+	case APT_USB_HOST:
+	case APT_ETHERNET:
+		data->push_back(static_cast<unsigned char>(m_iDeviceSpecficPortNumer));
+		break;
+	default:
+		break;
+	}
+	return data;
 }
 
 std::string
@@ -96,8 +131,8 @@ AudioPortConfiguration *RetSetAudioPortParm::getCurrentAudioConfiguration() {
 	unsigned int activeAudioConfiguration =
 		this->m_pDevice->getAudioGlobalParm()
 			->getNumberOfActiveAudioConfiguration();
-	if (activeAudioConfiguration < sizeof(m_pAudioPortConfigurations))
-		return m_pAudioPortConfigurations[activeAudioConfiguration];
+	if (activeAudioConfiguration <= sizeof(m_pAudioPortConfigurations))
+		return m_pAudioPortConfigurations[activeAudioConfiguration - 1];
 	return nullptr;
 }
 
@@ -121,7 +156,7 @@ bool RetSetAudioPortParm::getPortSupportsIOS() const {
 }
 
 bool RetSetAudioPortParm::getPortSupportsPC() const {
-	return m_bPortSupportsPD;
+	return m_bPortSupportsPC;
 }
 
 bool RetSetAudioPortParm::getPortIOSEnabled() const {
