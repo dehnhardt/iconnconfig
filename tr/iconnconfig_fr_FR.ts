@@ -318,32 +318,32 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
     <message>
         <location filename="../src/widgets/portfiltersettingswidget.cpp" line="332"/>
         <source>Pitch Bend</source>
-        <translation type="unfinished"></translation>
+        <translation>Modulation de hauteur tonale</translation>
     </message>
     <message>
         <location filename="../src/widgets/portfiltersettingswidget.cpp" line="334"/>
         <source>Mono Key Pressure</source>
-        <translation type="unfinished"></translation>
+        <translation>Pression de touche mono</translation>
     </message>
     <message>
         <location filename="../src/widgets/portfiltersettingswidget.cpp" line="336"/>
         <source>Program Change</source>
-        <translation type="unfinished"></translation>
+        <translation>Program Change</translation>
     </message>
     <message>
         <location filename="../src/widgets/portfiltersettingswidget.cpp" line="338"/>
         <source>Control Change</source>
-        <translation type="unfinished"></translation>
+        <translation>Control Change</translation>
     </message>
     <message>
         <location filename="../src/widgets/portfiltersettingswidget.cpp" line="340"/>
         <source>Poly Key Pressure</source>
-        <translation type="unfinished"></translation>
+        <translation>Pression de touche poly</translation>
     </message>
     <message>
         <location filename="../src/widgets/portfiltersettingswidget.cpp" line="342"/>
         <source>Note On / Note Off</source>
-        <translation type="unfinished"></translation>
+        <translation>Note On / Note Off</translation>
     </message>
 </context>
 <context>
@@ -351,37 +351,37 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
     <message>
         <location filename="../src/widgets/portremapsettingswidget.cpp" line="255"/>
         <source>Pitch Bend</source>
-        <translation type="unfinished"></translation>
+        <translation>Modulation de hauteur tonale</translation>
     </message>
     <message>
         <location filename="../src/widgets/portremapsettingswidget.cpp" line="257"/>
         <source>Mono Key Pressure</source>
-        <translation type="unfinished"></translation>
+        <translation>Pression de touche mono</translation>
     </message>
     <message>
         <location filename="../src/widgets/portremapsettingswidget.cpp" line="259"/>
         <source>Program Change</source>
-        <translation type="unfinished"></translation>
+        <translation>Program Change</translation>
     </message>
     <message>
         <location filename="../src/widgets/portremapsettingswidget.cpp" line="261"/>
         <source>Control Change</source>
-        <translation type="unfinished"></translation>
+        <translation>Control Change</translation>
     </message>
     <message>
         <location filename="../src/widgets/portremapsettingswidget.cpp" line="263"/>
         <source>Poly Key Pressure</source>
-        <translation type="unfinished"></translation>
+        <translation>Pression de touche poly</translation>
     </message>
     <message>
         <location filename="../src/widgets/portremapsettingswidget.cpp" line="265"/>
         <source>Note On / Note Off</source>
-        <translation type="unfinished"></translation>
+        <translation>Note On / Note Off</translation>
     </message>
     <message>
         <location filename="../src/widgets/portremapsettingswidget.cpp" line="267"/>
         <source>Map to Channel</source>
-        <translation type="unfinished"></translation>
+        <translation>Assigner à un canal</translation>
     </message>
 </context>
 <context>
@@ -389,12 +389,12 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
     <message>
         <location filename="../src/widgets/portfiltersettingswidget.cpp" line="227"/>
         <source>MIDI-Controller</source>
-        <translation type="unfinished"></translation>
+        <translation>Contrôleur MIDI</translation>
     </message>
     <message>
         <location filename="../src/widgets/portfiltersettingswidget.cpp" line="229"/>
         <source>all</source>
-        <translation type="unfinished"></translation>
+        <translation>tout</translation>
     </message>
 </context>
 <context>
@@ -402,17 +402,17 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
     <message>
         <location filename="../src/widgets/portremapsettingswidget.cpp" line="135"/>
         <source>MIDI-Controller Source</source>
-        <translation type="unfinished"></translation>
+        <translation>Origine du contrôleur MIDI</translation>
     </message>
     <message>
         <location filename="../src/widgets/portremapsettingswidget.cpp" line="137"/>
         <source>MIDI-Controller Destination</source>
-        <translation type="unfinished"></translation>
+        <translation>Destination du contrôleur MIDI</translation>
     </message>
     <message>
         <location filename="../src/widgets/portremapsettingswidget.cpp" line="139"/>
         <source>all</source>
-        <translation type="unfinished"></translation>
+        <translation>tout</translation>
     </message>
 </context>
 <context>
@@ -543,62 +543,62 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
     <message>
         <location filename="../src/widgets/portfiltersettingswidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../src/widgets/portfiltersettingswidget.ui" line="26"/>
         <source>Channel Messages to Filter</source>
-        <translation type="unfinished"></translation>
+        <translation>Messages de canal à filtrer</translation>
     </message>
     <message>
         <location filename="../src/widgets/portfiltersettingswidget.ui" line="47"/>
         <source>Configure MIDI Controller Messages to Filter</source>
-        <translation type="unfinished"></translation>
+        <translation>Configurer les messages du contrôleur MIDI à filtrer</translation>
     </message>
     <message>
         <location filename="../src/widgets/portfiltersettingswidget.ui" line="71"/>
         <source>System Messages to Filter </source>
-        <translation type="unfinished"></translation>
+        <translation>Messages système à filtrer</translation>
     </message>
     <message>
         <location filename="../src/widgets/portfiltersettingswidget.ui" line="101"/>
         <source>Reset</source>
-        <translation type="unfinished"></translation>
+        <translation>Réinitialiser</translation>
     </message>
     <message>
         <location filename="../src/widgets/portfiltersettingswidget.ui" line="111"/>
         <source>Active Sensing</source>
-        <translation type="unfinished"></translation>
+        <translation>Active sensing</translation>
     </message>
     <message>
         <location filename="../src/widgets/portfiltersettingswidget.ui" line="121"/>
         <source>Realtime Events</source>
-        <translation type="unfinished"></translation>
+        <translation>Événements temps-réel</translation>
     </message>
     <message>
         <location filename="../src/widgets/portfiltersettingswidget.ui" line="131"/>
         <source>Tune Request</source>
-        <translation type="unfinished"></translation>
+        <translation>Demande d'accordage</translation>
     </message>
     <message>
         <location filename="../src/widgets/portfiltersettingswidget.ui" line="141"/>
         <source>Song Select</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélection d'un morceau</translation>
     </message>
     <message>
         <location filename="../src/widgets/portfiltersettingswidget.ui" line="151"/>
         <source>Song Position Pointer</source>
-        <translation type="unfinished"></translation>
+        <translation>Pointeur de position du morceau</translation>
     </message>
     <message>
         <location filename="../src/widgets/portfiltersettingswidget.ui" line="161"/>
         <source>Midi Time Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Code temporel MIDI (MTC)</translation>
     </message>
     <message>
         <location filename="../src/widgets/portfiltersettingswidget.ui" line="171"/>
         <source>System Exclusive</source>
-        <translation type="unfinished"></translation>
+        <translation>System Exclusive</translation>
     </message>
 </context>
 <context>
@@ -606,12 +606,12 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
     <message>
         <location filename="../src/widgets/portfilterwidget.cpp" line="86"/>
         <source>Input Filter</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtre d'entrée</translation>
     </message>
     <message>
         <location filename="../src/widgets/portfilterwidget.cpp" line="88"/>
         <source>Output Filter</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtre de sortie</translation>
     </message>
 </context>
 <context>
@@ -619,57 +619,57 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
     <message>
         <location filename="../src/widgets/portinfowidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Forme</translation>
     </message>
     <message>
         <location filename="../src/widgets/portinfowidget.ui" line="22"/>
         <source>Icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Icône</translation>
     </message>
     <message>
         <location filename="../src/widgets/portinfowidget.ui" line="29"/>
         <source>Portnumber:</source>
-        <translation type="unfinished"></translation>
+        <translation>Numéro de port :</translation>
     </message>
     <message>
         <location filename="../src/widgets/portinfowidget.ui" line="56"/>
         <source>Port Id:</source>
-        <translation type="unfinished"></translation>
+        <translation>Id de port :</translation>
     </message>
     <message>
         <location filename="../src/widgets/portinfowidget.ui" line="74"/>
         <source>Usb Device Jack</source>
-        <translation type="unfinished"></translation>
+        <translation>Jack du périphérique USB</translation>
     </message>
     <message>
         <location filename="../src/widgets/portinfowidget.ui" line="81"/>
         <source>USB Host Jack</source>
-        <translation type="unfinished"></translation>
+        <translation>Jack de l'hôte USB</translation>
     </message>
     <message>
         <location filename="../src/widgets/portinfowidget.ui" line="88"/>
         <source>Ethernet Jack</source>
-        <translation type="unfinished"></translation>
+        <translation>Jack ethernet</translation>
     </message>
     <message>
         <location filename="../src/widgets/portinfowidget.ui" line="95"/>
         <source>Jack Specific</source>
-        <translation type="unfinished"></translation>
+        <translation>Spécifique Jack</translation>
     </message>
     <message>
         <location filename="../src/widgets/portinfowidget.ui" line="119"/>
         <source>Port Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom de port :</translation>
     </message>
     <message>
         <location filename="../src/widgets/portinfowidget.ui" line="165"/>
         <source>Input Enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrée activée</translation>
     </message>
     <message>
         <location filename="../src/widgets/portinfowidget.ui" line="172"/>
         <source>Output Enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortie activée</translation>
     </message>
 </context>
 <context>
@@ -677,17 +677,17 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
     <message>
         <location filename="../src/widgets/portremapsettingswidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Forme</translation>
     </message>
     <message>
         <location filename="../src/widgets/portremapsettingswidget.ui" line="26"/>
         <source>Configure MIDI Controller Messages to Remap</source>
-        <translation type="unfinished"></translation>
+        <translation>Configurer les messages de contrôleur MIDI à réassigner</translation>
     </message>
     <message>
         <location filename="../src/widgets/portremapsettingswidget.ui" line="44"/>
         <source>Channel Messages to Remap</source>
-        <translation type="unfinished"></translation>
+        <translation>Messages de canal à réassigner</translation>
     </message>
 </context>
 <context>
@@ -695,12 +695,12 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
     <message>
         <location filename="../src/widgets/portremapwidget.cpp" line="81"/>
         <source>Input Remap</source>
-        <translation type="unfinished"></translation>
+        <translation>Réassigner l'entrée</translation>
     </message>
     <message>
         <location filename="../src/widgets/portremapwidget.cpp" line="83"/>
         <source>Output Remap</source>
-        <translation type="unfinished"></translation>
+        <translation>Réassigner la sortie</translation>
     </message>
 </context>
 <context>
@@ -719,22 +719,22 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
     <message>
         <location filename="../src/widgets/portswidget.cpp" line="75"/>
         <source>MIDI-Port Routing</source>
-        <translation type="unfinished"></translation>
+        <translation>Routage de port MIDI</translation>
     </message>
     <message>
         <location filename="../src/widgets/portswidget.cpp" line="81"/>
         <source>MIDI-Port Filter</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtre de port MIDI</translation>
     </message>
     <message>
         <location filename="../src/widgets/portswidget.cpp" line="87"/>
         <source>MIDI-Port Remap</source>
-        <translation type="unfinished"></translation>
+        <translation>Réassigner le port MIDI</translation>
     </message>
     <message>
         <location filename="../src/widgets/portswidget.h" line="15"/>
         <source>MIDI-Ports</source>
-        <translation type="unfinished"></translation>
+        <translation>Ports MIDI</translation>
     </message>
 </context>
 <context>
