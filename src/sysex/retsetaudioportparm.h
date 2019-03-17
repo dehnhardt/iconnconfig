@@ -4,13 +4,6 @@
 #include "../device.h"
 #include "sysexmessage.h"
 
-enum AudioPortType {
-	APT_NONE = 0,
-	APT_USB_DEVICE = 2,
-	APT_USB_HOST,
-	APT_ETHERNET,
-	APT_ANALOGUE
-};
 typedef struct {
 	int audioConfigurationNumber = 0;
 	int maxAudioChannelsSupported = 0;

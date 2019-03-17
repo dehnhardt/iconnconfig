@@ -2,6 +2,7 @@
 #include "../sysex/getaudioportparm.h"
 #include "../sysex/retcommandlist.h"
 #include "../sysex/retsetaudioglobalparm.h"
+#include "audiocontrolparmwidget.h"
 #include "audioportparmwidget.h"
 #include "portdisplayhelper.h"
 
@@ -77,41 +78,38 @@ void AudioPortsWidget::retrieveAudioPorts() {
 }
 
 QWidget *AudioPortsWidget::createWidget(MultiInfoListEntry *entry) {
-	std::cout << "create AudioPortsWidget" << std::endl;
 	RetSetAudioPortParm *audioPortParm =
 		static_cast<RetSetAudioPortParm *>(entry->message);
-	// int portNumber = static_cast<int>(audioPortParm->getPortId());
+	int portId = audioPortParm->getPortId();
 	QTabWidget *audioPortTabWidget = new QTabWidget(this);
+	QWidget *layoutWidget = new QWidget();
+	QVBoxLayout *layout = new QVBoxLayout();
 	AudioPortParmWidget *audioPortParmWidget =
 		new AudioPortParmWidget(audioPortParm);
-	// connect(device->getAudioGlobalParm(),&RetSetAudioGlobalParm::ch
-	// audioPortParmWidget, &AudioPortParmWidget::audioConfigurationChanged )
-	//	connect(portInfoWidget, &PortInfoWidget::changePortName, entry,
-	// &MultiInfoListEntry::changeName);
-	audioPortTabWidget->addTab(audioPortParmWidget, "Audio-Port Info");
-	/*	if (device->getCommands()->isCommandSupported(
-				Command::GET_MIDI_PORT_ROUTE)) {
-					PortRoutingWidget *w = new PortRoutingWidget(
-						device, portNumber, this->parentWidget());
-					QScrollArea *a = new QScrollArea(portTabWidget);
-					a->setWidget(w);
-					portTabWidget->addTab(a, tr("MIDI-Port Routing"));
-				}
-				if (device->getCommands()->isCommandSupported(
-						Command::GET_MIDI_PORT_FILTER)) {
-					PortFilterWidget *portFilterWidget = new PortFilterWidget(
-						device, portNumber, this->parentWidget());
-					portTabWidget->addTab(portFilterWidget,
-										  tr("MIDI-Port Filter"));
-				}
-				if (device->getCommands()->isCommandSupported(
-						Command::GET_MIDI_PORT_REMAP)) {
-					PortRemapWidget *portRemapWidget = new PortRemapWidget(
-						device, portNumber, this->parentWidget());
-					portTabWidget->addTab(portRemapWidget,
-										  tr("MIDI-Port Remap"));
-				}
-				return portTabWidget;
-				*/
+	connect(audioPortParmWidget, &AudioPortParmWidget::changePortName, entry,
+			&MultiInfoListEntry::changeName);
+
+	layout->addWidget(audioPortParmWidget);
+	if (device->getCommands()->isCommandSupported(
+			Command::GET_AUDIO_CONTROL_PARM)) {
+		// check if there is at least one parameter
+		GetAudioControlParm *m_pGetAudioControlParm =
+			new GetAudioControlParm(device);
+		m_pGetAudioControlParm->setDebug(true);
+		m_pGetAudioControlParm->setPortId(portId);
+		m_pGetAudioControlParm->setControllerNumber(1);
+		SysExMessage *m = m_pGetAudioControlParm->query();
+		if (m->getCommand() == RET_SET_AUDIO_CONTROL_PARM) {
+			AudioControlParmWidget *audioControlParmWidget =
+				new AudioControlParmWidget(device, portId,
+										   this->parentWidget());
+			layout->addWidget(audioControlParmWidget);
+			// audioPortTabWidget->addTab(w, t	r("Audio-Port Control
+			// Parameter"));
+		}
+	}
+	layout->addStretch();
+	layoutWidget->setLayout(layout);
+	audioPortTabWidget->addTab(layoutWidget, "Audio-Port Info");
 	return audioPortTabWidget;
 }

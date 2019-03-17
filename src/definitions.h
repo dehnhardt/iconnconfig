@@ -67,7 +67,39 @@ enum Command {
 	RET_SET_AUDIO_GLOBAL_PARM, /*!< retieve or set global params for the audio
 								 section of an device */
 	GET_AUDIO_PORT_PARM,       /*!< query the parameters for an audio port */
-	RET_SET_AUDIO_PORT_PARM /*!< retrieve or set parameters for an audio port */
+	RET_SET_AUDIO_PORT_PARM,   /*!< retrieve or set parameters for an audio port
+								*/
+	GET_AUDIO_DEVICE_PARM,     /*!< query the parameters for an audio port */
+	RET_SET_AUDIO_DEVICE_PARM, /*!< retrieve or set parameters for an audio port
+								*/
+	GET_AUDIO_CONTROL_PARM,    /*!< query the controllers for an audio port */
+	RET_SET_AUDIO_CONTROL_PARM,   /*!< retrieve or set controllers for an audio
+									 port */
+	GET_AUDIO_CONTROL_DETAIL,     /*!< query the parameters for an audio control
+									 detail */
+	RET_SET_AUDIO_CONTROL_DETAIL, /*!< retrieve or set parameters for an audio
+									 control detail */
+	GET_AUDIO_CONTROL_DETAIL_VALUE, /*!< query the values for an control detail
+									 */
+	RET_SET_AUDIO_CONTROL_DETAIL_VALUE /*!< retrieve or set values for an
+										  control detail */
 };
+
+enum AudioPortType {
+	APT_NONE = 0,
+	APT_USB_DEVICE = 2,
+	APT_USB_HOST,
+	APT_ETHERNET,
+	APT_ANALOGUE
+};
+
+enum AudioControllerType {
+	CT_NONE = 0,
+	CT_SELECTOR = 5,
+	CT_FEATUERE = 6,
+	CT_CLOCK_SOURCE = 10
+};
+
+enum ChannelDirection { CD_NONE = 0, CD_INPUT, CD_OUTPUT };
 
 #endif // DEFINITIONS_H

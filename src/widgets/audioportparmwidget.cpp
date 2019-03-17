@@ -138,8 +138,9 @@ void AudioPortParmWidget::createConnections() {
 				}
 			});
 	connect(ui->m_pEditPortName, &QLineEdit::editingFinished, [=] {
-		m_pRetSetAudioPortParm->setPortName(
-			ui->m_pEditPortName->text().toStdString());
+		std::string portName = ui->m_pEditPortName->text().toStdString();
+		m_pRetSetAudioPortParm->setPortName(portName);
+		emit changePortName(portName);
 		m_pUpdateTimer->start(1000);
 	});
 

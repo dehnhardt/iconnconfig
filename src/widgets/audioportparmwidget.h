@@ -30,6 +30,9 @@ class AudioPortParmWidget : public QWidget {
 
   public slots:
 	void audioConfigurationChanged();
+
+  signals:
+	void changePortName(std::string portName);
 };
 
 #endif // AUDIOPORTPARMWIDGET_H

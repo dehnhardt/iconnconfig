@@ -7,7 +7,7 @@
 class GetAudioPortParm : public SysExMessage {
   public:
 	GetAudioPortParm(Device *device);
-	~GetAudioPortParm();
+	~GetAudioPortParm() override;
 	void createAnswer(Command m_Command, std::vector<unsigned char> *message,
 					  Device *m_pDevice) override;
 	int getSettingsId() override { return m_Command; }

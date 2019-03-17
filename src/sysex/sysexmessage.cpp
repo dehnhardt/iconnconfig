@@ -141,6 +141,12 @@ void SysExMessage::createAnswer(Command cmd,
 	}
 }
 
+void SysExMessage::createAck(std::vector<unsigned char> *message,
+							 Device *device) {
+	m_pAnswer = new Ack(ACK, message, device);
+	m_pAnswer->parseAnswerData();
+}
+
 void SysExMessage::readSettings() {}
 
 void SysExMessage::storeSettings() {
@@ -182,8 +188,12 @@ int SysExMessage::execute() {
 				std::cout << "c: ";
 				MIDI::printMessage(answerMessage);
 			}
-			if (cmd != this->m_Command)
-				createAnswer(cmd, answerMessage, m_pDevice);
+			if (cmd != this->m_Command) {
+				if (cmd == ACK)
+					this->createAck(answerMessage, m_pDevice);
+				else
+					createAnswer(cmd, answerMessage, m_pDevice);
+			}
 			return 0;
 		}
 	} catch (...) {
@@ -194,6 +204,8 @@ int SysExMessage::execute() {
 }
 
 void SysExMessage::setDebug(bool debug) { this->debug = debug; }
+
+bool SysExMessage::getDebug() { return this->debug; }
 
 void SysExMessage::printRawData() { MIDI::printMessage(m_pData); }
 
@@ -257,4 +269,10 @@ CommandAcceptedAnswers SysExMessage::commandAcceptedAnswers = {
 	{GET_AUDIO_GLOBAL_PARM, AcceptedAnswers{RET_SET_AUDIO_GLOBAL_PARM}},
 	{RET_SET_AUDIO_GLOBAL_PARM, AcceptedAnswers{ACK}},
 	{GET_AUDIO_PORT_PARM, AcceptedAnswers{RET_SET_AUDIO_PORT_PARM, ACK}},
-	{RET_SET_AUDIO_PORT_PARM, AcceptedAnswers{ACK}}};
+	{RET_SET_AUDIO_PORT_PARM, AcceptedAnswers{ACK}},
+	{GET_AUDIO_DEVICE_PARM, AcceptedAnswers{RET_SET_AUDIO_DEVICE_PARM, ACK}},
+	{GET_AUDIO_CONTROL_PARM, AcceptedAnswers{RET_SET_AUDIO_CONTROL_PARM, ACK}},
+	{GET_AUDIO_CONTROL_DETAIL,
+	 AcceptedAnswers{RET_SET_AUDIO_CONTROL_DETAIL, ACK}},
+	{GET_AUDIO_CONTROL_DETAIL_VALUE,
+	 AcceptedAnswers{RET_SET_AUDIO_CONTROL_DETAIL_VALUE}}};

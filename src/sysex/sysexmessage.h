@@ -5,7 +5,6 @@
 #include "../device.h"
 #include "midi.h"
 
-#include <QObject>
 #include <map>
 #include <vector>
 
@@ -60,6 +59,7 @@ class SysExMessage {
 	SysExMessage *query();
 	int execute();
 	void setDebug(bool debug);
+	bool getDebug();
 	void printRawData();
 	unsigned int getCommandNumber();
 	bool isWriteCommand();
@@ -92,12 +92,15 @@ class SysExMessage {
 	virtual void createAnswer(Command m_Command __attribute__((unused)),
 							  BYTE_VECTOR *message __attribute__((unused)),
 							  Device *m_pDevice __attribute__((unused)));
+	virtual void createAck(BYTE_VECTOR *message, Device *m_pDevice);
 	void readSettings();
 	void storeSettings();
 
-	virtual int getSettingsId() = 0;
+	virtual int getSettingsId() { return m_Command; }
 	virtual int getSettingsIndex() = 0;
-	virtual std::string getStorableValue() = 0;
+	virtual std::string getStorableValue() {
+		return std::string(m_pData->begin(), m_pData->end());
+	}
 
 	void extractData(std::vector<unsigned char> *message);
 

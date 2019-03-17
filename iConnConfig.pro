@@ -102,7 +102,20 @@ SOURCES +=\
     src/sysex/retsetaudioportparm.cpp \
     src/sysex/getaudioglobalparm.cpp \
     src/sysex/retsetaudioglobalparm.cpp \
-    src/widgets/audioportparmwidget.cpp
+    src/widgets/audioportparmwidget.cpp \
+    src/sysex/getaudiocontrolparm.cpp \
+    src/sysex/getaudiocontroldetail.cpp \
+    src/sysex/retsetaudiocontroldetail.cpp \
+    src/sysex/getaudiocontroldetailvalue.cpp \
+    src/sysex/retsetaudiocontroldetailvalue.cpp \
+    src/sysex/retsetaudiocontrolparm.cpp \
+    src/sysex/portsysexmessage.cpp \
+    src/widgets/audiocontrolparmwidget.cpp \
+    src/widgets/audiocontrolparmselectorwidget.cpp \
+    src/widgets/audiocontrolparmclocksourcewidget.cpp \
+    src/widgets/audiocontrolparmfeatureswidget.cpp \
+    src/widgets/audiocontroldetailfeaturewidget.cpp \
+    src/widgets/audiochannelfeaturewidget.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
@@ -174,7 +187,20 @@ HEADERS  += \
     src/sysex/retsetaudioportparm.h \
     src/sysex/getaudioglobalparm.h \
     src/sysex/retsetaudioglobalparm.h \
-    src/widgets/audioportparmwidget.h
+    src/widgets/audioportparmwidget.h \
+    src/sysex/getaudiocontrolparm.h \
+    src/sysex/getaudiocontroldetail.h \
+    src/sysex/retsetaudiocontroldetail.h \
+    src/sysex/getaudiocontroldetailvalue.h \
+    src/sysex/retsetaudiocontroldetailvalue.h \
+    src/sysex/retsetaudiocontrolparm.h \
+    src/sysex/portsysexmessage.h \
+    src/widgets/audiocontrolparmwidget.h \
+    src/widgets/audiocontrolparmselectorwidget.h \
+    src/widgets/audiocontrolparmclocksourcewidget.h \
+    src/widgets/audiocontrolparmfeatureswidget.h \
+    src/widgets/audiocontroldetailfeaturewidget.h \
+    src/widgets/audiochannelfeaturewidget.h
 
 FORMS    += \
     src/devicedetection.ui \
@@ -185,7 +211,9 @@ FORMS    += \
     src/widgets/portinfowidget.ui \
     src/widgets/portremapsettingswidget.ui \
     src/widgets/globalaudioconfiguration.ui \
-    src/widgets/audioportparmwidget.ui
+    src/widgets/audioportparmwidget.ui \
+    src/widgets/audiocontrolparmwidget.ui \
+    src/widgets/audiochannelfeaturewidget.ui
 
 unix:!macx: LIBS += -lasound \
                     -lpthread \
