@@ -1,5 +1,8 @@
 #include "retsetaudiocontroldetail.h"
 
+#include <bitset>
+#include <math.h>
+
 RetSetAudioControlDetail::RetSetAudioControlDetail(Device *device)
 	: PortSysExMessage(Command::RET_SET_AUDIO_CONTROL_DETAIL,
 					   SysExMessage::QUERY, device) {}
@@ -30,7 +33,8 @@ void RetSetAudioControlDetail::parseAnswerData() {
 		parseExistFlags(m_pData->at(offset));
 		offset++;
 		parseEditFlags(m_pData->at(offset));
-		offset = 28;
+		offset++;
+		parseVolumeValues(m_pData, offset);
 		m_iNameLenght = m_pData->at(offset);
 		offset++;
 		m_sChannelName = std::string(
@@ -64,6 +68,46 @@ void RetSetAudioControlDetail::parseEditFlags(unsigned char edit_flags) {
 	m_bPhantomPowerControlEditable = edit_flags & 4;
 	m_bMuteControlEditable = edit_flags & 2;
 	m_bVolumeControlEditable = edit_flags & 1;
+}
+
+void RetSetAudioControlDetail::parseVolumeValues(std::vector<unsigned char> *v,
+												 unsigned long &offset) {
+	m_iMinVolumeValue = MIDI::bytesToSignedInt(v, offset, 3);
+	offset += 3;
+	m_iMaxVolumeValue = MIDI::bytesToSignedInt(v, offset, 3);
+	offset += 3;
+	m_iVolumeResolution = MIDI::bytesToSignedInt(v, offset, 3);
+	offset += 3;
+	m_iVolumePadValue = MIDI::bytesToSignedInt(v, offset, 3);
+	offset += 3;
+	m_iMinTrimValue = MIDI::bytesToSignedInt(v, offset, 3);
+	offset += 3;
+	m_iMaxTrimValue = MIDI::bytesToSignedInt(v, offset, 3);
+	offset += 3;
+}
+
+int RetSetAudioControlDetail::getMaxTrimValue() const {
+	return m_iMaxTrimValue;
+}
+
+int RetSetAudioControlDetail::getMinTrimValue() const {
+	return m_iMinTrimValue;
+}
+
+int RetSetAudioControlDetail::getVolumePadValue() const {
+	return m_iVolumePadValue;
+}
+
+int RetSetAudioControlDetail::getVolumeResolution() const {
+	return m_iVolumeResolution;
+}
+
+int RetSetAudioControlDetail::getMaxVolumeValue() const {
+	return m_iMaxVolumeValue;
+}
+
+int RetSetAudioControlDetail::getMinVolumeValue() const {
+	return m_iMinVolumeValue;
 }
 
 bool RetSetAudioControlDetail::hasStereoLinkControl() const {

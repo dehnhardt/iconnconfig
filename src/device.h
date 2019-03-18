@@ -73,6 +73,9 @@ class Device {
 	static const int DATA_LENGTH_LENGTH = 2;
 	static const int DATA_OFFSET = 18;
 
+	// static device specific methods
+	static double intToDecibel(int val) { return val / 256.0; }
+
 	// methods
 	void sentSysex(BYTE_VECTOR *data);
 	void disconnect();

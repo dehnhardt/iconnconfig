@@ -211,7 +211,6 @@ FORMS    += \
     src/widgets/portinfowidget.ui \
     src/widgets/portremapsettingswidget.ui \
     src/widgets/globalaudioconfiguration.ui \
-    src/widgets/audioportparmwidget.ui \
     src/widgets/audiocontrolparmwidget.ui \
     src/widgets/audiochannelfeaturewidget.ui
 

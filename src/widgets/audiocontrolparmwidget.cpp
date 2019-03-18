@@ -4,24 +4,31 @@
 
 #include <QLabel>
 #include <QLayout>
+#include <QScrollArea>
 
-AudioControlParmWidget::AudioControlParmWidget(Device *device, int portId,
+AudioControlParmWidget::AudioControlParmWidget(Device *device,
+											   unsigned int portId,
 											   QWidget *parent)
-	: QWidget(parent), ui(new Ui::AudioControlParmWidget), m_pDevice(device),
-	  m_iPortId(portId) {
-	ui->setupUi(this);
+	: QWidget(parent), m_pDevice(device), m_iPortId(portId) {
 	m_pAudioControlParms =
 		new QMap<AudioControllerType, QVector<RetSetAudioControlParm *> *>();
+	createLayout();
 	loadAudioControlParms();
 	addAudioControllerSections();
 }
 
-AudioControlParmWidget::~AudioControlParmWidget() { delete ui; }
+AudioControlParmWidget::~AudioControlParmWidget() {}
+
+void AudioControlParmWidget::createLayout() {
+	m_pLayout = new QVBoxLayout();
+	setLayout(m_pLayout);
+	m_pFeatureTabWidget = new QTabWidget();
+	m_pLayout->addWidget(m_pFeatureTabWidget);
+}
 
 void AudioControlParmWidget::loadAudioControlParms() {
 	this->m_pGetAudioControlParm = new GetAudioControlParm(m_pDevice);
 	m_pGetAudioControlParm->setDebug(false);
-	ui->m_pLVAudioControlParms->setHidden(!m_pGetAudioControlParm->getDebug());
 	m_pGetAudioControlParm->setPortId(static_cast<unsigned int>(m_iPortId));
 	for (unsigned int controllerNumber = 1; controllerNumber < 128;
 		 controllerNumber++) {
@@ -31,9 +38,6 @@ void AudioControlParmWidget::loadAudioControlParms() {
 				m_pGetAudioControlParm->query());
 		if (retSetAudioControlParm == nullptr)
 			break;
-		if (m_pGetAudioControlParm->getDebug())
-			ui->m_pLVAudioControlParms->addItem(
-				retSetAudioControlParm->getControllerName().c_str());
 		addAudioControlParm(retSetAudioControlParm);
 	}
 }
@@ -60,10 +64,26 @@ void AudioControlParmWidget::addAudioControllerSections() {
 		case CT_FEATUERE: {
 			AudioControlParmFeaturesWidget *featureWidget =
 				new AudioControlParmFeaturesWidget(m_pDevice, i.value());
-			this->layout()->addWidget(featureWidget);
+			this->m_pFeatureTabWidget->addTab(featureWidget,
+											  getFeatureName(type));
 		} break;
 		default:
 			break;
 		}
 	}
+}
+
+QString AudioControlParmWidget::getFeatureName(
+	AudioControllerType audioControllerType) {
+	switch (audioControllerType) {
+	case CT_FEATUERE:
+		return tr("Features");
+	case CT_SELECTOR:
+		return tr("Selector");
+	case CT_CLOCK_SOURCE:
+		return tr("ClockSource");
+	case CT_NONE:
+		return tr("Unknown");
+	}
+	return "";
 }

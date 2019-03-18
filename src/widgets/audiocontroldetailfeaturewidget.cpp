@@ -3,8 +3,6 @@
 #include "../sysex/retsetaudiocontroldetail.h"
 #include "audiochannelfeaturewidget.h"
 
-#include <QScrollArea>
-
 AudioControlDetailFeatureWidget::AudioControlDetailFeatureWidget(
 	RetSetAudioControlParm *retSetAudioControlParm, Device *device,
 	QWidget *parent)
@@ -12,9 +10,8 @@ AudioControlDetailFeatureWidget::AudioControlDetailFeatureWidget(
 	  m_pDevice(device) {
 	m_iPortId = m_pRetSetAudioControlParm->getPortId();
 	m_iControllerNumber = m_pRetSetAudioControlParm->getControllerNumber();
-	m_pLayout = new QVBoxLayout();
+	m_pLayout = new QHBoxLayout();
 	setLayout(m_pLayout);
-	setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding));
 	getDetails();
 }
 
@@ -24,12 +21,6 @@ void AudioControlDetailFeatureWidget::getDetails() {
 	getAudioControlDetail->setPortId(m_iPortId);
 	getAudioControlDetail->setControllerNumber(m_iControllerNumber);
 	getAudioControlDetail->setDebug(true);
-	QVBoxLayout *layout = new QVBoxLayout();
-	QScrollArea *scrollArea = new QScrollArea();
-	m_pLayout->addWidget(scrollArea);
-	QWidget *w = new QWidget();
-	w->setLayout(layout);
-	// scrollArea->setLayout(m_pLayout);
 	for (unsigned int i = 1; i < 128; i++) {
 		getAudioControlDetail->setDetailNumber(i);
 		RetSetAudioControlDetail *retSetAudioControlDetail =
@@ -40,9 +31,7 @@ void AudioControlDetailFeatureWidget::getDetails() {
 		else {
 			AudioChannelFeatureWidget *audiochannelFeatureWidget =
 				new AudioChannelFeatureWidget(retSetAudioControlDetail);
-			layout->addWidget(audiochannelFeatureWidget);
+			m_pLayout->addWidget(audiochannelFeatureWidget);
 		}
 	}
-	scrollArea->setWidget(w);
-	// layout->addStretch(2);
 }

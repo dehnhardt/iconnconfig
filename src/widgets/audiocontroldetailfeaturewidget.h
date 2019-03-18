@@ -21,7 +21,7 @@ class AudioControlDetailFeatureWidget : public QWidget {
 	Device *m_pDevice = nullptr;
 	unsigned int m_iPortId = 0;
 	unsigned int m_iControllerNumber = 0;
-	QVBoxLayout *m_pLayout = nullptr;
+	QHBoxLayout *m_pLayout = nullptr;
   signals:
 
   public slots:

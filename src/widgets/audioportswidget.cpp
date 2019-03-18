@@ -80,7 +80,7 @@ void AudioPortsWidget::retrieveAudioPorts() {
 QWidget *AudioPortsWidget::createWidget(MultiInfoListEntry *entry) {
 	RetSetAudioPortParm *audioPortParm =
 		static_cast<RetSetAudioPortParm *>(entry->message);
-	int portId = audioPortParm->getPortId();
+	unsigned int portId = audioPortParm->getPortId();
 	QTabWidget *audioPortTabWidget = new QTabWidget(this);
 	QWidget *layoutWidget = new QWidget();
 	QVBoxLayout *layout = new QVBoxLayout();
@@ -101,14 +101,17 @@ QWidget *AudioPortsWidget::createWidget(MultiInfoListEntry *entry) {
 		SysExMessage *m = m_pGetAudioControlParm->query();
 		if (m->getCommand() == RET_SET_AUDIO_CONTROL_PARM) {
 			AudioControlParmWidget *audioControlParmWidget =
-				new AudioControlParmWidget(device, portId,
-										   this->parentWidget());
+				new AudioControlParmWidget(device, portId);
+			QSizePolicy sp;
+			sp.setHorizontalPolicy(QSizePolicy::Expanding);
+			sp.setVerticalPolicy(QSizePolicy::Expanding);
+			sp.setVerticalStretch(2);
+			audioControlParmWidget->setSizePolicy(sp);
 			layout->addWidget(audioControlParmWidget);
-			// audioPortTabWidget->addTab(w, t	r("Audio-Port Control
-			// Parameter"));
+		} else {
+			layout->addStretch();
 		}
 	}
-	layout->addStretch();
 	layoutWidget->setLayout(layout);
 	audioPortTabWidget->addTab(layoutWidget, "Audio-Port Info");
 	return audioPortTabWidget;

@@ -64,6 +64,22 @@ class MIDI {
 		return true;
 	}
 
+	static int16_t calc2sComplement(uint16_t data) {
+		return (static_cast<int16_t>(data));
+	}
+
+	static uint16_t inv2sComplement(int16_t data) {
+		return (static_cast<uint16_t>(data));
+	}
+
+	// static device specific methods
+	static int bytesToSignedInt(BYTE_VECTOR *v, unsigned long offset,
+								unsigned long bytes) {
+		u_int16_t minValueU = static_cast<u_int16_t>(
+			MIDI::byteJoin7bit(v, offset, bytes) & 0xFFFF);
+		return MIDI::calc2sComplement(minValueU);
+	}
+
 	static RtMidiIn *createMidiIn(
 		const std::string clientName = std::string("MioConfig Input Client"));
 	static RtMidiOut *createMidiOut(

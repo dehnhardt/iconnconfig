@@ -5,29 +5,30 @@
 #include "../sysex/getaudiocontrolparm.h"
 #include "../sysex/retsetaudiocontrolparm.h"
 
+#include <QLayout>
+#include <QTabWidget>
 #include <QWidget>
-
-namespace Ui {
-class AudioControlParmWidget;
-}
 
 class AudioControlParmWidget : public QWidget {
 	Q_OBJECT
 
   public:
-	explicit AudioControlParmWidget(Device *device, int m_iPortId,
+	explicit AudioControlParmWidget(Device *device, unsigned int m_iPortId,
 									QWidget *parent = nullptr);
 	~AudioControlParmWidget();
 
   private: // methods
+	void createLayout();
 	void loadAudioControlParms();
 	void addAudioControlParm(RetSetAudioControlParm *retSetAudioControlParm);
 	void addAudioControllerSections();
 
   private:
-	Ui::AudioControlParmWidget *ui;
 	Device *m_pDevice = nullptr;
-	int m_iPortId = 0;
+	unsigned int m_iPortId = 0;
+	QLayout *m_pLayout = nullptr;
+	QTabWidget *m_pFeatureTabWidget = nullptr;
+	QString getFeatureName(AudioControllerType audioControllerType);
 
 	GetAudioControlParm *m_pGetAudioControlParm = nullptr;
 

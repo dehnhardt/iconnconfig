@@ -8,12 +8,10 @@ class RetSetAudioControlDetail : public PortSysExMessage {
 	RetSetAudioControlDetail(Device *m_pDevice);
 
 	RetSetAudioControlDetail(Command cmd, BYTE_VECTOR *message, Device *device)
-	    : PortSysExMessage(cmd, message, device) {}
+		: PortSysExMessage(cmd, message, device) {}
 
 	virtual ~RetSetAudioControlDetail() override;
 	void parseAnswerData() override;
-	void parseExistFlags(unsigned char exist_flags);
-	void parseEditFlags(unsigned char edit_flags);
 
 	bool hasStereoLinkControl() const;
 	bool hasHighImpendanceControl() const;
@@ -28,6 +26,18 @@ class RetSetAudioControlDetail : public PortSysExMessage {
 	bool getVolumeControlEditable() const;
 
 	std::string getChannelName() const;
+
+	int getMinVolumeValue() const;
+	int getMaxVolumeValue() const;
+	int getVolumeResolution() const;
+	int getVolumePadValue() const;
+	int getMinTrimValue() const;
+	int getMaxTrimValue() const;
+
+  private:
+	void parseExistFlags(unsigned char exist_flags);
+	void parseEditFlags(unsigned char edit_flags);
+	void parseVolumeValues(BYTE_VECTOR *v, unsigned long &offset);
 
   private:
 	unsigned int m_iControllerNumber = 0;
@@ -53,12 +63,12 @@ class RetSetAudioControlDetail : public PortSysExMessage {
 	bool m_bMuteControlEditable = false;
 	bool m_bVolumeControlEditable = false;
 
-	double m_fMinVolumeValue = 0.0;
-	double m_fMaxVolumeValue = 0.0;
-	double m_fVolumeResolution = 0.0;
-	double m_fVolumePadValue = 0.0;
-	double m_fMinTrimValue = 0.0;
-	double m_fMaxTrimValue = 0.0;
+	int m_iMinVolumeValue = 0.0;
+	int m_iMaxVolumeValue = 0.0;
+	int m_iVolumeResolution = 0.0;
+	int m_iVolumePadValue = 0.0;
+	int m_iMinTrimValue = 0.0;
+	int m_iMaxTrimValue = 0.0;
 };
 
 #endif // RETSETAUDIOCONTROLDETAIL_H

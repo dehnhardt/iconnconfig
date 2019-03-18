@@ -9,7 +9,7 @@
 #include <QVector>
 #include <QWidget>
 
-class AudioControlParmFeaturesWidget : public QTabWidget {
+class AudioControlParmFeaturesWidget : public QWidget {
 	Q_OBJECT
   public:
 	explicit AudioControlParmFeaturesWidget(
@@ -19,6 +19,7 @@ class AudioControlParmFeaturesWidget : public QTabWidget {
   private:
 	QTabWidget *m_pControllerNameTabs = nullptr;
 	Device *m_pDevice = nullptr;
+	QGridLayout *m_pLayout = nullptr;
 
 	void createLayout();
 	void addFeatures();
