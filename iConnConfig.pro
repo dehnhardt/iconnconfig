@@ -212,7 +212,8 @@ FORMS    += \
     src/widgets/portremapsettingswidget.ui \
     src/widgets/globalaudioconfiguration.ui \
     src/widgets/audiocontrolparmwidget.ui \
-    src/widgets/audiochannelfeaturewidget.ui
+    src/widgets/audiochannelfeaturewidget.ui \
+    src/widgets/audioportparmwidget.ui
 
 unix:!macx: LIBS += -lasound \
                     -lpthread \
