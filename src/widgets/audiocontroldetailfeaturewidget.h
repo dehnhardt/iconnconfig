@@ -17,6 +17,8 @@ class AudioControlDetailFeatureWidget : public QWidget {
 	void getDetails();
 
   private:
+	void createLayout();
+
 	RetSetAudioControlParm *m_pRetSetAudioControlParm = nullptr;
 	Device *m_pDevice = nullptr;
 	unsigned int m_iPortId = 0;

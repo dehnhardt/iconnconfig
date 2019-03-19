@@ -8,11 +8,12 @@ class RetSetAudioControlDetail : public PortSysExMessage {
 	RetSetAudioControlDetail(Device *m_pDevice);
 
 	RetSetAudioControlDetail(Command cmd, BYTE_VECTOR *message, Device *device)
-		: PortSysExMessage(cmd, message, device) {}
+	    : PortSysExMessage(cmd, message, device) {}
 
 	virtual ~RetSetAudioControlDetail() override;
 	void parseAnswerData() override;
 
+	bool hasFeatures() const;
 	bool hasStereoLinkControl() const;
 	bool hasHighImpendanceControl() const;
 	bool hasPhantomPowerControl() const;
@@ -34,14 +35,17 @@ class RetSetAudioControlDetail : public PortSysExMessage {
 	int getMinTrimValue() const;
 	int getMaxTrimValue() const;
 
+	unsigned char getControllerNumber() const;
+	unsigned char getDetailNumber() const;
+
   private:
 	void parseExistFlags(unsigned char exist_flags);
 	void parseEditFlags(unsigned char edit_flags);
 	void parseVolumeValues(BYTE_VECTOR *v, unsigned long &offset);
 
   private:
-	unsigned int m_iControllerNumber = 0;
-	unsigned int m_iDetailNumber = 0;
+	unsigned char m_iControllerNumber = 0;
+	unsigned char m_iDetailNumber = 0;
 	AudioControllerType m_controllerType = AudioControllerType::CT_NONE;
 	ChannelDirection m_channelDirection = CD_NONE;
 	unsigned int m_iChannnelNumber = 0;
@@ -51,6 +55,7 @@ class RetSetAudioControlDetail : public PortSysExMessage {
 	std::string m_sClockSourceName;
 
 	// feature
+	bool m_bHasFeatures = false;
 	bool m_bHasStereoLinkControl = false;
 	bool m_bHasHighImpendanceControl = false;
 	bool m_bHasPhantomPowerControl = false;
@@ -63,12 +68,12 @@ class RetSetAudioControlDetail : public PortSysExMessage {
 	bool m_bMuteControlEditable = false;
 	bool m_bVolumeControlEditable = false;
 
-	int m_iMinVolumeValue = 0.0;
-	int m_iMaxVolumeValue = 0.0;
-	int m_iVolumeResolution = 0.0;
-	int m_iVolumePadValue = 0.0;
-	int m_iMinTrimValue = 0.0;
-	int m_iMaxTrimValue = 0.0;
+	int m_iMinVolumeValue = 0;
+	int m_iMaxVolumeValue = 0;
+	int m_iVolumeResolution = 0;
+	int m_iVolumePadValue = 0;
+	int m_iMinTrimValue = 0;
+	int m_iMaxTrimValue = 0;
 };
 
 #endif // RETSETAUDIOCONTROLDETAIL_H

@@ -73,6 +73,8 @@ void SysExMessage::extractData(std::vector<unsigned char> *message) {
 						message->begin() + Device::DATA_OFFSET + m_iDataLength);
 }
 
+Device *SysExMessage::getDevice() const { return m_pDevice; }
+
 BYTE_VECTOR *SysExMessage::getMIDISysExMessage() {
 	BYTE_VECTOR *body = new BYTE_VECTOR();
 	BYTE_VECTOR *message = new BYTE_VECTOR();
@@ -275,4 +277,5 @@ CommandAcceptedAnswers SysExMessage::commandAcceptedAnswers = {
 	{GET_AUDIO_CONTROL_DETAIL,
 	 AcceptedAnswers{RET_SET_AUDIO_CONTROL_DETAIL, ACK}},
 	{GET_AUDIO_CONTROL_DETAIL_VALUE,
-	 AcceptedAnswers{RET_SET_AUDIO_CONTROL_DETAIL_VALUE}}};
+	 AcceptedAnswers{RET_SET_AUDIO_CONTROL_DETAIL_VALUE, ACK}},
+	{RET_SET_AUDIO_CONTROL_DETAIL_VALUE, AcceptedAnswers{ACK}}};

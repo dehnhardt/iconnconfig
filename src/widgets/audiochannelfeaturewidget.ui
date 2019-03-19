@@ -95,7 +95,7 @@
    </item>
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
-     <item alignment="Qt::AlignTop">
+     <item>
       <widget class="QFrame" name="frame">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -121,104 +121,114 @@
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
-        <property name="leftMargin">
-         <number>5</number>
+       <widget class="QCheckBox" name="m_pChbStereoLink">
+        <property name="geometry">
+         <rect>
+          <x>6</x>
+          <y>6</y>
+          <width>41</width>
+          <height>16</height>
+         </rect>
         </property>
-        <property name="topMargin">
-         <number>5</number>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
-        <property name="rightMargin">
-         <number>5</number>
+        <property name="font">
+         <font>
+          <pointsize>7</pointsize>
+         </font>
         </property>
-        <property name="bottomMargin">
-         <number>5</number>
+        <property name="styleSheet">
+         <string notr="true">border: none</string>
         </property>
-        <item>
-         <widget class="QCheckBox" name="m_pChbStereoLink">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>7</pointsize>
-           </font>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">border: none</string>
-          </property>
-          <property name="text">
-           <string>Link</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QCheckBox" name="m_pChbHighImpedance">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>7</pointsize>
-           </font>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">border: none</string>
-          </property>
-          <property name="text">
-           <string>Hi Imp.</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QCheckBox" name="m_pChbPhantomPower">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>7</pointsize>
-           </font>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">border: none</string>
-          </property>
-          <property name="text">
-           <string>Phant.</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QCheckBox" name="m_pChbMute">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>7</pointsize>
-           </font>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">border: none</string>
-          </property>
-          <property name="text">
-           <string>Mute</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
+        <property name="text">
+         <string>Link</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="m_pChbHighImpedance">
+        <property name="geometry">
+         <rect>
+          <x>6</x>
+          <y>24</y>
+          <width>55</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>7</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border: none</string>
+        </property>
+        <property name="text">
+         <string>Hi Imp.</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="m_pChbPhantomPower">
+        <property name="geometry">
+         <rect>
+          <x>6</x>
+          <y>43</y>
+          <width>51</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>7</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border: none</string>
+        </property>
+        <property name="text">
+         <string>Phant.</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="m_pChbMute">
+        <property name="geometry">
+         <rect>
+          <x>6</x>
+          <y>61</y>
+          <width>45</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>7</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border: none</string>
+        </property>
+        <property name="text">
+         <string>Mute</string>
+        </property>
+       </widget>
       </widget>
      </item>
      <item alignment="Qt::AlignHCenter">

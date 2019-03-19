@@ -22,9 +22,9 @@ class AudioPortParmWidget : public QWidget {
 
   private:
 	Ui::AudioPortParmWidget *ui;
-	RetSetAudioPortParm *m_pRetSetAudioPortParm = nullptr;
 	QTimer *m_pUpdateTimer = nullptr;
 
+	RetSetAudioPortParm *m_pRetSetAudioPortParm = nullptr;
 	void createConnections();
 	bool checkTotalNumberOfAudioChannels();
 

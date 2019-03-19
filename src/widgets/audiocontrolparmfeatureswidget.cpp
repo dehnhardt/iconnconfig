@@ -16,7 +16,6 @@ void AudioControlParmFeaturesWidget::createLayout() {
 	QVBoxLayout *baseLayout = new QVBoxLayout();
 	QWidget *w = new QWidget();
 	m_pLayout = new QGridLayout();
-
 	setLayout(baseLayout);
 
 	QScrollArea *scrollarea = new QScrollArea();

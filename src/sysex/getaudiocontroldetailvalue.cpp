@@ -18,5 +18,26 @@ void GetAudioControlDetailValue::createAnswer(
 
 std::vector<unsigned char> *GetAudioControlDetailValue::m_pGetMessageData() {
 	BYTE_VECTOR *data = new BYTE_VECTOR();
+	BYTE_VECTOR *portId = getPortIdBytes();
+	data->insert(data->begin(), portId->begin(), portId->end());
+	data->push_back(static_cast<unsigned char>(m_iControllerNumber));
+	data->push_back(static_cast<unsigned char>(m_iDetailNumber));
 	return data;
+}
+
+unsigned char GetAudioControlDetailValue::getDetailNumber() const {
+	return m_iDetailNumber;
+}
+
+void GetAudioControlDetailValue::setDetailNumber(unsigned char iDetailNumber) {
+	m_iDetailNumber = iDetailNumber;
+}
+
+unsigned char GetAudioControlDetailValue::getControllerNumber() const {
+	return m_iControllerNumber;
+}
+
+void GetAudioControlDetailValue::setControllerNumber(
+	unsigned char iControllerNumber) {
+	m_iControllerNumber = iControllerNumber;
 }

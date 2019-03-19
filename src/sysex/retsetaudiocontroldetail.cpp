@@ -55,6 +55,7 @@ void RetSetAudioControlDetail::parseAnswerData() {
 }
 
 void RetSetAudioControlDetail::parseExistFlags(unsigned char exist_flags) {
+	m_bHasFeatures = exist_flags > 0;
 	m_bHasStereoLinkControl = (exist_flags & 16);
 	m_bHasHighImpendanceControl = (exist_flags & 8);
 	m_bHasPhantomPowerControl = (exist_flags & 4);
@@ -84,6 +85,16 @@ void RetSetAudioControlDetail::parseVolumeValues(std::vector<unsigned char> *v,
 	offset += 3;
 	m_iMaxTrimValue = MIDI::bytesToSignedInt(v, offset, 3);
 	offset += 3;
+}
+
+bool RetSetAudioControlDetail::hasFeatures() const { return m_bHasFeatures; }
+
+unsigned char RetSetAudioControlDetail::getDetailNumber() const {
+	return m_iDetailNumber;
+}
+
+unsigned char RetSetAudioControlDetail::getControllerNumber() const {
+	return m_iControllerNumber;
 }
 
 int RetSetAudioControlDetail::getMaxTrimValue() const {

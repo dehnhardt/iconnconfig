@@ -68,6 +68,7 @@ class SysExMessage {
 	// getter
 	unsigned char getCmdflags() const;
 	Command getCommand() { return m_Command; }
+	Device *getDevice() const;
 
 	// setter
 	void setCmdflags(unsigned char value);

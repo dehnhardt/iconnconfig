@@ -10,8 +10,7 @@ AudioControlDetailFeatureWidget::AudioControlDetailFeatureWidget(
 	  m_pDevice(device) {
 	m_iPortId = m_pRetSetAudioControlParm->getPortId();
 	m_iControllerNumber = m_pRetSetAudioControlParm->getControllerNumber();
-	m_pLayout = new QHBoxLayout();
-	setLayout(m_pLayout);
+	createLayout();
 	getDetails();
 }
 
@@ -34,4 +33,13 @@ void AudioControlDetailFeatureWidget::getDetails() {
 			m_pLayout->addWidget(audiochannelFeatureWidget);
 		}
 	}
+}
+
+void AudioControlDetailFeatureWidget::createLayout() {
+	QSizePolicy p;
+	p.setHorizontalPolicy(QSizePolicy::Minimum);
+	setSizePolicy(p);
+	m_pLayout = new QHBoxLayout();
+	m_pLayout->addStretch(1);
+	setLayout(m_pLayout);
 }

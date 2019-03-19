@@ -10,10 +10,20 @@ class GetAudioControlDetailValue : public PortSysExMessage {
 	virtual ~GetAudioControlDetailValue() override;
 
 	void createAnswer(Command m_Command, std::vector<unsigned char> *message,
-					  Device *m_pDevice) override;
+	                  Device *m_pDevice) override;
+
+	unsigned char getControllerNumber() const;
+	void setControllerNumber(unsigned char getControllerNumber);
+
+	unsigned char getDetailNumber() const;
+	void setDetailNumber(unsigned char getDetailNumber);
 
   protected:
 	std::vector<unsigned char> *m_pGetMessageData() override;
+
+  private:
+	unsigned char m_iControllerNumber = 0;
+	unsigned char m_iDetailNumber = 0;
 };
 
 #endif // GETAUDIOCONTROLDETAILVALUE_H
