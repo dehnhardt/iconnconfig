@@ -71,10 +71,10 @@ QWidget *DeviceInfoWidget::createWidget(MultiInfoListEntry *entry) {
 		QScrollArea *a = new QScrollArea();
 		GetEthernetPortInfo *getEthernetPortInfo =
 			new GetEthernetPortInfo(this->device);
-		getEthernetPortInfo->setDebug(true);
+		getEthernetPortInfo->setDebug(false);
 		RetSetEthernetPortInfo *retSetEthernetPortInfo =
 			static_cast<RetSetEthernetPortInfo *>(getEthernetPortInfo->query());
-		retSetEthernetPortInfo->setDebug(true);
+		retSetEthernetPortInfo->setDebug(false);
 		EthernetInfoWidget *w =
 			new EthernetInfoWidget(this, retSetEthernetPortInfo);
 		a->setWidget(w);

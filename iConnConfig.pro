@@ -27,9 +27,9 @@ unix:!macx: DEFINES += __LINUX_ALSA__
 macx: DEFINES += __MACOSX_CORE__
 win32: DEFINES += __WINDOWS_MM__
 
-DEFINES += __MIO_DEBUG__
+#DEFINES += __MIO_DEBUG__
 
-DEFINES += __RTMIDI_DEBUG__
+#DEFINES += __RTMIDI_DEBUG__
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
@@ -115,7 +115,10 @@ SOURCES +=\
     src/widgets/audiocontrolparmclocksourcewidget.cpp \
     src/widgets/audiocontrolparmfeatureswidget.cpp \
     src/widgets/audiocontroldetailfeaturewidget.cpp \
-    src/widgets/audiochannelfeaturewidget.cpp
+    src/widgets/audiochannelfeaturewidget.cpp \
+    src/widgets/controls/pkslider.cpp \
+    src/sysex/getaudioportmetervalue.cpp \
+    src/sysex/retaudioportmetervalue.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
@@ -130,7 +133,6 @@ HEADERS  += \
     src/deviceselectiontablemodel.h \
     src/events/events.h \
     src/device.h \
-    # src/widgets/portsettingwidget.h \
     src/widgets/deviceinfowidget.h \
     src/widgets/portswidget.h \
     src/widgets/multiinfowidget.h \
@@ -200,7 +202,10 @@ HEADERS  += \
     src/widgets/audiocontrolparmclocksourcewidget.h \
     src/widgets/audiocontrolparmfeatureswidget.h \
     src/widgets/audiocontroldetailfeaturewidget.h \
-    src/widgets/audiochannelfeaturewidget.h
+    src/widgets/audiochannelfeaturewidget.h \
+    src/widgets/controls/pkslider.h \
+    src/sysex/getaudioportmetervalue.h \
+    src/sysex/retaudioportmetervalue.h
 
 FORMS    += \
     src/devicedetection.ui \

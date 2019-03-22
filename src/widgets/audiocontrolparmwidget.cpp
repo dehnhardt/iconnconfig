@@ -28,7 +28,6 @@ void AudioControlParmWidget::createLayout() {
 
 void AudioControlParmWidget::loadAudioControlParms() {
 	this->m_pGetAudioControlParm = new GetAudioControlParm(m_pDevice);
-	m_pGetAudioControlParm->setDebug(false);
 	m_pGetAudioControlParm->setPortId(static_cast<unsigned int>(m_iPortId));
 	for (unsigned int controllerNumber = 1; controllerNumber < 128;
 		 controllerNumber++) {

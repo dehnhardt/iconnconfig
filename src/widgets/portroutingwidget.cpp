@@ -80,12 +80,12 @@ void PortRoutingWidget::setupLayout() { setLayout(layout); }
 
 void PortRoutingWidget::retrieveData() {
 	GetMidiPortRoute *getMidiPortRoute = new GetMidiPortRoute(device);
-	getMidiPortRoute->setDebug(true);
+	getMidiPortRoute->setDebug(false);
 	getMidiPortRoute->setPortNumer(portNumber);
 	midiPortRoute =
 		static_cast<RetSetMidiPortRoute *>(getMidiPortRoute->query());
 	midiPortRoute->setTotalNumberOfPorts(device->getMidiInfo()->getMidiPorts());
-	midiPortRoute->setDebug(true);
+	midiPortRoute->setDebug(false);
 	midiPortRoute->setCmdflags(0x40);
 }
 

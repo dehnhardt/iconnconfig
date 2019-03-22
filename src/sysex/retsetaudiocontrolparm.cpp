@@ -17,7 +17,7 @@ void RetSetAudioControlParm::parseAnswerData() {
 		offset = 7;
 		break;
 	case CT_FEATUERE:
-		m_iNumberOfFeatuireChannels = m_pData->at(5);
+		m_iNumberOfFeatureChannels = m_pData->at(5);
 		offset = 6;
 		break;
 	case CT_CLOCK_SOURCE:
@@ -95,12 +95,12 @@ void RetSetAudioControlParm::setNumberOfSelectorInputs(
 }
 
 unsigned int RetSetAudioControlParm::getNumberOfFeatuireChannels() const {
-	return m_iNumberOfFeatuireChannels;
+	return m_iNumberOfFeatureChannels;
 }
 
 void RetSetAudioControlParm::setNumberOfFeatuireChannels(
 	unsigned int iNumberOfFeatuireChannels) {
-	m_iNumberOfFeatuireChannels = iNumberOfFeatuireChannels;
+	m_iNumberOfFeatureChannels = iNumberOfFeatuireChannels;
 }
 
 unsigned int RetSetAudioControlParm::getCurrenClockSourceInput() const {

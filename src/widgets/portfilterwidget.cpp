@@ -91,10 +91,10 @@ void PortFilterWidget::createWidgets() {
 
 void PortFilterWidget::retrieveData() {
 	GetMidiPortFilter *getMidiPortFilter = new GetMidiPortFilter(device);
-	getMidiPortFilter->setDebug(true);
+	getMidiPortFilter->setDebug(false);
 	getMidiPortFilter->setPortNumer(static_cast<unsigned int>(portNumber));
 	getMidiPortFilter->setPortFilterDirection(PortDirection::INPUT);
-	getMidiPortFilter->setDebug(true);
+	getMidiPortFilter->setDebug(false);
 	getMidiPortFilter->setCmdflags(0x40);
 	m_pMidiPortFilterIn =
 		static_cast<RetSetMidiPortFilter *>(getMidiPortFilter->query());

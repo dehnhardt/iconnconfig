@@ -110,7 +110,9 @@ BYTE_VECTOR *SysExMessage::getMIDISysExMessage() {
 Command SysExMessage::parseAnswer(BYTE_VECTOR *answer) {
 	if (!answer || answer->size() < 20)
 		throw new ProtocolException(ProtocolException::MESSAGE_TO_SHORT);
+#ifdef __MIO_DEBUG__
 	std::cout << "Answer: " << std::dec << answer->size() << std::endl;
+#endif
 	BYTE_VECTOR *commandBytes =
 		new BYTE_VECTOR(answer->begin() + 14, answer->begin() + 16);
 	long cb = MIDI::byteJoin7bit(commandBytes);
@@ -278,4 +280,13 @@ CommandAcceptedAnswers SysExMessage::commandAcceptedAnswers = {
 	 AcceptedAnswers{RET_SET_AUDIO_CONTROL_DETAIL, ACK}},
 	{GET_AUDIO_CONTROL_DETAIL_VALUE,
 	 AcceptedAnswers{RET_SET_AUDIO_CONTROL_DETAIL_VALUE, ACK}},
-	{RET_SET_AUDIO_CONTROL_DETAIL_VALUE, AcceptedAnswers{ACK}}};
+	{RET_SET_AUDIO_CONTROL_DETAIL_VALUE, AcceptedAnswers{ACK}},
+	{GET_AUDIO_CLOCK_PARM, AcceptedAnswers{RET_SET_AUDIO_CLOCK_PARM, ACK}},
+	{RET_SET_AUDIO_CLOCK_PARM, AcceptedAnswers{ACK}},
+	{GET_AUDIO_PATCHBAY_PARM,
+	 AcceptedAnswers{RET_SET_AUDIO_PATCHBAY_PARM, ACK}},
+	{RET_SET_AUDIO_PATCHBAY_PARM, AcceptedAnswers{ACK}},
+	{GET_AUDIO_CHANNEL_NAME, AcceptedAnswers{RET_SET_AUDIO_CHANNEL_NAME, ACK}},
+	{RET_SET_AUDIO_CHANNEL_NAME, AcceptedAnswers{ACK}},
+	{GET_AUDIO_PORT_METER_VALUE,
+	 AcceptedAnswers{RET_AUDIO_PORT_METER_VALUE, ACK}}};

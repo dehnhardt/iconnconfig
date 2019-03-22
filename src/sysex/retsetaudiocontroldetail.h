@@ -38,6 +38,8 @@ class RetSetAudioControlDetail : public PortSysExMessage {
 	unsigned char getControllerNumber() const;
 	unsigned char getDetailNumber() const;
 
+	ChannelDirection getChannelDirection() const;
+
   private:
 	void parseExistFlags(unsigned char exist_flags);
 	void parseEditFlags(unsigned char edit_flags);

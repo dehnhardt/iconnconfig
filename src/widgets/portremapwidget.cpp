@@ -86,10 +86,10 @@ void PortRemapWidget::createWidgets() {
 
 void PortRemapWidget::retrieveData() {
 	GetMidiPortRemap *getMidiPortRemap = new GetMidiPortRemap(device);
-	getMidiPortRemap->setDebug(true);
+	getMidiPortRemap->setDebug(false);
 	getMidiPortRemap->setPortNumer(static_cast<unsigned int>(portNumber));
 	getMidiPortRemap->setPortRemapDirection(PortDirection::INPUT);
-	getMidiPortRemap->setDebug(true);
+	getMidiPortRemap->setDebug(false);
 	getMidiPortRemap->setCmdflags(0x40);
 	m_pMidiPortRemapIn =
 		static_cast<RetSetMidiPortRemap *>(getMidiPortRemap->query());

@@ -87,6 +87,10 @@ void RetSetAudioControlDetail::parseVolumeValues(std::vector<unsigned char> *v,
 	offset += 3;
 }
 
+ChannelDirection RetSetAudioControlDetail::getChannelDirection() const {
+	return m_channelDirection;
+}
+
 bool RetSetAudioControlDetail::hasFeatures() const { return m_bHasFeatures; }
 
 unsigned char RetSetAudioControlDetail::getDetailNumber() const {

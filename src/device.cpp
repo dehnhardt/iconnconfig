@@ -170,7 +170,9 @@ BYTE_VECTOR *Device::retrieveSysex() {
 			y++;
 		}
 	}
+#ifdef __RTMIDI_DEBUG__
 	std::cout << "delay: " << i << std::endl;
+#endif
 	try {
 		checkSysex(data);
 	} catch (...) {

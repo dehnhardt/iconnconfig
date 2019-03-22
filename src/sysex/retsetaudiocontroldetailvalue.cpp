@@ -75,13 +75,12 @@ std::vector<unsigned char> *RetSetAudioControlDetailValue::m_pGetMessageData() {
 	if (m_bHasVolumeControl) {
 		existFlag += 1;
 		BYTE_VECTOR *volume = MIDI::byteSplit7bit(
-			MIDI::inv2sComplement(static_cast<short>(m_iVolume)));
+			MIDI::inv2sComplement(static_cast<short>(m_iVolume)), 3);
 		variableData->insert(variableData->end(), volume->begin(),
 							 volume->end());
-		volume = MIDI::byteSplit7bit(
-			MIDI::inv2sComplement(static_cast<short>(m_iTrim)));
-		variableData->insert(variableData->end(), volume->begin(),
-							 volume->end());
+		BYTE_VECTOR *trim = MIDI::byteSplit7bit(
+			MIDI::inv2sComplement(static_cast<short>(m_iTrim)), 3);
+		variableData->insert(variableData->end(), trim->begin(), trim->end());
 	}
 	if (m_bHasMuteControl) {
 		existFlag += 2;
@@ -102,6 +101,7 @@ std::vector<unsigned char> *RetSetAudioControlDetailValue::m_pGetMessageData() {
 	messageData->push_back(existFlag);
 	messageData->insert(messageData->end(), variableData->begin(),
 						variableData->end());
+	MIDI::printMessage(messageData);
 	return messageData;
 }
 

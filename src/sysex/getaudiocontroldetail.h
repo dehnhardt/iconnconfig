@@ -9,7 +9,7 @@ class GetAudioControlDetail : public PortSysExMessage {
 	virtual ~GetAudioControlDetail();
 
 	void createAnswer(Command m_Command, std::vector<unsigned char> *message,
-	                  Device *m_pDevice);
+					  Device *m_pDevice);
 
 	void setControllerNumber(unsigned int iControllerNumber);
 	void setDetailNumber(unsigned int iDetailNumber);

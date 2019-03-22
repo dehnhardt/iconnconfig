@@ -145,7 +145,7 @@ void AudioPortParmWidget::createConnections() {
 	});
 
 	connect(m_pUpdateTimer, &QTimer::timeout, [=] {
-		m_pRetSetAudioPortParm->setDebug(true);
+		m_pRetSetAudioPortParm->setDebug(false);
 		m_pRetSetAudioPortParm->execute();
 	});
 }

@@ -60,7 +60,7 @@ void AudioPortsWidget::retrieveAudioPorts() {
 	for (unsigned int i = 1; i <= numberOfAudioPorts; i++) {
 		std::vector<RetSetAudioPortParm *> *audioPorts = nullptr;
 		GetAudioPortParm *getAudioPortParm = new GetAudioPortParm(device);
-		getAudioPortParm->setDebug(true);
+		getAudioPortParm->setDebug(false);
 		getAudioPortParm->setPortId(i);
 		RetSetAudioPortParm *retSetAudioPortParm =
 			dynamic_cast<RetSetAudioPortParm *>(getAudioPortParm->query());
@@ -95,7 +95,7 @@ QWidget *AudioPortsWidget::createWidget(MultiInfoListEntry *entry) {
 		// check if there is at least one parameter
 		GetAudioControlParm *m_pGetAudioControlParm =
 			new GetAudioControlParm(device);
-		m_pGetAudioControlParm->setDebug(true);
+		m_pGetAudioControlParm->setDebug(false);
 		m_pGetAudioControlParm->setPortId(portId);
 		m_pGetAudioControlParm->setControllerNumber(1);
 		SysExMessage *m = m_pGetAudioControlParm->query();

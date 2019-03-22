@@ -7,6 +7,10 @@ AudioChannelFeatureWidget::AudioChannelFeatureWidget(
 	RetSetAudioControlDetail *retSetAudioControlDetail, QWidget *parent)
 	: QFrame(parent), ui(new Ui::AudioChannelFeatureWidget) {
 	ui->setupUi(this);
+	this->ui->m_pPBRight->setVisible(false);
+	this->ui->m_pPBLeft->setRange(-79, 0);
+	this->ui->m_pPBRight->setRange(-79, 0);
+
 	setRetSetAudioControlDetail(retSetAudioControlDetail);
 	if (m_pAudioControlDetail->hasFeatures()) {
 		queryValues();
@@ -22,15 +26,26 @@ AudioChannelFeatureWidget::~AudioChannelFeatureWidget() {
 	delete ui;
 	if (m_pUpdateTimer)
 		delete m_pUpdateTimer;
-	/*if (m_pAudioControlDetail)
-		delete m_pAudioControlDetail;
-	if (m_pRetSetAudioControlDetailValue)
-		delete m_pRetSetAudioControlDetailValue;*/
+}
+
+void AudioChannelFeatureWidget::setMaster(bool isMaster, QString channel2Name) {
+	this->ui->m_pPBRight->setVisible(isMaster);
+	m_bIsMaster = isMaster;
+	if (isMaster) {
+		QString name = this->m_pAudioControlDetail->getChannelName().c_str();
+		name.append(" / ");
+		name.append(channel2Name);
+		ui->m_pLblChannelName->setText(name);
+	} else {
+		ui->m_pLblChannelName->setText(
+			this->m_pAudioControlDetail->getChannelName().c_str());
+	}
 }
 
 void AudioChannelFeatureWidget::setRetSetAudioControlDetail(
 	RetSetAudioControlDetail *retSetAudioControlDetail) {
 	this->m_pAudioControlDetail = retSetAudioControlDetail;
+	this->m_iDetailId = retSetAudioControlDetail->getDetailNumber();
 	this->ui->m_pLblChannelName->setText(
 		retSetAudioControlDetail->getChannelName().c_str());
 	if (retSetAudioControlDetail->hasMuteControl()) {
@@ -65,16 +80,23 @@ void AudioChannelFeatureWidget::setRetSetAudioControlDetail(
 		this->ui->m_pFrmVolume->setVisible(true);
 		this->ui->m_pFrmVolume->setEnabled(
 			retSetAudioControlDetail->getVolumeControlEditable());
+		this->ui->m_pSlideVolume->setDebug(false);
+		this->ui->m_pSlideVolume->setScaleType(PKSlider::ScaleType::LOGARITHM);
+		this->ui->m_pSlideVolume->setResulution(
+			retSetAudioControlDetail->getVolumeResolution());
 		this->ui->m_pSlideVolume->setMinimum(
 			retSetAudioControlDetail->getMinVolumeValue());
 		this->ui->m_pSlideVolume->setMaximum(
 			retSetAudioControlDetail->getMaxVolumeValue());
-		this->ui->m_pSlideVolume->setTickInterval(
-			retSetAudioControlDetail->getVolumeResolution() * 10);
+		this->ui->m_pSlideVolume->setTickInterval(1.0f / 256.0f);
 
-		connect(this->ui->m_pSlideVolume, &QSlider::valueChanged,
-				[](int val) { std::cout << std::dec << val << std::endl; });
-
+		std::cout << "Setting up Slider ("
+				  << retSetAudioControlDetail->getDetailNumber() << ", "
+				  << retSetAudioControlDetail->getChannelName()
+				  << "): minValue "
+				  << retSetAudioControlDetail->getMinVolumeValue()
+				  << " maxValue "
+				  << retSetAudioControlDetail->getMaxVolumeValue() << std::endl;
 		/*int range = retSetAudioControlDetail->getMaxTrimValue() -
 					retSetAudioControlDetail->getMinTrimValue();*/
 
@@ -117,45 +139,76 @@ void AudioChannelFeatureWidget::setValues(
 			retSetAudioControlDetailValue->getVolume());
 		ui->m_pDialTrim->setValue(retSetAudioControlDetailValue->getTrim());
 		retSetAudioControlDetailValue->setHasVolumeControl(false);
-		connect(this->ui->m_pSlideVolume, &QSlider::valueChanged,
-				[=](int value) {
-					this->m_pRetSetAudioControlDetailValue->setVolume(value);
-					this->m_pUpdateTimer->start(10);
-				});
-		connect(this->ui->m_pDialTrim, &QDial::valueChanged, [=](int value) {
-			this->m_pRetSetAudioControlDetailValue->setTrim(value);
-			this->m_pUpdateTimer->start(10);
-		});
+		if (m_pAudioControlDetail->getVolumeControlEditable()) {
+			connect(this->ui->m_pSlideVolume, &PKSlider::valueChanged,
+					[=](int value) {
+						this->m_pRetSetAudioControlDetailValue->setVolume(
+							value);
+						this->m_pUpdateTimer->start(10);
+						emit this->volumeChanged(value);
+					});
+			connect(this->ui->m_pDialTrim, &QDial::valueChanged,
+					[=](int value) {
+						this->m_pRetSetAudioControlDetailValue->setTrim(value);
+						this->m_pUpdateTimer->start(10);
+						emit this->trimChanged(value);
+					});
+		}
 	}
 	if (m_pAudioControlDetail->hasMuteControl() &&
 		retSetAudioControlDetailValue->hasMuteControl()) {
 		ui->m_pChbMute->setChecked(retSetAudioControlDetailValue->getMute());
 		retSetAudioControlDetailValue->setHasMuteControl(false);
-		connect(this->ui->m_pChbMute, &QCheckBox::stateChanged, [=](int state) {
-			this->m_pRetSetAudioControlDetailValue->setMute(state == 2);
-			this->m_pUpdateTimer->start(10);
-		});
+		if (m_pAudioControlDetail->getMuteControlEditable()) {
+			connect(
+				this->ui->m_pChbMute, &QCheckBox::stateChanged, [=](int state) {
+					this->m_pRetSetAudioControlDetailValue->setMute(state == 2);
+					this->m_pUpdateTimer->start(10);
+					emit this->muteStatusChanged(state == 2);
+				});
+		}
 	}
 	if (retSetAudioControlDetailValue->hasPhantomPowerControl()) {
 		ui->m_pChbPhantomPower->setChecked(
 			retSetAudioControlDetailValue->getPhantomPower());
 		retSetAudioControlDetailValue->setHasPhantomPowerControl(false);
-		connect(ui->m_pChbPhantomPower, &QCheckBox::stateChanged,
-				[=](int state) {
-					this->m_pRetSetAudioControlDetailValue->setPhantomPower(
-						state == 2);
-					this->m_pUpdateTimer->start(10);
-				});
+		if (m_pAudioControlDetail->getPhantomPowerControlEditable()) {
+			connect(ui->m_pChbPhantomPower, &QCheckBox::stateChanged,
+					[=](int state) {
+						this->m_pRetSetAudioControlDetailValue->setPhantomPower(
+							state == 2);
+						this->m_pUpdateTimer->start(10);
+						emit this->phantomPowerStatusChanged(state == 2);
+					});
+		}
 	}
 	if (retSetAudioControlDetailValue->hasHighImpendanceControl()) {
 		ui->m_pChbHighImpedance->setChecked(
 			retSetAudioControlDetailValue->getHigImpedance());
 		retSetAudioControlDetailValue->setHasHighImpendanceControl(false);
+		if (m_pAudioControlDetail->getHighImpendanceControlEditable()) {
+			connect(ui->m_pChbHighImpedance, &QCheckBox::stateChanged,
+					[=](int state) {
+						this->m_pRetSetAudioControlDetailValue->setHigImpedance(
+							state == 2);
+						this->m_pUpdateTimer->start(10);
+						emit this->highImpedanceStatusChanged(state == 2);
+					});
+		}
 	}
 	if (retSetAudioControlDetailValue->hasStereoLinkControl()) {
 		ui->m_pChbStereoLink->setChecked(
 			retSetAudioControlDetailValue->getSteroLink());
 		retSetAudioControlDetailValue->setHasStereoLinkControl(false);
+		if (m_pAudioControlDetail->getStereoLinkControlEditable()) {
+			connect(ui->m_pChbStereoLink, &QToolButton::clicked,
+					[=](bool clicked) {
+						this->m_pRetSetAudioControlDetailValue->setSteroLink(
+							clicked);
+						this->m_pUpdateTimer->start(10);
+						emit this->linkStatusChanged(m_iDetailId, clicked);
+					});
+		}
 	}
 }
 
@@ -164,13 +217,66 @@ void AudioChannelFeatureWidget::createConnections() {
 			&AudioChannelFeatureWidget::audioChannelValueChanged);
 }
 
+bool AudioChannelFeatureWidget::getLinkStatus() {
+	if (this->m_pRetSetAudioControlDetailValue)
+		return this->m_pRetSetAudioControlDetailValue->getSteroLink();
+	return false;
+}
+
+QString AudioChannelFeatureWidget::getChannelName() {
+	return this->m_pAudioControlDetail->getChannelName().c_str();
+}
+
+int AudioChannelFeatureWidget::getChannelId() const { return m_iChannelId; }
+
+void AudioChannelFeatureWidget::setChannelId(int value) {
+	m_iChannelId = value;
+}
+
 void AudioChannelFeatureWidget::audioChannelValueChanged() {
 	try {
-		m_pRetSetAudioControlDetailValue->setDebug(true);
 		m_pRetSetAudioControlDetailValue->execute();
-		m_pRetSetAudioControlDetailValue->setDebug(false);
 	} catch (CommunicationException e) {
 		std::cerr << e.getErrorMessage() << std::endl;
 	}
 	m_pRetSetAudioControlDetailValue->reset();
+}
+
+void AudioChannelFeatureWidget::changeLinkStatus(
+	__attribute__((unused)) unsigned int detailId, bool enabled) {
+	this->ui->m_pChbStereoLink->setChecked(enabled);
+	this->m_pRetSetAudioControlDetailValue->setSteroLink(enabled);
+	this->m_pUpdateTimer->start(10);
+}
+
+void AudioChannelFeatureWidget::changePhantomPowerStatus(bool enabled) {
+	this->ui->m_pChbPhantomPower->setChecked(enabled);
+}
+
+void AudioChannelFeatureWidget::changeHighImpedanceStatus(bool enabled) {
+	this->ui->m_pChbHighImpedance->setChecked(enabled);
+}
+
+void AudioChannelFeatureWidget::changeMuteStatus(bool enabled) {
+	this->ui->m_pChbMute->setChecked(enabled);
+}
+
+void AudioChannelFeatureWidget::changeVolume(int volume) {
+	this->ui->m_pSlideVolume->setValue(volume);
+}
+
+void AudioChannelFeatureWidget::changeTrim(int trim) {
+	this->ui->m_pDialTrim->setValue(trim);
+}
+
+void AudioChannelFeatureWidget::setVolume(int volume) {
+	this->ui->m_pPBLeft->setValue(volume);
+}
+
+void AudioChannelFeatureWidget::changeMeterVolume(int channel, int value) {
+	if (channel == m_iChannelId) {
+		ui->m_pPBLeft->setValue(value);
+	}
+	if (m_bIsMaster && channel == m_iChannelId + 1)
+		ui->m_pPBRight->setValue(value);
 }

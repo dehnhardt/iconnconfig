@@ -1,6 +1,8 @@
 #ifndef DEFINITIONS_H
 #define DEFINITIONS_H
 
+#include <vector>
+
 /**
  * @brief The Command enum
  */
@@ -62,6 +64,15 @@ enum Command {
 									port */
 	GET_USB_HOST_MIDI_DETAIL,       /*!< query details of an USB host */
 	RET_USB_HOST_MIDI_DETAIL,       /*!< retrieve the details of an USB host */
+
+	GET_AUDIO_CHANNEL_NAME = 0x3c, /*!< query the audio channel name */
+	RET_SET_AUDIO_CHANNEL_NAME, /*!< retrieve or set the pthe audio channel name
+								 */
+	GET_AUDIO_PORT_METER_VALUE, /*!< query the meter value of an audio channel
+								 */
+	RET_AUDIO_PORT_METER_VALUE, /*!< retrieve or set the meter value of an audio
+								  channel */
+
 	GET_AUDIO_GLOBAL_PARM =
 		0x40, /*!< query global params for the audio section of an device */
 	RET_SET_AUDIO_GLOBAL_PARM, /*!< retieve or set global params for the audio
@@ -81,8 +92,16 @@ enum Command {
 									 control detail */
 	GET_AUDIO_CONTROL_DETAIL_VALUE, /*!< query the values for an control detail
 									 */
-	RET_SET_AUDIO_CONTROL_DETAIL_VALUE /*!< retrieve or set values for an
+	RET_SET_AUDIO_CONTROL_DETAIL_VALUE, /*!< retrieve or set values for an
 										  control detail */
+	GET_AUDIO_CLOCK_PARM,     /*!< query the parameters for an audio clock
+							   */
+	RET_SET_AUDIO_CLOCK_PARM, /*!< retrieve or set values for an
+										  control detail */
+	GET_AUDIO_PATCHBAY_PARM, /*!< query the parameters for the audio patchbay */
+	RET_SET_AUDIO_PATCHBAY_PARM /*!< retrieve or set the parameters for the
+									audio patchbay */
+
 };
 
 enum AudioPortType {
@@ -99,6 +118,16 @@ enum AudioControllerType {
 	CT_FEATUERE = 6,
 	CT_CLOCK_SOURCE = 10
 };
+
+typedef struct {
+	int channel;
+	int volume;
+} ChannelVolume;
+
+typedef struct {
+	std::vector<ChannelVolume> in;
+	std::vector<ChannelVolume> out;
+} ChannelVolumes;
 
 enum ChannelDirection { CD_NONE = 0, CD_INPUT, CD_OUTPUT };
 

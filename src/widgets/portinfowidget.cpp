@@ -86,7 +86,7 @@ void PortInfoWidget::outputStateChanged(int state) {
 }
 
 void PortInfoWidget::timerElapsed() {
-	this->m_pMidiPortInfo->setDebug(true);
+	this->m_pMidiPortInfo->setDebug(false);
 	if (this->m_pMidiPortInfo->execute() == 0) {
 		emit changePortName(m_pMidiPortInfo->getPortName());
 	}

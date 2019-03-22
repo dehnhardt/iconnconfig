@@ -55,7 +55,7 @@ class RetSetAudioControlParm : public PortSysExMessage {
 	unsigned int m_iNumberOfSelectorInputs = 0;
 
 	// Feature
-	unsigned int m_iNumberOfFeatuireChannels = 0;
+	unsigned int m_iNumberOfFeatureChannels = 0;
 
 	// Clock Source
 	unsigned int m_iCurrenClockSourceInput = 0;
