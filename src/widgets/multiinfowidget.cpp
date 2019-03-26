@@ -3,10 +3,12 @@
 #include "ui_multiinfowidget.h"
 
 MultiInfoWidget::MultiInfoWidget(MioMain *parent, Device *device,
-								 QString windowTitle)
-	: QDockWidget(parent), ui(new Ui::MultiInfoWidget), device(device) {
+                                 QString windowTitle)
+    : QDockWidget(parent), ui(new Ui::MultiInfoWidget), device(device) {
 	ui->setupUi(this);
 	setWindowTitle(windowTitle);
+	connect(this->ui->infoList, &QListWidget::currentRowChanged, this,
+	        &MultiInfoWidget::currentRowChanged);
 	connect(this, SIGNAL(visibilityChanged(bool)), this, SLOT(visible(bool)));
 
 	// hack to delete the titlebar
@@ -15,11 +17,26 @@ MultiInfoWidget::MultiInfoWidget(MioMain *parent, Device *device,
 	delete lTitleBar;
 }
 
-MultiInfoWidget::~MultiInfoWidget() { delete ui; }
+MultiInfoWidget::~MultiInfoWidget() {
+	disconnect(this->ui->infoList, &QListWidget::currentRowChanged, this,
+	           &MultiInfoWidget::currentRowChanged);
+	if (infoSections != nullptr) {
+		std::vector<MultiInfoListEntry *>::iterator it;
+		for (it = infoSections->begin(); it < infoSections->end(); ++it) {
+			if (*it) {
+				MultiInfoListEntry *e = (*it);
+				delete e;
+			}
+		}
+		infoSections->clear();
+		delete infoSections;
+	}
+	delete ui;
+}
 
-void MultiInfoWidget::on_infoList_currentRowChanged(int currentRow) {
+void MultiInfoWidget::currentRowChanged(int currentRow) {
 	MultiInfoListEntry *selectedInfo =
-		infoSections->at(static_cast<unsigned long>(currentRow));
+	    infoSections->at(static_cast<unsigned long>(currentRow));
 	if (!selectedInfo->enabled)
 		return;
 	if (selectedInfo->widget == nullptr) {
@@ -67,7 +84,7 @@ void MultiInfoWidget::createInfoSections() {
 int MultiInfoWidget::getFirstSelectableRow() {
 	for (int i = 0; i < this->ui->infoList->count(); ++i) {
 		MultiInfoListEntry *selectedInfo =
-			infoSections->at(static_cast<unsigned long>(i));
+		    infoSections->at(static_cast<unsigned long>(i));
 		if (selectedInfo->enabled)
 			return i;
 	}
@@ -78,6 +95,7 @@ void MultiInfoWidget::openLastSelectedSection() {
 	if (this->ui->infoList->currentRow() == -1) {
 		this->ui->infoList->setCurrentRow(getFirstSelectableRow());
 	} else {
-		on_infoList_currentRowChanged(this->ui->infoList->currentRow());
+		// on_infoList_currentRowChanged(this->ui->infoList->currentRow());
+		currentRowChanged(this->ui->infoList->currentRow());
 	}
 }

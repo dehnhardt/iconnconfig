@@ -6,6 +6,7 @@
 #include "midi.h"
 
 #include <map>
+#include <memory>
 #include <vector>
 
 typedef std::vector<int> AcceptedAnswers;
@@ -112,7 +113,7 @@ class SysExMessage {
 	unsigned char m_iCmdflags;
 	AcceptedAnswers m_AcceptedAnswers;
 	Device *m_pDevice = nullptr;
-	SysExMessage *m_pAnswer;
+	SysExMessage *m_pAnswer = nullptr;
 	BYTE_VECTOR *m_pCommandData = nullptr;
 	BYTE_VECTOR *m_pTransactionId = nullptr;
 	BYTE_VECTOR *m_pDeviceHeader = nullptr;

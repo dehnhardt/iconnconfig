@@ -5,7 +5,7 @@
 #include "sysexmessage.h"
 
 class GetInfoList : public SysExMessage {
-public:
+  public:
 	GetInfoList(Device *m_pDevice);
 	GetInfoList(Command cmd, BYTE_VECTOR *message, Device *device)
 		: SysExMessage(cmd, message, device) {}
@@ -14,11 +14,11 @@ public:
 	int getSettingsIndex() { return 0; }
 	std::string getStorableValue() { return ""; }
 
-private:
+  private:
 	void createAnswer(Command cmd, BYTE_VECTOR *message, Device *device) {
 		m_pAnswer = new RetInfoList(cmd, message, device);
 		m_pAnswer->parseAnswerData();
 	}
 };
 
-#endif// GETINFOLIST_H
+#endif // GETINFOLIST_H

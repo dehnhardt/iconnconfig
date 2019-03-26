@@ -46,7 +46,45 @@ Device::Device(Device *device)
 		  static_cast<unsigned long>(device->getSerialNumber()->getLongValue()),
 		  static_cast<unsigned int>(device->getProductId()->getLongValue())) {}
 
-Device::~Device() { disconnect(); }
+Device::~Device() {
+	disconnect();
+	delete m_pLastSendMessage;
+	delete m_pLastRetrieveMessage;
+	delete m_pSerialNumber;
+	delete m_pProductId;
+	delete m_pMidiInfo;
+	delete m_pGlobalAudioParam;
+
+	delete m_pCommands;
+	delete m_pRetInfoList;
+	delete m_pDeviceInfo;
+
+	MIDI_PORT_INFOS::iterator it, it2;
+	for (it = m_pMidiPortInfos->begin(); it != m_pMidiPortInfos->end(); it++) {
+		std::vector<RetSetMidiPortInfo *> *v = it->second;
+		std::vector<RetSetMidiPortInfo *>::iterator it2;
+		for (it2 = v->begin(); it2 < v->end(); it2++) {
+			delete *it2;
+		}
+		v->clear();
+		delete v;
+	}
+	m_pMidiPortInfos->clear();
+	delete m_pMidiPortInfos;
+	m_pMidiPortInfos = nullptr;
+
+	/*DeviceStructure::iterator it;
+	for( it = m_pInformationTree->begin(); it < m_pInformationTree->end();
+	++it){
+
+	}*/
+	m_pInformationTree->clear();
+	delete m_pInformationTree;
+
+	delete m_pDeviceHeader;
+	delete m_pFullHeader;
+	delete saveRestoreList;
+}
 
 BYTE_VECTOR *Device::getManufacturerHeader() {
 	if (Device::manufacturerHeader == nullptr) {
@@ -193,6 +231,7 @@ bool Device::checkSysex(BYTE_VECTOR *data) {
 	BYTE_VECTOR *localHeader = getFullHeader();
 	if (!MIDI::compareByteVector(dataHeader, localHeader))
 		throw new ProtocolException(ProtocolException::WRONG_HEADER, this);
+	delete dataHeader;
 	return true;
 }
 
@@ -220,7 +259,7 @@ void Device::requestMidiPortInfos() {
 		try {
 			v = m_pMidiPortInfos->at(portType);
 		} catch (const std::out_of_range __attribute__((unused)) & oor) {
-			v = new std::vector<RetSetMidiPortInfo *>();
+			v = new std::vector<RetSetMidiPortInfo *>;
 			m_pMidiPortInfos->insert(
 				std::pair<int, std::vector<RetSetMidiPortInfo *> *>(portType,
 																	v));
@@ -234,6 +273,7 @@ void Device::requestMidiPortInfos() {
 		}
 		v->push_back(midiPortInfo);
 	}
+	delete info;
 }
 
 void Device::addCommandToStructure(
@@ -248,10 +288,10 @@ RetSetAudioGlobalParm *Device::getGlobalAudioParam() const {
 
 bool Device::queryDeviceInfo() {
 
-	GetCommandList *c = new GetCommandList(this);
-	c->setDebug(true);
+	GetCommandList *getCommandList = new GetCommandList(this);
+	getCommandList->setDebug(true);
 	try {
-		SysExMessage *m = c->query();
+		SysExMessage *m = getCommandList->query();
 		m_pCommands = dynamic_cast<RetCommandList *>(m);
 		if (m_pCommands)
 			addCommandToStructure(m_pCommands->getCommand(),
@@ -259,18 +299,20 @@ bool Device::queryDeviceInfo() {
 	} catch (...) {
 		throw;
 	}
+	delete getCommandList;
 
 	if (m_pCommands->isCommandSupported(Command::GET_INFO_LIST)) {
-		GetInfoList *i = new GetInfoList(this);
-		i->setDebug(true);
+		GetInfoList *getInfoList = new GetInfoList(this);
+		getInfoList->setDebug(true);
 		try {
-			m_pRetInfoList = dynamic_cast<RetInfoList *>(i->query());
+			m_pRetInfoList = dynamic_cast<RetInfoList *>(getInfoList->query());
 			DeviceStructureContainer *c =
 				new DeviceStructureContainer(m_pRetInfoList);
 			addCommandToStructure(m_pRetInfoList->getCommand(), c);
 		} catch (...) {
 			throw;
 		}
+		delete getInfoList;
 	}
 
 	m_pDeviceInfo = new GetInfo(this, m_pRetInfoList);
@@ -303,6 +345,7 @@ bool Device::queryDeviceInfo() {
 		GetMidiInfo *getMidiInfo = new GetMidiInfo(this);
 		this->m_pMidiInfo =
 			dynamic_cast<RetSetMidiInfo *>(getMidiInfo->query());
+		delete getMidiInfo;
 	}
 	if (m_pCommands->isCommandSupported(Command::GET_MIDI_PORT_INFO) &&
 		this->m_pMidiInfo != nullptr)
@@ -312,12 +355,15 @@ bool Device::queryDeviceInfo() {
 		RetSaveRestoreList *l =
 			dynamic_cast<RetSaveRestoreList *>(getSaveRestoreList->query());
 		saveRestoreList = l->getSaveRestoreList();
+		delete getSaveRestoreList;
+		// delete l;
 	}
 	if (m_pCommands->isCommandSupported(Command::GET_AUDIO_GLOBAL_PARM)) {
 		GetAudioGlobalParm *getAudioGlobalParam = new GetAudioGlobalParm(this);
 		getAudioGlobalParam->setDebug(true);
 		m_pGlobalAudioParam =
 			dynamic_cast<RetSetAudioGlobalParm *>(getAudioGlobalParam->query());
+		delete getAudioGlobalParam;
 	}
 	return true;
 }

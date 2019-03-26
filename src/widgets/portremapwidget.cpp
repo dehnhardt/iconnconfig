@@ -31,6 +31,8 @@ void PortRemapWidget::midiPortRemapUpdated(PortDirection direction) {
 	case PortDirection::OUTPUT:
 		m_pUpdateTimerOutRemap->start(1000);
 		break;
+	default:
+		break;
 	}
 }
 

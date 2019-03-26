@@ -44,7 +44,7 @@ class MultiInfoWidget : public QDockWidget {
 	virtual QWidget *createWidget(MultiInfoListEntry *entry) = 0;
 
   protected slots:
-	void on_infoList_currentRowChanged(int currentRow);
+	void currentRowChanged(int currentRow);
 	void visible(bool visible);
 
   signals:

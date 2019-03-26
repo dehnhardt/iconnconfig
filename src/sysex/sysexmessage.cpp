@@ -60,14 +60,14 @@ SysExMessage::SysExMessage(Command cmd, std::vector<unsigned char> *message,
 
 SysExMessage::~SysExMessage() {
 	delete m_pCommandData;
-	delete m_pDeviceHeader;
+	delete m_pTransactionId;
+	delete m_pResultData;
+	delete m_pData;
 }
 
 void SysExMessage::extractData(std::vector<unsigned char> *message) {
 	m_iDataLength = static_cast<unsigned int>(MIDI::byteJoin7bit(
-		new BYTE_VECTOR(message->begin() + Device::DATA_LENGTH_OFFSET,
-						message->begin() + Device::DATA_LENGTH_OFFSET +
-							Device::DATA_LENGTH_LENGTH)));
+		message, Device::DATA_LENGTH_OFFSET, Device::DATA_LENGTH_LENGTH));
 	m_pData =
 		new BYTE_VECTOR(message->begin() + Device::DATA_OFFSET,
 						message->begin() + Device::DATA_OFFSET + m_iDataLength);
@@ -104,6 +104,10 @@ BYTE_VECTOR *SysExMessage::getMIDISysExMessage() {
 	message->insert(message->end(), body->begin(), body->end());
 	message->push_back(cs);
 	message->push_back(SYSEX_END);
+	delete md;
+	delete body;
+	delete bodyLength;
+	delete transactionId;
 	return message;
 }
 
@@ -113,9 +117,8 @@ Command SysExMessage::parseAnswer(BYTE_VECTOR *answer) {
 #ifdef __MIO_DEBUG__
 	std::cout << "Answer: " << std::dec << answer->size() << std::endl;
 #endif
-	BYTE_VECTOR *commandBytes =
-		new BYTE_VECTOR(answer->begin() + 14, answer->begin() + 16);
-	long cb = MIDI::byteJoin7bit(commandBytes);
+	// BYTE_VECTOR *commandBytes = new BYTE_VECTOR();
+	long cb = MIDI::byteJoin7bit(answer, 14, 2);
 	int command = cb & 1023;
 	try {
 		checkAnswerValid(command);
@@ -198,6 +201,8 @@ int SysExMessage::execute() {
 				else
 					createAnswer(cmd, answerMessage, m_pDevice);
 			}
+			delete message;
+			delete answerMessage;
 			return 0;
 		}
 	} catch (...) {

@@ -4,10 +4,11 @@
 #include "sysexmessage.h"
 
 class GetSaveRestoreList : public SysExMessage {
-public:
+  public:
 	GetSaveRestoreList(Device *m_pDevice);
 	GetSaveRestoreList(Command cmd, BYTE_VECTOR *message, Device *device)
 		: SysExMessage(cmd, message, device) {}
+	~GetSaveRestoreList();
 
 	void createAnswer(Command m_Command, std::vector<unsigned char> *message,
 					  Device *m_pDevice);
@@ -16,4 +17,4 @@ public:
 	std::string getStorableValue() { return ""; }
 };
 
-#endif// GETSAVERESTORELIST_H
+#endif // GETSAVERESTORELIST_H

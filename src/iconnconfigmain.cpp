@@ -66,6 +66,7 @@ MioMain::~MioMain() {
 		delete m_pDeviceDetectionWindow;
 	if (m_pCentralDeviceWidget)
 		delete m_pCentralDeviceWidget;
+	m_DockWidgetAreasMap.clear();
 	delete m_pUi;
 }
 

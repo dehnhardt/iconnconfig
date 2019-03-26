@@ -40,7 +40,12 @@ DeviceInfoWidget::DeviceInfoWidget(MioMain *parent, Device *device,
 	}
 }
 
-DeviceInfoWidget::~DeviceInfoWidget() {}
+DeviceInfoWidget::~DeviceInfoWidget() {
+	/*if (infoSections != nullptr) {
+		infoSections->clear();
+		delete infoSections;
+	}*/
+}
 
 void DeviceInfoWidget::deviceInfoChanged(SysExMessage::DeviceInfoItem item,
 										 std::string value) {

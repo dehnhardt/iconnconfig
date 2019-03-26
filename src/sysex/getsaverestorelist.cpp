@@ -2,11 +2,13 @@
 #include "retsaverestorelist.h"
 
 GetSaveRestoreList::GetSaveRestoreList(Device *device)
-	: SysExMessage(Command::GET_SAVE_RESTORE_LIST, SysExMessage::QUERY,
-				   device) {}
+    : SysExMessage(Command::GET_SAVE_RESTORE_LIST, SysExMessage::QUERY,
+                   device) {}
+
+GetSaveRestoreList::~GetSaveRestoreList() {}
 
 void GetSaveRestoreList::createAnswer(Command cmd, BYTE_VECTOR *message,
-									  Device *device) {
+                                      Device *device) {
 	m_pAnswer = new RetSaveRestoreList(cmd, message, device);
 	if (debug)
 		m_pAnswer->setDebug(true);

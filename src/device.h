@@ -55,7 +55,7 @@ class DeviceStructureContainer {
 class Device {
   public:
 	Device(unsigned int m_iInPortNumber, unsigned int m_iOutPortNumber,
-		   unsigned long m_pSerialNumber, unsigned int m_pProductId);
+	       unsigned long m_pSerialNumber, unsigned int m_pProductId);
 	Device(Device *device);
 
 	~Device();
@@ -123,7 +123,7 @@ class Device {
 	// setter
 	void setDebug(bool value);
 	void setDeviceInformation(std::string m_sModelName,
-							  std::string m_sDeviceName);
+	                          std::string m_sDeviceName);
 	void setDefault(bool isDefault) { this->m_bIsDefault = isDefault; }
 
 	void setLastSendMessage(BYTE_VECTOR *value);
@@ -136,7 +136,7 @@ class Device {
 	bool checkSysex(BYTE_VECTOR *data);
 	void requestMidiPortInfos();
 	void addCommandToStructure(Command cmd,
-							   DeviceStructureContainer *structureContainer);
+	                           DeviceStructureContainer *structureContainer);
 
 	bool debug = false;
 
@@ -179,8 +179,8 @@ class Device {
 };
 
 void midiOutErrorCallback(RtMidiError::Type type, const std::string &errorText,
-						  void *userData);
+                          void *userData);
 void midiinErrorCallback(RtMidiError::Type type, const std::string &errorText,
-						 void *userData);
+                         void *userData);
 
 #endif // DEVICE_H

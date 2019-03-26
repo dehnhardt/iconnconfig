@@ -22,7 +22,22 @@ AudioPortsWidget::AudioPortsWidget(MioMain *parent, Device *device,
 	}
 }
 
-AudioPortsWidget::~AudioPortsWidget() {}
+AudioPortsWidget::~AudioPortsWidget() {
+
+	AudioPortStructure::iterator it;
+	for (it = m_pAudioPortParms->begin(); it != m_pAudioPortParms->end();
+		 ++it) {
+		std::vector<RetSetAudioPortParm *> *audioPortParms = it->second;
+		std::vector<RetSetAudioPortParm *>::iterator it2;
+		for (it2 = audioPortParms->begin(); it2 < audioPortParms->end();
+			 ++it2) {
+			delete (*it2);
+		}
+		audioPortParms->clear();
+	}
+	m_pAudioPortParms->clear();
+	delete m_pAudioPortParms;
+}
 
 void AudioPortsWidget::getAudioPorts(
 	std::vector<RetSetAudioPortParm *> *audioPortParms) {

@@ -31,6 +31,8 @@ void PortFilterWidget::midiPortFilterUpdated(PortDirection direction) {
 	case PortDirection::OUTPUT:
 		m_pUpdateTimerOutFilter->start(1000);
 		break;
+	default:
+		break;
 	}
 }
 
