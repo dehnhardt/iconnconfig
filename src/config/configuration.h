@@ -59,7 +59,7 @@ class Configuration {
 
 	// setter
 	void setDevices(Devices *devices) { this->m_pDevices = devices; }
-	void setDefaultDevice(long serialNumber) {
+	void setDefaultDevice(unsigned long serialNumber) {
 		QSettings *settings = new QSettings();
 		settings->beginGroup("Default Device");
 		settings->setValue("serialNumber",

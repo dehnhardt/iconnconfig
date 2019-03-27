@@ -89,11 +89,12 @@ unsigned long DeviceDetectionProcessor::detectDevices() {
 	// for each output signal
 	for (unsigned int i = 0; i < nOutPortCount; i++) {
 		m_pMidiout->openPort(i);
-		std::string curentOutPortName = m_pMidiout->getPortName(i);
+		std::string currentOutPortName = m_pMidiout->getPortName(i);
 		std::regex re("(.+) [0-9]+:[0-9]+");
 		std::cmatch mOut;
-		std::regex_search(curentOutPortName.c_str(), mOut, re);
-		std::cout << "OutputPort " << mOut[1] << std::endl;
+		std::regex_search(currentOutPortName.c_str(), mOut, re);
+		std::cout << "OutputPort " << currentOutPortName << " (" << mOut[1]
+				  << ")" << std::endl;
 		// and each input signal
 		for (unsigned int j = 0; j < nInPortCount; j++) {
 			QCoreApplication::processEvents();
@@ -104,14 +105,15 @@ unsigned long DeviceDetectionProcessor::detectDevices() {
 			}
 			sendProgressEvent(progress);
 			m_pMidiin->openPort(j);
-			std::string currentInputPortName = m_pMidiin->getPortName();
+			std::string currentInputPortName = m_pMidiin->getPortName(j);
 			std::cmatch mIn;
 			std::regex_search(currentInputPortName.c_str(), mIn, re);
-			std::cout << "InputPort " << mIn[1] << std::endl;
-            if (mIn[1] != mOut[1]){
-                m_pMidiin->closePort();
+			std::cout << "InputPort " << currentInputPortName << " (" << mIn[1]
+					  << ")" << std::endl;
+			if (mIn[1] != mOut[1]) {
+				m_pMidiin->closePort();
 				continue;
-            }
+			}
 			m_pMidiout->sendMessage(qMessage);
 			// pause a little
 			BYTE_VECTOR *message = new BYTE_VECTOR;
