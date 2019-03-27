@@ -51,10 +51,10 @@ void DeviceInfoWidget::deviceInfoChanged(SysExMessage::DeviceInfoItem item,
 										 std::string value) {
 	std::cout << "DeviceInfoWidget: deviceInfoChanged " << item << " value "
 			  << value << std::endl;
-	std::map<SysExMessage::DeviceInfoItem, RetSetInfo *> *retSetInfos =
-		this->m_pDeviceInfo->getRetSetInfos();
+	std::map<SysExMessage::DeviceInfoItem, std::shared_ptr<RetSetInfo>>
+		*retSetInfos = this->m_pDeviceInfo->getRetSetInfos();
 	if (retSetInfos) {
-		RetSetInfo *info = (*retSetInfos)[item];
+		std::shared_ptr<RetSetInfo> info = (*retSetInfos)[item];
 		info->setValue(value);
 	}
 }

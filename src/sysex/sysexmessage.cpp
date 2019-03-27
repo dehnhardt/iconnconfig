@@ -230,6 +230,10 @@ bool SysExMessage::isWriteCommand() {
 
 SysExMessage *SysExMessage::getAnswer() { return m_pAnswer.get(); }
 
+std::shared_ptr<SysExMessage> SysExMessage::getAnswerSmart() {
+	return m_pAnswer;
+}
+
 SysExMessage *SysExMessage::query() {
 	try {
 		execute();

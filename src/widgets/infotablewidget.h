@@ -13,7 +13,8 @@ class InfoTableWidget : public QWidget {
   public:
 	explicit InfoTableWidget(
 		QWidget *parent,
-		std::map<SysExMessage::DeviceInfoItem, RetSetInfo *> *m_pRetSetInfos);
+		std::map<SysExMessage::DeviceInfoItem, std::shared_ptr<RetSetInfo>>
+			*m_pRetSetInfos);
 
   public slots:
 	void onDeviceInfoChanged(int row, int column);
@@ -27,8 +28,8 @@ class InfoTableWidget : public QWidget {
 	void setUpTableItems();
 
   private:
-	std::map<SysExMessage::DeviceInfoItem, RetSetInfo *> *m_pRetSetInfos =
-		nullptr;
+	std::map<SysExMessage::DeviceInfoItem, std::shared_ptr<RetSetInfo>>
+		*m_pRetSetInfos = nullptr;
 	QTableWidget *m_pTableWidget = nullptr;
 };
 

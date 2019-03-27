@@ -5,7 +5,8 @@
 
 InfoTableWidget::InfoTableWidget(
 	QWidget *parent,
-	std::map<SysExMessage::DeviceInfoItem, RetSetInfo *> *retSetInfos)
+	std::map<SysExMessage::DeviceInfoItem, std::shared_ptr<RetSetInfo>>
+		*retSetInfos)
 	: QWidget(parent), m_pRetSetInfos(retSetInfos) {
 
 	QGridLayout *lo = new QGridLayout();
@@ -16,12 +17,13 @@ InfoTableWidget::InfoTableWidget(
 	int i = 0;
 	if (this->m_pRetSetInfos) {
 		setupTable();
-		for (std::map<SysExMessage::DeviceInfoItem, RetSetInfo *>::iterator it =
+		for (std::map<SysExMessage::DeviceInfoItem,
+					  std::shared_ptr<RetSetInfo>>::iterator it =
 				 retSetInfos->begin();
 			 it != retSetInfos->end(); ++it) {
 			SysExMessage::DeviceInfoItem infoItem = it->first;
 
-			RetSetInfo *info = it->second;
+			RetSetInfo *info = it->second.get();
 
 			QTableWidgetItem *name =
 				new QTableWidgetItem(info->getItemName().c_str());

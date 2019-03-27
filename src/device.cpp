@@ -358,13 +358,14 @@ bool Device::queryDeviceInfo() {
 		delete getSaveRestoreList;
 		// delete l;
 	}
+	/*
 	if (m_pCommands->isCommandSupported(Command::GET_AUDIO_GLOBAL_PARM)) {
 		GetAudioGlobalParm *getAudioGlobalParam = new GetAudioGlobalParm(this);
 		getAudioGlobalParam->setDebug(true);
 		m_pGlobalAudioParam =
-		    dynamic_cast<RetSetAudioGlobalParm *>(getAudioGlobalParam->query());
+			dynamic_cast<RetSetAudioGlobalParm *>(getAudioGlobalParam->query());
 		// delete getAudioGlobalParam;
-	}
+	}*/
 	return true;
 }
 

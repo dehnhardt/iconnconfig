@@ -57,6 +57,7 @@ class SysExMessage {
 	long getDataAsLong();
 	Command parseAnswer(BYTE_VECTOR *m_pAnswer);
 	SysExMessage *getAnswer();
+	std::shared_ptr<SysExMessage> getAnswerSmart();
 	SysExMessage *query();
 	std::shared_ptr<SysExMessage> querySmart();
 	int execute();
