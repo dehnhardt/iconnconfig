@@ -14,7 +14,7 @@ BYTE_VECTOR *GetMidiPortRemap::m_pGetMessageData() {
 
 void GetMidiPortRemap::createAnswer(Command cmd, BYTE_VECTOR *message,
 									 Device *device) {
-    m_pAnswer = new RetSetMidiPortRemap(cmd, message, device);
+    m_pAnswer = std::make_shared<RetSetMidiPortRemap>(cmd, message, device);
 	if (debug)
 		m_pAnswer->setDebug(true);
 	m_pAnswer->parseAnswerData();

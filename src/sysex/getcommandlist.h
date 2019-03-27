@@ -15,7 +15,7 @@ public:
 
 private:
 	void createAnswer(Command cmd, BYTE_VECTOR *message, Device *device) {
-		m_pAnswer = new RetCommandList(cmd, message, device);
+		m_pAnswer = std::make_shared<RetCommandList>(cmd, message, device);
 		m_pAnswer->parseAnswerData();
 	}
 };

@@ -72,10 +72,10 @@ void AudioPortsWidget::getAudioPortSections() {
 void AudioPortsWidget::retrieveAudioPorts() {
 	unsigned int numberOfAudioPorts =
 		device->getGlobalAudioParam()->getNumberOfAudioPorts();
+	GetAudioPortParm *getAudioPortParm = new GetAudioPortParm(device);
+	getAudioPortParm->setDebug(false);
 	for (unsigned int i = 1; i <= numberOfAudioPorts; i++) {
 		std::vector<RetSetAudioPortParm *> *audioPorts = nullptr;
-		GetAudioPortParm *getAudioPortParm = new GetAudioPortParm(device);
-		getAudioPortParm->setDebug(false);
 		getAudioPortParm->setPortId(i);
 		RetSetAudioPortParm *retSetAudioPortParm =
 			dynamic_cast<RetSetAudioPortParm *>(getAudioPortParm->query());

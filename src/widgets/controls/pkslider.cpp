@@ -137,7 +137,8 @@ void PKSlider::calculateScale() {
 	int step = diff / m_iScaleTicks;
 	for (int i = 0; i < m_iScaleTicks; i++) {
 		m_pScales[i] = step * i + minValue;
-		std::cout << "Step " << i << ": " << m_pScales[i] << std::endl;
+		if (m_bDebug)
+			std::cout << "Step " << i << ": " << m_pScales[i] << std::endl;
 	}
 	m_pScales[m_iScaleTicks] = maxValue;
 	if (m_bDebug)
@@ -146,7 +147,8 @@ void PKSlider::calculateScale() {
 
 int PKSlider::translate(float dec, int x1, int height) {
 	int offset = static_cast<int>(height - (x1 + height * dec / 1000));
-	// std::cout << "Dec: " << dec << " Scale x: " << offset << std::endl;
+	if (m_bDebug)
+		std::cout << "Dec: " << dec << " Scale x: " << offset << std::endl;
 	return offset;
 }
 

@@ -143,14 +143,14 @@ void SysExMessage::createAnswer(Command cmd,
 								std::vector<unsigned char> *message,
 								Device *device) {
 	if (cmd == ACK) {
-		m_pAnswer = new Ack(cmd, message, device);
+		m_pAnswer = std::make_shared<Ack>(cmd, message, device);
 		m_pAnswer->parseAnswerData();
 	}
 }
 
 void SysExMessage::createAck(std::vector<unsigned char> *message,
 							 Device *device) {
-	m_pAnswer = new Ack(ACK, message, device);
+	m_pAnswer = std::make_shared<Ack>(ACK, message, device);
 	m_pAnswer->parseAnswerData();
 }
 
@@ -228,7 +228,7 @@ bool SysExMessage::isWriteCommand() {
 	return (commandBytes & 80192) == 1;
 }
 
-SysExMessage *SysExMessage::getAnswer() { return m_pAnswer; }
+SysExMessage *SysExMessage::getAnswer() { return m_pAnswer.get(); }
 
 SysExMessage *SysExMessage::query() {
 	try {
@@ -236,7 +236,15 @@ SysExMessage *SysExMessage::query() {
 	} catch (...) {
 		throw;
 	}
+	return m_pAnswer.get();
+}
 
+std::shared_ptr<SysExMessage> SysExMessage::querySmart() {
+	try {
+		execute();
+	} catch (...) {
+		throw;
+	}
 	return m_pAnswer;
 }
 

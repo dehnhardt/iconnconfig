@@ -55,6 +55,6 @@ void GetInfo::deviceInfoChanged(SysExMessage::DeviceInfoItem item,
 
 void GetInfo::createAnswer(Command cmd, std::vector<unsigned char> *message,
 						   Device *device) {
-	m_pAnswer = new RetSetInfo(cmd, message, device);
+	m_pAnswer = std::make_shared<RetSetInfo>(cmd, message, device);
 	m_pAnswer->parseAnswerData();
 }

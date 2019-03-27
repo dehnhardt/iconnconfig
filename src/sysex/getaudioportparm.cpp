@@ -8,7 +8,7 @@ GetAudioPortParm::~GetAudioPortParm() {}
 
 void GetAudioPortParm::createAnswer(Command cmd, BYTE_VECTOR *message,
 									Device *device) {
-	m_pAnswer = new RetSetAudioPortParm(cmd, message, device);
+	m_pAnswer = std::make_shared<RetSetAudioPortParm>(cmd, message, device);
 	if (debug)
 		m_pAnswer->setDebug(true);
 	m_pAnswer->parseAnswerData();
