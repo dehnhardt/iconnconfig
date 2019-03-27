@@ -1,7 +1,7 @@
 # iconnconfig
 **Also find this repo at https://codeberg.org/dehnhardt/IConnConfig**
 
-Linux based configuration utility for IConnectivity interfaces. (Currently only MIDI configuration is implemented on combined interfaces)
+Linux based configuration utility for IConnectivity interfaces. (Currently only MIDI configuration and part of Audio Confoguration is implemented on combined interfaces)
 After trying to get the vendor provided config-utility to work under Wine without success I started analyzing the usb packets to write an Linux enabled version.
 Later I found the complete documentation for sysex-data from IConnectivity.
 
