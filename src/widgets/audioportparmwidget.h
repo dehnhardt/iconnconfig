@@ -14,8 +14,9 @@ class AudioPortParmWidget : public QWidget {
 	Q_OBJECT
 
   public:
-	explicit AudioPortParmWidget(RetSetAudioPortParm *retstetaudioportparm,
-								 QWidget *parent = nullptr);
+	explicit AudioPortParmWidget(
+		std::shared_ptr<RetSetAudioPortParm> retstetaudioportparm,
+		QWidget *parent = nullptr);
 	~AudioPortParmWidget();
 	void setData();
 	void setCurrentAudioConfiguration();
@@ -24,7 +25,7 @@ class AudioPortParmWidget : public QWidget {
 	Ui::AudioPortParmWidget *ui;
 	QTimer *m_pUpdateTimer = nullptr;
 
-	RetSetAudioPortParm *m_pRetSetAudioPortParm = nullptr;
+	std::shared_ptr<RetSetAudioPortParm> m_pRetSetAudioPortParm;
 	void createConnections();
 	bool checkTotalNumberOfAudioChannels();
 

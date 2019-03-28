@@ -6,7 +6,7 @@ GetInfo::GetInfo(Device *device)
 		new std::map<DeviceInfoItem, std::shared_ptr<RetSetInfo>>();
 }
 
-GetInfo::GetInfo(Device *device, RetInfoList *infoList)
+GetInfo::GetInfo(Device *device, std::shared_ptr<RetInfoList> infoList)
 	: SysExMessage(Command::GET_INFO, SysExMessage::QUERY, device),
 	  m_pInfoList(infoList) {
 	m_pRetSetInfos =

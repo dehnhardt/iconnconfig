@@ -36,7 +36,7 @@ class MultiInfoListEntry : public QObject {
 	QWidget *widget = nullptr;
 	bool enabled = true;
 	bool selectable = true;
-	SysExMessage *message = nullptr;
+	std::shared_ptr<SysExMessage> message;
 	QListWidgetItem *m_pListWidgetItem = nullptr;
 
   public slots:

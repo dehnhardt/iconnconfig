@@ -92,15 +92,16 @@ void PortFilterWidget::createWidgets() {
 }
 
 void PortFilterWidget::retrieveData() {
-	GetMidiPortFilter *getMidiPortFilter = new GetMidiPortFilter(device);
+	std::shared_ptr<GetMidiPortFilter> getMidiPortFilter =
+		std::make_shared<GetMidiPortFilter>(device);
 	getMidiPortFilter->setDebug(false);
 	getMidiPortFilter->setPortNumer(static_cast<unsigned int>(portNumber));
 	getMidiPortFilter->setPortFilterDirection(PortDirection::INPUT);
 	getMidiPortFilter->setDebug(false);
 	getMidiPortFilter->setCmdflags(0x40);
-	m_pMidiPortFilterIn =
-		static_cast<RetSetMidiPortFilter *>(getMidiPortFilter->query());
+	m_pMidiPortFilterIn = std::dynamic_pointer_cast<RetSetMidiPortFilter>(
+		getMidiPortFilter->querySmart());
 	getMidiPortFilter->setPortFilterDirection(PortDirection::OUTPUT);
-	m_pMidiPortFilterOut =
-		static_cast<RetSetMidiPortFilter *>(getMidiPortFilter->query());
+	m_pMidiPortFilterOut = std::dynamic_pointer_cast<RetSetMidiPortFilter>(
+		getMidiPortFilter->querySmart());
 }

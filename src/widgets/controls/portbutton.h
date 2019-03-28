@@ -8,7 +8,8 @@
 class PortButton : public QToolButton {
   public:
 	PortButton(const long val, const QString m_sIconText, const QString &text,
-			   const MidiPortType m_MidiPortType, QWidget *parent = nullptr);
+	           const MidiPortType m_MidiPortType, QWidget *parent = nullptr);
+	~PortButton() = default;
 
 	long getValue() const;
 	void setValue(long m_iValue);

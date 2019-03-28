@@ -30,10 +30,10 @@ class PortRoutingWidget : public QWidget {
 	Device *device;
 	QGridLayout *layout = nullptr;
 	int portNumber = 0;
-	RetSetMidiPortRoute *midiPortRoute = nullptr;
+	std::shared_ptr<RetSetMidiPortRoute> m_pMidiPortRoute;
 	QTimer *updateTimer = nullptr;
 
-	std::vector<std::vector<PortButton *> *> *buttonLines;
+	std::vector<std::vector<std::shared_ptr<PortButton>>> *buttonLines;
 
   private:
 	// methods
@@ -43,8 +43,9 @@ class PortRoutingWidget : public QWidget {
 	void retrieveData();
 	void loadData();
 	void createMidiPortSections(Device *device);
-	void createMidiPorts(int line,
-						 std::vector<RetSetMidiPortInfo *> *midiPortInfos);
+	void createMidiPorts(
+		int line,
+		std::vector<std::shared_ptr<RetSetMidiPortInfo>> *midiPortInfos);
 	int getButtonLineIndex(PortButton *b);
 	bool isButtonChecked(int row);
 	void setButtonsChecked(int row, bool checked);

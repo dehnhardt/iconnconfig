@@ -6,10 +6,9 @@
 #include "sysex/midi.h"
 
 #include <map>
+#include <memory>
 #include <string>
 #include <vector>
-
-#define MIDI_PORT_INFOS std::map<int, std::vector<RetSetMidiPortInfo *> *>
 
 class SysExMessage;
 class RetCommandList;
@@ -21,35 +20,39 @@ class DeviceStructureContainer;
 class RetSetAudioGlobalParm;
 
 typedef std::map<unsigned int, DeviceStructureContainer *> DeviceStructure;
+typedef std::map<int, std::vector<std::shared_ptr<RetSetMidiPortInfo>> *>
+    MidiPortInfos;
 
 class DeviceStructureContainer {
 
   public:
 	DeviceStructureContainer() {}
-	DeviceStructureContainer(SysExMessage *message) { setMessage(message); }
-	DeviceStructureContainer(DeviceStructure *structure) {
+	DeviceStructureContainer(std::shared_ptr<SysExMessage> message) {
+		setMessage(message);
+	}
+	DeviceStructureContainer(std::shared_ptr<DeviceStructure> structure) {
 		setStructure(structure);
 	}
 
-	void setMessage(SysExMessage *message) {
+	void setMessage(std::shared_ptr<SysExMessage> message) {
 		this->message = message;
 		type = MESSAGE;
 	}
 
-	void setStructure(DeviceStructure *deviceStructure) {
+	void setStructure(std::shared_ptr<DeviceStructure> deviceStructure) {
 		this->deviceStructure = deviceStructure;
 		type = STRUCTURE;
 	}
 
-	SysExMessage *getMessage() { return message; }
-	DeviceStructure *getStructure() { return deviceStructure; }
+	std::shared_ptr<SysExMessage> getMessage() { return message; }
+	std::shared_ptr<DeviceStructure> getStructure() { return deviceStructure; }
 
 	enum SetType { MESSAGE, STRUCTURE };
 	SetType type;
 
   private:
-	SysExMessage *message = nullptr;
-	DeviceStructure *deviceStructure = nullptr;
+	std::shared_ptr<SysExMessage> message;
+	std::shared_ptr<DeviceStructure> deviceStructure;
 };
 
 class Device {
@@ -112,11 +115,11 @@ class Device {
 	MIDISysexValue *getSerialNumber() { return m_pSerialNumber; }
 	MIDISysexValue *getProductId() { return m_pProductId; }
 	bool getDefault() { return m_bIsDefault; }
-	RetCommandList *getCommands() { return m_pCommands; }
+	std::shared_ptr<RetCommandList> getCommands() { return m_pCommands; }
 	GetInfo *getDeviceInfo() { return m_pDeviceInfo; }
-	RetSetMidiInfo *getMidiInfo() { return m_pMidiInfo; }
+	std::shared_ptr<RetSetMidiInfo> getMidiInfo() { return m_pMidiInfo; }
 	RetSetAudioGlobalParm *getAudioGlobalParm() { return m_pGlobalAudioParam; }
-	MIDI_PORT_INFOS *getMidiPortInfos() const;
+	MidiPortInfos *getMidiPortInfos() const;
 	BYTE_VECTOR *getLastSendMessage() const;
 	BYTE_VECTOR *getLastRetrieveMessage() const;
 
@@ -164,13 +167,13 @@ class Device {
 	std::string m_sHardwareVersion;
 	std::string m_sModelNumber;
 
-	RetSetMidiInfo *m_pMidiInfo = nullptr;
+	std::shared_ptr<RetSetMidiInfo> m_pMidiInfo;
 	RetSetAudioGlobalParm *m_pGlobalAudioParam = nullptr;
 
-	RetCommandList *m_pCommands = nullptr;
-	RetInfoList *m_pRetInfoList = nullptr;
+	std::shared_ptr<RetCommandList> m_pCommands;
+	std::shared_ptr<RetInfoList> m_pRetInfoList;
 	GetInfo *m_pDeviceInfo = nullptr;
-	MIDI_PORT_INFOS *m_pMidiPortInfos = nullptr;
+	MidiPortInfos *m_pMidiPortInfos = nullptr;
 
 	DeviceStructure *m_pInformationTree = nullptr;
 

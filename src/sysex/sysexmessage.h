@@ -114,7 +114,7 @@ class SysExMessage {
 	unsigned int m_iDataLength = 0;
 	unsigned char m_iCmdflags;
 	AcceptedAnswers m_AcceptedAnswers;
-	Device *m_pDevice = nullptr;
+	Device *m_pDevice;
 	std::shared_ptr<SysExMessage> m_pAnswer;
 	BYTE_VECTOR *m_pCommandData = nullptr;
 	BYTE_VECTOR *m_pTransactionId = nullptr;

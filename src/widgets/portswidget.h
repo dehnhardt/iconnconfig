@@ -20,7 +20,8 @@ class PortsWidget : public MultiInfoWidget {
 
   private:
 	void getMidiPortSections(Device *device);
-	void getMidiPorts(std::vector<RetSetMidiPortInfo *> *midiPortInfos);
+	void getMidiPorts(
+		std::vector<std::shared_ptr<RetSetMidiPortInfo>> *midiPortInfos);
 };
 
 #endif // PORTSWIDGET_H

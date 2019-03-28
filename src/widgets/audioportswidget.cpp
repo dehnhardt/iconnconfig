@@ -27,12 +27,8 @@ AudioPortsWidget::~AudioPortsWidget() {
 	AudioPortStructure::iterator it;
 	for (it = m_pAudioPortParms->begin(); it != m_pAudioPortParms->end();
 		 ++it) {
-		std::vector<RetSetAudioPortParm *> *audioPortParms = it->second;
-		std::vector<RetSetAudioPortParm *>::iterator it2;
-		for (it2 = audioPortParms->begin(); it2 < audioPortParms->end();
-			 ++it2) {
-			delete (*it2);
-		}
+		std::vector<std::shared_ptr<RetSetAudioPortParm>> *audioPortParms =
+			it->second;
 		audioPortParms->clear();
 	}
 	m_pAudioPortParms->clear();
@@ -40,10 +36,10 @@ AudioPortsWidget::~AudioPortsWidget() {
 }
 
 void AudioPortsWidget::getAudioPorts(
-	std::vector<RetSetAudioPortParm *> *audioPortParms) {
-	std::vector<RetSetAudioPortParm *>::iterator it;
+	std::vector<std::shared_ptr<RetSetAudioPortParm>> *audioPortParms) {
+	std::vector<std::shared_ptr<RetSetAudioPortParm>>::iterator it;
 	for (it = audioPortParms->begin(); it != audioPortParms->end(); ++it) {
-		RetSetAudioPortParm *audioPortParm = *it;
+		std::shared_ptr<RetSetAudioPortParm> audioPortParm = *it;
 		MultiInfoListEntry *entry = new MultiInfoListEntry(
 			MultiInfoListEntry::PORT_ROUTING, audioPortParm->getPortName());
 		entry->icon = PortDisplayHelper::getAudioPortIcon(
@@ -64,7 +60,8 @@ void AudioPortsWidget::getAudioPortSections() {
 			PortDisplayHelper::getAudioPortTypeName(audioPortType);
 		infoSections->push_back(
 			new MultiInfoListEntry(MultiInfoListEntry::SECTION, portTypeName));
-		std::vector<RetSetAudioPortParm *> *audioPortParms = it->second;
+		std::vector<std::shared_ptr<RetSetAudioPortParm>> *audioPortParms =
+			it->second;
 		getAudioPorts(audioPortParms);
 	}
 }
@@ -75,17 +72,20 @@ void AudioPortsWidget::retrieveAudioPorts() {
 	GetAudioPortParm *getAudioPortParm = new GetAudioPortParm(device);
 	getAudioPortParm->setDebug(false);
 	for (unsigned int i = 1; i <= numberOfAudioPorts; i++) {
-		std::vector<RetSetAudioPortParm *> *audioPorts = nullptr;
+		std::vector<std::shared_ptr<RetSetAudioPortParm>> *audioPorts = nullptr;
 		getAudioPortParm->setPortId(i);
-		RetSetAudioPortParm *retSetAudioPortParm =
-			dynamic_cast<RetSetAudioPortParm *>(getAudioPortParm->query());
+		std::shared_ptr<RetSetAudioPortParm> retSetAudioPortParm =
+			std::dynamic_pointer_cast<RetSetAudioPortParm>(
+				getAudioPortParm->querySmart());
 		int audioPortType = retSetAudioPortParm->getAudioPortType();
 		try {
 			audioPorts = m_pAudioPortParms->at(audioPortType);
 		} catch (const std::out_of_range __attribute__((unused)) & oor) {
-			audioPorts = new std::vector<RetSetAudioPortParm *>();
+			audioPorts =
+				new std::vector<std::shared_ptr<RetSetAudioPortParm>>();
 			m_pAudioPortParms->insert(
-				std::pair<int, std::vector<RetSetAudioPortParm *> *>(
+				std::pair<int,
+						  std::vector<std::shared_ptr<RetSetAudioPortParm>> *>(
 					audioPortType, audioPorts));
 		}
 		audioPorts->push_back(retSetAudioPortParm);
@@ -93,8 +93,8 @@ void AudioPortsWidget::retrieveAudioPorts() {
 }
 
 QWidget *AudioPortsWidget::createWidget(MultiInfoListEntry *entry) {
-	RetSetAudioPortParm *audioPortParm =
-		static_cast<RetSetAudioPortParm *>(entry->message);
+	std::shared_ptr<RetSetAudioPortParm> audioPortParm =
+		std::dynamic_pointer_cast<RetSetAudioPortParm>(entry->message);
 	unsigned int portId = audioPortParm->getPortId();
 	QTabWidget *audioPortTabWidget = new QTabWidget(this);
 	QWidget *layoutWidget = new QWidget();

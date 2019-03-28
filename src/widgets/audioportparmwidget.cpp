@@ -7,7 +7,7 @@
 #include <QMessageBox>
 
 AudioPortParmWidget::AudioPortParmWidget(
-	RetSetAudioPortParm *retSetAudioPortParm, QWidget *parent)
+	std::shared_ptr<RetSetAudioPortParm> retSetAudioPortParm, QWidget *parent)
 	: QWidget(parent), ui(new Ui::AudioPortParmWidget),
 	  m_pRetSetAudioPortParm(retSetAudioPortParm) {
 	ui->setupUi(this);
