@@ -120,7 +120,7 @@ class SysExMessage {
 	BYTE_VECTOR *m_pTransactionId = nullptr;
 	BYTE_VECTOR *m_pDeviceHeader = nullptr;
 	BYTE_VECTOR *m_pResultData = nullptr;
-	BYTE_VECTOR *m_pData = nullptr;
+	std::shared_ptr<BYTE_VECTOR> m_pData = nullptr;
 
 	unsigned char m_iCommandVersionNumber = 0;
 

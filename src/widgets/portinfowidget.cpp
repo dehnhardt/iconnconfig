@@ -69,7 +69,16 @@ PortInfoWidget::PortInfoWidget(std::shared_ptr<RetSetMidiPortInfo> portInfo,
 }
 
 PortInfoWidget::~PortInfoWidget() {
+	disconnect(ui->m_pTxtPortName, &QLineEdit::editingFinished, this,
+	           &PortInfoWidget::portNameChanged);
+	disconnect(ui->m_pCbInputEnabled, &QCheckBox::stateChanged, this,
+	           &PortInfoWidget::inputStateChanged);
+	disconnect(ui->m_pCbOutputEnabled, &QCheckBox::stateChanged, this,
+	           &PortInfoWidget::outputStateChanged);
+	disconnect(m_pUpdateTimer, &QTimer::timeout, this,
+	           &PortInfoWidget::timerElapsed);
 	delete ui;
+	delete m_pUpdateTimer;
 	delete m_pRegExValidator;
 }
 

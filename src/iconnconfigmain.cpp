@@ -148,7 +148,9 @@ void MioMain::replacePanel(QWidget *w) {
 }
 
 void MioMain::addDeviceToolButtons() {
-	BYTE_VECTOR *saveRestoreList = this->m_pCurrentDevice->saveRestoreList;
+	BYTE_VECTOR *saveRestoreList = this->m_pCurrentDevice->m_pSaveRestoreList;
+	if (nullptr == saveRestoreList)
+		return;
 	for (unsigned int i = 0; i < saveRestoreList->size(); ++i) {
 		switch (
 		    static_cast<SaveRestore::SaveResstoreId>((*saveRestoreList)[i])) {

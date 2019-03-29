@@ -10,6 +10,8 @@ class RetSetMidiPortRoute : public SysExMessage {
 	RetSetMidiPortRoute(Command cmd, BYTE_VECTOR *message, Device *device)
 		: SysExMessage(cmd, message, device) {}
 
+	~RetSetMidiPortRoute();
+
 	void parseAnswerData();
 	bool isPortRouted(int portNumber);
 	void setPortRouted(int portNumber, bool routed);

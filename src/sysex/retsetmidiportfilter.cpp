@@ -5,7 +5,14 @@ RetSetMidiPortFilter::RetSetMidiPortFilter(Device *device)
 	: SysExMessage(Command::RET_SET_MIDI_PORT_FILTER, SysExMessage::QUERY,
 				   device) {}
 
-RetSetMidiPortFilter::~RetSetMidiPortFilter() { delete m_pMidiPortFilter; }
+RetSetMidiPortFilter::~RetSetMidiPortFilter() {
+
+	delete m_pMidiPortFilter->midiSystemMessagesFilter;
+	for (int i = 0; i < MIDI_CHANNELS; i++)
+		delete m_pMidiPortFilter->midiChannelMessagesFilter[i];
+	delete *m_pMidiPortFilter->midiControllerFilter;
+	delete m_pMidiPortFilter;
+}
 
 void RetSetMidiPortFilter::parseAnswerData() {
 	if (!m_pMidiPortFilter)
@@ -202,5 +209,9 @@ std::vector<unsigned char> *RetSetMidiPortFilter::m_pGetMessageData() {
 	messageData->insert(messageData->end(),
 						midiControllerMessagesFilterData->begin(),
 						midiControllerMessagesFilterData->end());
+	delete portIdV;
+	delete midiSystemMessagesFilterData;
+	delete midiChannelMessagesFilterData;
+	delete midiControllerMessagesFilterData;
 	return messageData;
 }

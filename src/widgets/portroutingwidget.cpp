@@ -8,7 +8,7 @@
 PortRoutingWidget::PortRoutingWidget(Device *device, int portNumber,
 									 QWidget *parent)
 	: QWidget(parent), device(device), portNumber(portNumber) {
-	buttonLines = new std::vector<std::vector<std::shared_ptr<PortButton>>>;
+	buttonLines = new std::vector<std::vector<PortButton *>>;
 	updateTimer = new QTimer(this);
 	updateTimer->setSingleShot(true);
 	retrieveData();
@@ -27,19 +27,18 @@ PortRoutingWidget::~PortRoutingWidget() {
 void PortRoutingWidget::createMidiPorts(
 	int line, std::vector<std::shared_ptr<RetSetMidiPortInfo>> *midiPortInfos) {
 	std::vector<std::shared_ptr<RetSetMidiPortInfo>>::iterator it;
-	std::vector<std::shared_ptr<PortButton>> buttonLine =
-		std::vector<std::shared_ptr<PortButton>>();
+	std::vector<PortButton *> buttonLine = std::vector<PortButton *>();
 	for (it = midiPortInfos->begin(); it != midiPortInfos->end(); ++it) {
 		std::shared_ptr<RetSetMidiPortInfo> midiPortInfo = *it;
 		int jackNumber = midiPortInfo->getPortNumberOfType();
-		std::shared_ptr<PortButton> p = std::make_shared<PortButton>(
+		PortButton *p = new PortButton(
 			midiPortInfo->getPortId(), QString::number(jackNumber),
 			QString(midiPortInfo->getPortName().c_str()),
 			midiPortInfo->getPortType(), this);
 		p->setEnabled(midiPortInfo->getOutputEnabled());
-		connect(p.get(), &PortButton::clicked, this,
-				[this, p]() { portButtonClicked(p.get()); });
-		layout->addWidget(p.get(), line, jackNumber + 1);
+		connect(p, &PortButton::clicked, this,
+				[this, p]() { portButtonClicked(p); });
+		layout->addWidget(p, line, jackNumber + 1);
 		buttonLine.push_back(p);
 	}
 	buttonLines->push_back(buttonLine);
@@ -99,13 +98,13 @@ void PortRoutingWidget::retrieveData() {
 }
 
 void PortRoutingWidget::loadData() {
-	std::vector<std::vector<std::shared_ptr<PortButton>>>::iterator lineIt;
+	std::vector<std::vector<PortButton *>>::iterator lineIt;
 	for (lineIt = buttonLines->begin(); lineIt != buttonLines->end();
 		 ++lineIt) {
-		std::vector<std::shared_ptr<PortButton>>::iterator buttonIt;
-		std::vector<std::shared_ptr<PortButton>> v = (*lineIt);
+		std::vector<PortButton *>::iterator buttonIt;
+		std::vector<PortButton *> v = (*lineIt);
 		for (buttonIt = v.begin(); buttonIt != v.end(); ++buttonIt) {
-			std::shared_ptr<PortButton> p = (*buttonIt);
+			PortButton *p = (*buttonIt);
 			p->setChecked(m_pMidiPortRoute->isPortRouted(
 				static_cast<int>(p->getValue())));
 		}
@@ -134,10 +133,9 @@ void PortRoutingWidget::portButtonClicked(PortButton *b) {
 }
 
 bool PortRoutingWidget::isButtonChecked(int row) {
-	std::vector<std::shared_ptr<PortButton>> buttonLine =
+	std::vector<PortButton *> buttonLine =
 		buttonLines->at(static_cast<unsigned long>(row));
-	for (std::vector<std::shared_ptr<PortButton>>::iterator it =
-			 buttonLine.begin();
+	for (std::vector<PortButton *>::iterator it = buttonLine.begin();
 		 it != buttonLine.end(); ++it) {
 		if ((*it)->isChecked())
 			return true;
@@ -146,10 +144,9 @@ bool PortRoutingWidget::isButtonChecked(int row) {
 }
 
 void PortRoutingWidget::setButtonsChecked(int row, bool checked) {
-	std::vector<std::shared_ptr<PortButton>> buttonLine =
+	std::vector<PortButton *> buttonLine =
 		buttonLines->at(static_cast<unsigned long>(row));
-	for (std::vector<std::shared_ptr<PortButton>>::iterator it =
-			 buttonLine.begin();
+	for (std::vector<PortButton *>::iterator it = buttonLine.begin();
 		 it != buttonLine.end(); ++it) {
 		(*it)->setChecked(checked);
 		int portNumber = static_cast<int>((*it)->getValue());

@@ -89,12 +89,11 @@ QWidget *PortsWidget::createWidget(MultiInfoListEntry *entry) {
 			new PortFilterWidget(device, portNumber, this->parentWidget());
 		portTabWidget->addTab(portFilterWidget, tr("MIDI-Port Filter"));
 	}
-	/*
 	if (device->getCommands()->isCommandSupported(
 			Command::GET_MIDI_PORT_REMAP)) {
 		PortRemapWidget *portRemapWidget =
 			new PortRemapWidget(device, portNumber, this->parentWidget());
 		portTabWidget->addTab(portRemapWidget, tr("MIDI-Port Remap"));
-	}*/
+	}
 	return portTabWidget;
 }

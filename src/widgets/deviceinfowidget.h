@@ -12,7 +12,7 @@ class DeviceInfoWidget : public MultiInfoWidget {
   public:
 	explicit DeviceInfoWidget(MioMain *parent = nullptr,
 							  Device *device = nullptr,
-							  GetInfo *m_pDeviceInfo = nullptr,
+							  std::shared_ptr<GetInfo> m_pDeviceInfo = nullptr,
 							  QString windowTitle = tr("Device Information"));
 	~DeviceInfoWidget();
 
@@ -24,7 +24,7 @@ class DeviceInfoWidget : public MultiInfoWidget {
 	QWidget *createWidget(MultiInfoListEntry *entry);
 
   private:
-	GetInfo *m_pDeviceInfo = nullptr;
+	std::shared_ptr<GetInfo> m_pDeviceInfo = nullptr;
 };
 
 #endif // DEVICEINFOWIDGET_H

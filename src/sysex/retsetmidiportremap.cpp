@@ -5,7 +5,13 @@ RetSetMidiPortRemap::RetSetMidiPortRemap(Device *device)
 	: SysExMessage(Command::RET_SET_MIDI_PORT_REMAP, SysExMessage::QUERY,
 				   device) {}
 
-RetSetMidiPortRemap::~RetSetMidiPortRemap() { delete m_pMidiPortRemap; }
+RetSetMidiPortRemap::~RetSetMidiPortRemap() {
+	delete *m_pMidiPortRemap->midiControllerRemap;
+	for (int i = 0; i < MIDI_CHANNELS; i++) {
+		delete m_pMidiPortRemap->midiChannelMessagesRemap[i];
+	}
+	delete m_pMidiPortRemap;
+}
 
 void RetSetMidiPortRemap::parseAnswerData() {
 	if (!m_pMidiPortRemap)
@@ -106,6 +112,7 @@ RetSetMidiPortRemap::createMidiChannelMessagesRemapData() {
 			remap += midiChannelMessagesRemap->remapChannel - 1;
 		BYTE_VECTOR *v = MIDI::byteSplit8bit(remap, 2);
 		data->insert(data->end(), v->begin(), v->end());
+		delete v;
 	}
 	return data;
 }
@@ -137,6 +144,7 @@ RetSetMidiPortRemap::createMidiControllerRemapData() {
 			static_cast<unsigned char>(remap->midiContollerSourceNumber));
 		data->push_back(
 			static_cast<unsigned char>(remap->midiContollerDestinationNumber));
+		delete channelMatrix;
 	}
 	return data;
 }
@@ -168,5 +176,8 @@ std::vector<unsigned char> *RetSetMidiPortRemap::m_pGetMessageData() {
 	messageData->insert(messageData->end(),
 						midiControllerMessagesRemapData->begin(),
 						midiControllerMessagesRemapData->end());
+	delete portIdV;
+	delete midiChannelMessagesRemapData;
+	delete midiControllerMessagesRemapData;
 	return messageData;
 }

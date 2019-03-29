@@ -15,7 +15,8 @@
 #include <QTableWidget>
 
 DeviceInfoWidget::DeviceInfoWidget(MioMain *parent, Device *device,
-								   GetInfo *deviceInfo, QString windowTitle)
+								   std::shared_ptr<GetInfo> deviceInfo,
+								   QString windowTitle)
 	: MultiInfoWidget(parent, device, windowTitle), m_pDeviceInfo(deviceInfo) {
 	infoSections = new std::vector<MultiInfoListEntry *>();
 	if (device->getCommands()->isCommandSupported(Command::GET_INFO_LIST))

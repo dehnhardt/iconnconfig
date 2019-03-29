@@ -21,7 +21,7 @@ class RetSetAudioGlobalParm;
 
 typedef std::map<unsigned int, DeviceStructureContainer *> DeviceStructure;
 typedef std::map<int, std::vector<std::shared_ptr<RetSetMidiPortInfo>> *>
-    MidiPortInfos;
+	MidiPortInfos;
 
 class DeviceStructureContainer {
 
@@ -58,7 +58,7 @@ class DeviceStructureContainer {
 class Device {
   public:
 	Device(unsigned int m_iInPortNumber, unsigned int m_iOutPortNumber,
-	       unsigned long m_pSerialNumber, unsigned int m_pProductId);
+		   unsigned long m_pSerialNumber, unsigned int m_pProductId);
 	Device(Device *device);
 
 	~Device();
@@ -86,7 +86,7 @@ class Device {
 
 	BYTE_VECTOR *retrieveSysex();
 	BYTE_VECTOR *nextTransactionId();
-	BYTE_VECTOR *saveRestoreList = nullptr;
+	BYTE_VECTOR *m_pSaveRestoreList = nullptr;
 
 	bool loadConfigurationFromDevice();
 
@@ -116,7 +116,7 @@ class Device {
 	MIDISysexValue *getProductId() { return m_pProductId; }
 	bool getDefault() { return m_bIsDefault; }
 	std::shared_ptr<RetCommandList> getCommands() { return m_pCommands; }
-	GetInfo *getDeviceInfo() { return m_pDeviceInfo; }
+	std::shared_ptr<GetInfo> getDeviceInfo() { return m_pDeviceInfo; }
 	std::shared_ptr<RetSetMidiInfo> getMidiInfo() { return m_pMidiInfo; }
 	RetSetAudioGlobalParm *getAudioGlobalParm() { return m_pGlobalAudioParam; }
 	MidiPortInfos *getMidiPortInfos() const;
@@ -126,7 +126,7 @@ class Device {
 	// setter
 	void setDebug(bool value);
 	void setDeviceInformation(std::string m_sModelName,
-	                          std::string m_sDeviceName);
+							  std::string m_sDeviceName);
 	void setDefault(bool isDefault) { this->m_bIsDefault = isDefault; }
 
 	void setLastSendMessage(BYTE_VECTOR *value);
@@ -139,7 +139,7 @@ class Device {
 	bool checkSysex(BYTE_VECTOR *data);
 	void requestMidiPortInfos();
 	void addCommandToStructure(Command cmd,
-	                           DeviceStructureContainer *structureContainer);
+							   DeviceStructureContainer *structureContainer);
 
 	bool debug = false;
 
@@ -172,7 +172,7 @@ class Device {
 
 	std::shared_ptr<RetCommandList> m_pCommands;
 	std::shared_ptr<RetInfoList> m_pRetInfoList;
-	GetInfo *m_pDeviceInfo = nullptr;
+	std::shared_ptr<GetInfo> m_pDeviceInfo;
 	MidiPortInfos *m_pMidiPortInfos = nullptr;
 
 	DeviceStructure *m_pInformationTree = nullptr;
@@ -182,8 +182,8 @@ class Device {
 };
 
 void midiOutErrorCallback(RtMidiError::Type type, const std::string &errorText,
-                          void *userData);
+						  void *userData);
 void midiinErrorCallback(RtMidiError::Type type, const std::string &errorText,
-                         void *userData);
+						 void *userData);
 
 #endif // DEVICE_H

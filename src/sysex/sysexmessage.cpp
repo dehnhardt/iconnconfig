@@ -32,7 +32,7 @@
  */
 
 SysExMessage::SysExMessage(Command cmd, CommandFlags flags, Device *device)
-	: m_Command(cmd), m_iCmdflags(flags), m_pDevice(device) {
+    : m_Command(cmd), m_iCmdflags(flags), m_pDevice(device) {
 	if (this->m_pDevice != nullptr)
 		this->m_pDeviceHeader = this->m_pDevice->getDeviceHeader();
 	else
@@ -44,8 +44,8 @@ SysExMessage::SysExMessage(Command cmd, CommandFlags flags, Device *device)
 }
 
 SysExMessage::SysExMessage(Command cmd, std::vector<unsigned char> *message,
-						   Device *device)
-	: m_Command(cmd), m_pDevice(device) {
+                           Device *device)
+    : m_Command(cmd), m_pDevice(device) {
 	if (this->m_pDevice != nullptr)
 		this->m_pDeviceHeader = this->m_pDevice->getDeviceHeader();
 	else
@@ -62,15 +62,15 @@ SysExMessage::~SysExMessage() {
 	delete m_pCommandData;
 	delete m_pTransactionId;
 	delete m_pResultData;
-	delete m_pData;
+	// delete m_pData;
 }
 
 void SysExMessage::extractData(std::vector<unsigned char> *message) {
 	m_iDataLength = static_cast<unsigned int>(MIDI::byteJoin7bit(
-		message, Device::DATA_LENGTH_OFFSET, Device::DATA_LENGTH_LENGTH));
-	m_pData =
-		new BYTE_VECTOR(message->begin() + Device::DATA_OFFSET,
-						message->begin() + Device::DATA_OFFSET + m_iDataLength);
+	    message, Device::DATA_LENGTH_OFFSET, Device::DATA_LENGTH_LENGTH));
+	m_pData = std::make_shared<BYTE_VECTOR>(
+	    message->begin() + Device::DATA_OFFSET,
+	    message->begin() + Device::DATA_OFFSET + m_iDataLength);
 }
 
 Device *SysExMessage::getDevice() const { return m_pDevice; }
@@ -89,17 +89,17 @@ BYTE_VECTOR *SysExMessage::getMIDISysExMessage() {
 	body->insert(body->end(), m_pDeviceHeader->begin(), m_pDeviceHeader->end());
 	body->insert(body->end(), transactionId->begin(), transactionId->end());
 	body->insert(body->end(), getCommandData()->begin(),
-				 getCommandData()->end());
+	             getCommandData()->end());
 	body->insert(body->end(), bodyLength->begin(), bodyLength->end());
 	if (mdSize > 0)
 		body->insert(body->end(), md->begin(), md->end());
 	unsigned char cs = MIDI::RolandChecksum(body);
 
 	message->reserve(manufacturerHeader->size() + m_pDeviceHeader->size() +
-					 mdSize + 4);
+	                 mdSize + 4);
 	message->push_back(SYSEX_START);
 	message->insert(message->end(), manufacturerHeader->begin(),
-					manufacturerHeader->end());
+	                manufacturerHeader->end());
 	message->push_back(Device::MESSAGE_CLASS);
 	message->insert(message->end(), body->begin(), body->end());
 	message->push_back(cs);
@@ -124,7 +124,7 @@ Command SysExMessage::parseAnswer(BYTE_VECTOR *answer) {
 		checkAnswerValid(command);
 		if (debug)
 			std::cout << "Answer (command: " << std::hex << command
-					  << ") accepted " << std::endl;
+			          << ") accepted " << std::endl;
 		extractData(answer);
 		return static_cast<Command>(command);
 	} catch (...) {
@@ -134,14 +134,14 @@ Command SysExMessage::parseAnswer(BYTE_VECTOR *answer) {
 
 bool SysExMessage::checkAnswerValid(long answerCommandId) {
 	if (std::find(m_AcceptedAnswers.begin(), m_AcceptedAnswers.end(),
-				  answerCommandId) == m_AcceptedAnswers.end())
+	              answerCommandId) == m_AcceptedAnswers.end())
 		throw ProtocolException(ProtocolException::WRONG_ANSWER);
 	return true;
 }
 
 void SysExMessage::createAnswer(Command cmd,
-								std::vector<unsigned char> *message,
-								Device *device) {
+                                std::vector<unsigned char> *message,
+                                Device *device) {
 	if (cmd == ACK) {
 		m_pAnswer = std::make_shared<Ack>(cmd, message, device);
 		m_pAnswer->parseAnswerData();
@@ -149,7 +149,7 @@ void SysExMessage::createAnswer(Command cmd,
 }
 
 void SysExMessage::createAck(std::vector<unsigned char> *message,
-							 Device *device) {
+                             Device *device) {
 	m_pAnswer = std::make_shared<Ack>(ACK, message, device);
 	m_pAnswer->parseAnswerData();
 }
@@ -190,8 +190,8 @@ int SysExMessage::execute() {
 			// return -3;
 			if (debug) {
 				std::cout << std::hex << "Command number "
-						  << (MIDI::byteJoin7bit(answerMessage, 14, 2) & 1023)
-						  << "\n";
+				          << (MIDI::byteJoin7bit(answerMessage, 14, 2) & 1023)
+				          << "\n";
 				std::cout << "c: ";
 				MIDI::printMessage(answerMessage);
 			}
@@ -216,7 +216,7 @@ void SysExMessage::setDebug(bool debug) { this->debug = debug; }
 
 bool SysExMessage::getDebug() { return this->debug; }
 
-void SysExMessage::printRawData() { MIDI::printMessage(m_pData); }
+void SysExMessage::printRawData() { MIDI::printMessage(m_pData.get()); }
 
 unsigned int SysExMessage::getCommandNumber() {
 	long commandBytes = MIDI::byteJoin7bit(m_pCommandData);
@@ -260,50 +260,50 @@ std::string SysExMessage::getDataAsString() {
 long SysExMessage::getDataAsLong() {
 	long result = -1;
 	if (m_pData->size() < 11)
-		result = MIDI::byteJoin7bit(m_pData);
+		result = MIDI::byteJoin7bit(m_pData.get());
 	return result;
 }
 
 CommandAcceptedAnswers SysExMessage::commandAcceptedAnswers = {
-	{GET_DEVICE, AcceptedAnswers{RET_DEVICE}},
-	{GET_COMMAND_LIST, AcceptedAnswers{RET_COMMAND_LIST}},
-	{GET_INFO_LIST, AcceptedAnswers{RET_INFO_LIST}},
-	{GET_INFO, AcceptedAnswers{RET_SET_INFO}},
-	{RET_SET_INFO, AcceptedAnswers{ACK}},
-	{GET_RESET_LIST, AcceptedAnswers{RET_RESET_LIST, ACK}},
-	{GET_SAVE_RESTORE_LIST, AcceptedAnswers{RET_SAVE_RESTORE_LIST, ACK}},
-	{GET_ETHERNET_PORT_INFO, AcceptedAnswers{RET_SET_ETHERNET_PORT_INFO, ACK}},
-	{RET_SET_ETHERNET_PORT_INFO, AcceptedAnswers{ACK}},
-	{RESET, AcceptedAnswers{ACK}},
-	{SAVE_RESTORE, AcceptedAnswers{ACK}},
-	{GET_GIZMO_COUNT, AcceptedAnswers{RET_GIZMO_COUNT, ACK}},
-	{GET_GIZMO_INFO, AcceptedAnswers{RET_GIZMO_INFO, ACK}},
-	{GET_MIDI_INFO, AcceptedAnswers{RET_SET_MIDI_INFO, ACK}},
-	{GET_MIDI_PORT_INFO, AcceptedAnswers{RET_SET_MIDI_PORT_INFO, ACK}},
-	{RET_SET_MIDI_PORT_INFO, AcceptedAnswers{ACK}},
-	{GET_MIDI_PORT_FILTER, AcceptedAnswers{RET_SET_MIDI_PORT_FILTER, ACK}},
-	{RET_SET_MIDI_PORT_FILTER, AcceptedAnswers{ACK}},
-	{GET_MIDI_PORT_REMAP, AcceptedAnswers{RET_SET_MIDI_PORT_REMAP, ACK}},
-	{RET_SET_MIDI_PORT_REMAP, AcceptedAnswers{ACK}},
-	{GET_MIDI_PORT_ROUTE, AcceptedAnswers{RET_SET_MIDI_PORT_ROUTE, ACK}},
-	{RET_SET_MIDI_PORT_ROUTE, AcceptedAnswers{ACK}},
-	{GET_AUDIO_GLOBAL_PARM, AcceptedAnswers{RET_SET_AUDIO_GLOBAL_PARM}},
-	{RET_SET_AUDIO_GLOBAL_PARM, AcceptedAnswers{ACK}},
-	{GET_AUDIO_PORT_PARM, AcceptedAnswers{RET_SET_AUDIO_PORT_PARM, ACK}},
-	{RET_SET_AUDIO_PORT_PARM, AcceptedAnswers{ACK}},
-	{GET_AUDIO_DEVICE_PARM, AcceptedAnswers{RET_SET_AUDIO_DEVICE_PARM, ACK}},
-	{GET_AUDIO_CONTROL_PARM, AcceptedAnswers{RET_SET_AUDIO_CONTROL_PARM, ACK}},
-	{GET_AUDIO_CONTROL_DETAIL,
-	 AcceptedAnswers{RET_SET_AUDIO_CONTROL_DETAIL, ACK}},
-	{GET_AUDIO_CONTROL_DETAIL_VALUE,
-	 AcceptedAnswers{RET_SET_AUDIO_CONTROL_DETAIL_VALUE, ACK}},
-	{RET_SET_AUDIO_CONTROL_DETAIL_VALUE, AcceptedAnswers{ACK}},
-	{GET_AUDIO_CLOCK_PARM, AcceptedAnswers{RET_SET_AUDIO_CLOCK_PARM, ACK}},
-	{RET_SET_AUDIO_CLOCK_PARM, AcceptedAnswers{ACK}},
-	{GET_AUDIO_PATCHBAY_PARM,
-	 AcceptedAnswers{RET_SET_AUDIO_PATCHBAY_PARM, ACK}},
-	{RET_SET_AUDIO_PATCHBAY_PARM, AcceptedAnswers{ACK}},
-	{GET_AUDIO_CHANNEL_NAME, AcceptedAnswers{RET_SET_AUDIO_CHANNEL_NAME, ACK}},
-	{RET_SET_AUDIO_CHANNEL_NAME, AcceptedAnswers{ACK}},
-	{GET_AUDIO_PORT_METER_VALUE,
-	 AcceptedAnswers{RET_AUDIO_PORT_METER_VALUE, ACK}}};
+    {GET_DEVICE, AcceptedAnswers{RET_DEVICE}},
+    {GET_COMMAND_LIST, AcceptedAnswers{RET_COMMAND_LIST}},
+    {GET_INFO_LIST, AcceptedAnswers{RET_INFO_LIST}},
+    {GET_INFO, AcceptedAnswers{RET_SET_INFO}},
+    {RET_SET_INFO, AcceptedAnswers{ACK}},
+    {GET_RESET_LIST, AcceptedAnswers{RET_RESET_LIST, ACK}},
+    {GET_SAVE_RESTORE_LIST, AcceptedAnswers{RET_SAVE_RESTORE_LIST, ACK}},
+    {GET_ETHERNET_PORT_INFO, AcceptedAnswers{RET_SET_ETHERNET_PORT_INFO, ACK}},
+    {RET_SET_ETHERNET_PORT_INFO, AcceptedAnswers{ACK}},
+    {RESET, AcceptedAnswers{ACK}},
+    {SAVE_RESTORE, AcceptedAnswers{ACK}},
+    {GET_GIZMO_COUNT, AcceptedAnswers{RET_GIZMO_COUNT, ACK}},
+    {GET_GIZMO_INFO, AcceptedAnswers{RET_GIZMO_INFO, ACK}},
+    {GET_MIDI_INFO, AcceptedAnswers{RET_SET_MIDI_INFO, ACK}},
+    {GET_MIDI_PORT_INFO, AcceptedAnswers{RET_SET_MIDI_PORT_INFO, ACK}},
+    {RET_SET_MIDI_PORT_INFO, AcceptedAnswers{ACK}},
+    {GET_MIDI_PORT_FILTER, AcceptedAnswers{RET_SET_MIDI_PORT_FILTER, ACK}},
+    {RET_SET_MIDI_PORT_FILTER, AcceptedAnswers{ACK}},
+    {GET_MIDI_PORT_REMAP, AcceptedAnswers{RET_SET_MIDI_PORT_REMAP, ACK}},
+    {RET_SET_MIDI_PORT_REMAP, AcceptedAnswers{ACK}},
+    {GET_MIDI_PORT_ROUTE, AcceptedAnswers{RET_SET_MIDI_PORT_ROUTE, ACK}},
+    {RET_SET_MIDI_PORT_ROUTE, AcceptedAnswers{ACK}},
+    {GET_AUDIO_GLOBAL_PARM, AcceptedAnswers{RET_SET_AUDIO_GLOBAL_PARM}},
+    {RET_SET_AUDIO_GLOBAL_PARM, AcceptedAnswers{ACK}},
+    {GET_AUDIO_PORT_PARM, AcceptedAnswers{RET_SET_AUDIO_PORT_PARM, ACK}},
+    {RET_SET_AUDIO_PORT_PARM, AcceptedAnswers{ACK}},
+    {GET_AUDIO_DEVICE_PARM, AcceptedAnswers{RET_SET_AUDIO_DEVICE_PARM, ACK}},
+    {GET_AUDIO_CONTROL_PARM, AcceptedAnswers{RET_SET_AUDIO_CONTROL_PARM, ACK}},
+    {GET_AUDIO_CONTROL_DETAIL,
+     AcceptedAnswers{RET_SET_AUDIO_CONTROL_DETAIL, ACK}},
+    {GET_AUDIO_CONTROL_DETAIL_VALUE,
+     AcceptedAnswers{RET_SET_AUDIO_CONTROL_DETAIL_VALUE, ACK}},
+    {RET_SET_AUDIO_CONTROL_DETAIL_VALUE, AcceptedAnswers{ACK}},
+    {GET_AUDIO_CLOCK_PARM, AcceptedAnswers{RET_SET_AUDIO_CLOCK_PARM, ACK}},
+    {RET_SET_AUDIO_CLOCK_PARM, AcceptedAnswers{ACK}},
+    {GET_AUDIO_PATCHBAY_PARM,
+     AcceptedAnswers{RET_SET_AUDIO_PATCHBAY_PARM, ACK}},
+    {RET_SET_AUDIO_PATCHBAY_PARM, AcceptedAnswers{ACK}},
+    {GET_AUDIO_CHANNEL_NAME, AcceptedAnswers{RET_SET_AUDIO_CHANNEL_NAME, ACK}},
+    {RET_SET_AUDIO_CHANNEL_NAME, AcceptedAnswers{ACK}},
+    {GET_AUDIO_PORT_METER_VALUE,
+     AcceptedAnswers{RET_AUDIO_PORT_METER_VALUE, ACK}}};

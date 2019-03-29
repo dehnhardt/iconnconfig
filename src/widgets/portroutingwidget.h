@@ -33,7 +33,7 @@ class PortRoutingWidget : public QWidget {
 	std::shared_ptr<RetSetMidiPortRoute> m_pMidiPortRoute;
 	QTimer *updateTimer = nullptr;
 
-	std::vector<std::vector<std::shared_ptr<PortButton>>> *buttonLines;
+	std::vector<std::vector<PortButton *>> *buttonLines;
 
   private:
 	// methods

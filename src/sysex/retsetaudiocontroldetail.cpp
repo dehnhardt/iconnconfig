@@ -34,7 +34,7 @@ void RetSetAudioControlDetail::parseAnswerData() {
 		offset++;
 		parseEditFlags(m_pData->at(offset));
 		offset++;
-		parseVolumeValues(m_pData, offset);
+		parseVolumeValues(m_pData.get(), offset);
 		m_iNameLenght = m_pData->at(offset);
 		offset++;
 		m_sChannelName = std::string(
