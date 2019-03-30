@@ -23,7 +23,10 @@ PortFilterSettingsWidget::PortFilterSettingsWidget(PortDirection direction,
 	createConnections();
 }
 
-PortFilterSettingsWidget::~PortFilterSettingsWidget() { delete ui; }
+PortFilterSettingsWidget::~PortFilterSettingsWidget() {
+	ui->m_pTblMidiChannelMessageFilter->model()->deleteLater();
+	delete ui;
+}
 
 void PortFilterSettingsWidget::setMIDISystemMessagesFilter(
 	MIDISystemMessagesFilter *midiSystemMessagesFilter) {
@@ -180,6 +183,10 @@ MidiControllerFilterTM::MidiControllerFilterTM(
 	this->m_ppMidiControllerFilter = midiControllerFilter;
 }
 
+MidiControllerFilterTM::~MidiControllerFilterTM() {
+	delete[] m_ppMidiControllerFilter;
+}
+
 int MidiControllerFilterTM::rowCount(const QModelIndex &parent
 									 __attribute__((unused))) const {
 	return sizeof(m_ppMidiControllerFilter);
@@ -284,6 +291,8 @@ MidiChannelMessagesFilterTM::MidiChannelMessagesFilterTM(
 	MIDIChannelMessagesFilter **midiChannelMessagesFilter) {
 	this->m_ppMidiChannelMessagesFilter = midiChannelMessagesFilter;
 }
+
+MidiChannelMessagesFilterTM::~MidiChannelMessagesFilterTM() { deleteLater(); }
 
 int MidiChannelMessagesFilterTM::rowCount(const QModelIndex &) const {
 	return 6;

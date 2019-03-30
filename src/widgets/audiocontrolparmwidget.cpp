@@ -7,17 +7,21 @@
 #include <QScrollArea>
 
 AudioControlParmWidget::AudioControlParmWidget(Device *device,
-											   unsigned int portId,
-											   QWidget *parent)
-	: QWidget(parent), m_pDevice(device), m_iPortId(portId) {
+                                               unsigned int portId,
+                                               QWidget *parent)
+    : QWidget(parent), m_pDevice(device), m_iPortId(portId) {
 	m_pAudioControlParms =
-		new QMap<AudioControllerType, QVector<RetSetAudioControlParm *> *>();
+	    new QMap<AudioControllerType,
+	             QVector<std::shared_ptr<RetSetAudioControlParm>> *>();
 	createLayout();
 	loadAudioControlParms();
 	addAudioControllerSections();
 }
 
-AudioControlParmWidget::~AudioControlParmWidget() {}
+AudioControlParmWidget::~AudioControlParmWidget() {
+	m_pAudioControlParms->clear();
+	delete m_pAudioControlParms;
+}
 
 void AudioControlParmWidget::createLayout() {
 	m_pLayout = new QVBoxLayout();
@@ -27,14 +31,15 @@ void AudioControlParmWidget::createLayout() {
 }
 
 void AudioControlParmWidget::loadAudioControlParms() {
-	this->m_pGetAudioControlParm = new GetAudioControlParm(m_pDevice);
-	m_pGetAudioControlParm->setPortId(static_cast<unsigned int>(m_iPortId));
+	std::unique_ptr<GetAudioControlParm> getAudioControlParm =
+	    std::make_unique<GetAudioControlParm>(m_pDevice);
+	getAudioControlParm->setPortId(static_cast<unsigned int>(m_iPortId));
 	for (unsigned int controllerNumber = 1; controllerNumber < 128;
-		 controllerNumber++) {
-		m_pGetAudioControlParm->setControllerNumber(controllerNumber);
-		RetSetAudioControlParm *retSetAudioControlParm =
-			dynamic_cast<RetSetAudioControlParm *>(
-				m_pGetAudioControlParm->query());
+	     controllerNumber++) {
+		getAudioControlParm->setControllerNumber(controllerNumber);
+		std::shared_ptr<RetSetAudioControlParm> retSetAudioControlParm =
+		    std::dynamic_pointer_cast<RetSetAudioControlParm>(
+		        getAudioControlParm->querySmart());
 		if (retSetAudioControlParm == nullptr)
 			break;
 		addAudioControlParm(retSetAudioControlParm);
@@ -42,29 +47,30 @@ void AudioControlParmWidget::loadAudioControlParms() {
 }
 
 void AudioControlParmWidget::addAudioControlParm(
-	RetSetAudioControlParm *retSetAudioControlParm) {
+    std::shared_ptr<RetSetAudioControlParm> retSetAudioControlParm) {
 	AudioControllerType controllerType =
-		retSetAudioControlParm->getControllerType();
-	QVector<RetSetAudioControlParm *> *v =
-		m_pAudioControlParms->value(controllerType);
+	    retSetAudioControlParm->getControllerType();
+	QVector<std::shared_ptr<RetSetAudioControlParm>> *v =
+	    m_pAudioControlParms->value(controllerType);
 	if (!v) {
-		v = new QVector<RetSetAudioControlParm *>();
+		v = new QVector<std::shared_ptr<RetSetAudioControlParm>>();
 		m_pAudioControlParms->insert(controllerType, v);
 	}
 	v->push_back(retSetAudioControlParm);
 }
 
 void AudioControlParmWidget::addAudioControllerSections() {
-	QMap<AudioControllerType, QVector<RetSetAudioControlParm *> *>::iterator i;
+	QMap<AudioControllerType,
+	     QVector<std::shared_ptr<RetSetAudioControlParm>> *>::iterator i;
 	for (i = m_pAudioControlParms->begin(); i != m_pAudioControlParms->end();
-		 ++i) {
+	     ++i) {
 		AudioControllerType type = i.key();
 		switch (type) {
 		case CT_FEATUERE: {
 			AudioControlParmFeaturesWidget *featureWidget =
-				new AudioControlParmFeaturesWidget(m_pDevice, i.value());
+			    new AudioControlParmFeaturesWidget(m_pDevice, i.value());
 			this->m_pFeatureTabWidget->addTab(featureWidget,
-											  getFeatureName(type));
+			                                  getFeatureName(type));
 		} break;
 		default:
 			break;
@@ -73,7 +79,7 @@ void AudioControlParmWidget::addAudioControllerSections() {
 }
 
 QString AudioControlParmWidget::getFeatureName(
-	AudioControllerType audioControllerType) {
+    AudioControllerType audioControllerType) {
 	switch (audioControllerType) {
 	case CT_FEATUERE:
 		return tr("Features");

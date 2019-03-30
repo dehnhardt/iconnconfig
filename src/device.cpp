@@ -25,11 +25,11 @@
 #include <unistd.h>
 
 Device::Device(unsigned int inPortNumber, unsigned int outPortNumber,
-			   unsigned long serialNumber, unsigned int productId) {
+               unsigned long serialNumber, unsigned int productId) {
 	this->m_iInPortNumber = inPortNumber;
 	this->m_iOutPortNumber = outPortNumber;
 	this->m_pSerialNumber =
-		new MIDISysexValue(static_cast<long>(serialNumber), 5);
+	    new MIDISysexValue(static_cast<long>(serialNumber), 5);
 	this->m_pProductId = new MIDISysexValue(productId, 2);
 	this->debug = true;
 	this->m_pInformationTree = new DeviceStructure;
@@ -41,31 +41,17 @@ Device::Device(unsigned int inPortNumber, unsigned int outPortNumber,
 }
 
 Device::Device(Device *device)
-	: Device(
-		  device->getInPortNumer(), device->getOutPortNumer(),
-		  static_cast<unsigned long>(device->getSerialNumber()->getLongValue()),
-		  static_cast<unsigned int>(device->getProductId()->getLongValue())) {}
+    : Device(
+          device->getInPortNumer(), device->getOutPortNumer(),
+          static_cast<unsigned long>(device->getSerialNumber()->getLongValue()),
+          static_cast<unsigned int>(device->getProductId()->getLongValue())) {}
 
 Device::~Device() {
 	disconnect();
-	delete m_pLastSendMessage;
-	delete m_pLastRetrieveMessage;
-	delete m_pSerialNumber;
-	delete m_pProductId;
-	delete m_pMidiInfo;
-	delete m_pGlobalAudioParam;
 
-	delete m_pCommands;
-	delete m_pRetInfoList;
-	delete m_pDeviceInfo;
-
-	MIDI_PORT_INFOS::iterator it, it2;
+	MidiPortInfos::iterator it;
 	for (it = m_pMidiPortInfos->begin(); it != m_pMidiPortInfos->end(); it++) {
-		std::vector<RetSetMidiPortInfo *> *v = it->second;
-		std::vector<RetSetMidiPortInfo *>::iterator it2;
-		for (it2 = v->begin(); it2 < v->end(); it2++) {
-			delete *it2;
-		}
+		std::vector<std::shared_ptr<RetSetMidiPortInfo>> *v = it->second;
 		v->clear();
 		delete v;
 	}
@@ -73,17 +59,24 @@ Device::~Device() {
 	delete m_pMidiPortInfos;
 	m_pMidiPortInfos = nullptr;
 
-	/*DeviceStructure::iterator it;
-	for( it = m_pInformationTree->begin(); it < m_pInformationTree->end();
-	++it){
-
+	/*
+	DeviceStructure::iterator it1;
+	for (it1 = m_pInformationTree->begin(); it1 != m_pInformationTree->end();
+		 ++it1) {
+		if (nullptr != it1->second) {
+			delete it->second;
+			it->second = nullptr;
+		}
 	}*/
 	m_pInformationTree->clear();
 	delete m_pInformationTree;
 
-	delete m_pDeviceHeader;
+	delete m_pSaveRestoreList;
 	delete m_pFullHeader;
-	delete saveRestoreList;
+	delete m_pSerialNumber;
+	delete m_pProductId;
+	delete midiin;
+	delete midiout;
 }
 
 BYTE_VECTOR *Device::getManufacturerHeader() {
@@ -100,13 +93,13 @@ BYTE_VECTOR *Device::getDeviceHeader() {
 	if (m_pDeviceHeader == nullptr) {
 		m_pDeviceHeader = new BYTE_VECTOR();
 		m_pDeviceHeader->reserve(m_pProductId->getByteValue()->size() +
-								 m_pSerialNumber->getByteValue()->size());
+		                         m_pSerialNumber->getByteValue()->size());
 		m_pDeviceHeader->insert(m_pDeviceHeader->end(),
-								m_pProductId->getByteValue()->begin(),
-								m_pProductId->getByteValue()->end());
+		                        m_pProductId->getByteValue()->begin(),
+		                        m_pProductId->getByteValue()->end());
 		m_pDeviceHeader->insert(m_pDeviceHeader->end(),
-								m_pSerialNumber->getByteValue()->begin(),
-								m_pSerialNumber->getByteValue()->end());
+		                        m_pSerialNumber->getByteValue()->begin(),
+		                        m_pSerialNumber->getByteValue()->end());
 	}
 	return m_pDeviceHeader;
 }
@@ -115,13 +108,13 @@ BYTE_VECTOR *Device::getFullHeader() {
 	if (m_pFullHeader == nullptr) {
 		m_pFullHeader = new BYTE_VECTOR();
 		m_pFullHeader->reserve(Device::getManufacturerHeader()->size() +
-							   getDeviceHeader()->size() + 1);
+		                       getDeviceHeader()->size() + 1);
 		m_pFullHeader->insert(m_pFullHeader->end(),
-							  Device::getManufacturerHeader()->begin(),
-							  Device::getManufacturerHeader()->end());
+		                      Device::getManufacturerHeader()->begin(),
+		                      Device::getManufacturerHeader()->end());
 		m_pFullHeader->push_back(Device::MESSAGE_CLASS);
 		m_pFullHeader->insert(m_pFullHeader->end(), getDeviceHeader()->begin(),
-							  getDeviceHeader()->end());
+		                      getDeviceHeader()->end());
 	}
 	return m_pFullHeader;
 }
@@ -138,10 +131,10 @@ bool Device::setupMidi() {
 	}
 	if (!midiin->isPortOpen())
 		try {
-			midiin->openPort(m_iInPortNumber);
-		} catch (...) {
-			throw;
-		}
+		    midiin->openPort(m_iInPortNumber);
+	    } catch (...) {
+		    throw;
+	    }
 
 	if (!midiout) {
 		nameOut << "MioConfig Out " << m_pSerialNumber->getLongValue();
@@ -151,10 +144,10 @@ bool Device::setupMidi() {
 	}
 	if (!midiout->isPortOpen())
 		try {
-			midiout->openPort(m_iOutPortNumber);
-		} catch (...) {
-			throw;
-		}
+		    midiout->openPort(m_iOutPortNumber);
+	    } catch (...) {
+		    throw;
+	    }
 
 	return midiin->isPortOpen() && midiout->isPortOpen();
 }
@@ -204,7 +197,7 @@ BYTE_VECTOR *Device::retrieveSysex() {
 			midiin->getMessage(data);
 			if (debug)
 				std::cout << "Skipping " << std::dec << y << " midi messages"
-						  << std::endl;
+				          << std::endl;
 			y++;
 		}
 	}
@@ -223,11 +216,11 @@ BYTE_VECTOR *Device::retrieveSysex() {
 bool Device::checkSysex(BYTE_VECTOR *data) {
 	if (!data || data->size() <= 0)
 		throw new CommunicationException(
-			CommunicationException::ANSWER_TIMEOOUT, this);
+	        CommunicationException::ANSWER_TIMEOOUT, this);
 	if (data->size() < 20)
 		throw new ProtocolException(ProtocolException::MESSAGE_TO_SHORT, this);
 	BYTE_VECTOR *dataHeader =
-		new BYTE_VECTOR(data->begin() + 1, data->begin() + 12);
+	    new BYTE_VECTOR(data->begin() + 1, data->begin() + 12);
 	BYTE_VECTOR *localHeader = getFullHeader();
 	if (!MIDI::compareByteVector(dataHeader, localHeader))
 		throw new ProtocolException(ProtocolException::WRONG_HEADER, this);
@@ -239,15 +232,17 @@ void Device::requestMidiPortInfos() {
 	int midiPorts = getMidiInfo()->getMidiPorts();
 	if (m_pMidiPortInfos == nullptr) {
 		m_pMidiPortInfos =
-			new std::map<int, std::vector<RetSetMidiPortInfo *> *>();
+		    new std::map<int,
+		                 std::vector<std::shared_ptr<RetSetMidiPortInfo>> *>();
 	}
 	GetMidiPortInfo *info = new GetMidiPortInfo(this);
 	for (int i = 1; i <= midiPorts; ++i) {
-		std::vector<RetSetMidiPortInfo *> *v = nullptr;
+		std::vector<std::shared_ptr<RetSetMidiPortInfo>> *v = nullptr;
 		info->setPortNumer(i);
-		RetSetMidiPortInfo *midiPortInfo = nullptr;
+		std::shared_ptr<RetSetMidiPortInfo> midiPortInfo;
 		try {
-			midiPortInfo = dynamic_cast<RetSetMidiPortInfo *>(info->query());
+			midiPortInfo = std::dynamic_pointer_cast<RetSetMidiPortInfo>(
+			    info->querySmart());
 		} catch (CommunicationException *ce) {
 			std::cerr << ce->getErrorMessage();
 			continue;
@@ -259,17 +254,19 @@ void Device::requestMidiPortInfos() {
 		try {
 			v = m_pMidiPortInfos->at(portType);
 		} catch (const std::out_of_range __attribute__((unused)) & oor) {
-			v = new std::vector<RetSetMidiPortInfo *>;
+			v = new std::vector<std::shared_ptr<RetSetMidiPortInfo>>;
 			m_pMidiPortInfos->insert(
-				std::pair<int, std::vector<RetSetMidiPortInfo *> *>(portType,
-																	v));
+			    std::pair<int,
+			              std::vector<std::shared_ptr<RetSetMidiPortInfo>> *>(
+			        portType, v));
 		}
 
 		if (v == nullptr) {
-			v = new std::vector<RetSetMidiPortInfo *>();
+			v = new std::vector<std::shared_ptr<RetSetMidiPortInfo>>();
 			m_pMidiPortInfos->insert(
-				std::pair<int, std::vector<RetSetMidiPortInfo *> *>(portType,
-																	v));
+			    std::pair<int,
+			              std::vector<std::shared_ptr<RetSetMidiPortInfo>> *>(
+			        portType, v));
 		}
 		v->push_back(midiPortInfo);
 	}
@@ -277,45 +274,48 @@ void Device::requestMidiPortInfos() {
 }
 
 void Device::addCommandToStructure(
-	Command cmd, DeviceStructureContainer *structureContainer) {
+    Command cmd, DeviceStructureContainer *structureContainer) {
 	m_pInformationTree->insert(std::pair<Command, DeviceStructureContainer *>(
-		cmd, structureContainer));
+	    cmd, structureContainer));
 }
 
-RetSetAudioGlobalParm *Device::getGlobalAudioParam() const {
+std::shared_ptr<RetSetAudioGlobalParm> Device::getGlobalAudioParam() const {
 	return m_pGlobalAudioParam;
 }
 
 bool Device::queryDeviceInfo() {
 
-	GetCommandList *getCommandList = new GetCommandList(this);
+	std::shared_ptr<GetCommandList> getCommandList =
+	    std::make_shared<GetCommandList>(this);
 	getCommandList->setDebug(true);
 	try {
-		SysExMessage *m = getCommandList->query();
-		m_pCommands = dynamic_cast<RetCommandList *>(m);
+		m_pCommands = std::dynamic_pointer_cast<RetCommandList>(
+		    getCommandList->querySmart());
 		if (m_pCommands)
 			addCommandToStructure(m_pCommands->getCommand(),
-								  new DeviceStructureContainer(m_pCommands));
+			                      new DeviceStructureContainer(m_pCommands));
 	} catch (...) {
 		throw;
 	}
-	delete getCommandList;
+	// delete getCommandList;
 
 	if (m_pCommands->isCommandSupported(Command::GET_INFO_LIST)) {
-		GetInfoList *getInfoList = new GetInfoList(this);
+		std::shared_ptr<GetInfoList> getInfoList =
+		    std::make_shared<GetInfoList>(this);
 		getInfoList->setDebug(true);
 		try {
-			m_pRetInfoList = dynamic_cast<RetInfoList *>(getInfoList->query());
-			DeviceStructureContainer *c =
-				new DeviceStructureContainer(m_pRetInfoList);
+			m_pRetInfoList = std::dynamic_pointer_cast<RetInfoList>(
+			    getInfoList->querySmart());
+			DeviceStructureContainer *c = new DeviceStructureContainer(
+			    std::dynamic_pointer_cast<SysExMessage>(m_pRetInfoList));
 			addCommandToStructure(m_pRetInfoList->getCommand(), c);
 		} catch (...) {
 			throw;
 		}
-		delete getInfoList;
+		// delete getInfoList;
 	}
 
-	m_pDeviceInfo = new GetInfo(this, m_pRetInfoList);
+	m_pDeviceInfo = std::make_shared<GetInfo>(this, m_pRetInfoList);
 
 	if (m_pRetInfoList->isInfoImplemented(GetInfo::DEVICE_NAME))
 		m_sDeviceName = m_pDeviceInfo->getItemValue(GetInfo::DEVICE_NAME);
@@ -328,42 +328,43 @@ bool Device::queryDeviceInfo() {
 
 	if (m_pRetInfoList->isInfoImplemented(GetInfo::FIRMWARE_VERSION))
 		m_sFirmwareVersion =
-			m_pDeviceInfo->getItemValue(GetInfo::FIRMWARE_VERSION);
+		    m_pDeviceInfo->getItemValue(GetInfo::FIRMWARE_VERSION);
 
 	if (m_pRetInfoList->isInfoImplemented(GetInfo::HARDWARE_VERSION))
 		m_sHardwareVersion =
-			m_pDeviceInfo->getItemValue(GetInfo::HARDWARE_VERSION);
+		    m_pDeviceInfo->getItemValue(GetInfo::HARDWARE_VERSION);
 
 	if (m_pRetInfoList->isInfoImplemented(GetInfo::MANUFACTURER_NAME))
 		m_sManufacturerName =
-			m_pDeviceInfo->getItemValue(GetInfo::MANUFACTURER_NAME);
+		    m_pDeviceInfo->getItemValue(GetInfo::MANUFACTURER_NAME);
 
 	if (m_pRetInfoList->isInfoImplemented(GetInfo::MODEL_NUMBER))
 		m_sModelNumber = m_pDeviceInfo->getItemValue(GetInfo::MODEL_NUMBER);
 
 	if (m_pCommands->isCommandSupported(Command::GET_MIDI_INFO)) {
-		GetMidiInfo *getMidiInfo = new GetMidiInfo(this);
-		this->m_pMidiInfo =
-			dynamic_cast<RetSetMidiInfo *>(getMidiInfo->query());
-		delete getMidiInfo;
+		std::shared_ptr<GetMidiInfo> getMidiInfo =
+		    std::make_shared<GetMidiInfo>(this);
+		this->m_pMidiInfo = std::dynamic_pointer_cast<RetSetMidiInfo>(
+		    getMidiInfo->querySmart());
 	}
 	if (m_pCommands->isCommandSupported(Command::GET_MIDI_PORT_INFO) &&
-		this->m_pMidiInfo != nullptr)
+	    this->m_pMidiInfo != nullptr)
 		requestMidiPortInfos();
 	if (m_pCommands->isCommandSupported(Command::GET_SAVE_RESTORE_LIST)) {
 		GetSaveRestoreList *getSaveRestoreList = new GetSaveRestoreList(this);
-		RetSaveRestoreList *l =
-			dynamic_cast<RetSaveRestoreList *>(getSaveRestoreList->query());
-		saveRestoreList = l->getSaveRestoreList();
+		std::shared_ptr<RetSaveRestoreList> l =
+		    std::dynamic_pointer_cast<RetSaveRestoreList>(
+		        getSaveRestoreList->querySmart());
+		m_pSaveRestoreList = l->getSaveRestoreList();
 		delete getSaveRestoreList;
-		// delete l;
 	}
+	// Audio setings
 	if (m_pCommands->isCommandSupported(Command::GET_AUDIO_GLOBAL_PARM)) {
-		GetAudioGlobalParm *getAudioGlobalParam = new GetAudioGlobalParm(this);
+		std::unique_ptr<GetAudioGlobalParm> getAudioGlobalParam =
+		    std::make_unique<GetAudioGlobalParm>(this);
 		getAudioGlobalParam->setDebug(true);
-		m_pGlobalAudioParam =
-			dynamic_cast<RetSetAudioGlobalParm *>(getAudioGlobalParam->query());
-		delete getAudioGlobalParam;
+		m_pGlobalAudioParam = std::dynamic_pointer_cast<RetSetAudioGlobalParm>(
+		    getAudioGlobalParam->querySmart());
 	}
 	return true;
 }
@@ -384,31 +385,31 @@ bool Device::isDeviceValid() {
 }
 
 SysExMessage *Device::getSysExMessage(Command cmd) {
-	SysExMessage *m = nullptr;
+	std::shared_ptr<SysExMessage> m;
 	switch (cmd) {
 	case GET_COMMAND_LIST:
-		m = new GetCommandList(this);
+		m = std::make_shared<GetCommandList>(this);
 		break;
 	case Command::GET_ETHERNET_PORT_INFO:
-		m = new GetEthernetPortInfo(this);
+		m = std::make_shared<GetEthernetPortInfo>(this);
 		break;
 	case Command::GET_INFO_LIST:
-		m = new GetInfoList(this);
+		m = std::make_shared<GetInfoList>(this);
 		break;
 	case Command::GET_MIDI_INFO:
-		m = new GetMidiInfo(this);
+		m = std::make_shared<GetMidiInfo>(this);
 		break;
 	default:
 		return nullptr;
 	}
 	addCommandToStructure(cmd, new DeviceStructureContainer(m));
-	return m;
+	return m.get();
 }
 
-MIDI_PORT_INFOS *Device::getMidiPortInfos() const { return m_pMidiPortInfos; }
+MidiPortInfos *Device::getMidiPortInfos() const { return m_pMidiPortInfos; }
 
 void Device::setDeviceInformation(std::string modelName,
-								  std::string deviceName) {
+                                  std::string deviceName) {
 	this->m_sModelName = modelName;
 	this->m_sDeviceName = deviceName;
 }

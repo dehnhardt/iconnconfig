@@ -16,7 +16,7 @@ public:
 
 private:
 	void createAnswer(Command cmd, BYTE_VECTOR *message, Device *device) {
-		m_pAnswer = new RetGizmoCount(cmd, message, device);
+		m_pAnswer = std::make_shared<RetGizmoCount>(cmd, message, device);
 		m_pAnswer->parseAnswerData();
 	}
 };

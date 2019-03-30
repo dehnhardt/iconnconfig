@@ -13,7 +13,8 @@ class GetAudioGlobalParm : public SysExMessage {
 
   private:
 	void createAnswer(Command cmd, BYTE_VECTOR *message, Device *device) {
-		m_pAnswer = new RetSetAudioGlobalParm(cmd, message, device);
+		m_pAnswer =
+			std::make_shared<RetSetAudioGlobalParm>(cmd, message, device);
 		m_pAnswer->parseAnswerData();
 	}
 };

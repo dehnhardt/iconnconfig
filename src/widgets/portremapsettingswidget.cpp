@@ -29,7 +29,11 @@ PortRemapSettingsWidget::PortRemapSettingsWidget(PortDirection direction,
 	createConnections();
 }
 
-PortRemapSettingsWidget::~PortRemapSettingsWidget() { delete ui; }
+PortRemapSettingsWidget::~PortRemapSettingsWidget() {
+	ui->m_pTblMidiControllerRemap->model()->deleteLater();
+	ui->m_pTblMidiChannelMessageRemap->model()->deleteLater();
+	delete ui;
+}
 
 void PortRemapSettingsWidget::setMidiControllerRemap(
 	MIDIControllerRemap **midiControllerRemap) {
@@ -200,6 +204,8 @@ MidiChannelMessagesRemapTM::MidiChannelMessagesRemapTM(
 	MIDIChannelMessagesRemap **midiChannelMessagesRemap) {
 	this->m_ppMidiChannelMessagesRemap = midiChannelMessagesRemap;
 }
+
+MidiChannelMessagesRemapTM::~MidiChannelMessagesRemapTM() { deleteLater(); }
 
 int MidiChannelMessagesRemapTM::rowCount(const QModelIndex &) const {
 	return 7;

@@ -6,7 +6,8 @@
 #include <QMessageBox>
 
 GlobalAudioConfigurationWidget::GlobalAudioConfigurationWidget(
-	RetSetAudioGlobalParm *retSetAudioGlobalParam, QWidget *parent)
+	std::shared_ptr<RetSetAudioGlobalParm> retSetAudioGlobalParam,
+	QWidget *parent)
 	: QWidget(parent), ui(new Ui::GlobalAudioConfiguration),
 	  m_pRetSetAudioGlobalParam(retSetAudioGlobalParam) {
 	ui->setupUi(this);

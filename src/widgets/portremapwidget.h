@@ -30,8 +30,8 @@ class PortRemapWidget : public QWidget {
 	// members
 	Device *device;
 	int portNumber = 0;
-	RetSetMidiPortRemap *m_pMidiPortRemapIn = nullptr;
-	RetSetMidiPortRemap *m_pMidiPortRemapOut = nullptr;
+	std::shared_ptr<RetSetMidiPortRemap> m_pMidiPortRemapIn = nullptr;
+	std::shared_ptr<RetSetMidiPortRemap> m_pMidiPortRemapOut = nullptr;
 	QTabWidget *m_pRemapDirectionTabWidget = nullptr;
 	PortRemapSettingsWidget *m_pInputRemapWidget = nullptr;
 	PortRemapSettingsWidget *m_pOutputRemapWidget = nullptr;

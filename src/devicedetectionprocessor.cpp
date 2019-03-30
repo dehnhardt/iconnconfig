@@ -84,7 +84,7 @@ unsigned long DeviceDetectionProcessor::detectDevices() {
 	unsigned long serialNumber;
 	bool bDeviceFound = false;
 	BYTE_VECTOR *qMessage = q->getMIDISysExMessage();
-	std::map<unsigned long, Device *> *devices =
+	std::map<unsigned long, std::shared_ptr<Device>> *devices =
 		Configuration::getInstance().getDevices();
 	// for each output signal
 	for (unsigned int i = 0; i < nOutPortCount; i++) {
@@ -174,7 +174,7 @@ unsigned long DeviceDetectionProcessor::detectDevices() {
 	}
 	sendProgressEvent(getMidiInPortCount() * getMidiOutPortCount());
 
-	Device *d = nullptr;
+	std::shared_ptr<Device> d;
 	try {
 		d = devices->at(defaultDeviceSerialNumber);
 		d->setDefault(true);

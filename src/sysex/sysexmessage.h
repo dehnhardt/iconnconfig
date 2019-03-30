@@ -57,7 +57,9 @@ class SysExMessage {
 	long getDataAsLong();
 	Command parseAnswer(BYTE_VECTOR *m_pAnswer);
 	SysExMessage *getAnswer();
+	std::shared_ptr<SysExMessage> getAnswerSmart();
 	SysExMessage *query();
+	std::shared_ptr<SysExMessage> querySmart();
 	int execute();
 	void setDebug(bool debug);
 	bool getDebug();
@@ -112,13 +114,13 @@ class SysExMessage {
 	unsigned int m_iDataLength = 0;
 	unsigned char m_iCmdflags;
 	AcceptedAnswers m_AcceptedAnswers;
-	Device *m_pDevice = nullptr;
-	SysExMessage *m_pAnswer = nullptr;
+	Device *m_pDevice;
+	std::shared_ptr<SysExMessage> m_pAnswer;
 	BYTE_VECTOR *m_pCommandData = nullptr;
 	BYTE_VECTOR *m_pTransactionId = nullptr;
 	BYTE_VECTOR *m_pDeviceHeader = nullptr;
 	BYTE_VECTOR *m_pResultData = nullptr;
-	BYTE_VECTOR *m_pData = nullptr;
+	std::shared_ptr<BYTE_VECTOR> m_pData = nullptr;
 
 	unsigned char m_iCommandVersionNumber = 0;
 

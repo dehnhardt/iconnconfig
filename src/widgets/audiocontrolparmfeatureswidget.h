@@ -14,7 +14,8 @@ class AudioControlParmFeaturesWidget : public QWidget {
 	Q_OBJECT
   public:
 	explicit AudioControlParmFeaturesWidget(
-		Device *device, QVector<RetSetAudioControlParm *> *features,
+		Device *device,
+		QVector<std::shared_ptr<RetSetAudioControlParm>> *features,
 		QWidget *parent = nullptr);
 
   private:
@@ -25,9 +26,10 @@ class AudioControlParmFeaturesWidget : public QWidget {
 
 	void createLayout();
 	void addFeatures();
-	void createFeatureWidget(RetSetAudioControlParm *retSetAudioControlParm);
-	GetAudioPortMeterValue *m_pGetAudioPortMeterValue = nullptr;
-	QVector<RetSetAudioControlParm *> *m_pFeatures = nullptr;
+	void createFeatureWidget(
+		std::shared_ptr<RetSetAudioControlParm> retSetAudioControlParm);
+	std::shared_ptr<GetAudioPortMeterValue> m_pGetAudioPortMeterValue;
+	QVector<std::shared_ptr<RetSetAudioControlParm>> *m_pFeatures = nullptr;
 
   signals:
 	void inMeterValueChanged(int channel, int value);

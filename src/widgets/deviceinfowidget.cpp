@@ -15,7 +15,8 @@
 #include <QTableWidget>
 
 DeviceInfoWidget::DeviceInfoWidget(MioMain *parent, Device *device,
-								   GetInfo *deviceInfo, QString windowTitle)
+								   std::shared_ptr<GetInfo> deviceInfo,
+								   QString windowTitle)
 	: MultiInfoWidget(parent, device, windowTitle), m_pDeviceInfo(deviceInfo) {
 	infoSections = new std::vector<MultiInfoListEntry *>();
 	if (device->getCommands()->isCommandSupported(Command::GET_INFO_LIST))
@@ -51,10 +52,10 @@ void DeviceInfoWidget::deviceInfoChanged(SysExMessage::DeviceInfoItem item,
 										 std::string value) {
 	std::cout << "DeviceInfoWidget: deviceInfoChanged " << item << " value "
 			  << value << std::endl;
-	std::map<SysExMessage::DeviceInfoItem, RetSetInfo *> *retSetInfos =
-		this->m_pDeviceInfo->getRetSetInfos();
+	std::map<SysExMessage::DeviceInfoItem, std::shared_ptr<RetSetInfo>>
+		*retSetInfos = this->m_pDeviceInfo->getRetSetInfos();
 	if (retSetInfos) {
-		RetSetInfo *info = (*retSetInfos)[item];
+		std::shared_ptr<RetSetInfo> info = (*retSetInfos)[item];
 		info->setValue(value);
 	}
 }

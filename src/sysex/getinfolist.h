@@ -16,7 +16,7 @@ class GetInfoList : public SysExMessage {
 
   private:
 	void createAnswer(Command cmd, BYTE_VECTOR *message, Device *device) {
-		m_pAnswer = new RetInfoList(cmd, message, device);
+		m_pAnswer = std::make_shared<RetInfoList>(cmd, message, device);
 		m_pAnswer->parseAnswerData();
 	}
 };

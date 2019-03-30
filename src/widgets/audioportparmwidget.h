@@ -3,6 +3,7 @@
 
 #include "../sysex/retsetaudioportparm.h"
 
+#include <QRegExpValidator>
 #include <QTimer>
 #include <QWidget>
 
@@ -14,8 +15,9 @@ class AudioPortParmWidget : public QWidget {
 	Q_OBJECT
 
   public:
-	explicit AudioPortParmWidget(RetSetAudioPortParm *retstetaudioportparm,
-								 QWidget *parent = nullptr);
+	explicit AudioPortParmWidget(
+		std::shared_ptr<RetSetAudioPortParm> retstetaudioportparm,
+		QWidget *parent = nullptr);
 	~AudioPortParmWidget();
 	void setData();
 	void setCurrentAudioConfiguration();
@@ -23,8 +25,9 @@ class AudioPortParmWidget : public QWidget {
   private:
 	Ui::AudioPortParmWidget *ui;
 	QTimer *m_pUpdateTimer = nullptr;
+	QRegExpValidator *m_pRegExpValidator = nullptr;
 
-	RetSetAudioPortParm *m_pRetSetAudioPortParm = nullptr;
+	std::shared_ptr<RetSetAudioPortParm> m_pRetSetAudioPortParm;
 	void createConnections();
 	bool checkTotalNumberOfAudioChannels();
 

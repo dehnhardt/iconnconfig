@@ -2,20 +2,23 @@
 
 GetInfo::GetInfo(Device *device)
 	: SysExMessage(Command::GET_INFO, SysExMessage::QUERY, device) {
-	m_pRetSetInfos = new std::map<DeviceInfoItem, RetSetInfo *>();
+	m_pRetSetInfos =
+		new std::map<DeviceInfoItem, std::shared_ptr<RetSetInfo>>();
 }
 
-GetInfo::GetInfo(Device *device, RetInfoList *infoList)
+GetInfo::GetInfo(Device *device, std::shared_ptr<RetInfoList> infoList)
 	: SysExMessage(Command::GET_INFO, SysExMessage::QUERY, device),
 	  m_pInfoList(infoList) {
-	m_pRetSetInfos = new std::map<DeviceInfoItem, RetSetInfo *>();
+	m_pRetSetInfos =
+		new std::map<DeviceInfoItem, std::shared_ptr<RetSetInfo>>();
 	std::vector<DeviceInfoItem> *implementedInfos =
 		infoList->getImplementedInfos();
 	for (std::vector<DeviceInfoItem>::iterator it = implementedInfos->begin();
 		 it < implementedInfos->end(); ++it) {
 		this->setInfoItem(*it);
 		execute();
-		RetSetInfo *info = dynamic_cast<RetSetInfo *>(getAnswer());
+		std::shared_ptr<RetSetInfo> info =
+			std::dynamic_pointer_cast<RetSetInfo>(getAnswerSmart());
 		(*m_pRetSetInfos)[*it] = info;
 	}
 }
@@ -38,11 +41,11 @@ std::string GetInfo::getDataAsString() {
 }
 
 std::string GetInfo::getItemValue(SysExMessage::DeviceInfoItem item) {
-	RetSetInfo *i = (*m_pRetSetInfos)[item];
+	std::shared_ptr<RetSetInfo> i = (*m_pRetSetInfos)[item];
 	return i->getValue();
 }
 
-std::map<SysExMessage::DeviceInfoItem, RetSetInfo *> *
+std::map<SysExMessage::DeviceInfoItem, std::shared_ptr<RetSetInfo>> *
 GetInfo::getRetSetInfos() {
 	return m_pRetSetInfos;
 }
@@ -55,6 +58,6 @@ void GetInfo::deviceInfoChanged(SysExMessage::DeviceInfoItem item,
 
 void GetInfo::createAnswer(Command cmd, std::vector<unsigned char> *message,
 						   Device *device) {
-	m_pAnswer = new RetSetInfo(cmd, message, device);
+	m_pAnswer = std::make_shared<RetSetInfo>(cmd, message, device);
 	m_pAnswer->parseAnswerData();
 }

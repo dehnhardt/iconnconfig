@@ -19,8 +19,8 @@ PortRemapWidget::PortRemapWidget(Device *device, int portNumber,
 }
 
 PortRemapWidget::~PortRemapWidget() {
-	delete m_pUpdateTimerInRemap;
-	delete m_pUpdateTimerOutRemap;
+	m_pUpdateTimerInRemap->deleteLater();
+	m_pUpdateTimerOutRemap->deleteLater();
 }
 
 void PortRemapWidget::midiPortRemapUpdated(PortDirection direction) {
@@ -87,15 +87,16 @@ void PortRemapWidget::createWidgets() {
 }
 
 void PortRemapWidget::retrieveData() {
-	GetMidiPortRemap *getMidiPortRemap = new GetMidiPortRemap(device);
+	std::unique_ptr<GetMidiPortRemap> getMidiPortRemap =
+		std::make_unique<GetMidiPortRemap>(device);
 	getMidiPortRemap->setDebug(false);
 	getMidiPortRemap->setPortNumer(static_cast<unsigned int>(portNumber));
 	getMidiPortRemap->setPortRemapDirection(PortDirection::INPUT);
 	getMidiPortRemap->setDebug(false);
 	getMidiPortRemap->setCmdflags(0x40);
-	m_pMidiPortRemapIn =
-		static_cast<RetSetMidiPortRemap *>(getMidiPortRemap->query());
+	m_pMidiPortRemapIn = std::dynamic_pointer_cast<RetSetMidiPortRemap>(
+		getMidiPortRemap->querySmart());
 	getMidiPortRemap->setPortRemapDirection(PortDirection::OUTPUT);
-	m_pMidiPortRemapOut =
-		static_cast<RetSetMidiPortRemap *>(getMidiPortRemap->query());
+	m_pMidiPortRemapOut = std::dynamic_pointer_cast<RetSetMidiPortRemap>(
+		getMidiPortRemap->querySmart());
 }

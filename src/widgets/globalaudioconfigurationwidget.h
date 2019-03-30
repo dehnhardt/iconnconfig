@@ -15,14 +15,14 @@ class GlobalAudioConfigurationWidget : public QWidget {
 
   public:
 	explicit GlobalAudioConfigurationWidget(
-		RetSetAudioGlobalParm *m_pRetSetAudioGlobalParam,
+		std::shared_ptr<RetSetAudioGlobalParm> m_pRetSetAudioGlobalParam,
 		QWidget *parent = nullptr);
 	~GlobalAudioConfigurationWidget();
 
   private:
 	QTimer *m_pUpdateTimer = nullptr;
 	Ui::GlobalAudioConfiguration *ui;
-	RetSetAudioGlobalParm *m_pRetSetAudioGlobalParam = nullptr;
+	std::shared_ptr<RetSetAudioGlobalParm> m_pRetSetAudioGlobalParam;
 	void loadData();
 	void createConnections();
 

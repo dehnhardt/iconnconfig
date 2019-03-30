@@ -14,8 +14,8 @@ class AudioControlDetailFeatureWidget : public QWidget {
 	Q_OBJECT
   public:
 	explicit AudioControlDetailFeatureWidget(
-		RetSetAudioControlParm *retSetAudioControlParm, Device *device,
-		QWidget *parent);
+		std::shared_ptr<RetSetAudioControlParm> retSetAudioControlParm,
+		Device *device, QWidget *parent);
 
 	void getDetails();
 	static int OUTPUT;
@@ -24,7 +24,7 @@ class AudioControlDetailFeatureWidget : public QWidget {
   private:
 	void createLayout();
 
-	RetSetAudioControlParm *m_pRetSetAudioControlParm = nullptr;
+	std::shared_ptr<RetSetAudioControlParm> m_pRetSetAudioControlParm = nullptr;
 	AudioControlParmFeaturesWidget *m_pAudioControlParmFeaturesWidget = nullptr;
 	Device *m_pDevice = nullptr;
 	unsigned int m_iPortId = 0;

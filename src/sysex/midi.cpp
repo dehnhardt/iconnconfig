@@ -90,12 +90,21 @@ BYTE_VECTOR *MIDI::byteSplit8bit(long val, unsigned long size) {
 	return bytes;
 }
 
+long MIDI::byteJoin7bit(std::shared_ptr<BYTE_VECTOR> message,
+                        unsigned long start, unsigned long length) {
+	return byteJoin8bit(message.get(), start, length);
+}
+
+long MIDI::byteJoin7bit(std::shared_ptr<BYTE_VECTOR> message) {
+	return byteJoin7bit(message.get(), 0, message->size());
+}
+
 long MIDI::byteJoin7bit(BYTE_VECTOR *message) {
 	return byteJoin7bit(message, 0, message->size());
 }
 
 long MIDI::byteJoin7bit(BYTE_VECTOR *message, unsigned long start,
-						unsigned long length) {
+                        unsigned long length) {
 	unsigned long cnt;
 	long current = 0;
 
@@ -109,12 +118,21 @@ long MIDI::byteJoin7bit(BYTE_VECTOR *message, unsigned long start,
 	return current;
 }
 
+long MIDI::byteJoin8bit(std::shared_ptr<std::vector<unsigned char>> message,
+                        unsigned long start, unsigned long length) {
+	return byteJoin8bit(message.get(), start, length);
+}
+
+long MIDI::byteJoin8bit(std::shared_ptr<std::vector<unsigned char>> message) {
+	return byteJoin8bit(message.get(), 0, message->size());
+}
+
 long MIDI::byteJoin8bit(BYTE_VECTOR *message) {
 	return byteJoin8bit(message, 0, message->size());
 }
 
 long MIDI::byteJoin8bit(BYTE_VECTOR *message, unsigned long start,
-						unsigned long length) {
+                        unsigned long length) {
 	unsigned long cnt;
 	long current = 0;
 
@@ -126,6 +144,11 @@ long MIDI::byteJoin8bit(BYTE_VECTOR *message, unsigned long start,
 		current += message->at(cnt);
 	}
 	return current;
+}
+
+std::string MIDI::decodeIp(std::shared_ptr<std::vector<unsigned char>> data,
+                           unsigned long offset) {
+	return decodeIp(data.get(), offset);
 }
 
 std::string MIDI::decodeIp(BYTE_VECTOR *data, unsigned long offset) {
@@ -155,7 +178,7 @@ BYTE_VECTOR *MIDI::encodeIpAddress(std::string ipAddress) {
 	while (std::getline(ss, token, '.'))
 		ipParts.push_back(std::string(token));
 	for (std::vector<std::string>::iterator it = ipParts.begin();
-		 it != ipParts.end(); ++it) {
+	     it != ipParts.end(); ++it) {
 		if (it != ipParts.begin())
 			lAddress <<= 8;
 		token = (*it);
@@ -172,7 +195,7 @@ void MIDI::printMessage(BYTE_VECTOR *message) {
 	std::cout << std::hex;
 	for (unsigned int i = 0; i < nMessageSize; i++)
 		std::cout << std::setw(2) << std::setfill('0')
-				  << static_cast<int>(message->at(i)) << " ";
+		          << static_cast<int>(message->at(i)) << " ";
 	std::cout << "\n" << std::flush;
 }
 

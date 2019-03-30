@@ -2,6 +2,7 @@
 #define MIDI_H
 
 #include <cstring>
+#include <memory>
 #include <vector>
 
 #include "../RtMidi.h"
@@ -42,9 +43,19 @@ class MIDI {
 	static BYTE_VECTOR *byteSplit7bit(unsigned long val);
 	static BYTE_VECTOR *byteSplit8bit(long val, unsigned long length);
 	static BYTE_VECTOR *byteSplit8bit(long val);
+	static long
+	byteJoin7bit(std::shared_ptr<std::vector<unsigned char>> message,
+				 unsigned long start, unsigned long length);
+	static long
+	byteJoin7bit(std::shared_ptr<std::vector<unsigned char>> message);
 	static long byteJoin7bit(BYTE_VECTOR *message);
 	static long byteJoin7bit(BYTE_VECTOR *message, unsigned long start,
 							 unsigned long end);
+	static long
+	byteJoin8bit(std::shared_ptr<std::vector<unsigned char>> message,
+				 unsigned long start, unsigned long length);
+	static long
+	byteJoin8bit(std::shared_ptr<std::vector<unsigned char>> message);
 	static long byteJoin8bit(BYTE_VECTOR *message);
 	static long byteJoin8bit(BYTE_VECTOR *message, unsigned long start,
 							 unsigned long end);
@@ -73,6 +84,12 @@ class MIDI {
 	}
 
 	// static device specific methods
+
+	static int bytesToSignedInt(std::shared_ptr<BYTE_VECTOR> v,
+								unsigned long offset, unsigned long bytes) {
+		return bytesToSignedInt(v.get(), offset, bytes);
+	}
+
 	static int bytesToSignedInt(BYTE_VECTOR *v, unsigned long offset,
 								unsigned long bytes) {
 		u_int16_t minValueU = static_cast<u_int16_t>(
@@ -84,6 +101,9 @@ class MIDI {
 		const std::string clientName = std::string("MioConfig Input Client"));
 	static RtMidiOut *createMidiOut(
 		const std::string clientName = std::string("MioConfig Output Client"));
+	static std::string
+	decodeIp(std::shared_ptr<std::vector<unsigned char>> data,
+			 unsigned long offset);
 };
 
 class MIDISysexValue {

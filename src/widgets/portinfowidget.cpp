@@ -5,30 +5,31 @@
 #include <QIcon>
 #include <QRegExpValidator>
 
-PortInfoWidget::PortInfoWidget(RetSetMidiPortInfo *portInfo, QWidget *parent)
-	: QWidget(parent), ui(new Ui::PortInfoWidget), m_pMidiPortInfo(portInfo) {
+PortInfoWidget::PortInfoWidget(std::shared_ptr<RetSetMidiPortInfo> portInfo,
+                               QWidget *parent)
+    : QWidget(parent), ui(new Ui::PortInfoWidget), m_pMidiPortInfo(portInfo) {
 	ui->setupUi(this);
+	m_pRegExValidator = new QRegExpValidator(QRegExp("[0-9a-zA-Z -_]+"));
 	this->ui->m_pLblPortId->setNum(
-		static_cast<int>(m_pMidiPortInfo->getPortId()));
+	    static_cast<int>(m_pMidiPortInfo->getPortId()));
 	ui->m_pLblPortIcon->setPixmap(
-		PortDisplayHelper::getPortIcon(m_pMidiPortInfo->getPortType())
-			.pixmap(QSize(30, 30)));
+	    PortDisplayHelper::getPortIcon(m_pMidiPortInfo->getPortType())
+	        .pixmap(QSize(30, 30)));
 	this->ui->m_pTxtPortName->setText(m_pMidiPortInfo->getPortName().c_str());
-	this->ui->m_pTxtPortName->setValidator(
-		new QRegExpValidator(QRegExp("[0-9a-zA-Z -_]+")));
+	this->ui->m_pTxtPortName->setValidator(m_pRegExValidator);
 	this->ui->m_pTxtPortName->setReadOnly(
-		!m_pMidiPortInfo->getPortNameWritable());
+	    !m_pMidiPortInfo->getPortNameWritable());
 	this->ui->m_pTxtPortName->setMaxLength(
-		m_pMidiPortInfo->getMaxPortNameLength());
+	    m_pMidiPortInfo->getMaxPortNameLength());
 	ui->m_pCbInputEnabled->setCheckState(
-		m_pMidiPortInfo->getInputEnabled() ? Qt::Checked : Qt::Unchecked);
+	    m_pMidiPortInfo->getInputEnabled() ? Qt::Checked : Qt::Unchecked);
 	ui->m_pCbOutputEnabled->setCheckState(
-		m_pMidiPortInfo->getOutputEnabled() ? Qt::Checked : Qt::Unchecked);
+	    m_pMidiPortInfo->getOutputEnabled() ? Qt::Checked : Qt::Unchecked);
 	switch (m_pMidiPortInfo->getPortType()) {
 	case MidiPortType::DIN:
 	case MidiPortType::NONE:
 		this->ui->m_pLblPortNr->setNum(
-			static_cast<int>(m_pMidiPortInfo->getJackNumber()));
+		    static_cast<int>(m_pMidiPortInfo->getJackNumber()));
 		ui->m_pLblJackSpecific->setVisible(false);
 		ui->m_pLblUsbDevicePort->setVisible(false);
 		ui->m_pLblEthernetSession->setVisible(false);
@@ -36,7 +37,7 @@ PortInfoWidget::PortInfoWidget(RetSetMidiPortInfo *portInfo, QWidget *parent)
 		break;
 	case MidiPortType::USB_HOST:
 		this->ui->m_pLblPortNr->setNum(
-			static_cast<int>(m_pMidiPortInfo->getUsbHostPort()));
+		    static_cast<int>(m_pMidiPortInfo->getUsbHostPort()));
 		ui->m_pLblJackSpecific->setVisible(true);
 		ui->m_pLblJackSpecific->setNum(m_pMidiPortInfo->getJackNumber());
 		ui->m_pLblUsbDevicePort->setVisible(false);
@@ -45,7 +46,7 @@ PortInfoWidget::PortInfoWidget(RetSetMidiPortInfo *portInfo, QWidget *parent)
 		break;
 	case MidiPortType::USB_DEVICE:
 		this->ui->m_pLblPortNr->setNum(
-			static_cast<int>(m_pMidiPortInfo->getUsbDevicePort()));
+		    static_cast<int>(m_pMidiPortInfo->getUsbDevicePort()));
 		ui->m_pLblJackSpecific->setVisible(true);
 		ui->m_pLblJackSpecific->setNum(m_pMidiPortInfo->getJackNumber());
 		ui->m_pLblUsbDevicePort->setVisible(true);
@@ -54,7 +55,7 @@ PortInfoWidget::PortInfoWidget(RetSetMidiPortInfo *portInfo, QWidget *parent)
 		break;
 	case MidiPortType::ETHERNET:
 		this->ui->m_pLblPortNr->setNum(
-			static_cast<int>(m_pMidiPortInfo->getEthernetSession()));
+		    static_cast<int>(m_pMidiPortInfo->getEthernetSession()));
 		ui->m_pLblJackSpecific->setVisible(true);
 		ui->m_pLblJackSpecific->setNum(m_pMidiPortInfo->getJackNumber());
 		ui->m_pLblUsbDevicePort->setVisible(false);
@@ -67,7 +68,19 @@ PortInfoWidget::PortInfoWidget(RetSetMidiPortInfo *portInfo, QWidget *parent)
 	createConnections();
 }
 
-PortInfoWidget::~PortInfoWidget() { delete ui; }
+PortInfoWidget::~PortInfoWidget() {
+	disconnect(ui->m_pTxtPortName, &QLineEdit::editingFinished, this,
+	           &PortInfoWidget::portNameChanged);
+	disconnect(ui->m_pCbInputEnabled, &QCheckBox::stateChanged, this,
+	           &PortInfoWidget::inputStateChanged);
+	disconnect(ui->m_pCbOutputEnabled, &QCheckBox::stateChanged, this,
+	           &PortInfoWidget::outputStateChanged);
+	disconnect(m_pUpdateTimer, &QTimer::timeout, this,
+	           &PortInfoWidget::timerElapsed);
+	delete ui;
+	delete m_pUpdateTimer;
+	delete m_pRegExValidator;
+}
 
 void PortInfoWidget::portNameChanged() {
 
@@ -95,11 +108,11 @@ void PortInfoWidget::timerElapsed() {
 
 void PortInfoWidget::createConnections() {
 	connect(ui->m_pTxtPortName, &QLineEdit::editingFinished, this,
-			&PortInfoWidget::portNameChanged);
+	        &PortInfoWidget::portNameChanged);
 	connect(ui->m_pCbInputEnabled, &QCheckBox::stateChanged, this,
-			&PortInfoWidget::inputStateChanged);
+	        &PortInfoWidget::inputStateChanged);
 	connect(ui->m_pCbOutputEnabled, &QCheckBox::stateChanged, this,
-			&PortInfoWidget::outputStateChanged);
+	        &PortInfoWidget::outputStateChanged);
 	connect(m_pUpdateTimer, &QTimer::timeout, this,
-			&PortInfoWidget::timerElapsed);
+	        &PortInfoWidget::timerElapsed);
 }

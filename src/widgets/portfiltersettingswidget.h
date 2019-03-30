@@ -54,6 +54,7 @@ class MidiControllerFilterTM : public QAbstractTableModel {
 	Q_OBJECT
   public:
 	MidiControllerFilterTM(MIDIControllerFilter **midiControllerFilter);
+	~MidiControllerFilterTM() override;
 
 	int rowCount(const QModelIndex & /* parent */) const override;
 	int columnCount(const QModelIndex & /*parent*/) const override;
@@ -85,6 +86,8 @@ class MidiChannelMessagesFilterTM : public QAbstractTableModel {
   public:
 	MidiChannelMessagesFilterTM(
 		MIDIChannelMessagesFilter **midiChannelMessagesFilter);
+
+	~MidiChannelMessagesFilterTM() override;
 
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 	int columnCount(const QModelIndex & /*parent*/) const override;

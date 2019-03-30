@@ -2,6 +2,7 @@
 #define PORTINFOWIDGET_H
 
 #include "../sysex/retsetmidiportinfo.h"
+#include <QRegExpValidator>
 #include <QTimer>
 #include <QWidget>
 
@@ -13,15 +14,16 @@ class PortInfoWidget : public QWidget {
 	Q_OBJECT
 
   public:
-	explicit PortInfoWidget(RetSetMidiPortInfo *portInfo,
+	explicit PortInfoWidget(std::shared_ptr<RetSetMidiPortInfo> portInfo,
 							QWidget *parent = nullptr);
 	~PortInfoWidget();
 
   private:
 	Ui::PortInfoWidget *ui;
-	RetSetMidiPortInfo *m_pMidiPortInfo = nullptr;
+	std::shared_ptr<RetSetMidiPortInfo> m_pMidiPortInfo;
 	void createConnections();
 	QTimer *m_pUpdateTimer = nullptr;
+	QRegExpValidator *m_pRegExValidator = nullptr;
 
   public slots:
 	void portNameChanged();

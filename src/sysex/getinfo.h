@@ -10,7 +10,7 @@ class GetInfo : public SysExMessage {
 
   public:
 	GetInfo(Device *m_pDevice);
-	GetInfo(Device *m_pDevice, RetInfoList *m_pInfoList);
+	GetInfo(Device *m_pDevice, std::shared_ptr<RetInfoList> m_pInfoList);
 	GetInfo(Command cmd, BYTE_VECTOR *message, Device *device)
 		: SysExMessage(cmd, message, device) {}
 	~GetInfo();
@@ -20,7 +20,7 @@ class GetInfo : public SysExMessage {
 	BYTE_VECTOR *m_pGetMessageData();
 	std::string getDataAsString();
 	DeviceInfoItem getDeviceInfoItem();
-	std::map<DeviceInfoItem, RetSetInfo *> *getRetSetInfos();
+	std::map<DeviceInfoItem, std::shared_ptr<RetSetInfo>> *getRetSetInfos();
 	void deviceInfoChanged(DeviceInfoItem item, std::string value);
 	std::string getItemValue(SysExMessage::DeviceInfoItem item);
 	int getSettingsId() { return m_Command; }
@@ -35,8 +35,8 @@ class GetInfo : public SysExMessage {
 
   private:
 	DeviceInfoItem m_InfoItem = DEVICE_NAME;
-	RetInfoList *m_pInfoList = nullptr;
-	std::map<DeviceInfoItem, RetSetInfo *> *m_pRetSetInfos;
+	std::shared_ptr<RetInfoList> m_pInfoList = nullptr;
+	std::map<DeviceInfoItem, std::shared_ptr<RetSetInfo>> *m_pRetSetInfos;
 };
 
 #endif // DEVICEINFO_H

@@ -20,7 +20,8 @@ class AudioControlParmWidget : public QWidget {
   private: // methods
 	void createLayout();
 	void loadAudioControlParms();
-	void addAudioControlParm(RetSetAudioControlParm *retSetAudioControlParm);
+	void addAudioControlParm(
+		std::shared_ptr<RetSetAudioControlParm> retSetAudioControlParm);
 	void addAudioControllerSections();
 
   private:
@@ -30,10 +31,10 @@ class AudioControlParmWidget : public QWidget {
 	QTabWidget *m_pFeatureTabWidget = nullptr;
 	QString getFeatureName(AudioControllerType audioControllerType);
 
-	GetAudioControlParm *m_pGetAudioControlParm = nullptr;
+	// GetAudioControlParm *m_pGetAudioControlParm = nullptr;
 
-	QMap<AudioControllerType, QVector<RetSetAudioControlParm *> *>
-		*m_pAudioControlParms = nullptr;
+	QMap<AudioControllerType, QVector<std::shared_ptr<RetSetAudioControlParm>>
+								  *> *m_pAudioControlParms = nullptr;
 };
 
 #endif // AUDIOCONTROLPARMWIDGET_H

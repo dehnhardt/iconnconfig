@@ -62,15 +62,14 @@ SysExMessage::~SysExMessage() {
 	delete m_pCommandData;
 	delete m_pTransactionId;
 	delete m_pResultData;
-	delete m_pData;
 }
 
 void SysExMessage::extractData(std::vector<unsigned char> *message) {
 	m_iDataLength = static_cast<unsigned int>(MIDI::byteJoin7bit(
 		message, Device::DATA_LENGTH_OFFSET, Device::DATA_LENGTH_LENGTH));
-	m_pData =
-		new BYTE_VECTOR(message->begin() + Device::DATA_OFFSET,
-						message->begin() + Device::DATA_OFFSET + m_iDataLength);
+	m_pData = std::make_shared<BYTE_VECTOR>(
+		message->begin() + Device::DATA_OFFSET,
+		message->begin() + Device::DATA_OFFSET + m_iDataLength);
 }
 
 Device *SysExMessage::getDevice() const { return m_pDevice; }
@@ -104,10 +103,10 @@ BYTE_VECTOR *SysExMessage::getMIDISysExMessage() {
 	message->insert(message->end(), body->begin(), body->end());
 	message->push_back(cs);
 	message->push_back(SYSEX_END);
+	delete transactionId;
+	delete bodyLength;
 	delete md;
 	delete body;
-	delete bodyLength;
-	delete transactionId;
 	return message;
 }
 
@@ -143,14 +142,14 @@ void SysExMessage::createAnswer(Command cmd,
 								std::vector<unsigned char> *message,
 								Device *device) {
 	if (cmd == ACK) {
-		m_pAnswer = new Ack(cmd, message, device);
+		m_pAnswer = std::make_unique<Ack>(cmd, message, device);
 		m_pAnswer->parseAnswerData();
 	}
 }
 
 void SysExMessage::createAck(std::vector<unsigned char> *message,
 							 Device *device) {
-	m_pAnswer = new Ack(ACK, message, device);
+	m_pAnswer = std::make_unique<Ack>(ACK, message, device);
 	m_pAnswer->parseAnswerData();
 }
 
@@ -216,7 +215,7 @@ void SysExMessage::setDebug(bool debug) { this->debug = debug; }
 
 bool SysExMessage::getDebug() { return this->debug; }
 
-void SysExMessage::printRawData() { MIDI::printMessage(m_pData); }
+void SysExMessage::printRawData() { MIDI::printMessage(m_pData.get()); }
 
 unsigned int SysExMessage::getCommandNumber() {
 	long commandBytes = MIDI::byteJoin7bit(m_pCommandData);
@@ -228,7 +227,11 @@ bool SysExMessage::isWriteCommand() {
 	return (commandBytes & 80192) == 1;
 }
 
-SysExMessage *SysExMessage::getAnswer() { return m_pAnswer; }
+SysExMessage *SysExMessage::getAnswer() { return m_pAnswer.get(); }
+
+std::shared_ptr<SysExMessage> SysExMessage::getAnswerSmart() {
+	return std::move(m_pAnswer);
+}
 
 SysExMessage *SysExMessage::query() {
 	try {
@@ -236,8 +239,16 @@ SysExMessage *SysExMessage::query() {
 	} catch (...) {
 		throw;
 	}
+	return m_pAnswer.get();
+}
 
-	return m_pAnswer;
+std::shared_ptr<SysExMessage> SysExMessage::querySmart() {
+	try {
+		execute();
+	} catch (...) {
+		throw;
+	}
+	return std::move(m_pAnswer);
 }
 
 std::string SysExMessage::getDataAsString() {
@@ -248,7 +259,7 @@ std::string SysExMessage::getDataAsString() {
 long SysExMessage::getDataAsLong() {
 	long result = -1;
 	if (m_pData->size() < 11)
-		result = MIDI::byteJoin7bit(m_pData);
+		result = MIDI::byteJoin7bit(m_pData.get());
 	return result;
 }
 

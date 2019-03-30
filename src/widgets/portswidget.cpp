@@ -28,10 +28,10 @@ PortsWidget::~PortsWidget() {
 }
 
 void PortsWidget::getMidiPorts(
-	std::vector<RetSetMidiPortInfo *> *midiPortInfos) {
-	std::vector<RetSetMidiPortInfo *>::iterator it;
+	std::vector<std::shared_ptr<RetSetMidiPortInfo>> *midiPortInfos) {
+	std::vector<std::shared_ptr<RetSetMidiPortInfo>>::iterator it;
 	for (it = midiPortInfos->begin(); it != midiPortInfos->end(); ++it) {
-		RetSetMidiPortInfo *midiPortInfo = *it;
+		std::shared_ptr<RetSetMidiPortInfo> midiPortInfo = *it;
 		MultiInfoListEntry *entry = new MultiInfoListEntry(
 			MultiInfoListEntry::PORT_ROUTING, midiPortInfo->getPortName());
 		entry->icon =
@@ -44,8 +44,9 @@ void PortsWidget::getMidiPorts(
 }
 
 void PortsWidget::getMidiPortSections(Device *device) {
-	MIDI_PORT_INFOS *midiPortInfoSections = device->getMidiPortInfos();
-	std::map<int, std::vector<RetSetMidiPortInfo *> *>::iterator it;
+	MidiPortInfos *midiPortInfoSections = device->getMidiPortInfos();
+	std::map<int, std::vector<std::shared_ptr<RetSetMidiPortInfo>> *>::iterator
+		it;
 	for (it = midiPortInfoSections->begin(); it != midiPortInfoSections->end();
 		 ++it) {
 		int section = it->first;
@@ -57,15 +58,16 @@ void PortsWidget::getMidiPortSections(Device *device) {
 			portTypeName += " " + std::to_string(jack);
 		infoSections->push_back(
 			new MultiInfoListEntry(MultiInfoListEntry::SECTION, portTypeName));
-		std::vector<RetSetMidiPortInfo *> *midiPortInfos = it->second;
+		std::vector<std::shared_ptr<RetSetMidiPortInfo>> *midiPortInfos =
+			it->second;
 		getMidiPorts(midiPortInfos);
 	}
 }
 
 QWidget *PortsWidget::createWidget(MultiInfoListEntry *entry) {
 	std::cout << "create PortsWidget" << std::endl;
-	RetSetMidiPortInfo *midiPortInfo =
-		static_cast<RetSetMidiPortInfo *>(entry->message);
+	std::shared_ptr<RetSetMidiPortInfo> midiPortInfo =
+		std::dynamic_pointer_cast<RetSetMidiPortInfo>(entry->message);
 	int portNumber = static_cast<int>(midiPortInfo->getPortId());
 	QTabWidget *portTabWidget = new QTabWidget(this);
 	PortInfoWidget *portInfoWidget = new PortInfoWidget(midiPortInfo);
@@ -80,6 +82,7 @@ QWidget *PortsWidget::createWidget(MultiInfoListEntry *entry) {
 		a->setWidget(w);
 		portTabWidget->addTab(a, tr("MIDI-Port Routing"));
 	}
+	// TODO: smart_pointer
 	if (device->getCommands()->isCommandSupported(
 			Command::GET_MIDI_PORT_FILTER)) {
 		PortFilterWidget *portFilterWidget =

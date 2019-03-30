@@ -23,7 +23,7 @@ int DeviceSelectionTableModel::columnCount(const QModelIndex &parent
 QVariant DeviceSelectionTableModel::data(const QModelIndex &index,
 										 int role) const {
 	if (role == Qt::DisplayRole) {
-		Device *current =
+		std::shared_ptr<Device> current =
 			m_pTableData.at(static_cast<unsigned long>(index.row()));
 		switch (index.column()) {
 		case 0:
@@ -40,7 +40,7 @@ QVariant DeviceSelectionTableModel::data(const QModelIndex &index,
 		}
 	}
 	if ((role == Qt::CheckStateRole) && (index.column() == 0)) {
-		Device *current =
+		std::shared_ptr<Device> current =
 			m_pTableData.at(static_cast<unsigned long>(index.row()));
 		return current->getDefault() ? Qt::Checked : Qt::Unchecked;
 	}
@@ -52,7 +52,7 @@ bool DeviceSelectionTableModel::setData(const QModelIndex &index,
 	bool success = true;
 
 	if (index.isValid()) {
-		Device *current =
+		std::shared_ptr<Device> current =
 			m_pTableData.at(static_cast<unsigned long>(index.row()));
 		if (role == Qt::CheckStateRole) {
 			if (index.column() == 0) {

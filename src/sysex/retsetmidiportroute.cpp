@@ -3,8 +3,10 @@
 #include <cmath>
 
 RetSetMidiPortRoute::RetSetMidiPortRoute(Device *device)
-	: SysExMessage(Command::RET_SET_MIDI_PORT_INFO, SysExMessage::QUERY,
-				   device) {}
+    : SysExMessage(Command::RET_SET_MIDI_PORT_INFO, SysExMessage::QUERY,
+                   device) {}
+
+RetSetMidiPortRoute::~RetSetMidiPortRoute() { delete m_pPortRoutings; }
 
 void RetSetMidiPortRoute::parseAnswerData() {
 	m_iPortId = MIDI::byteJoin7bit(m_pData, 1, 2);
@@ -17,7 +19,7 @@ bool RetSetMidiPortRoute::isPortRouted(int portNumber) {
 	getPortByteAndBit(portNumber, byte, bit);
 	if (byte <= m_iNumerOfExpectedBytes) {
 		unsigned int byteVal =
-			m_pPortRoutings->at(static_cast<unsigned long>(byte));
+		    m_pPortRoutings->at(static_cast<unsigned long>(byte));
 		unsigned int mask = static_cast<unsigned int>(pow(2, bit));
 		return byteVal & mask;
 	}
@@ -38,7 +40,7 @@ void RetSetMidiPortRoute::setPortRouted(int portNumber, bool routed) {
 		val &= ~mask;
 	}
 	(*m_pPortRoutings)[static_cast<unsigned long>(byte)] =
-		static_cast<unsigned char>(val);
+	    static_cast<unsigned char>(val);
 }
 
 int RetSetMidiPortRoute::getTotalNumberOfPorts() const {
@@ -55,19 +57,19 @@ std::vector<unsigned char> *RetSetMidiPortRoute::m_pGetMessageData() {
 	BYTE_VECTOR *messageData = new BYTE_VECTOR();
 	messageData->push_back(0x01);
 	BYTE_VECTOR *portIdV =
-		MIDI::byteSplit7bit(static_cast<unsigned long>(m_iPortId), 2);
+	    MIDI::byteSplit7bit(static_cast<unsigned long>(m_iPortId), 2);
 	messageData->insert(messageData->end(), portIdV->begin(), portIdV->end());
 	messageData->insert(messageData->end(), m_pPortRoutings->begin(),
-						m_pPortRoutings->end());
+	                    m_pPortRoutings->end());
 	return messageData;
 }
 
 void RetSetMidiPortRoute::getPortByteAndBit(int portNumber, int &byte,
-											int &bit) {
+                                            int &bit) {
 	--portNumber;
 	if (m_iNumerOfExpectedBytes != -1 &&
-		static_cast<unsigned int>(m_iNumerOfExpectedBytes) >=
-			m_pPortRoutings->size())
+	    static_cast<unsigned int>(m_iNumerOfExpectedBytes) >=
+	        m_pPortRoutings->size())
 		byte = portNumber / 4;
 	bit = portNumber - (byte * 4);
 }

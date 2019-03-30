@@ -8,7 +8,7 @@
 #define AUTHOR "Holger Dehnhardt"
 #define LICENSE "MIT"
 
-typedef std::map<unsigned long, Device *> Devices;
+typedef std::map<unsigned long, std::shared_ptr<Device>> Devices;
 
 class Configuration {
 
@@ -39,7 +39,7 @@ class Configuration {
 	// getter
 	Devices *getDevices() {
 		if (m_pDevices == nullptr)
-			m_pDevices = new std::map<unsigned long, Device *>;
+			m_pDevices = new std::map<unsigned long, std::shared_ptr<Device>>;
 		return m_pDevices;
 	}
 	QSettings *getSettings() { return new QSettings(); }

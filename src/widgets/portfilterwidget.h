@@ -30,8 +30,8 @@ class PortFilterWidget : public QWidget {
 	// members
 	Device *device;
 	int portNumber = 0;
-	RetSetMidiPortFilter *m_pMidiPortFilterIn = nullptr;
-	RetSetMidiPortFilter *m_pMidiPortFilterOut = nullptr;
+	std::shared_ptr<RetSetMidiPortFilter> m_pMidiPortFilterIn;
+	std::shared_ptr<RetSetMidiPortFilter> m_pMidiPortFilterOut;
 	QTabWidget *m_pFilterDirectionTabWidget = nullptr;
 	PortFilterSettingsWidget *m_pInputFilterWidget = nullptr;
 	PortFilterSettingsWidget *m_pOutputFilterWidget = nullptr;
