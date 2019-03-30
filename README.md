@@ -19,6 +19,7 @@ Later I found the complete documentation for sysex-data from IConnectivity.
   * Audio Port Parameter
  
 ## Tested Devices
+* MIO 4
 * MIO 10
 * iConnect Audio 4+
 
