@@ -16,28 +16,27 @@ class PortRemapSettingsWidget : public QWidget {
 	Q_OBJECT
 
   public:
-    explicit PortRemapSettingsWidget(PortDirection portRemapDirection,
-									  QWidget *parent = nullptr);
-    ~PortRemapSettingsWidget();
+	explicit PortRemapSettingsWidget(PortDirection portRemapDirection,
+									 QWidget *parent = nullptr);
+	~PortRemapSettingsWidget();
 
   public: // getter and setter
-    void setMidiControllerRemap(MIDIControllerRemap **midiControllerRemap);
-    void setMidiChannelMessagesRemap(
-        MIDIChannelMessagesRemap **midiChannelMessagesRemap);
+	void setMidiControllerRemap(MIDIControllerRemap **midiControllerRemap);
+	void setMidiChannelMessagesRemap(
+		MIDIChannelMessagesRemap **midiChannelMessagesRemap);
 
-    MIDIPortRemap *getMidiPortRemap();
+	MIDIPortRemap *getMidiPortRemap();
 
   signals:
-    void remapDataChanged(PortDirection portRemapDirection);
+	void remapDataChanged(PortDirection portRemapDirection);
 
   private: // Methods
 	QTableWidgetItem *getCheckStateItem(bool checked);
 	void createConnections();
 
   private: // Members
-    Ui::PortRemapSettingsWidget *ui;
-    PortDirection portRemapDirection;
-
+	Ui::PortRemapSettingsWidget *ui;
+	PortDirection portRemapDirection;
 };
 
 /* ************************
@@ -47,7 +46,7 @@ class PortRemapSettingsWidget : public QWidget {
 class MidiControllerRemapTM : public QAbstractTableModel {
 	Q_OBJECT
   public:
-    MidiControllerRemapTM(MIDIControllerRemap **midiControllerRemap);
+	MidiControllerRemapTM(MIDIControllerRemap **midiControllerRemap);
 
 	int rowCount(const QModelIndex & /* parent */) const override;
 	int columnCount(const QModelIndex & /*parent*/) const override;
@@ -59,15 +58,15 @@ class MidiControllerRemapTM : public QAbstractTableModel {
 				 int role = Qt::EditRole) override;
 	Qt::ItemFlags flags(const QModelIndex &index) const override;
 
-    MIDIControllerRemap **getMidiControllerRemap() {
-        return m_ppMidiControllerRemap;
+	MIDIControllerRemap **getMidiControllerRemap() {
+		return m_ppMidiControllerRemap;
 	}
 
   signals:
 	void modelDataChanged();
 
   private:
-    MIDIControllerRemap **m_ppMidiControllerRemap;
+	MIDIControllerRemap **m_ppMidiControllerRemap;
 };
 
 /* *****************************
@@ -77,8 +76,9 @@ class MidiControllerRemapTM : public QAbstractTableModel {
 class MidiChannelMessagesRemapTM : public QAbstractTableModel {
 	Q_OBJECT
   public:
-    MidiChannelMessagesRemapTM(
-        MIDIChannelMessagesRemap **midiChannelMessagesRemap);
+	MidiChannelMessagesRemapTM(
+		MIDIChannelMessagesRemap **midiChannelMessagesRemap);
+	~MidiChannelMessagesRemapTM() override;
 
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 	int columnCount(const QModelIndex & /*parent*/) const override;
@@ -89,15 +89,15 @@ class MidiChannelMessagesRemapTM : public QAbstractTableModel {
 	bool setData(const QModelIndex &index, const QVariant &value,
 				 int role = Qt::EditRole) override;
 	Qt::ItemFlags flags(const QModelIndex &index) const override;
-    MIDIChannelMessagesRemap **getMidiChannelMessagesRemap() {
-        return m_ppMidiChannelMessagesRemap;
+	MIDIChannelMessagesRemap **getMidiChannelMessagesRemap() {
+		return m_ppMidiChannelMessagesRemap;
 	}
 
   signals:
 	void modelDataChanged();
 
   private:
-    MIDIChannelMessagesRemap **m_ppMidiChannelMessagesRemap;
+	MIDIChannelMessagesRemap **m_ppMidiChannelMessagesRemap = nullptr;
 	Qt::CheckState boolToCheckState(bool value) const;
 };
 #endif // PORTREMAPSETTINGSWIDGET_H

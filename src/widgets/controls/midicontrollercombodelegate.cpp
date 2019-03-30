@@ -87,7 +87,6 @@ void MidiControllerComboDelegate::setEditorData(
 	QWidget *editor, const QModelIndex &index) const {
 	QComboBox *comboBox = static_cast<QComboBox *>(editor);
 	int value = index.model()->data(index, Qt::DisplayRole).toInt();
-	std::cout << "Delegate - value = " << value << std::endl;
 	comboBox->setCurrentIndex(comboBox->findData(value));
 }
 

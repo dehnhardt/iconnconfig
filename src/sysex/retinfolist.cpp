@@ -1,7 +1,9 @@
 #include "retinfolist.h"
 
 RetInfoList::RetInfoList(Device *device)
-	: SysExMessage(Command::RET_INFO_LIST, SysExMessage::QUERY, device) {}
+    : SysExMessage(Command::RET_INFO_LIST, SysExMessage::QUERY, device) {}
+
+RetInfoList::~RetInfoList() { delete m_pImplementedInfos; }
 
 void RetInfoList::parseAnswerData() {
 	m_pImplementedInfos = new std::vector<DeviceInfoItem>();
@@ -20,7 +22,8 @@ bool RetInfoList::isInfoImplemented(SysExMessage::DeviceInfoItem info) {
 	if (!m_pImplementedInfos)
 		return false;
 	std::vector<DeviceInfoItem>::iterator it;
-	for (it = m_pImplementedInfos->begin(); it != m_pImplementedInfos->end(); it++) {
+	for (it = m_pImplementedInfos->begin(); it != m_pImplementedInfos->end();
+	     it++) {
 		if (*it == info)
 			return true;
 	}

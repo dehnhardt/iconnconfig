@@ -205,6 +205,8 @@ MidiChannelMessagesRemapTM::MidiChannelMessagesRemapTM(
 	this->m_ppMidiChannelMessagesRemap = midiChannelMessagesRemap;
 }
 
+MidiChannelMessagesRemapTM::~MidiChannelMessagesRemapTM() { deleteLater(); }
+
 int MidiChannelMessagesRemapTM::rowCount(const QModelIndex &) const {
 	return 7;
 }

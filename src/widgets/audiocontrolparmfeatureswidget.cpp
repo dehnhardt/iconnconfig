@@ -6,17 +6,18 @@
 #include <QScrollArea>
 
 AudioControlParmFeaturesWidget::AudioControlParmFeaturesWidget(
-	Device *device, QVector<RetSetAudioControlParm *> *features,
-	QWidget *parent)
-	: QWidget(parent), m_pDevice(device), m_pFeatures(features) {
+    Device *device, QVector<std::shared_ptr<RetSetAudioControlParm>> *features,
+    QWidget *parent)
+    : QWidget(parent), m_pDevice(device), m_pFeatures(features) {
 	createLayout();
-	this->m_pGetAudioPortMeterValue = new GetAudioPortMeterValue(m_pDevice);
+	this->m_pGetAudioPortMeterValue =
+	    std::make_shared<GetAudioPortMeterValue>(m_pDevice);
 	// Todo get port id
 	m_pGetAudioPortMeterValue->setPortId(3);
 	this->m_pVolumeTimer = new QTimer();
 	// m_pVolumeTimer->setSingleShot(true);
 	connect(m_pVolumeTimer, &QTimer::timeout, this,
-			&AudioControlParmFeaturesWidget::timerElapsed);
+	        &AudioControlParmFeaturesWidget::timerElapsed);
 
 	addFeatures();
 	// m_pVolumeTimer->start(10);
@@ -36,38 +37,40 @@ void AudioControlParmFeaturesWidget::createLayout() {
 }
 
 void AudioControlParmFeaturesWidget::addFeatures() {
-	QVector<RetSetAudioControlParm *>::iterator i;
+	QVector<std::shared_ptr<RetSetAudioControlParm>>::iterator i;
 	for (i = m_pFeatures->begin(); i != m_pFeatures->end(); ++i) {
 		createFeatureWidget(*i);
 	}
 }
 
 void AudioControlParmFeaturesWidget::createFeatureWidget(
-	RetSetAudioControlParm *retSetAudioControlParm) {
+    std::shared_ptr<RetSetAudioControlParm> retSetAudioControlParm) {
 	AudioControlDetailFeatureWidget *w = new AudioControlDetailFeatureWidget(
-		retSetAudioControlParm, m_pDevice, this);
+	    retSetAudioControlParm, m_pDevice, this);
 	w->setSizePolicy(QSizePolicy::MinimumExpanding,
-					 QSizePolicy::MinimumExpanding);
+	                 QSizePolicy::MinimumExpanding);
 	int cn = static_cast<int>(retSetAudioControlParm->getControllerNumber());
 	m_pLayout->addWidget(
-		new QLabel(tr(retSetAudioControlParm->getControllerName().c_str())), 0,
-		cn);
+	    new QLabel(tr(retSetAudioControlParm->getControllerName().c_str())), 0,
+	    cn);
 	m_pLayout->addWidget(w, 1, cn);
 }
 
 void AudioControlParmFeaturesWidget::timerElapsed() {
-	RetAudioPortMeterValue *rapmv = dynamic_cast<RetAudioPortMeterValue *>(
-		m_pGetAudioPortMeterValue->query());
+	std::shared_ptr<RetAudioPortMeterValue> rapmv =
+	    std::dynamic_pointer_cast<RetAudioPortMeterValue>(
+	        m_pGetAudioPortMeterValue->querySmart());
 	if (rapmv) {
 		ChannelVolumes v = rapmv->getVolumes();
 		for (auto channelVolume = v.in.begin(); channelVolume != v.in.end();
-			 ++channelVolume)
+		     ++channelVolume)
 			emit inMeterValueChanged(channelVolume->channel,
-									 channelVolume->volume);
+		                             channelVolume->volume);
 		for (auto channelVolume = v.out.begin(); channelVolume != v.out.end();
-			 ++channelVolume)
+		     ++channelVolume)
 			emit outMeterValueChanged(channelVolume->channel,
-									  channelVolume->volume);
+		                              channelVolume->volume);
+		rapmv.reset();
 	}
 }
 

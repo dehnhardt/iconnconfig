@@ -17,7 +17,7 @@ class AudioChannelFeatureWidget : public QFrame {
 
   public:
 	explicit AudioChannelFeatureWidget(
-		RetSetAudioControlDetail *retSetAudioControlDetail,
+		std::shared_ptr<RetSetAudioControlDetail> retSetAudioControlDetail,
 		QWidget *parent = nullptr);
 	~AudioChannelFeatureWidget();
 	void setMaster(bool isMaster, QString channel2Name);
@@ -34,14 +34,15 @@ class AudioChannelFeatureWidget : public QFrame {
 	int m_iChannelId = 0;
 	bool m_bIsMaster = false;
 
-	RetSetAudioControlDetail *m_pAudioControlDetail = nullptr;
-	RetSetAudioControlDetailValue *m_pRetSetAudioControlDetailValue = nullptr;
+	std::shared_ptr<RetSetAudioControlDetail> m_pAudioControlDetail;
+	std::shared_ptr<RetSetAudioControlDetailValue>
+		m_pRetSetAudioControlDetailValue = nullptr;
 
 	void setRetSetAudioControlDetail(
-		RetSetAudioControlDetail *retSetAudioControlDetail);
+		std::shared_ptr<RetSetAudioControlDetail> retSetAudioControlDetail);
 	void queryValues();
-	void
-	setValues(RetSetAudioControlDetailValue *m_pRetSetAudioControlDetailValue);
+	void setValues(std::shared_ptr<RetSetAudioControlDetailValue>
+					   m_pRetSetAudioControlDetailValue);
 	void createConnections();
 
   signals:

@@ -8,8 +8,8 @@ int AudioControlDetailFeatureWidget::INPUT = 1;
 int AudioControlDetailFeatureWidget::OUTPUT = 1;
 
 AudioControlDetailFeatureWidget::AudioControlDetailFeatureWidget(
-	RetSetAudioControlParm *retSetAudioControlParm, Device *device,
-	QWidget *parent)
+	std::shared_ptr<RetSetAudioControlParm> retSetAudioControlParm,
+	Device *device, QWidget *parent)
 	: QWidget(parent), m_pRetSetAudioControlParm(retSetAudioControlParm),
 	  m_pDevice(device) {
 	m_pAudioControlParmFeaturesWidget =
@@ -21,8 +21,8 @@ AudioControlDetailFeatureWidget::AudioControlDetailFeatureWidget(
 }
 
 void AudioControlDetailFeatureWidget::getDetails() {
-	GetAudioControlDetail *getAudioControlDetail =
-		new GetAudioControlDetail(m_pDevice);
+	std::unique_ptr<GetAudioControlDetail> getAudioControlDetail =
+		std::make_unique<GetAudioControlDetail>(m_pDevice);
 	getAudioControlDetail->setPortId(m_iPortId);
 	getAudioControlDetail->setControllerNumber(m_iControllerNumber);
 	getAudioControlDetail->setDebug(false);
@@ -31,9 +31,9 @@ void AudioControlDetailFeatureWidget::getDetails() {
 		m_pRetSetAudioControlParm->getNumberOfFeatuireChannels();
 	for (unsigned int i = 1; i <= numberOfFeatureChannels; i++) {
 		getAudioControlDetail->setDetailNumber(i);
-		RetSetAudioControlDetail *retSetAudioControlDetail =
-			dynamic_cast<RetSetAudioControlDetail *>(
-				getAudioControlDetail->query());
+		std::shared_ptr<RetSetAudioControlDetail> retSetAudioControlDetail =
+			std::dynamic_pointer_cast<RetSetAudioControlDetail>(
+				getAudioControlDetail->querySmart());
 		if (!retSetAudioControlDetail) {
 			break;
 		} else {
