@@ -30,24 +30,24 @@ void RetAudioPortMeterValue::parseAnswerData() {
 		std::string dir;
 		if (direction == 1) {
 			m_vChannelVolumes.in.clear();
-			dir = "in ";
+			if (debug)
+				dir = "in ";
 		}
 		if (direction == 2) {
 			m_vChannelVolumes.out.clear();
-			dir += "out ";
+			if (debug)
+				dir += "out ";
 		}
 		if (debug)
 			std::cout << "Direction " << dir << " values follow: " << std::dec
 					  << numberOfValues << std::endl;
 		for (int y = 0; y < numberOfValues; y++) {
 			int val = static_cast<int>(MIDI::byteJoin7bit(m_pData, offset, 2));
-			int db = static_cast<int>(20.0 * log10(val / 8192.0));
-			if (db < -79)
-				db = -79;
 			offset += 2;
 			ChannelVolume v;
 			v.channel = y + 1;
-			v.volume = db;
+			v.volume = val;
+			// v.volume = db;
 			switch (direction) {
 			case 1:
 				m_vChannelVolumes.in.push_back(v);
@@ -60,7 +60,7 @@ void RetAudioPortMeterValue::parseAnswerData() {
 			}
 			if (debug)
 				std::cout << "  - value for " << dir << " channel " << y
-						  << " = " << val << " (db " << db << ")" << std::endl;
+						  << " = " << val << std::endl;
 		}
 	}
 }
