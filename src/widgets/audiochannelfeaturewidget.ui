@@ -373,7 +373,7 @@ margin-left: 0;</string>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
-          <widget class="QProgressBar" name="m_pPBLeft">
+          <widget class="PKLevelMeter" name="m_pPBLeft">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
              <horstretch>0</horstretch>
@@ -412,7 +412,7 @@ margin-left: 0;</string>
           </widget>
          </item>
          <item>
-          <widget class="QProgressBar" name="m_pPBRight">
+          <widget class="PKLevelMeter" name="m_pPBRight">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
              <horstretch>0</horstretch>
@@ -525,6 +525,11 @@ margin-left: 0;</string>
    <class>PKSlider</class>
    <extends>QSlider</extends>
    <header>src/widgets/controls/pkslider.h</header>
+  </customwidget>
+  <customwidget>
+   <class>PKLevelMeter</class>
+   <extends>QProgressBar</extends>
+   <header>src/widgets/controls/pklevelmeter.h</header>
   </customwidget>
  </customwidgets>
  <resources>

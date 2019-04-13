@@ -115,6 +115,7 @@ void PKSlider::paintEvent(QPaintEvent *event) {
 	contents.setHeight(contents.height() - m_iHalfSliderHeight);
 
 	paintLegend(painter, font_y_offset, contents);
+	painter.setBackground(QBrush(QColor(10, 10, 10)));
 	QSlider::paintEvent(event);
 }
 

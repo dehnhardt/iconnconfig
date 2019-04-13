@@ -121,7 +121,8 @@ SOURCES +=\
     src/sysex/getaudioportmetervalue.cpp \
     src/sysex/retaudioportmetervalue.cpp \
     src/sysex/getaudiodeviceparm.cpp \
-    src/sysex/retsetaudiodeviceparm.cpp
+    src/sysex/retsetaudiodeviceparm.cpp \
+    src/widgets/controls/pklevelmeter.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
@@ -210,7 +211,8 @@ HEADERS  += \
     src/sysex/getaudioportmetervalue.h \
     src/sysex/retaudioportmetervalue.h \
     src/sysex/getaudiodeviceparm.h \
-    src/sysex/retsetaudiodeviceparm.h
+    src/sysex/retsetaudiodeviceparm.h \
+    src/widgets/controls/pklevelmeter.h
 
 FORMS    += \
     src/devicedetection.ui \
