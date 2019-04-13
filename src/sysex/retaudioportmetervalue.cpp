@@ -4,7 +4,7 @@
 RetAudioPortMeterValue::RetAudioPortMeterValue(Device *device)
 	: PortSysExMessage(RET_AUDIO_PORT_METER_VALUE, SysExMessage::QUERY,
 					   device) {
-	// debug = true;
+	debug = true;
 }
 
 RetAudioPortMeterValue::~RetAudioPortMeterValue() {}

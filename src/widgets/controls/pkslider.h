@@ -35,10 +35,9 @@ class PKSlider : public QSlider {
 	void paintEvent(QPaintEvent *event) override;
 
   private:
+	template <typename T> int sgn(T val) { return (T(0) < val) - (val < T(0)); }
 	float dbToAmplitude(float db);
 	float amplitudeToDb(float amplitude);
-
-	void calculateScale();
 
 	int *m_pScales = nullptr;
 
@@ -52,8 +51,7 @@ class PKSlider : public QSlider {
 	bool m_bDebug = false;
 	int m_iHalfSliderHeight = 8;
 	ScaleType m_scaleType = ScaleType::LINEAR;
-	void paintLegendStep(QPainter &painter, int minVal, int val, int offset,
-						 QRect contents);
+	void paintLegend(QPainter &painter, int offset, QRect contents);
 };
 
 #endif // PKSLIDER_H

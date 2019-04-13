@@ -21,7 +21,6 @@ void PKSlider::setMinimum(int val) {
 	if (m_bDebug)
 		std::cout << "Minimum: " << std::dec << (val / m_iResolution) << " Raw("
 				  << m_iRawMinimum << ")" << std::endl;
-	calculateScale();
 }
 
 void PKSlider::setMaximum(int val) {
@@ -34,7 +33,6 @@ void PKSlider::setMaximum(int val) {
 	if (m_bDebug)
 		std::cout << "Maximum: " << std::dec << (val / m_iResolution) << " Raw("
 				  << m_iRawMaximum << ")" << std::endl;
-	calculateScale();
 }
 
 void PKSlider::setTickInterval(float val) {
@@ -52,24 +50,40 @@ void PKSlider::setTickInterval(float val) {
 }
 
 void PKSlider::setValue(int val) {
+	double val2 =
+		m_iResolution ? val / static_cast<double>(m_iResolution) : val;
 	if (m_iResolution) {
 		if (m_bDebug)
-			std::cout << "value with resolution: " << val / m_iResolution
+			std::cout << "value with resolution: " << std::dec << val2
 					  << " Raw Value: " << val << std::endl;
-		QSlider::setValue(val / m_iResolution);
+	}
+	if (m_scaleType == ScaleType::LINEAR) {
+		QSlider::setValue(static_cast<int>(val2));
 	} else {
-		QSlider::setValue(val);
+		double scale = maximum() - minimum();
+		val2 = log10(abs(round(val2)) + 1) * scale / log10(scale);
+		if (m_bDebug)
+			std::cout << "Log value: " << val2 << std::endl;
+		QSlider::setValue(static_cast<int>(val2 * sgn(val)));
 	}
 }
 
 void PKSlider::onValueChange(int val) {
+
+	double val2 = 0.0;
+	if (m_scaleType == ScaleType::LINEAR)
+		val2 = val;
+	else {
+		double scale = maximum() - minimum();
+		val2 = sgn(val) * (pow(10, abs(val) * log10(scale) / scale) - 1);
+	}
 	if (m_iResolution) {
 		if (m_bDebug)
-			std::cout << "value with resolution: " << val * m_iResolution
+			std::cout << "Value" << std::dec << val2 * m_iResolution
 					  << " Raw Value: " << val << std::endl;
-		emit valueChanged(val * m_iResolution);
+		emit valueChanged(static_cast<int>(round(val2 * m_iResolution)));
 	} else {
-		emit valueChanged(val);
+		emit valueChanged(static_cast<int>(round(val2)));
 	}
 }
 
@@ -85,22 +99,9 @@ void PKSlider::setResulution(int val) {
 	m_iResolution = val;
 }
 
-void PKSlider::paintLegendStep(QPainter &painter, int minVal, int val,
-							   int offset, QRect contents) {
-	int x_off = val < 0 ? 0 : 2;
-
-	int y_val =
-		(contents.height() + 2 * m_iHalfSliderHeight) -
-		((val - minVal) * contents.height() / m_iScaleDiff + contents.y());
-	painter.drawText(contents.right() - 14 + x_off, y_val + offset,
-					 QString::number(val));
-	painter.drawLine(contents.x(), y_val, contents.x() + 5, y_val);
-}
-
 void PKSlider::paintEvent(QPaintEvent *event) {
 	QPainter painter(this);
 	QPen pen;
-	int minVal = minimum();
 	pen.setWidth(1);
 	pen.setColor(Qt::black);
 
@@ -113,43 +114,54 @@ void PKSlider::paintEvent(QPaintEvent *event) {
 	contents.setY(contents.y() + m_iHalfSliderHeight);
 	contents.setHeight(contents.height() - m_iHalfSliderHeight);
 
-	for (int i = 0; i <= m_iScaleTicks; i++) {
-		int val = m_pScales[i];
-		paintLegendStep(painter, minVal, val, font_y_offset, contents);
-	}
+	paintLegend(painter, font_y_offset, contents);
 	QSlider::paintEvent(event);
+}
+
+void PKSlider::paintLegend(QPainter &painter, int offset, QRect contents) {
+	int scale = contents.height();
+
+	int min = minimum();
+	int max = maximum();
+
+	int minimalDistance = 10;
+
+	int diff = max - min;
+
+	double factor =
+		m_scaleType == ScaleType::LINEAR ? scale / diff : scale / log10(diff);
+
+	double wScaleLast = 0;
+	for (int val = min; val <= max;) {
+		int wScale = 0;
+		if (m_scaleType == ScaleType::LINEAR) {
+			wScale = static_cast<int>(abs(val) * factor);
+		} else {
+			wScale = static_cast<int>(log10(abs(val) + 1) * factor);
+		}
+
+		int x_off = val < 0 ? 0 : 2;
+
+		if ((val == min) || (abs(wScale - wScaleLast) >= minimalDistance) ||
+			(val == max)) {
+			wScaleLast = wScale;
+			int yVal = wScale + m_iHalfSliderHeight;
+			painter.drawText(contents.right() - 14 + x_off, yVal + offset,
+							 QString::number(val));
+			painter.drawLine(contents.x(), yVal, contents.x() + 5, yVal);
+		}
+		if (val < 10 && val > -11)
+			val += 1;
+		else {
+			val += 10;
+		}
+	}
 }
 
 float PKSlider::dbToAmplitude(float db) { return pow(10.0f, db / 20.0f); }
 
 float PKSlider::amplitudeToDb(float amplitude) {
 	return 20.0f * log10(amplitude);
-}
-
-void PKSlider::calculateScale() {
-	m_iScaleDiff = maximum() - minimum();
-	if (m_pScales)
-		delete[] m_pScales;
-	m_pScales = new int[m_iScaleTicks + 1];
-	int maxValue = maximum();
-	int minValue = minimum();
-	int diff = maxValue - minValue;
-	int step = diff / m_iScaleTicks;
-	for (int i = 0; i < m_iScaleTicks; i++) {
-		m_pScales[i] = step * i + minValue;
-		if (m_bDebug)
-			std::cout << "Step " << i << ": " << m_pScales[i] << std::endl;
-	}
-	m_pScales[m_iScaleTicks] = maxValue;
-	if (m_bDebug)
-		std::cout << "Step " << m_iScaleTicks << ": " << maxValue << std::endl;
-}
-
-int PKSlider::translate(float dec, int x1, int height) {
-	int offset = static_cast<int>(height - (x1 + height * dec / 1000));
-	if (m_bDebug)
-		std::cout << "Dec: " << dec << " Scale x: " << offset << std::endl;
-	return offset;
 }
 
 PKSlider::ScaleType PKSlider::getScaleType() const { return m_scaleType; }
