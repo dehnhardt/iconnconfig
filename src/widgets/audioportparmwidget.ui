@@ -216,6 +216,16 @@
       <property name="verticalSpacing">
        <number>0</number>
       </property>
+      <item row="3" column="2">
+       <widget class="QCheckBox" name="m_pChbIOSConnected">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>IOS Connected</string>
+        </property>
+       </widget>
+      </item>
       <item row="3" column="0">
        <widget class="QCheckBox" name="m_pChbIOSSupported">
         <property name="enabled">
@@ -223,6 +233,30 @@
         </property>
         <property name="text">
          <string>IOS Supported</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QCheckBox" name="m_pChbIOSEnabled">
+        <property name="text">
+         <string>IOS Enabled</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QCheckBox" name="m_pChbPCConnected">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>PC/MAC Connected</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="3">
+       <widget class="QLabel" name="m_pLblHostName">
+        <property name="text">
+         <string>Host Name:</string>
         </property>
        </widget>
       </item>
@@ -239,6 +273,13 @@
         </property>
        </widget>
       </item>
+      <item row="3" column="3">
+       <widget class="QLineEdit" name="m_pEditHostName">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
       <item row="2" column="1">
        <widget class="QCheckBox" name="m_pChbPcEnabled">
         <property name="styleSheet">
@@ -249,12 +290,18 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
-       <widget class="QCheckBox" name="m_pChbIOSEnabled">
-        <property name="text">
-         <string>IOS Enabled</string>
+      <item row="3" column="4">
+       <spacer name="horizontalSpacer_5">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
         </property>
-       </widget>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </widget>

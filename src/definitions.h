@@ -119,6 +119,8 @@ enum AudioControllerType {
 	CT_CLOCK_SOURCE = 10
 };
 
+enum UsbDeviceHost { NO_HOST = 0, MAC_PC = 1, IOS = 2 };
+
 typedef struct {
 	int channel;
 	int volume;

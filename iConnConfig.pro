@@ -119,7 +119,9 @@ SOURCES +=\
     src/widgets/audiochannelfeaturewidget.cpp \
     src/widgets/controls/pkslider.cpp \
     src/sysex/getaudioportmetervalue.cpp \
-    src/sysex/retaudioportmetervalue.cpp
+    src/sysex/retaudioportmetervalue.cpp \
+    src/sysex/getaudiodeviceparm.cpp \
+    src/sysex/retsetaudiodeviceparm.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
@@ -206,7 +208,9 @@ HEADERS  += \
     src/widgets/audiochannelfeaturewidget.h \
     src/widgets/controls/pkslider.h \
     src/sysex/getaudioportmetervalue.h \
-    src/sysex/retaudioportmetervalue.h
+    src/sysex/retaudioportmetervalue.h \
+    src/sysex/getaudiodeviceparm.h \
+    src/sysex/retsetaudiodeviceparm.h
 
 FORMS    += \
     src/devicedetection.ui \
