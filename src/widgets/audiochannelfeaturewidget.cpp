@@ -8,9 +8,6 @@ AudioChannelFeatureWidget::AudioChannelFeatureWidget(
 	QWidget *parent)
 	: QFrame(parent), ui(new Ui::AudioChannelFeatureWidget) {
 	ui->setupUi(this);
-	setStyleSheet("QProgressBar::chunk{margin: 0.5px; "
-				  "background-color: #11CC11; "
-				  "height: 10px; } ");
 	this->ui->m_pPBRight->setVisible(false);
 	this->ui->m_pPBLeft->setRange(1, 8192);
 	this->ui->m_pPBRight->setRange(1, 8192);
