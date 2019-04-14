@@ -58,16 +58,6 @@ Device::~Device() {
 	m_pMidiPortInfos->clear();
 	delete m_pMidiPortInfos;
 	m_pMidiPortInfos = nullptr;
-
-	/*
-	DeviceStructure::iterator it1;
-	for (it1 = m_pInformationTree->begin(); it1 != m_pInformationTree->end();
-		 ++it1) {
-		if (nullptr != it1->second) {
-			delete it->second;
-			it->second = nullptr;
-		}
-	}*/
 	m_pInformationTree->clear();
 	delete m_pInformationTree;
 
@@ -77,6 +67,7 @@ Device::~Device() {
 	delete m_pProductId;
 	delete midiin;
 	delete midiout;
+	delete m_pDeviceHeader;
 }
 
 BYTE_VECTOR *Device::getManufacturerHeader() {

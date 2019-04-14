@@ -13,7 +13,5 @@ PortSysExMessage::PortSysExMessage(Command m_Command,
 PortSysExMessage::~PortSysExMessage() {}
 
 std::vector<unsigned char> *PortSysExMessage::getPortIdBytes() {
-	BYTE_VECTOR *v = new BYTE_VECTOR();
-	v = MIDI::byteSplit7bit(static_cast<unsigned long>(m_iPortId), 2);
-	return v;
+	return MIDI::byteSplit7bit(static_cast<unsigned long>(m_iPortId), 2);
 }

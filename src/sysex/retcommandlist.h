@@ -10,12 +10,14 @@ class RetCommandList : public SysExMessage {
 	RetCommandList(Device *m_pDevice);
 	RetCommandList(Command cmd, BYTE_VECTOR *message, Device *device)
 		: SysExMessage(cmd, message, device) {}
+	~RetCommandList() override;
+
 	std::vector<int> getSupportedCommands();
 	bool isCommandSupported(Command m_Command);
-	void parseAnswerData();
-	int getSettingsId() { return m_Command; }
-	int getSettingsIndex() { return 0; }
-	std::string getStorableValue() { return ""; }
+	void parseAnswerData() override;
+	int getSettingsId() override { return m_Command; }
+	int getSettingsIndex() override { return 0; }
+	std::string getStorableValue() override { return ""; }
 
   private:
 	std::vector<Command> *m_pSupportedCommands = nullptr;

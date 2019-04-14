@@ -23,6 +23,10 @@ AudioControlParmFeaturesWidget::AudioControlParmFeaturesWidget(
 	// m_pVolumeTimer->start(10);
 }
 
+AudioControlParmFeaturesWidget::~AudioControlParmFeaturesWidget() {
+	delete m_pVolumeTimer;
+}
+
 void AudioControlParmFeaturesWidget::createLayout() {
 	QVBoxLayout *baseLayout = new QVBoxLayout();
 	QWidget *w = new QWidget();

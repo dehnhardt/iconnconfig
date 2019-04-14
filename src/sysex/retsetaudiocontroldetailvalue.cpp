@@ -1,8 +1,8 @@
 #include "retsetaudiocontroldetailvalue.h"
 
 RetSetAudioControlDetailValue::RetSetAudioControlDetailValue(Device *device)
-	: PortSysExMessage(Command::RET_SET_AUDIO_CONTROL_DETAIL_VALUE,
-					   SysExMessage::QUERY, device) {}
+    : PortSysExMessage(Command::RET_SET_AUDIO_CONTROL_DETAIL_VALUE,
+                       SysExMessage::QUERY, device) {}
 
 RetSetAudioControlDetailValue::~RetSetAudioControlDetailValue() {}
 
@@ -49,8 +49,8 @@ void RetSetAudioControlDetailValue::parseAnswerData() {
 		m_iNameLenght = m_pData->at(offset);
 		offset++;
 		m_sClockSourceName = std::string(
-			m_pData->begin() + static_cast<long>(offset),
-			m_pData->begin() + static_cast<long>(offset) + m_iNameLenght);
+		    m_pData->begin() + static_cast<long>(offset),
+		    m_pData->begin() + static_cast<long>(offset) + m_iNameLenght);
 		break;
 
 	default:
@@ -65,7 +65,7 @@ std::vector<unsigned char> *RetSetAudioControlDetailValue::m_pGetMessageData() {
 	this->m_pCommandData->at(0) = 0x40;
 	messageData->push_back(m_iCommandVersionNumber);
 	messageData->insert(messageData->end(), audioPortId->begin(),
-						audioPortId->end());
+	                    audioPortId->end());
 	messageData->push_back(m_iControllerNumber);
 	messageData->push_back(m_iDetailNumber);
 	messageData->push_back(static_cast<unsigned char>(m_controllerType));
@@ -75,12 +75,14 @@ std::vector<unsigned char> *RetSetAudioControlDetailValue::m_pGetMessageData() {
 	if (m_bHasVolumeControl) {
 		existFlag += 1;
 		BYTE_VECTOR *volume = MIDI::byteSplit7bit(
-			MIDI::inv2sComplement(static_cast<short>(m_iVolume)), 3);
+		    MIDI::inv2sComplement(static_cast<short>(m_iVolume)), 3);
 		variableData->insert(variableData->end(), volume->begin(),
-							 volume->end());
+		                     volume->end());
 		BYTE_VECTOR *trim = MIDI::byteSplit7bit(
-			MIDI::inv2sComplement(static_cast<short>(m_iTrim)), 3);
+		    MIDI::inv2sComplement(static_cast<short>(m_iTrim)), 3);
 		variableData->insert(variableData->end(), trim->begin(), trim->end());
+		delete trim;
+		delete volume;
 	}
 	if (m_bHasMuteControl) {
 		existFlag += 2;
@@ -100,8 +102,9 @@ std::vector<unsigned char> *RetSetAudioControlDetailValue::m_pGetMessageData() {
 	}
 	messageData->push_back(existFlag);
 	messageData->insert(messageData->end(), variableData->begin(),
-						variableData->end());
-	MIDI::printMessage(messageData);
+	                    variableData->end());
+	delete audioPortId;
+	delete variableData;
 	return messageData;
 }
 
@@ -174,7 +177,7 @@ bool RetSetAudioControlDetailValue::hasVolumeControl() const {
 }
 
 void RetSetAudioControlDetailValue::setHasVolumeControl(
-	bool bHasVolumeControl) {
+    bool bHasVolumeControl) {
 	m_bHasVolumeControl = bHasVolumeControl;
 }
 
@@ -191,7 +194,7 @@ bool RetSetAudioControlDetailValue::hasPhantomPowerControl() const {
 }
 
 void RetSetAudioControlDetailValue::setHasPhantomPowerControl(
-	bool bHasPhantomPowerControl) {
+    bool bHasPhantomPowerControl) {
 	m_bHasPhantomPowerControl = bHasPhantomPowerControl;
 }
 
@@ -200,7 +203,7 @@ bool RetSetAudioControlDetailValue::hasHighImpendanceControl() const {
 }
 
 void RetSetAudioControlDetailValue::setHasHighImpendanceControl(
-	bool bHasHighImpendanceControl) {
+    bool bHasHighImpendanceControl) {
 	m_bHasHighImpendanceControl = bHasHighImpendanceControl;
 }
 
@@ -209,6 +212,6 @@ bool RetSetAudioControlDetailValue::hasStereoLinkControl() const {
 }
 
 void RetSetAudioControlDetailValue::setHasStereoLinkControl(
-	bool bHasStereoLinkControl) {
+    bool bHasStereoLinkControl) {
 	m_bHasStereoLinkControl = bHasStereoLinkControl;
 }

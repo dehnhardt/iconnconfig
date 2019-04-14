@@ -2,17 +2,17 @@
 #include "retaudioportmetervalue.h"
 
 GetAudioPortMeterValue::GetAudioPortMeterValue(Device *device)
-    : PortSysExMessage(GET_AUDIO_PORT_METER_VALUE, SysExMessage::QUERY,
-                       device) {}
+	: PortSysExMessage(GET_AUDIO_PORT_METER_VALUE, SysExMessage::QUERY,
+					   device) {}
 
 GetAudioPortMeterValue::~GetAudioPortMeterValue() {}
 
 void GetAudioPortMeterValue::createAnswer(Command m_Command,
-                                          std::vector<unsigned char> *message,
-                                          Device *m_pDevice) {
+										  std::vector<unsigned char> *message,
+										  Device *m_pDevice) {
 	m_pAnswer.reset();
 	m_pAnswer =
-	    std::make_shared<RetAudioPortMeterValue>(m_Command, message, m_pDevice);
+		std::make_shared<RetAudioPortMeterValue>(m_Command, message, m_pDevice);
 	if (debug)
 		m_pAnswer->setDebug(true);
 	m_pAnswer->parseAnswerData();

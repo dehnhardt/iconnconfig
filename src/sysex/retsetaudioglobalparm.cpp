@@ -2,10 +2,17 @@
 #include <sstream>
 #include <string>
 
+RetSetAudioGlobalParm::~RetSetAudioGlobalParm() {
+	for (unsigned int i = 0; i < m_iNumberOfConfigBlocks; i++) {
+		delete m_pAudioConfigurations[i];
+	}
+	delete[] m_pAudioConfigurations;
+}
+
 void RetSetAudioGlobalParm::parseAnswerData() {
 	m_iCommandVersionNumber = m_pData->at(0);
 	m_iNumberOfAudioPorts =
-		static_cast<unsigned int>(MIDI::byteJoin7bit(m_pData, 1, 2));
+	    static_cast<unsigned int>(MIDI::byteJoin7bit(m_pData, 1, 2));
 	m_iMinAudioFramesBuffered = m_pData->at(3);
 	m_iMaxAudioFramesBuffered = m_pData->at(4);
 	m_iCurrentAudioFramesBuffered = m_pData->at(5);
@@ -16,7 +23,7 @@ void RetSetAudioGlobalParm::parseAnswerData() {
 	m_iNumberOfConfigBlocks = m_pData->at(10);
 	m_pAudioConfigurations = new AUDIOConfiguration *[m_iNumberOfConfigBlocks];
 	for (unsigned int i = 0;
-		 (i < m_iNumberOfConfigBlocks) && (i * 3 + 10 < m_iDataLength); i++) {
+	     (i < m_iNumberOfConfigBlocks) && (i * 3 + 10 < m_iDataLength); i++) {
 		AUDIOConfiguration *audioConfiguration = new AUDIOConfiguration();
 		audioConfiguration->configurationNumber = m_pData->at(11 + i * 3);
 		audioConfiguration->bitDepthCode = m_pData->at(12 + i * 3);
@@ -30,7 +37,7 @@ AUDIOConfiguration *RetSetAudioGlobalParm::getAudioConfiguration(int i) const {
 }
 
 void RetSetAudioGlobalParm::setAudioConfiguration(
-	AUDIOConfiguration *pAudioConfigurations, int i) {
+    AUDIOConfiguration *pAudioConfigurations, int i) {
 	m_pAudioConfigurations[i] = pAudioConfigurations;
 }
 
@@ -48,7 +55,7 @@ RetSetAudioGlobalParm::getNumberOfActiveAudioConfiguration() const {
 }
 
 void RetSetAudioGlobalParm::setNumberOfActiveAudioConfiguration(
-	unsigned int iNumberOfActiveAudioConfigurations) {
+    unsigned int iNumberOfActiveAudioConfigurations) {
 	m_iNumberOfActiveAudioConfiguration = iNumberOfActiveAudioConfigurations;
 }
 
@@ -57,7 +64,7 @@ unsigned int RetSetAudioGlobalParm::getCurrentSyncFactor() const {
 }
 
 void RetSetAudioGlobalParm::setCurrentSyncFactor(
-	unsigned int iCurrentSyncFactor) {
+    unsigned int iCurrentSyncFactor) {
 	m_iCurrentSyncFactor = iCurrentSyncFactor;
 }
 
@@ -74,7 +81,7 @@ unsigned int RetSetAudioGlobalParm::getCurrentAudioFramesBuffered() const {
 }
 
 void RetSetAudioGlobalParm::setCurrentAudioFramesBuffered(
-	unsigned int iCurrentAudioFramesBuffered) {
+    unsigned int iCurrentAudioFramesBuffered) {
 	m_iCurrentAudioFramesBuffered = iCurrentAudioFramesBuffered;
 }
 
@@ -90,9 +97,9 @@ std::string RetSetAudioGlobalParm::getAudioConfigurationString(unsigned int i) {
 	AUDIOConfiguration *audioConfiguration = m_pAudioConfigurations[i - 1];
 	std::stringstream configString;
 	configString << tr("Sample Rate: ").toStdString()
-				 << translateSampleRateText(audioConfiguration->sampleRateCode)
-				 << tr(", Bit Depth: ").toStdString()
-				 << translateBitDepth(audioConfiguration->bitDepthCode);
+	             << translateSampleRateText(audioConfiguration->sampleRateCode)
+	             << tr(", Bit Depth: ").toStdString()
+	             << translateBitDepth(audioConfiguration->bitDepthCode);
 	return configString.str();
 }
 
@@ -107,19 +114,19 @@ std::vector<unsigned char> *RetSetAudioGlobalParm::m_pGetMessageData() {
 
 	messageData->push_back(m_iCommandVersionNumber);
 	messageData->insert(messageData->end(), audioPorts->begin(),
-						audioPorts->end());
+	                    audioPorts->end());
 	messageData->push_back(
-		static_cast<unsigned char>(m_iMinAudioFramesBuffered));
+	    static_cast<unsigned char>(m_iMinAudioFramesBuffered));
 	messageData->push_back(
-		static_cast<unsigned char>(m_iMaxAudioFramesBuffered));
+	    static_cast<unsigned char>(m_iMaxAudioFramesBuffered));
 	messageData->push_back(
-		static_cast<unsigned char>(m_iCurrentAudioFramesBuffered));
+	    static_cast<unsigned char>(m_iCurrentAudioFramesBuffered));
 	messageData->push_back(static_cast<unsigned char>(m_iMinAllowedSyncFactor));
 	messageData->push_back(static_cast<unsigned char>(m_iMaxAllowedSyncFactor));
 	messageData->push_back(static_cast<unsigned char>(m_iCurrentSyncFactor));
 	messageData->push_back(
-		static_cast<unsigned char>(m_iNumberOfActiveAudioConfiguration));
-
+	    static_cast<unsigned char>(m_iNumberOfActiveAudioConfiguration));
+	delete audioPorts;
 	return messageData;
 }
 

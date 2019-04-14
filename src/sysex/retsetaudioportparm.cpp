@@ -6,7 +6,7 @@ RetSetAudioPortParm::RetSetAudioPortParm(Device *device)
 
 RetSetAudioPortParm::~RetSetAudioPortParm() {
 	if (m_pAudioPortConfigurations != nullptr) {
-		if (m_iNumberOfPortConfigurationBlocks < 0) {
+		if (m_iNumberOfPortConfigurationBlocks > 0) {
 			for (int i = 0; i < m_iNumberOfPortConfigurationBlocks; i++)
 				delete m_pAudioPortConfigurations[i];
 		}
@@ -107,6 +107,7 @@ std::vector<unsigned char> *RetSetAudioPortParm::m_pGetMessageData() {
 	default:
 		break;
 	}
+	delete totalNumberOfAudioPorts;
 	return data;
 }
 

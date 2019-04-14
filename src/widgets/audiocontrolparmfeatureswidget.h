@@ -17,6 +17,7 @@ class AudioControlParmFeaturesWidget : public QWidget {
 		Device *device,
 		QVector<std::shared_ptr<RetSetAudioControlParm>> *features,
 		QWidget *parent = nullptr);
+	~AudioControlParmFeaturesWidget() override;
 
   private:
 	QTabWidget *m_pControllerNameTabs = nullptr;

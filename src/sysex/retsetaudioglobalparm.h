@@ -18,14 +18,15 @@ class RetSetAudioGlobalParm : public SysExMessage {
 	RetSetAudioGlobalParm(Device *device);
 	RetSetAudioGlobalParm(Command cmd, BYTE_VECTOR *message, Device *device)
 		: SysExMessage(cmd, message, device) {}
-	int getSettingsId() { return m_Command; }
-	int getSettingsIndex() { return 0; }
-	std::string getStorableValue() { return ""; }
+	~RetSetAudioGlobalParm() override;
+	int getSettingsId() override { return m_Command; }
+	int getSettingsIndex() override { return 0; }
+	std::string getStorableValue() override { return ""; }
 
 	std::string getAudioConfigurationString(unsigned int i);
 	std::string getAudioConfigurationString();
 
-	BYTE_VECTOR *m_pGetMessageData();
+	BYTE_VECTOR *m_pGetMessageData() override;
 
 	unsigned int translateBitDepth(int bitCode);
 	std::string translateBitDepthText(int bitCode);
@@ -61,7 +62,7 @@ class RetSetAudioGlobalParm : public SysExMessage {
 	void setAudioConfiguration(AUDIOConfiguration *pAudioConfigurations, int i);
 
   private:
-	void parseAnswerData();
+	void parseAnswerData() override;
 
 	unsigned int m_iNumberOfAudioPorts = 0;
 	unsigned int m_iMinAudioFramesBuffered = 0;

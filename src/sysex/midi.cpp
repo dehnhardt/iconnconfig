@@ -17,7 +17,7 @@ RtMidiIn *MIDI::createMidiIn(const std::string clientName) {
 		error.printMessage();
 	}
 	midiin->ignoreTypes(false, true, true);
-	return midiin;
+	return std::move(midiin);
 }
 
 RtMidiOut *
@@ -30,7 +30,7 @@ MIDI::createMidiOut(const std::string clientName) // RtMidiOut constructor
 		// TODO Handle the exception here
 		error.printMessage();
 	}
-	return midiout;
+	return std::move(midiout);
 }
 
 unsigned char MIDI::RolandChecksum(BYTE_VECTOR *message) {
@@ -64,7 +64,7 @@ BYTE_VECTOR *MIDI::byteSplit7bit(unsigned long val, unsigned long size) {
 		}
 	}
 	std::reverse(bytes->begin(), bytes->end());
-	return bytes;
+	return std::move(bytes);
 }
 
 BYTE_VECTOR *MIDI::byteSplit8bit(long val) {
