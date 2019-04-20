@@ -31,7 +31,7 @@ class GlobalAudioConfigurationWidget : public QWidget {
 	void save();
 
   signals:
-	void changeAudioConfiguration();
+	void changeAudioConfiguration(unsigned int currentAudioConfiguration);
 };
 
 #endif // GLOBALAUDIOCONFIGURATIONWIDGET_H

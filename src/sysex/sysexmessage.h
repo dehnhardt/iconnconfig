@@ -101,7 +101,7 @@ class SysExMessage {
 	void storeSettings();
 
 	virtual int getSettingsId() { return m_Command; }
-	virtual int getSettingsIndex() = 0;
+	virtual int getSettingsIndex() { return 0; }
 	virtual std::string getStorableValue() {
 		return std::string(m_pData->begin(), m_pData->end());
 	}

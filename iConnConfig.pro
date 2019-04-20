@@ -43,10 +43,12 @@ SOURCES +=\
         src/RtMidi.cpp \
     src/main.cpp \
     src/device.cpp \
+    src/sysex/getaudiochannelname.cpp \
     src/sysex/midi.cpp \
     src/devicedetection.cpp \
     src/config/configuration.cpp \
     src/devicedetectionprocessor.cpp \
+    src/sysex/retsetaudiochannelname.cpp \
     src/sysex/sysexmessage.cpp \
     src/deviceselectiontablemodel.cpp \
     # src/widgets/portsettingwidget.cpp \
@@ -122,17 +124,32 @@ SOURCES +=\
     src/sysex/retaudioportmetervalue.cpp \
     src/sysex/getaudiodeviceparm.cpp \
     src/sysex/retsetaudiodeviceparm.cpp \
-    src/widgets/controls/pklevelmeter.cpp
+    src/widgets/controls/pklevelmeter.cpp \
+    src/sysex/getaudiopatchbayparm.cpp \
+    src/sysex/retsetaudiopatchbayparm.cpp \
+    src/widgets/audiomixerwidget.cpp \
+    src/widgets/audiowidget.cpp \
+    src/widgets/audioroutingwidget.cpp \
+    src/sysex/getmixerparm.cpp \
+    src/sysex/retsetmixerparm.cpp \
+    src/sysex/retsetmixerportparm.cpp \
+    src/sysex/getmixerportparm.cpp \
+    src/widgets/mixerportwidget.cpp \
+    src/sysex/retsetmixerinputparm.cpp \
+    src/sysex/getmixerinputparm.cpp \
+    src/widgets/audiomixerchannelwidget.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
 HEADERS  += \
     src/RtMidi.h \
     src/device.h \
+    src/sysex/getaudiochannelname.h \
     src/sysex/midi.h \
     src/devicedetection.h \
     src/config/configuration.h \
     src/devicedetectionprocessor.h \
+    src/sysex/retsetaudiochannelname.h \
     src/sysex/sysexmessage.h \
     src/deviceselectiontablemodel.h \
     src/events/events.h \
@@ -212,7 +229,20 @@ HEADERS  += \
     src/sysex/retaudioportmetervalue.h \
     src/sysex/getaudiodeviceparm.h \
     src/sysex/retsetaudiodeviceparm.h \
-    src/widgets/controls/pklevelmeter.h
+    src/widgets/controls/pklevelmeter.h \
+    src/sysex/getaudiopatchbayparm.h \
+    src/sysex/retsetaudiopatchbayparm.h \
+    src/widgets/audiomixerwidget.h \
+    src/widgets/audiowidget.h \
+    src/widgets/audioroutingwidget.h \
+    src/sysex/getmixerparm.h \
+    src/sysex/retsetmixerparm.h \
+    src/sysex/retsetmixerportparm.h \
+    src/sysex/getmixerportparm.h \
+    src/widgets/mixerportwidget.h \
+    src/sysex/retsetmixerinputparm.h \
+    src/sysex/getmixerinputparm.h \
+    src/widgets/audiomixerchannelwidget.h
 
 FORMS    += \
     src/devicedetection.ui \
@@ -225,7 +255,9 @@ FORMS    += \
     src/widgets/globalaudioconfiguration.ui \
     src/widgets/audiocontrolparmwidget.ui \
     src/widgets/audiochannelfeaturewidget.ui \
-    src/widgets/audioportparmwidget.ui
+    src/widgets/audioportparmwidget.ui \
+    src/widgets/audiomixerwidget.ui \
+    src/widgets/audioroutingwidget.ui
 
 unix:!macx: LIBS += -lasound \
                     -lpthread \

@@ -36,7 +36,8 @@ class AudioPortParmWidget : public QWidget {
 	bool checkTotalNumberOfAudioChannels();
 
   public slots:
-	void audioConfigurationChanged();
+	void
+	audioConfigurationChanged(unsigned int currentAudioConfigurationNumber);
 
   signals:
 	void changePortName(std::string portName);

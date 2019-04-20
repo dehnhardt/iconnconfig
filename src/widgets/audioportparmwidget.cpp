@@ -212,6 +212,7 @@ bool AudioPortParmWidget::checkTotalNumberOfAudioChannels() {
 	return true;
 }
 
-void AudioPortParmWidget::audioConfigurationChanged() {
+void AudioPortParmWidget::audioConfigurationChanged(
+	__attribute__((unused)) unsigned int currentAudioConfigurationNumber) {
 	setCurrentAudioConfiguration();
 }

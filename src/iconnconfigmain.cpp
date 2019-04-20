@@ -9,6 +9,7 @@
 #include "sysex/retcommandlist.h"
 #include "ui_iconnconfigmain.h"
 #include "widgets/audioportswidget.h"
+#include "widgets/audiowidget.h"
 #include "widgets/centralwidget.h"
 #include "widgets/deviceinfowidget.h"
 #include "widgets/multiinfowidget.h"
@@ -36,11 +37,11 @@ int MioMain::sigpipe[2];
 MioMain *MioMain::pMainWindow = nullptr;
 
 MioMain::MioMain(QCommandLineParser *parser, QWidget *parent)
-    : QMainWindow(parent), m_pUi(new Ui::MioMain) {
+	: QMainWindow(parent), m_pUi(new Ui::MioMain) {
 	m_pUi->setupUi(this);
 	pMainWindow = this;
 	setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::ForceTabbedDocks |
-	               QMainWindow::VerticalTabs);
+				   QMainWindow::VerticalTabs);
 	if (parser->isSet("filename")) {
 		QString *fileName = new QString(parser->value("filename"));
 		setConfigurationFile(fileName);
@@ -74,11 +75,11 @@ MioMain::~MioMain() {
 void MioMain::openDefaultDevice() {
 	writeDevicesToSettings();
 	unsigned long defaultDeviceSN =
-	    Configuration::getInstance().getDefaultDevice();
+		Configuration::getInstance().getDefaultDevice();
 	if (Configuration::getInstance().getDevices()->size() > 0) {
 		try {
 			std::shared_ptr<Device> d =
-			    Configuration::getInstance().getDevices()->at(defaultDeviceSN);
+				Configuration::getInstance().getDevices()->at(defaultDeviceSN);
 			addDevicesToSelectionMenu(defaultDeviceSN);
 			openDeviceGUI(d.get());
 		} catch (const std::out_of_range &oor) {
@@ -96,11 +97,11 @@ void MioMain::addDevicesToSelectionMenu(unsigned long defaultDeviceSN) {
 	for (Devices::iterator it = devices->begin(); it != devices->end(); ++it) {
 		std::shared_ptr<Device> d = it->second;
 		QAction *a = m_pUi->menuSelect->addAction(
-		    QString::fromStdString(d->getDeviceName()));
+			QString::fromStdString(d->getDeviceName()));
 		a->setCheckable(true);
 		devicesGroup->addAction(a);
 		connect(a, &QAction::triggered, this,
-		        [this, d](bool) { openDeviceGUI(d.get()); });
+				[this, d](bool) { openDeviceGUI(d.get()); });
 		if (it->first == defaultDeviceSN)
 			a->setChecked(true);
 	}
@@ -130,8 +131,8 @@ void MioMain::clearDocWidgets() {
 	delete m_pToolBar;
 	m_pToolBar = nullptr;
 	for (std::map<Qt::DockWidgetArea, std::vector<QDockWidget *>>::iterator it =
-	         m_DockWidgetAreasMap.begin();
-	     it != m_DockWidgetAreasMap.end(); ++it) {
+			 m_DockWidgetAreasMap.begin();
+		 it != m_DockWidgetAreasMap.end(); ++it) {
 		std::vector<QDockWidget *> v = it->second;
 		for (unsigned int j = 0; j < v.size(); j++) {
 			QWidget *w = v.at(j);
@@ -153,7 +154,7 @@ void MioMain::addDeviceToolButtons() {
 		return;
 	for (unsigned int i = 0; i < saveRestoreList->size(); ++i) {
 		switch (
-		    static_cast<SaveRestore::SaveResstoreId>((*saveRestoreList)[i])) {
+			static_cast<SaveRestore::SaveResstoreId>((*saveRestoreList)[i])) {
 		case SaveRestore::SAVE_TO_DEVICE: {
 			QToolButton *btn = new QToolButton();
 			btn->setToolButtonStyle(Qt::ToolButtonIconOnly);
@@ -180,7 +181,7 @@ void MioMain::addDeviceToolButtons() {
 			m_pToolBar->addWidget(btn);
 			btn->setIcon(QIcon(":/pixmaps/restore"));
 			connect(btn, SIGNAL(pressed()), this,
-			        SLOT(resetToFactoryDefaults()));
+					SLOT(resetToFactoryDefaults()));
 		} break;
 		default:
 			break;
@@ -202,13 +203,13 @@ void MioMain::openDeviceGUI(Device *d) {
 		exit(2);
 	}
 	setWindowTitle(this->m_sTitle + QString(": ") +
-	               QString::fromStdString(d->getDeviceName()));
+				   QString::fromStdString(d->getDeviceName()));
 
 	m_pCentralDeviceWidget = new CentralWidget(this, d);
 	this->addDock(m_pCentralDeviceWidget);
 
 	DeviceInfoWidget *deviceInfoWidget =
-	    new DeviceInfoWidget(this, d, d->getDeviceInfo());
+		new DeviceInfoWidget(this, d, d->getDeviceInfo());
 	this->addDock(deviceInfoWidget, Qt::LeftDockWidgetArea);
 
 	if (d->hasMidiSupport()) {
@@ -218,6 +219,11 @@ void MioMain::openDeviceGUI(Device *d) {
 	if (d->hasAudioSupport()) {
 		AudioPortsWidget *audioPortsWidget = new AudioPortsWidget(this, d);
 		this->addDock(audioPortsWidget, Qt::LeftDockWidgetArea);
+		if (d->getCommands()->isCommandSupported(GET_AUDIO_PATCHBAY_PARM) ||
+			d->getCommands()->isCommandSupported(GET_MIXER_PARM)) {
+			AudioWidget *audioRoutingsWidget = new AudioWidget(this, d);
+			this->addDock(audioRoutingsWidget, Qt::LeftDockWidgetArea);
+		}
 	}
 	addDeviceToolButtons();
 
@@ -245,8 +251,8 @@ void MioMain::storeToDevice() {
 
 void MioMain::reinitDevice() {
 	QProgressDialog progress(
-	    tr("Waiting 10 seconds for device to be responsive again"),
-	    tr("Exit application"), 0, 10, this);
+		tr("Waiting 10 seconds for device to be responsive again"),
+		tr("Exit application"), 0, 10, this);
 	progress.setWindowModality(Qt::WindowModal);
 
 	for (int i = 0; i < 10; i++) {
@@ -332,15 +338,15 @@ void MioMain::writeDevicesToSettings() {
 		settings->setArrayIndex(i);
 		std::shared_ptr<Device> d = it->second;
 		settings->setValue("Device Name",
-		                   QString::fromStdString(d->getDeviceName()));
+						   QString::fromStdString(d->getDeviceName()));
 		settings->setValue(
-		    "Serial Number",
-		    static_cast<qlonglong>(d->getSerialNumber()->getLongValue()));
+			"Serial Number",
+			static_cast<qlonglong>(d->getSerialNumber()->getLongValue()));
 		settings->setValue("Input Port", d->getInPortNumer());
 		settings->setValue("Output Port", d->getOutPortNumer());
 		settings->setValue(
-		    "Product Id",
-		    static_cast<qlonglong>(d->getProductId()->getLongValue()));
+			"Product Id",
+			static_cast<qlonglong>(d->getProductId()->getLongValue()));
 		++i;
 	}
 	settings->endArray();
@@ -372,38 +378,38 @@ bool MioMain::readDevicesFromSettings() {
 		std::shared_ptr<Device> device = nullptr;
 		settings->setArrayIndex(i);
 		unsigned int productId =
-		    static_cast<unsigned int>(settings->value("Product Id").toInt());
+			static_cast<unsigned int>(settings->value("Product Id").toInt());
 		unsigned long serialNumber = static_cast<unsigned long>(
-		    settings->value("Serial Number").toLongLong());
+			settings->value("Serial Number").toLongLong());
 		unsigned int inputPort =
-		    static_cast<unsigned int>(settings->value("Input Port").toInt());
+			static_cast<unsigned int>(settings->value("Input Port").toInt());
 		unsigned int outputPort =
-		    static_cast<unsigned int>(settings->value("Output Port").toInt());
+			static_cast<unsigned int>(settings->value("Output Port").toInt());
 		try {
 			device = std::make_shared<Device>(inputPort, outputPort,
-			                                  serialNumber, productId);
+											  serialNumber, productId);
 		} catch (CommunicationException *e) {
 			std::cerr << e->getErrorMessage();
 		}
 		if (device)
 			try {
-			    device->queryDeviceInfo();
+				device->queryDeviceInfo();
 				devices->insert(std::pair<long, std::shared_ptr<Device>>(
-				    serialNumber, device));
-		    } catch (CommunicationException *e) {
-			    std::cerr << e->getErrorMessage();
+					serialNumber, device));
+			} catch (CommunicationException *e) {
+				std::cerr << e->getErrorMessage();
 				std::cerr << "Device: Product Id: " << productId
-				          << ", Serial Number: " << serialNumber
-				          << " did not answer" << std::endl;
+						  << ", Serial Number: " << serialNumber
+						  << " did not answer" << std::endl;
 				std::cerr << "Device not added" << std::endl;
-		    } catch (ProtocolException *e) {
-			    std::cerr << e->getErrorMessage();
+			} catch (ProtocolException *e) {
+				std::cerr << e->getErrorMessage();
 				std::cerr << "Device: Product Id: " << productId
-				          << ", Serial Number: " << serialNumber
-				          << " had an error in the communication stream"
-				          << std::endl;
+						  << ", Serial Number: " << serialNumber
+						  << " had an error in the communication stream"
+						  << std::endl;
 				std::cerr << "Device not added" << std::endl;
-		    }
+			}
 	}
 	settings->endArray();
 	delete settings;
@@ -439,9 +445,9 @@ bool MioMain::installSignalHandlers() {
 
 	/*install notifier to handle pipe messages*/
 	QSocketNotifier *signalNotifier =
-	    new QSocketNotifier(sigpipe[0], QSocketNotifier::Read, this);
+		new QSocketNotifier(sigpipe[0], QSocketNotifier::Read, this);
 	connect(signalNotifier, SIGNAL(activated(int)), this,
-	        SLOT(signalAction(int)));
+			SLOT(signalAction(int)));
 
 	/*install signal handlers*/
 	struct sigaction action;
@@ -490,7 +496,7 @@ void MioMain::openAboutDialog() {
 
 void MioMain::connectSignals() {
 	connect(this->m_pUi->actionAbout, SIGNAL(triggered()), this,
-	        SLOT(openAboutDialog()));
+			SLOT(openAboutDialog()));
 	connect(this->m_pUi->actionRedetectDevices, SIGNAL(triggered()), this,
-	        SLOT(openDetectionWindow()));
+			SLOT(openDetectionWindow()));
 }

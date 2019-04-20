@@ -2,7 +2,7 @@
 #include "retsetaudioglobalparm.h"
 
 RetSetAudioPortParm::RetSetAudioPortParm(Device *device)
-    : SysExMessage(RET_SET_AUDIO_PORT_PARM, QUERY, device) {}
+	: SysExMessage(RET_SET_AUDIO_PORT_PARM, QUERY, device) {}
 
 RetSetAudioPortParm::~RetSetAudioPortParm() {
 	if (m_pAudioPortConfigurations != nullptr) {
@@ -22,33 +22,33 @@ void RetSetAudioPortParm::parseAnswerData() {
 	m_iOutputChannels = m_pData->at(5);
 	m_iNumberOfPortConfigurationBlocks = m_pData->at(6);
 	m_pAudioPortConfigurations =
-	    new AudioPortConfiguration *[m_iNumberOfPortConfigurationBlocks];
+		new AudioPortConfiguration *[m_iNumberOfPortConfigurationBlocks];
 	for (int i = 0; i < m_iNumberOfPortConfigurationBlocks; i++) {
 		unsigned long offset = static_cast<unsigned long>(7 + i * 6);
 		AudioPortConfiguration *audioPortConfiguration =
-		    new AudioPortConfiguration();
+			new AudioPortConfiguration();
 		audioPortConfiguration->audioConfigurationNumber = m_pData->at(offset);
 		audioPortConfiguration->maxAudioChannelsSupported =
-		    m_pData->at(offset + 1);
+			m_pData->at(offset + 1);
 		audioPortConfiguration->minInputChannelsSupported =
-		    m_pData->at(offset + 2);
+			m_pData->at(offset + 2);
 		audioPortConfiguration->maxInputChannelsSupported =
-		    m_pData->at(offset + 3);
+			m_pData->at(offset + 3);
 		audioPortConfiguration->minOutputChannelsSupported =
-		    m_pData->at(offset + 4);
+			m_pData->at(offset + 4);
 		audioPortConfiguration->maxOutputChannelsSupported =
-		    m_pData->at(offset + 5);
+			m_pData->at(offset + 5);
 		m_pAudioPortConfigurations[i] = audioPortConfiguration;
 	}
 	unsigned long offset =
-	    static_cast<unsigned long>(7 + m_iNumberOfPortConfigurationBlocks * 6);
+		static_cast<unsigned long>(7 + m_iNumberOfPortConfigurationBlocks * 6);
 	m_iMaxPortNameLength = m_pData->at(offset);
 	offset += 1;
 	m_iPortNameLength = m_pData->at(offset);
 	offset += 1;
 	m_sPortName = std::string(m_pData->begin() + static_cast<int>(offset),
-	                          m_pData->begin() + static_cast<int>(offset) +
-	                              m_iPortNameLength);
+							  m_pData->begin() + static_cast<int>(offset) +
+								  m_iPortNameLength);
 	offset += static_cast<unsigned long>(m_iPortNameLength);
 	m_iDeviceSpecficPortNumer = m_pData->at(offset);
 	offset += 1;
@@ -74,11 +74,11 @@ void RetSetAudioPortParm::parseAnswerData() {
 std::vector<unsigned char> *RetSetAudioPortParm::m_pGetMessageData() {
 	BYTE_VECTOR *data = new BYTE_VECTOR();
 	BYTE_VECTOR *totalNumberOfAudioPorts =
-	    MIDI::byteSplit7bit(static_cast<unsigned long>(m_iPortId), 2);
+		MIDI::byteSplit7bit(static_cast<unsigned long>(m_iPortId), 2);
 	this->m_pCommandData->at(0) = 0x40;
 	data->push_back(m_iCommandVersionNumber);
 	data->insert(data->end(), totalNumberOfAudioPorts->begin(),
-	             totalNumberOfAudioPorts->end());
+				 totalNumberOfAudioPorts->end());
 	data->push_back(m_audioPortType);
 	data->push_back(static_cast<unsigned char>(m_iInputChannels));
 	data->push_back(static_cast<unsigned char>(m_iOutputChannels));
@@ -138,8 +138,8 @@ bool RetSetAudioPortParm::getPortNameWritable() {
 
 AudioPortConfiguration *RetSetAudioPortParm::getCurrentAudioConfiguration() {
 	unsigned int activeAudioConfiguration =
-	    this->m_pDevice->getAudioGlobalParm()
-	        ->getNumberOfActiveAudioConfiguration();
+		this->m_pDevice->getAudioGlobalParm()
+			->getNumberOfActiveAudioConfiguration();
 	if (activeAudioConfiguration <= sizeof(m_pAudioPortConfigurations))
 		return m_pAudioPortConfigurations[activeAudioConfiguration - 1];
 	return nullptr;
@@ -196,15 +196,19 @@ int RetSetAudioPortParm::getMaxPortNameLength() const {
 	return m_iMaxPortNameLength;
 }
 
-int RetSetAudioPortParm::getInputChannels() const { return m_iInputChannels; }
+unsigned int RetSetAudioPortParm::getInputChannels() const {
+	return m_iInputChannels;
+}
 
-void RetSetAudioPortParm::setInputChannels(int iInputChannels) {
+void RetSetAudioPortParm::setInputChannels(unsigned int iInputChannels) {
 	m_iInputChannels = iInputChannels;
 }
 
-int RetSetAudioPortParm::getOutputChannels() const { return m_iOutputChannels; }
+unsigned int RetSetAudioPortParm::getOutputChannels() const {
+	return m_iOutputChannels;
+}
 
-void RetSetAudioPortParm::setOutputChannels(int iOutputChannels) {
+void RetSetAudioPortParm::setOutputChannels(unsigned int iOutputChannels) {
 	m_iOutputChannels = iOutputChannels;
 }
 

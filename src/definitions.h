@@ -99,9 +99,49 @@ enum Command {
 	RET_SET_AUDIO_CLOCK_PARM, /*!< retrieve or set values for an
 										  control detail */
 	GET_AUDIO_PATCHBAY_PARM, /*!< query the parameters for the audio patchbay */
-	RET_SET_AUDIO_PATCHBAY_PARM /*!< retrieve or set the parameters for the
+	RET_SET_AUDIO_PATCHBAY_PARM, /*!< retrieve or set the parameters for the
 									audio patchbay */
-
+	GET_MIXER_PARM = 0x50, /*!< query the parameters for the audio mixer */
+	RET_SET_MIXER_PARM,    /*!< retrieve or set the parameters for the
+									   audio mixer */
+	GET_MIXER_PORT_PARM, /*!< query the parameters for a port in the audio mixer
+						  */
+	RET_SET_MIXER_PORT_PARM, /*!< retrieve or set the parameters for an port in
+								the audio mixer */
+	GET_MIXER_INPUT_PARM, /*!< query the parameters for an audio mixer input */
+	RET_SET_MIXER_INPUT_PARM, /*!< retrieve or set the parameters for an
+									audio mixer input */
+	GET_MIXER_OUTPUT_PARM, /*!< query the parameters for an audio mixer output
+							*/
+	RET_SET_MIXER_OUTPUT_PARM, /*!< retrieve or set the parameters for an
+									audio mixer output */
+	GET_MIXER_INPUT_CONTROL,   /*!< query the controls for an audio mixer input
+								*/
+	RET_MIXER_INPUT_CONTROL, /*!< retrieve the controls for an audio mixer input
+							  */
+	GET_MIXER_OUTPUT_CONTROL, /*!< query the controls for an audio mixer output
+							   */
+	RET_MIXER_OUTPUT_CONTROL, /*!< retrieve the controls for an audio mixer
+							   * output
+							   */
+	GET_MIXER_INPUT_CONTROL_VALUE, /*!< query the control values for an audio
+									* mixer input
+									*/
+	RET_SET_MIXER_INPUT_CONTROL_VALUE, /*!< retrieve the control values for an
+										* audio mixer input
+										*/
+	GET_MIXER_OUTPUT_CONTROL_VALUE, /*!< query the control values for an audio
+									 * mixer output
+									 */
+	RET_SET_MIXER_OUTPUT_CONTROL_VALUE, /*!< retrieve the control values for an
+										 * audio mixer output
+										 */
+	GET_MIXER_METER_VALUE,  /*!< query the meter values for the audio
+							 * mixer
+							 */
+	RET_MIXER_METER_VALUES, /*!< retrieve the meter values for the audio
+							 * mixer
+							 */
 };
 
 enum AudioPortType {
@@ -132,5 +172,8 @@ typedef struct {
 } ChannelVolumes;
 
 enum ChannelDirection { CD_NONE = 0, CD_INPUT, CD_OUTPUT };
+
+typedef unsigned int AudioPortId;
+typedef unsigned int AudioChannelId;
 
 #endif // DEFINITIONS_H

@@ -12,6 +12,10 @@ PortSysExMessage::PortSysExMessage(Command m_Command,
 
 PortSysExMessage::~PortSysExMessage() {}
 
+unsigned int PortSysExMessage::parsePortId(unsigned long offset) {
+	return static_cast<unsigned int>(MIDI::byteJoin7bit(m_pData, offset, 2));
+}
+
 std::vector<unsigned char> *PortSysExMessage::getPortIdBytes() {
 	return MIDI::byteSplit7bit(static_cast<unsigned long>(m_iPortId), 2);
 }

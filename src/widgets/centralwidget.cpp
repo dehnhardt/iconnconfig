@@ -14,4 +14,7 @@ CentralWidget::CentralWidget(QWidget *parent, Device *device)
 
 void CentralWidget::replacePanel(QWidget *w) { setWidget(w); }
 
-void CentralWidget::deviceAudioConfigChanged() {}
+void CentralWidget::deviceAudioConfigChanged(
+	unsigned int currentAudioConfigurationNumber) {
+	emit changeAudioConfig(currentAudioConfigurationNumber);
+}

@@ -62,19 +62,19 @@ class RetSetAudioPortParm : public SysExMessage {
 
 	int getMaxPortNameLength() const;
 
-	int getInputChannels() const;
-	void setInputChannels(int iInputChannels);
+	unsigned int getInputChannels() const;
+	void setInputChannels(unsigned int iInputChannels);
 
-	int getOutputChannels() const;
-	void setOutputChannels(int iOutputChannels);
+	unsigned int getOutputChannels() const;
+	void setOutputChannels(unsigned int iOutputChannels);
 
 	int getNumberOfPortConfigurationBlocks() const;
 
   private:
 	int m_iPortId;
 	AudioPortType m_audioPortType = APT_NONE;
-	int m_iInputChannels = 0;
-	int m_iOutputChannels = 0;
+	unsigned int m_iInputChannels = 0;
+	unsigned int m_iOutputChannels = 0;
 	int m_iNumberOfPortConfigurationBlocks = 0;
 	int m_iMaxPortNameLength = 0;
 	int m_iPortNameLength = 0;

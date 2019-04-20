@@ -23,6 +23,11 @@ AudioChannelFeatureWidget::AudioChannelFeatureWidget(
 	createConnections();
 }
 
+AudioChannelFeatureWidget::AudioChannelFeatureWidget(QWidget *parent)
+	: QFrame(parent), ui(new Ui::AudioChannelFeatureWidget) {
+	ui->setupUi(this);
+}
+
 AudioChannelFeatureWidget::~AudioChannelFeatureWidget() {
 	delete ui;
 	if (m_pUpdateTimer)

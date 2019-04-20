@@ -103,7 +103,7 @@ void GlobalAudioConfigurationWidget::createConnections() {
 
 	CentralWidget *w = MioMain::getMainWin()->getCentralDeviceWidget();
 	connect(this, &GlobalAudioConfigurationWidget::changeAudioConfiguration, w,
-			&CentralWidget::changeAudioConfig);
+			&CentralWidget::deviceAudioConfigChanged);
 }
 
 void GlobalAudioConfigurationWidget::valueEdited(QWidget *widget,
@@ -148,5 +148,6 @@ void GlobalAudioConfigurationWidget::valueEdited(QWidget *widget,
 
 void GlobalAudioConfigurationWidget::save() {
 	if (m_pRetSetAudioGlobalParam->execute() == 0)
-		emit changeAudioConfiguration();
+		emit changeAudioConfiguration(
+			m_pRetSetAudioGlobalParam->getNumberOfActiveAudioConfiguration());
 }
