@@ -32,7 +32,8 @@ void PortsWidget::getMidiPorts(
 		entry->icon =
 			PortDisplayHelper::getPortIcon(midiPortInfo->getPortType());
 		entry->message = midiPortInfo;
-		entry->enabled = midiPortInfo->getInputEnabled();
+		// TODO: mark port as disabled
+		// entry->enabled = midiPortInfo->getInputEnabled();
 		infoSections->push_back(entry);
 	}
 }
