@@ -28,7 +28,7 @@ void PortsWidget::getMidiPorts(
 		entry->icon =
 			PortDisplayHelper::getPortIcon(midiPortInfo->getPortType());
 		entry->message = midiPortInfo;
-		entry->enabled = midiPortInfo->getInputEnabled();
+		//entry->enabled = midiPortInfo->getInputEnabled();
 		infoSections->push_back(entry);
 	}
 }
