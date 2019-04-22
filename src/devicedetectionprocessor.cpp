@@ -104,7 +104,7 @@ unsigned long DeviceDetectionProcessor::detectDevices() {
 			}
 			sendProgressEvent(progress);
 			m_pMidiin->openPort(j);
-			std::string currentInputPortName = m_pMidiin->getPortName();
+			std::string currentInputPortName = m_pMidiin->getPortName(j);
 			std::cmatch mIn;
 			std::regex_search(currentInputPortName.c_str(), mIn, re);
 			std::cout << "InputPort " << mIn[1] << std::endl;
