@@ -2,7 +2,7 @@
 #include "retsetaudioglobalparm.h"
 
 RetSetAudioPortParm::RetSetAudioPortParm(Device *device)
-	: SysExMessage(RET_SET_AUDIO_PORT_PARM, QUERY, device) {}
+	: PortSysExMessage(RET_SET_AUDIO_PORT_PARM, QUERY, device) {}
 
 RetSetAudioPortParm::~RetSetAudioPortParm() {
 	if (m_pAudioPortConfigurations != nullptr) {
@@ -16,13 +16,13 @@ RetSetAudioPortParm::~RetSetAudioPortParm() {
 
 void RetSetAudioPortParm::parseAnswerData() {
 	m_iCommandVersionNumber = m_pData->at(0);
-	m_iPortId = static_cast<int>(MIDI::byteJoin7bit(m_pData, 1, 2));
+	m_iPortId = static_cast<unsigned int>(MIDI::byteJoin7bit(m_pData, 1, 2));
 	m_audioPortType = static_cast<AudioPortType>(m_pData->at(3));
 	m_iInputChannels = m_pData->at(4);
 	m_iOutputChannels = m_pData->at(5);
 	m_iNumberOfPortConfigurationBlocks = m_pData->at(6);
-	m_pAudioPortConfigurations =
-		new AudioPortConfiguration *[m_iNumberOfPortConfigurationBlocks];
+	m_pAudioPortConfigurations = new AudioPortConfiguration
+		*[static_cast<unsigned long>(m_iNumberOfPortConfigurationBlocks)];
 	for (int i = 0; i < m_iNumberOfPortConfigurationBlocks; i++) {
 		unsigned long offset = static_cast<unsigned long>(7 + i * 6);
 		AudioPortConfiguration *audioPortConfiguration =
@@ -189,8 +189,6 @@ int RetSetAudioPortParm::getDeviceSpecficPortNumber() const {
 int RetSetAudioPortParm::getJackSpecificDeviceNumber() const {
 	return m_iJackSpecificDeviceNumber;
 }
-
-int RetSetAudioPortParm::getPortId() const { return m_iPortId; }
 
 int RetSetAudioPortParm::getMaxPortNameLength() const {
 	return m_iMaxPortNameLength;

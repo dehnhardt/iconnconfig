@@ -2,7 +2,7 @@
 #include "retsetaudioportparm.h"
 
 GetAudioPortParm::GetAudioPortParm(Device *device)
-	: SysExMessage(GET_AUDIO_PORT_PARM, QUERY, device) {}
+	: PortSysExMessage(GET_AUDIO_PORT_PARM, QUERY, device) {}
 
 GetAudioPortParm::~GetAudioPortParm() {}
 

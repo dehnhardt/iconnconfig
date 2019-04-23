@@ -2,7 +2,7 @@
 #define RETSETAUDIOPORTPARM_H
 
 #include "../device.h"
-#include "sysexmessage.h"
+#include "portsysexmessage.h"
 
 typedef struct {
 	unsigned int audioConfigurationNumber = 0;
@@ -13,18 +13,17 @@ typedef struct {
 	unsigned int maxOutputChannelsSupported = 0;
 } AudioPortConfiguration;
 
-class RetSetAudioPortParm : public SysExMessage {
+class RetSetAudioPortParm : public PortSysExMessage {
   public:
 	RetSetAudioPortParm(Device *device);
 	RetSetAudioPortParm(Command cmd, BYTE_VECTOR *message, Device *device)
-	    : SysExMessage(cmd, message, device) {}
+	    : PortSysExMessage(cmd, message, device) {}
 
 	~RetSetAudioPortParm() override;
 
   public:
 	// methods
 	int getSettingsId() override { return m_Command; }
-	int getSettingsIndex() override { return m_iPortId; }
 	void parseAnswerData() override;
 	std::string getStorableValue() override { return ""; }
 	// SysExMessage interface
@@ -58,8 +57,6 @@ class RetSetAudioPortParm : public SysExMessage {
 
 	int getJackSpecificDeviceNumber() const;
 
-	int getPortId() const;
-
 	int getMaxPortNameLength() const;
 
 	unsigned int getInputChannels() const;
@@ -71,7 +68,6 @@ class RetSetAudioPortParm : public SysExMessage {
 	int getNumberOfPortConfigurationBlocks() const;
 
   private:
-	int m_iPortId;
 	AudioPortType m_audioPortType = APT_NONE;
 	unsigned int m_iInputChannels = 0;
 	unsigned int m_iOutputChannels = 0;
