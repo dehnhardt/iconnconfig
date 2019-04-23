@@ -7,13 +7,18 @@ class RetSetMixerInputParm : public PortSysExMessage {
   public:
 	RetSetMixerInputParm(Device *device);
 	RetSetMixerInputParm(Command cmd, BYTE_VECTOR *message, Device *device)
-		: PortSysExMessage(cmd, message, device) {}
+	    : PortSysExMessage(cmd, message, device) {}
 
 	// SysExMessage interface
   public:
 	void parseAnswerData() override;
 
-	// SysExMessage interface
+	unsigned int getAudioSourcePortId() const;
+	void setAudioSourcePortId(unsigned int iAudioSourcePortId);
+
+	unsigned int getAudioSourceChannelNumber() const;
+	void setAudioSourceChannelNumber(unsigned int iAudioSourceChannelNumber);
+
   protected:
 	std::vector<unsigned char> *getMessageData() override;
 

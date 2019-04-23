@@ -30,3 +30,23 @@ std::vector<unsigned char> *RetSetMixerInputParm::getMessageData() {
 	data->push_back(static_cast<unsigned char>(m_iAudioSourceChannelNumber));
 	return data;
 }
+
+unsigned int RetSetMixerInputParm::getAudioSourceChannelNumber() const
+{
+	return m_iAudioSourceChannelNumber;
+}
+
+void RetSetMixerInputParm::setAudioSourceChannelNumber(unsigned int iAudioSourceChannelNumber)
+{
+	m_iAudioSourceChannelNumber = iAudioSourceChannelNumber;
+}
+
+unsigned int RetSetMixerInputParm::getAudioSourcePortId() const
+{
+	return m_iAudioSourcePortId;
+}
+
+void RetSetMixerInputParm::setAudioSourcePortId(unsigned int iAudioSourcePortId)
+{
+	m_iAudioSourcePortId = iAudioSourcePortId;
+}
