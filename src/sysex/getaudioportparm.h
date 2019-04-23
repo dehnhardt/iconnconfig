@@ -19,7 +19,7 @@ class GetAudioPortParm : public SysExMessage {
 	void setPortId(unsigned int portId) { this->m_iPortId = portId; }
 
   protected:
-	std::vector<unsigned char> *m_pGetMessageData() override;
+	std::vector<unsigned char> *getMessageData() override;
 
   private:
 	unsigned int m_iPortId;

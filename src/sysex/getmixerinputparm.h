@@ -11,7 +11,7 @@ class GetMixerInputParm : public PortSysExMessage {
 	void setMixerInputNumber(unsigned int iMixerInputNumber);
 
   protected:
-	std::vector<unsigned char> *m_pGetMessageData() override;
+	std::vector<unsigned char> *getMessageData() override;
 	void createAnswer(Command m_Command, std::vector<unsigned char> *message,
 					  Device *m_pDevice) override;
 

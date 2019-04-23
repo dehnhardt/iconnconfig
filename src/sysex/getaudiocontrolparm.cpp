@@ -16,7 +16,7 @@ void GetAudioControlParm::createAnswer(Command m_Command,
 	m_pAnswer->parseAnswerData();
 }
 
-std::vector<unsigned char> *GetAudioControlParm::m_pGetMessageData() {
+std::vector<unsigned char> *GetAudioControlParm::getMessageData() {
 	BYTE_VECTOR *data = new BYTE_VECTOR();
 	BYTE_VECTOR *vPortId =
 	    MIDI::byteSplit7bit(static_cast<unsigned long>(m_iPortId), 2);

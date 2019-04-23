@@ -16,7 +16,7 @@ public:
 	std::string getStorableValue() { return ""; }
 
 protected:
-	std::vector<unsigned char> *m_pGetMessageData();
+	std::vector<unsigned char> *getMessageData();
 };
 
 #endif// GETETHERNETPORTINFO_H

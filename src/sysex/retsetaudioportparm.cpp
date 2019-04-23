@@ -71,7 +71,7 @@ void RetSetAudioPortParm::parseAnswerData() {
 	}
 }
 
-std::vector<unsigned char> *RetSetAudioPortParm::m_pGetMessageData() {
+std::vector<unsigned char> *RetSetAudioPortParm::getMessageData() {
 	BYTE_VECTOR *data = new BYTE_VECTOR();
 	BYTE_VECTOR *totalNumberOfAudioPorts =
 		MIDI::byteSplit7bit(static_cast<unsigned long>(m_iPortId), 2);
@@ -182,7 +182,7 @@ void RetSetAudioPortParm::setPortPCEnabled(bool bPortPCEnabled) {
 	m_bPortPCEnabled = bPortPCEnabled;
 }
 
-int RetSetAudioPortParm::getDeviceSpecficPortNumer() const {
+int RetSetAudioPortParm::getDeviceSpecficPortNumber() const {
 	return m_iDeviceSpecficPortNumer;
 }
 

@@ -10,7 +10,7 @@ class GetMixerPortParm : public SysExMessage {
 					  Device *m_pDevice) override;
 
   protected:
-	std::vector<unsigned char> *m_pGetMessageData() override;
+	std::vector<unsigned char> *getMessageData() override;
 };
 
 #endif // GETMIXERPORTPARM_H

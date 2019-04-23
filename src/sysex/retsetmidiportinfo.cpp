@@ -37,7 +37,7 @@ void RetSetMidiPortInfo::parseAnswerData() {
 	m_sPortName = std::string(m_pData->begin() + 10, m_pData->end());
 }
 
-std::vector<unsigned char> *RetSetMidiPortInfo::m_pGetMessageData() {
+std::vector<unsigned char> *RetSetMidiPortInfo::getMessageData() {
 	// Write Flag
 	this->m_pCommandData->at(0) = 0x40;
 	BYTE_VECTOR *data = new BYTE_VECTOR();

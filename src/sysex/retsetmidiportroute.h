@@ -18,7 +18,7 @@ class RetSetMidiPortRoute : public SysExMessage {
 
 	int getTotalNumberOfPorts() const;
 	void setTotalNumberOfPorts(int value);
-	BYTE_VECTOR *m_pGetMessageData();
+	BYTE_VECTOR *getMessageData();
 
 	int getSettingsId() { return m_Command; }
 	int getSettingsIndex() { return 0; }

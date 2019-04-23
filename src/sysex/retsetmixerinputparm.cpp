@@ -12,7 +12,7 @@ void RetSetMixerInputParm::parseAnswerData() {
 	m_iAudioSourceChannelNumber = m_pData->at(6);
 }
 
-std::vector<unsigned char> *RetSetMixerInputParm::m_pGetMessageData() {
+std::vector<unsigned char> *RetSetMixerInputParm::getMessageData() {
 	BYTE_VECTOR *data = nullptr;
 	BYTE_VECTOR *portId = nullptr;
 	BYTE_VECTOR *audioSourcePortId = new BYTE_VECTOR();

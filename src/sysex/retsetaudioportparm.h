@@ -5,19 +5,19 @@
 #include "sysexmessage.h"
 
 typedef struct {
-	int audioConfigurationNumber = 0;
-	int maxAudioChannelsSupported = 0;
-	int minInputChannelsSupported = 0;
-	int maxInputChannelsSupported = 0;
-	int minOutputChannelsSupported = 0;
-	int maxOutputChannelsSupported = 0;
+	unsigned int audioConfigurationNumber = 0;
+	unsigned int maxAudioChannelsSupported = 0;
+	unsigned int minInputChannelsSupported = 0;
+	unsigned int maxInputChannelsSupported = 0;
+	unsigned int minOutputChannelsSupported = 0;
+	unsigned int maxOutputChannelsSupported = 0;
 } AudioPortConfiguration;
 
 class RetSetAudioPortParm : public SysExMessage {
   public:
 	RetSetAudioPortParm(Device *device);
 	RetSetAudioPortParm(Command cmd, BYTE_VECTOR *message, Device *device)
-		: SysExMessage(cmd, message, device) {}
+	    : SysExMessage(cmd, message, device) {}
 
 	~RetSetAudioPortParm() override;
 
@@ -28,7 +28,7 @@ class RetSetAudioPortParm : public SysExMessage {
 	void parseAnswerData() override;
 	std::string getStorableValue() override { return ""; }
 	// SysExMessage interface
-	std::vector<unsigned char> *m_pGetMessageData() override;
+	std::vector<unsigned char> *getMessageData() override;
 
 	std::string getAudioPortTypeName(AudioPortType audioPortType);
 	std::string getAudioPortTypeName();
@@ -54,7 +54,7 @@ class RetSetAudioPortParm : public SysExMessage {
 	bool getPortPCEnabled() const;
 	void setPortPCEnabled(bool bPortPCEnabled);
 
-	int getDeviceSpecficPortNumer() const;
+	int getDeviceSpecficPortNumber() const;
 
 	int getJackSpecificDeviceNumber() const;
 

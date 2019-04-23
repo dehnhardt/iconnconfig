@@ -22,7 +22,7 @@ class RetSetEthernetPortInfo : public SysExMessage {
 
   public:
 	void parseAnswerData();
-	BYTE_VECTOR *m_pGetMessageData();
+	BYTE_VECTOR *getMessageData();
 	int getSettingsId() { return m_Command; }
 	int getSettingsIndex() { return 0; }
 	std::string getStorableValue() { return ""; }

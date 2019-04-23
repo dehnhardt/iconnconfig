@@ -16,7 +16,7 @@ void GetMixerParm::createAnswer(Command m_Command,
 	m_pAnswer->parseAnswerData();
 }
 
-std::vector<unsigned char> *GetMixerParm::m_pGetMessageData() {
+std::vector<unsigned char> *GetMixerParm::getMessageData() {
 	BYTE_VECTOR *data = new BYTE_VECTOR();
 	data->push_back(static_cast<unsigned char>(m_iAudioConfigurationNumber));
 	return data;

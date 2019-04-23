@@ -17,7 +17,7 @@ public:
 		: SysExMessage(cmd, message, device) {}
 
 	void setSaveRestoreId(SaveResstoreId m_SaveRestoreId);
-	BYTE_VECTOR *m_pGetMessageData();
+	BYTE_VECTOR *getMessageData();
 	int getSettingsId() { return m_Command; }
 	int getSettingsIndex() { return 0; }
 	std::string getStorableValue() { return ""; }

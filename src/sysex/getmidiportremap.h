@@ -26,7 +26,7 @@ class GetMidiPortRemap : public SysExMessage {
 	}
 
   protected:
-	std::vector<unsigned char> *m_pGetMessageData();
+	std::vector<unsigned char> *getMessageData();
 
   private:
 	unsigned int m_iPortNumber;

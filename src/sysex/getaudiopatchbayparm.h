@@ -12,7 +12,7 @@ class GetAudioPatchbayParm : public PortSysExMessage {
 					  Device *m_pDevice);
 
   protected:
-	std::vector<unsigned char> *m_pGetMessageData();
+	std::vector<unsigned char> *getMessageData();
 };
 
 #endif // GETAUDIOPATCHBAYPARM_H

@@ -107,7 +107,7 @@ std::string RetSetAudioGlobalParm::getAudioConfigurationString() {
 	return getAudioConfigurationString(m_iNumberOfActiveAudioConfiguration);
 }
 
-std::vector<unsigned char> *RetSetAudioGlobalParm::m_pGetMessageData() {
+std::vector<unsigned char> *RetSetAudioGlobalParm::getMessageData() {
 	BYTE_VECTOR *messageData = new BYTE_VECTOR();
 	BYTE_VECTOR *audioPorts = MIDI::byteSplit8bit(m_iNumberOfAudioPorts, 2);
 	this->m_pCommandData->at(0) = 0x40;

@@ -19,7 +19,7 @@ class GetAudioControlDetailValue : public PortSysExMessage {
 	void setDetailNumber(unsigned char getDetailNumber);
 
   protected:
-	std::vector<unsigned char> *m_pGetMessageData() override;
+	std::vector<unsigned char> *getMessageData() override;
 
   private:
 	unsigned char m_iControllerNumber = 0;

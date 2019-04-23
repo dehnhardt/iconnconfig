@@ -176,7 +176,7 @@ RetSetMidiPortFilter::createMidiControllerFilterData() {
 	return data;
 }
 
-std::vector<unsigned char> *RetSetMidiPortFilter::m_pGetMessageData() {
+std::vector<unsigned char> *RetSetMidiPortFilter::getMessageData() {
 	// Write Flag
 	this->m_pCommandData->at(0) = 0x40;
 	BYTE_VECTOR *portIdV =

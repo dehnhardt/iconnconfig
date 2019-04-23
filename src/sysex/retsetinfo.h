@@ -32,7 +32,7 @@ public:
 
 protected:
 	void parseAnswerData();
-	BYTE_VECTOR *m_pGetMessageData();
+	BYTE_VECTOR *getMessageData();
 
 private:
 	// variables

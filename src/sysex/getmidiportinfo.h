@@ -18,7 +18,7 @@ public:
 	void setPortNumer(int portNumber) { this->m_iPortNumber = portNumber; }
 
 protected:
-	std::vector<unsigned char> *m_pGetMessageData();
+	std::vector<unsigned char> *getMessageData();
 
 private:
 	int m_iPortNumber;

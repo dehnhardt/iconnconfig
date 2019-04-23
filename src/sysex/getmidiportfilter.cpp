@@ -5,7 +5,7 @@ GetMidiPortFilter::GetMidiPortFilter(Device *device)
 	: SysExMessage(Command::GET_MIDI_PORT_FILTER, SysExMessage::QUERY, device) {
 }
 
-BYTE_VECTOR *GetMidiPortFilter::m_pGetMessageData() {
+BYTE_VECTOR *GetMidiPortFilter::getMessageData() {
 	BYTE_VECTOR *messageData =
 		MIDI::byteSplit7bit(static_cast<unsigned long>(m_iPortNumber), 2);
 	messageData->push_back(static_cast<unsigned char>(m_iPortFilterDirection));

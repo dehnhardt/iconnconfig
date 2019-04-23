@@ -15,7 +15,7 @@ class RetSetMixerInputParm : public PortSysExMessage {
 
 	// SysExMessage interface
   protected:
-	std::vector<unsigned char> *m_pGetMessageData() override;
+	std::vector<unsigned char> *getMessageData() override;
 
   private:
 	unsigned int m_iMixerInputNumber = 0;

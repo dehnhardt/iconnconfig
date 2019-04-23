@@ -17,7 +17,7 @@ class GetInfo : public SysExMessage {
 
 	// methods
 	void setInfoItem(DeviceInfoItem infoItem) { this->m_InfoItem = infoItem; }
-	BYTE_VECTOR *m_pGetMessageData();
+	BYTE_VECTOR *getMessageData();
 	std::string getDataAsString();
 	DeviceInfoItem getDeviceInfoItem();
 	std::map<DeviceInfoItem, std::shared_ptr<RetSetInfo>> *getRetSetInfos();

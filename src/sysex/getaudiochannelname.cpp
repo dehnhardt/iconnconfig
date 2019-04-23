@@ -25,7 +25,7 @@ void GetAudioChannelName::setChannelDirection(
 	m_channelDirection = channelDirection;
 }
 
-std::vector<unsigned char> *GetAudioChannelName::m_pGetMessageData() {
+std::vector<unsigned char> *GetAudioChannelName::getMessageData() {
 	BYTE_VECTOR *data = new BYTE_VECTOR();
 	BYTE_VECTOR *portId = getPortIdBytes();
 	data->insert(data->begin(), portId->begin(), portId->end());

@@ -3,7 +3,7 @@
 GetMidiPortInfo::GetMidiPortInfo(Device *device)
 	: SysExMessage(GET_MIDI_PORT_INFO, SysExMessage::QUERY, device) {}
 
-BYTE_VECTOR *GetMidiPortInfo::m_pGetMessageData() {
+BYTE_VECTOR *GetMidiPortInfo::getMessageData() {
 	BYTE_VECTOR *messageData =
 		MIDI::byteSplit7bit(static_cast<unsigned long>(m_iPortNumber), 2);
 	return messageData;

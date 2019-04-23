@@ -149,7 +149,7 @@ RetSetMidiPortRemap::createMidiControllerRemapData() {
 	return data;
 }
 
-std::vector<unsigned char> *RetSetMidiPortRemap::m_pGetMessageData() {
+std::vector<unsigned char> *RetSetMidiPortRemap::getMessageData() {
 	// Write Flag
 	this->m_pCommandData->at(0) = 0x40;
 	BYTE_VECTOR *portIdV =

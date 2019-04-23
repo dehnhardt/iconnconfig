@@ -79,7 +79,7 @@ BYTE_VECTOR *SysExMessage::getMIDISysExMessage() {
 	BYTE_VECTOR *message = new BYTE_VECTOR();
 	BYTE_VECTOR *manufacturerHeader = Device::getManufacturerHeader();
 
-	BYTE_VECTOR *md = m_pGetMessageData();
+	BYTE_VECTOR *md = getMessageData();
 	unsigned long mdSize = md->size();
 	BYTE_VECTOR *bodyLength = MIDI::byteSplit7bit(mdSize, 2);
 	BYTE_VECTOR *transactionId = getTransactionId();

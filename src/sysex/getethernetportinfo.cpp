@@ -5,7 +5,7 @@ GetEthernetPortInfo::GetEthernetPortInfo(Device *device)
 	: SysExMessage(Command::GET_ETHERNET_PORT_INFO, SysExMessage::QUERY,
 				   device) {}
 
-BYTE_VECTOR *GetEthernetPortInfo::m_pGetMessageData() {
+BYTE_VECTOR *GetEthernetPortInfo::getMessageData() {
 	BYTE_VECTOR *messageData = new BYTE_VECTOR();
 	messageData->push_back(0x00);
 	messageData->push_back(0x01);

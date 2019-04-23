@@ -16,7 +16,7 @@ class GetAudioChannelName : public PortSysExMessage {
 	void setChannelDirection(const ChannelDirection &channelDirection);
 
   protected:
-	std::vector<unsigned char> *m_pGetMessageData();
+	std::vector<unsigned char> *getMessageData();
 
   private:
 	unsigned int m_iChannelNumber = 0;

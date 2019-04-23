@@ -14,7 +14,7 @@ class GetMixerParm : public SysExMessage {
 	void setAudioConfigurationNumber(unsigned int getAudioConfigurationNumber);
 
   protected:
-	std::vector<unsigned char> *m_pGetMessageData() override;
+	std::vector<unsigned char> *getMessageData() override;
 
   private:
 	unsigned int m_iAudioConfigurationNumber = 0;

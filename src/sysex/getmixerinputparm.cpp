@@ -4,7 +4,7 @@
 GetMixerInputParm::GetMixerInputParm(Device *device)
 	: PortSysExMessage(GET_MIXER_INPUT_PARM, SysExMessage::QUERY, device) {}
 
-std::vector<unsigned char> *GetMixerInputParm::m_pGetMessageData() {
+std::vector<unsigned char> *GetMixerInputParm::getMessageData() {
 	BYTE_VECTOR *data = new BYTE_VECTOR();
 	BYTE_VECTOR *portId = getPortIdBytes();
 	data->insert(data->end(), portId->begin(), portId->end());

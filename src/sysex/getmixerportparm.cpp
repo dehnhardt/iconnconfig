@@ -14,6 +14,6 @@ void GetMixerPortParm::createAnswer(Command m_Command,
 	m_pAnswer->parseAnswerData();
 }
 
-std::vector<unsigned char> *GetMixerPortParm::m_pGetMessageData() {
+std::vector<unsigned char> *GetMixerPortParm::getMessageData() {
 	return new BYTE_VECTOR();
 }

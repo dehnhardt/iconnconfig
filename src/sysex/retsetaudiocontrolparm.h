@@ -15,7 +15,7 @@ class RetSetAudioControlParm : public PortSysExMessage {
 	void parseAnswerData() override;
 
 	// SysExMessage interface
-	std::vector<unsigned char> *m_pGetMessageData() override;
+	std::vector<unsigned char> *getMessageData() override;
 
 	std::string getControllerName() const;
 	void setControllerName(const std::string &sControllerName);
