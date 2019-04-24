@@ -58,7 +58,10 @@ Later I found the complete documentation for sysex-data from IConnectivity.
 * (2019-02-23) Add [portinfo widget](https://github.com/dehnhardt/wikis/blob/master/mioconfig/pictures/PortSettings.png). Port name and status can now be changed
 * (2019-02-26) Add [portmapping widget](https://github.com/dehnhardt/wikis/blob/master/mioconfig/pictures/PortRemapSettings.png) for in- and output ports. 
 * __(2019-02-26) MIDI configuration is complete__ _Branch v0.3-beta_
-* (2019-05-03) [Global audio settings](https://github.com/dehnhardt/wikis/blob/master/mioconfig/pictures/GlobalAudioParm.png) can be configured
+* (2019-03-05) [Global audio settings](https://github.com/dehnhardt/wikis/blob/master/mioconfig/pictures/GlobalAudioParm.png) can be configured
 * (2019-03-07) [Audioport parameter](https://github.com/dehnhardt/wikis/blob/master/mioconfig/pictures/AudioPortParm.png) can now be configured
 * (2019-03-22) [Audiocontrols / Input- and Output Ports](https://github.com/dehnhardt/wikis/blob/master/mioconfig/pictures/AudioMixing.png) implemented.
 * (2019-03-30) Did a lot of refactoring. I lost track of memory leaks and decided to use samrt pointer at several places to make memory handling somewhat easier. There are still some problems, especially when retrieving the meter levels. I had to investigate further and rethink about this.
+* (2019-04-14) All memoy leaks fixed.
+* (2019-04-20) Start with the audiomixer. Create all in- and output channels
+* (2019-04-23) Create branch for the audiomixer. It seems to be a big addition which might take some weeks.
