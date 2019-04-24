@@ -2,6 +2,7 @@
 #include "../sysex/getmixerinputparm.h"
 #include "../sysex/retsetaudiochannelname.h"
 #include "portdisplayhelper.h"
+#include "ui_audiochannelfeaturewidget.h"
 
 #include <QMenu>
 #include <QVBoxLayout>
@@ -33,6 +34,18 @@ AudioMixerChannelWidget::AudioMixerChannelWidget(
 					 m_pMixerInputParm->getAudioSourceChannelNumber());
 		}
 	}
+}
+
+void AudioMixerChannelWidget::setMixerInputControl(
+	std::shared_ptr<RetMixerInputControl> retMixerInputControl) {
+	this->m_pMixerInputControl = retMixerInputControl;
+
+	ui->m_pSlideVolume->setMinimum(
+		m_pMixerInputControl->getMinimumVolumeValue());
+	ui->m_pSlideVolume->setMaximum(
+		m_pMixerInputControl->getMaximumVolumeValue());
+	ui->m_pSlideVolume->setResulution(
+		m_pMixerInputControl->getVolumeResolution());
 }
 
 void AudioMixerChannelWidget::createInputMenu() {

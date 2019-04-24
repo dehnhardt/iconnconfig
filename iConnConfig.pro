@@ -44,10 +44,12 @@ SOURCES +=\
     src/main.cpp \
     src/device.cpp \
     src/sysex/getaudiochannelname.cpp \
+    src/sysex/getmixerinputcontrol.cpp \
     src/sysex/midi.cpp \
     src/devicedetection.cpp \
     src/config/configuration.cpp \
     src/devicedetectionprocessor.cpp \
+    src/sysex/retmixerinputcontrol.cpp \
     src/sysex/retsetaudiochannelname.cpp \
     src/sysex/sysexmessage.cpp \
     src/deviceselectiontablemodel.cpp \
@@ -145,10 +147,12 @@ HEADERS  += \
     src/RtMidi.h \
     src/device.h \
     src/sysex/getaudiochannelname.h \
+    src/sysex/getmixerinputcontrol.h \
     src/sysex/midi.h \
     src/devicedetection.h \
     src/config/configuration.h \
     src/devicedetectionprocessor.h \
+    src/sysex/retmixerinputcontrol.h \
     src/sysex/retsetaudiochannelname.h \
     src/sysex/sysexmessage.h \
     src/deviceselectiontablemodel.h \

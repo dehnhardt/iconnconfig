@@ -1,7 +1,9 @@
 #include "audiomixerwidget.h"
 #include "../iconnconfigmain.h"
+#include "../sysex/getmixerinputcontrol.h"
 #include "../sysex/getmixerparm.h"
 #include "../sysex/getmixerportparm.h"
+#include "../sysex/retmixerinputcontrol.h"
 #include "../sysex/retsetaudioglobalparm.h"
 #include "../sysex/retsetmixerparm.h"
 #include "audiomixerchannelwidget.h"
@@ -104,10 +106,17 @@ void AudioMixerWidget::mixerConfigurationChanged(
 		if (mb.numberOfMixerInputs > 0) {
 			MixerPortWidget *mpw = new MixerPortWidget(portId);
 			mpw->setName(tr("Input Port ") + QString::number(portId));
+			std::unique_ptr<GetMixerInputControl> getInputControl =
+				std::make_unique<GetMixerInputControl>(m_pDevice);
+			getInputControl->setPortId(portId);
+			std::shared_ptr<RetMixerInputControl> retMixerInputControl =
+				std::dynamic_pointer_cast<RetMixerInputControl>(
+					getInputControl->querySmart());
 			m_pLAInputMixerParts->addWidget(mpw);
 			for (unsigned int i = 1; i <= mb.numberOfMixerInputs; i++) {
 				AudioMixerChannelWidget *amcw = new AudioMixerChannelWidget(
 					m_pDevice, portId, i, ChannelDirection::CD_INPUT);
+				amcw->setMixerInputControl(retMixerInputControl);
 				mpw->addMixerPanel(amcw, i);
 			}
 		}

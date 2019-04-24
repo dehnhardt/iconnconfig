@@ -165,12 +165,12 @@ void AudioChannelFeatureWidget::setValues(
 		ui->m_pChbMute->setChecked(retSetAudioControlDetailValue->getMute());
 		retSetAudioControlDetailValue->setHasMuteControl(false);
 		if (m_pAudioControlDetail->getMuteControlEditable()) {
-			connect(
-				this->ui->m_pChbMute, &QCheckBox::stateChanged, [=](int state) {
-					this->m_pRetSetAudioControlDetailValue->setMute(state == 2);
-					this->m_pUpdateTimer->start(10);
-					emit this->muteStatusChanged(state == 2);
-				});
+			connect(this->ui->m_pChbMute, &QPushButton::toggled,
+					[=](bool state) {
+						this->m_pRetSetAudioControlDetailValue->setMute(state);
+						this->m_pUpdateTimer->start(10);
+						emit this->muteStatusChanged(state);
+					});
 		}
 	}
 	if (retSetAudioControlDetailValue->hasPhantomPowerControl()) {
