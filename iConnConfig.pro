@@ -54,6 +54,7 @@ SOURCES +=\
     src/sysex/sysexmessage.cpp \
     src/deviceselectiontablemodel.cpp \
     # src/widgets/portsettingwidget.cpp \
+    src/widgets/controls/pkmixerbutton.cpp \
     src/widgets/deviceinfowidget.cpp \
     src/widgets/portswidget.cpp \
     src/widgets/multiinfowidget.cpp \
@@ -158,6 +159,7 @@ HEADERS  += \
     src/deviceselectiontablemodel.h \
     src/events/events.h \
     src/device.h \
+    src/widgets/controls/pkmixerbutton.h \
     src/widgets/deviceinfowidget.h \
     src/widgets/portswidget.h \
     src/widgets/multiinfowidget.h \

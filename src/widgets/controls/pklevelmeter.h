@@ -7,10 +7,6 @@
 class PKLevelMeter : public QProgressBar {
   public:
 	PKLevelMeter(QWidget *parent = nullptr);
-
-	// QWidget interface
-  protected:
-	void paintEvent(QPaintEvent *event) override;
 };
 
 #endif // PKLEVELMETER_H

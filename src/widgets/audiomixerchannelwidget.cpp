@@ -13,7 +13,9 @@ AudioMixerChannelWidget::AudioMixerChannelWidget(
 	ChannelDirection channelDirection, QWidget *parent)
 	: AudioChannelFeatureWidget(parent), m_pDevice(device), m_iPortId(portId),
 	  m_iChannelNumber(channelNumber), m_channelDirection(channelDirection) {
-	QVBoxLayout *l = static_cast<QVBoxLayout *>(layout());
+	initControls();
+	QVBoxLayout *l =
+		static_cast<QVBoxLayout *>(ui->m_pFrmUpperMixerPanel->layout());
 	if (m_channelDirection == ChannelDirection::CD_INPUT) {
 		std::unique_ptr<GetMixerInputParm> getMixerInputParm =
 			std::make_unique<GetMixerInputParm>(device);
@@ -24,7 +26,8 @@ AudioMixerChannelWidget::AudioMixerChannelWidget(
 		if (l) {
 			m_pBtnSelectInput = new QToolButton();
 			m_pBtnSelectInput->setCheckable(false);
-			l->insertWidget(1, m_pBtnSelectInput);
+			l->addWidget(new QLabel(tr("In")));
+			l->addWidget(m_pBtnSelectInput);
 			createInputMenu();
 			m_pBtnSelectInput->setMenu(m_pInputMenu);
 			m_pBtnSelectInput->setPopupMode(
@@ -46,10 +49,23 @@ void AudioMixerChannelWidget::setMixerInputControl(
 		m_pMixerInputControl->getMaximumVolumeValue());
 	ui->m_pSlideVolume->setResulution(
 		m_pMixerInputControl->getVolumeResolution());
+
+	ui->m_pTbMute->setVisible(m_pMixerInputControl->getHasMuteControl());
+	ui->m_pTbSolo->setVisible(m_pMixerInputControl->getHasSoloControl());
+	ui->m_pTbPfl->setVisible(m_pMixerInputControl->getHasSoloPFLControl());
+	ui->m_pTbInvert->setVisible(m_pMixerInputControl->getHasInvertControl());
+
+	ui->m_pTbMute->setEnabled(m_pMixerInputControl->getMuteControlEditable());
+	ui->m_pTbSolo->setEnabled(m_pMixerInputControl->getSoloControlEditable());
+	ui->m_pTbPfl->setEnabled(m_pMixerInputControl->getSoloPFLControlEditable());
+	ui->m_pTbInvert->setEnabled(
+		m_pMixerInputControl->getInvertControlEditable());
 }
 
 void AudioMixerChannelWidget::createInputMenu() {
+	QFont menuFont = ui->m_pFrmUpperMixerPanel->font();
 	m_pInputMenu = new QMenu();
+	m_pInputMenu->setFont(menuFont);
 	std::shared_ptr<AudioPortStructure> aps =
 		m_pDevice->getAudioPortStructure();
 	QAction *qANone = m_pInputMenu->addAction(tr(" - none - "));
@@ -67,6 +83,7 @@ void AudioMixerChannelWidget::createInputMenu() {
 			PortDisplayHelper::getAudioPortIcon(AudioPortType(section));
 		QMenu *audioPortTypeMenu =
 			m_pInputMenu->addMenu(portIcon, tr(portTypeName.c_str()));
+		audioPortTypeMenu->setFont(menuFont);
 		std::vector<std::shared_ptr<RetSetAudioPortParm>>::iterator itPort;
 		std::vector<std::shared_ptr<RetSetAudioPortParm>> *ports =
 			itPortType->second;
@@ -76,6 +93,7 @@ void AudioMixerChannelWidget::createInputMenu() {
 			QMenu *portMenu = audioPortTypeMenu->addMenu(
 				portIcon,
 				QString::number(portId) + ": " + app->getPortName().c_str());
+			portMenu->setFont(menuFont);
 			AudioChannelNames::iterator channelIt;
 			AudioChannelNames channelNames = m_pDevice->getAudioChannelNames(
 				portId, ChannelDirection::CD_INPUT);

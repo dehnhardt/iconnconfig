@@ -4,8 +4,6 @@
 MixerPortWidget::MixerPortWidget(unsigned int portId, QWidget *parent)
 	: QWidget(parent), m_iPortId(portId) {
 	createLayout();
-	// setStyleSheet("background-color: red;");
-	// setBaseSize(20, 40);
 }
 
 void MixerPortWidget::setName(QString name) { m_pPortNameLabel->setText(name); }

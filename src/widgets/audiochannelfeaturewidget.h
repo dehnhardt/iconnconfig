@@ -39,6 +39,7 @@ class AudioChannelFeatureWidget : public QFrame {
 	std::shared_ptr<RetSetAudioControlDetailValue>
 		m_pRetSetAudioControlDetailValue = nullptr;
 
+	void initControls();
 	void setRetSetAudioControlDetail(
 		std::shared_ptr<RetSetAudioControlDetail> retSetAudioControlDetail);
 	void queryValues();

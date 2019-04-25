@@ -7,8 +7,46 @@
 #include <unistd.h>
 
 PKSlider::PKSlider(QWidget *parent) : QSlider(parent) {
+
 	connect(this, &QAbstractSlider::valueChanged, this,
 			&PKSlider::onValueChange);
+	setStyleSheet("/******** Qslider Vertical ********/"
+
+				  "QSlider { padding: 0; margin: 0;}"
+
+				  "QSlider::groove:vertical {"
+				  "border: 1px solid #bbb;"
+				  "background: grey;"
+				  "width: 6px;"
+				  "border-radius: 2px;"
+				  "margin-right: 1px;"
+				  "}"
+
+				  "QSlider::sub-page:vertical {"
+				  "background: #DCEAEA;"
+				  "border: 1px solid #777;"
+				  "width:: 8px;"
+				  "border-radius: 4px;"
+				  "margin-right: 2px;"
+				  "}"
+
+				  "QSlider::add-page:vertical {"
+				  "background: #11CC11;"
+				  "border: 1px solid #777;"
+				  "width: 8px;"
+				  "border-radius: 4px;"
+				  "margin-right: 2px;"
+				  "}"
+
+				  "QSlider::handle:vertical {"
+				  "background: #ced7d9;"
+				  "border: 1px solid #777;"
+				  "height: 10px;"
+				  "margin-right: -2px;"
+				  "margin-left: -8px;"
+				  "margin-top: -1px;"
+				  "border-radius: 4px;"
+				  "}");
 }
 
 void PKSlider::setMinimum(int val) {
@@ -115,7 +153,6 @@ void PKSlider::paintEvent(QPaintEvent *event) {
 	contents.setHeight(contents.height() - m_iHalfSliderHeight);
 
 	paintLegend(painter, font_y_offset, contents);
-	painter.setBackground(QBrush(QColor(10, 10, 10)));
 	QSlider::paintEvent(event);
 }
 
