@@ -84,19 +84,19 @@ void AudioChannelFeatureWidget::setRetSetAudioControlDetail(
 		this->ui->m_pFrmVolume->setEnabled(
 			retSetAudioControlDetail->getVolumeControlEditable());
 		this->ui->m_pSlideVolume->setDebug(false);
-		this->ui->m_pSlideVolume->setScaleType(PKSlider::ScaleType::LOGARITHM);
-		this->ui->m_pSlideVolume->setResulution(
-			retSetAudioControlDetail->getVolumeResolution());
+		this->ui->m_pSlideVolume->setScaleType(PKSlider::ScaleType::DECIBEL);
+		this->ui->m_pSlideVolume->setResulution(256);
 		this->ui->m_pSlideVolume->setMinimum(
 			retSetAudioControlDetail->getMinVolumeValue());
 		this->ui->m_pSlideVolume->setMaximum(
 			retSetAudioControlDetail->getMaxVolumeValue());
-		this->ui->m_pSlideVolume->setTickInterval(1.0f / 256.0f);
+		this->ui->m_pSlideVolume->setTickInterval(
+			retSetAudioControlDetail->getVolumeResolution());
 
 		std::cout << "Setting up Slider ("
 				  << retSetAudioControlDetail->getDetailNumber() << ", "
 				  << retSetAudioControlDetail->getChannelName()
-				  << "): minValue "
+				  << "): minValue " << std::dec
 				  << retSetAudioControlDetail->getMinVolumeValue()
 				  << " maxValue "
 				  << retSetAudioControlDetail->getMaxVolumeValue() << std::endl;

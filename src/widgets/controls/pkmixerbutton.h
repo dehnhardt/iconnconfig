@@ -6,7 +6,7 @@
 class PKMixerButton : public QToolButton {
   public:
 	PKMixerButton(QWidget *parent = nullptr);
-	void setColor(unsigned int r, unsigned int g, unsigned int b);
+	void setColor(int r, int g, int b);
 
 	// QWidget interface
   protected:
