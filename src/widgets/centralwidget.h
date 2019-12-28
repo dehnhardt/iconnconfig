@@ -21,10 +21,10 @@ class CentralWidget : public QDockWidget {
 	QGridLayout *m_pLayout = nullptr;
 
   public slots:
-	void deviceAudioConfigChanged();
+	void deviceAudioConfigChanged(unsigned int currentAudioConfigurationNumber);
 
   signals:
-	void changeAudioConfig();
+	void changeAudioConfig(unsigned int currentAudioConfigurationNumber);
 };
 
 #endif // CENTRALWIDGET_H

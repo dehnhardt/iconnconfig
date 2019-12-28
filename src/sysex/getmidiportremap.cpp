@@ -5,7 +5,7 @@ GetMidiPortRemap::GetMidiPortRemap(Device *device)
     : SysExMessage(Command::GET_MIDI_PORT_REMAP, SysExMessage::QUERY, device) {
 }
 
-BYTE_VECTOR *GetMidiPortRemap::m_pGetMessageData() {
+BYTE_VECTOR *GetMidiPortRemap::getMessageData() {
 	BYTE_VECTOR *messageData =
 		MIDI::byteSplit7bit(static_cast<unsigned long>(m_iPortNumber), 2);
     messageData->push_back(static_cast<unsigned char>(m_iPortRemapDirection));

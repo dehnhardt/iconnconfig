@@ -81,7 +81,7 @@ class SysExMessage {
 
   protected:
 	virtual BYTE_VECTOR *getCommandData() { return m_pCommandData; }
-	virtual BYTE_VECTOR *m_pGetMessageData() { return new BYTE_VECTOR(); }
+	virtual BYTE_VECTOR *getMessageData() { return new BYTE_VECTOR(); }
 	virtual BYTE_VECTOR *getTransactionId() {
 		if (m_pTransactionId == nullptr) {
 			if (m_pDevice != nullptr)
@@ -101,7 +101,7 @@ class SysExMessage {
 	void storeSettings();
 
 	virtual int getSettingsId() { return m_Command; }
-	virtual int getSettingsIndex() = 0;
+	virtual int getSettingsIndex() { return 0; }
 	virtual std::string getStorableValue() {
 		return std::string(m_pData->begin(), m_pData->end());
 	}

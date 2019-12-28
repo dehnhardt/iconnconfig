@@ -43,7 +43,7 @@ class RetSetMidiPortInfo : public SysExMessage {
 	int getSettingsIndex() override { return 0; }
 	std::string getStorableValue() override { return ""; }
 	// SysExMessage interface
-	std::vector<unsigned char> *m_pGetMessageData() override;
+	std::vector<unsigned char> *getMessageData() override;
 
   private:
 	long m_iPortId;

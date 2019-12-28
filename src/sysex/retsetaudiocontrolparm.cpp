@@ -35,7 +35,7 @@ void RetSetAudioControlParm::parseAnswerData() {
 		m_pData->begin() + static_cast<long>(offset) + m_iControllerNameLength);
 }
 
-std::vector<unsigned char> *RetSetAudioControlParm::m_pGetMessageData() {
+std::vector<unsigned char> *RetSetAudioControlParm::getMessageData() {
 	BYTE_VECTOR *data = new BYTE_VECTOR();
 	return data;
 }

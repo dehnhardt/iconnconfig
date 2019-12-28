@@ -18,6 +18,7 @@ class PortSysExMessage : public SysExMessage {
   public: // getter & setter
 	unsigned int getPortNumber() { return m_iPortNumber; }
 	unsigned int getPortId() { return m_iPortId; }
+	unsigned int parsePortId(unsigned long offset = 1);
 	void setPortNumber(unsigned int portNumber) { m_iPortNumber = portNumber; }
 	void setPortId(unsigned int portId) { m_iPortId = portId; }
 	BYTE_VECTOR *getPortIdBytes();

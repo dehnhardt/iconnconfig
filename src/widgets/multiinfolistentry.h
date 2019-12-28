@@ -20,7 +20,9 @@ class MultiInfoListEntry : public QObject {
 		NETWORK_INFO,
 		MIDI_INFO,
 		PORT_ROUTING,
-		AUDIO_INFO
+		AUDIO_INFO,
+		AUDIO_ROUTING,
+		AUDIO_MIXER
 	};
 
   public:

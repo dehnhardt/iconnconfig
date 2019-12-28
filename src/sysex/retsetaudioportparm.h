@@ -2,33 +2,32 @@
 #define RETSETAUDIOPORTPARM_H
 
 #include "../device.h"
-#include "sysexmessage.h"
+#include "portsysexmessage.h"
 
 typedef struct {
-	int audioConfigurationNumber = 0;
-	int maxAudioChannelsSupported = 0;
-	int minInputChannelsSupported = 0;
-	int maxInputChannelsSupported = 0;
-	int minOutputChannelsSupported = 0;
-	int maxOutputChannelsSupported = 0;
+	unsigned int audioConfigurationNumber = 0;
+	unsigned int maxAudioChannelsSupported = 0;
+	unsigned int minInputChannelsSupported = 0;
+	unsigned int maxInputChannelsSupported = 0;
+	unsigned int minOutputChannelsSupported = 0;
+	unsigned int maxOutputChannelsSupported = 0;
 } AudioPortConfiguration;
 
-class RetSetAudioPortParm : public SysExMessage {
+class RetSetAudioPortParm : public PortSysExMessage {
   public:
 	RetSetAudioPortParm(Device *device);
 	RetSetAudioPortParm(Command cmd, BYTE_VECTOR *message, Device *device)
-		: SysExMessage(cmd, message, device) {}
+	    : PortSysExMessage(cmd, message, device) {}
 
 	~RetSetAudioPortParm() override;
 
   public:
 	// methods
 	int getSettingsId() override { return m_Command; }
-	int getSettingsIndex() override { return m_iPortId; }
 	void parseAnswerData() override;
 	std::string getStorableValue() override { return ""; }
 	// SysExMessage interface
-	std::vector<unsigned char> *m_pGetMessageData() override;
+	std::vector<unsigned char> *getMessageData() override;
 
 	std::string getAudioPortTypeName(AudioPortType audioPortType);
 	std::string getAudioPortTypeName();
@@ -54,27 +53,24 @@ class RetSetAudioPortParm : public SysExMessage {
 	bool getPortPCEnabled() const;
 	void setPortPCEnabled(bool bPortPCEnabled);
 
-	int getDeviceSpecficPortNumer() const;
+	int getDeviceSpecficPortNumber() const;
 
 	int getJackSpecificDeviceNumber() const;
 
-	int getPortId() const;
-
 	int getMaxPortNameLength() const;
 
-	int getInputChannels() const;
-	void setInputChannels(int iInputChannels);
+	unsigned int getInputChannels() const;
+	void setInputChannels(unsigned int iInputChannels);
 
-	int getOutputChannels() const;
-	void setOutputChannels(int iOutputChannels);
+	unsigned int getOutputChannels() const;
+	void setOutputChannels(unsigned int iOutputChannels);
 
 	int getNumberOfPortConfigurationBlocks() const;
 
   private:
-	int m_iPortId;
 	AudioPortType m_audioPortType = APT_NONE;
-	int m_iInputChannels = 0;
-	int m_iOutputChannels = 0;
+	unsigned int m_iInputChannels = 0;
+	unsigned int m_iOutputChannels = 0;
 	int m_iNumberOfPortConfigurationBlocks = 0;
 	int m_iMaxPortNameLength = 0;
 	int m_iPortNameLength = 0;

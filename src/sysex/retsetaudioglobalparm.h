@@ -26,7 +26,7 @@ class RetSetAudioGlobalParm : public SysExMessage {
 	std::string getAudioConfigurationString(unsigned int i);
 	std::string getAudioConfigurationString();
 
-	BYTE_VECTOR *m_pGetMessageData() override;
+	BYTE_VECTOR *getMessageData() override;
 
 	unsigned int translateBitDepth(int bitCode);
 	std::string translateBitDepthText(int bitCode);

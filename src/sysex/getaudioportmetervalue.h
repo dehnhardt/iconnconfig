@@ -16,7 +16,7 @@ class GetAudioPortMeterValue : public PortSysExMessage {
 	}
 
   protected:
-	std::vector<unsigned char> *m_pGetMessageData();
+	std::vector<unsigned char> *getMessageData();
 
   private:
 	PortDirection m_portDirection = BOTH;

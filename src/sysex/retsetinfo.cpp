@@ -15,7 +15,7 @@ void RetSetInfo::parseAnswerData() {
 	this->m_sValue = std::string(m_pData->begin() + 1, m_pData->end());
 }
 
-std::vector<unsigned char> *RetSetInfo::m_pGetMessageData() {
+std::vector<unsigned char> *RetSetInfo::getMessageData() {
 	BYTE_VECTOR *messageData = new BYTE_VECTOR();
 	messageData->push_back(this->m_InfoItem);
 	messageData->insert(messageData->end(), m_sValue.begin(), m_sValue.end());

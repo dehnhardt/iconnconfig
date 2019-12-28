@@ -79,7 +79,7 @@ BYTE_VECTOR *SysExMessage::getMIDISysExMessage() {
 	BYTE_VECTOR *message = new BYTE_VECTOR();
 	BYTE_VECTOR *manufacturerHeader = Device::getManufacturerHeader();
 
-	BYTE_VECTOR *md = m_pGetMessageData();
+	BYTE_VECTOR *md = getMessageData();
 	unsigned long mdSize = md->size();
 	BYTE_VECTOR *bodyLength = MIDI::byteSplit7bit(mdSize, 2);
 	BYTE_VECTOR *transactionId = getTransactionId();
@@ -305,4 +305,24 @@ CommandAcceptedAnswers SysExMessage::commandAcceptedAnswers = {
 	{GET_AUDIO_CHANNEL_NAME, AcceptedAnswers{RET_SET_AUDIO_CHANNEL_NAME, ACK}},
 	{RET_SET_AUDIO_CHANNEL_NAME, AcceptedAnswers{ACK}},
 	{GET_AUDIO_PORT_METER_VALUE,
-	 AcceptedAnswers{RET_AUDIO_PORT_METER_VALUE, ACK}}};
+	 AcceptedAnswers{RET_AUDIO_PORT_METER_VALUE, ACK}},
+	{GET_MIXER_PARM, AcceptedAnswers{RET_SET_MIXER_PARM, ACK}},
+	{RET_SET_MIXER_PARM, AcceptedAnswers{ACK}},
+	{GET_MIXER_PORT_PARM, AcceptedAnswers{RET_SET_MIXER_PORT_PARM, ACK}},
+	{RET_SET_MIXER_PARM, AcceptedAnswers{ACK}},
+	{GET_MIXER_INPUT_PARM, AcceptedAnswers{RET_SET_MIXER_INPUT_PARM, ACK}},
+	{RET_SET_MIXER_INPUT_PARM, AcceptedAnswers{ACK}},
+	{GET_MIXER_OUTPUT_PARM, AcceptedAnswers{RET_SET_MIXER_OUTPUT_PARM, ACK}},
+	{RET_SET_MIXER_OUTPUT_PARM, AcceptedAnswers{ACK}},
+	{GET_MIXER_INPUT_CONTROL, AcceptedAnswers{RET_MIXER_INPUT_CONTROL, ACK}},
+	{RET_MIXER_OUTPUT_CONTROL, AcceptedAnswers{ACK}},
+	{GET_MIXER_OUTPUT_CONTROL, AcceptedAnswers{RET_MIXER_OUTPUT_CONTROL, ACK}},
+	{RET_MIXER_OUTPUT_CONTROL, AcceptedAnswers{ACK}},
+	{GET_MIXER_INPUT_CONTROL_VALUE,
+	 AcceptedAnswers{RET_SET_MIXER_INPUT_CONTROL_VALUE, ACK}},
+	{RET_SET_MIXER_INPUT_CONTROL_VALUE, AcceptedAnswers{ACK}},
+	{GET_MIXER_OUTPUT_CONTROL_VALUE,
+	 AcceptedAnswers{RET_SET_MIXER_OUTPUT_CONTROL_VALUE, ACK}},
+	{RET_SET_MIXER_OUTPUT_CONTROL_VALUE, AcceptedAnswers{ACK}},
+	{GET_MIXER_METER_VALUE, AcceptedAnswers{RET_MIXER_METER_VALUES, ACK}},
+	{RET_MIXER_METER_VALUES, AcceptedAnswers{ACK}}};

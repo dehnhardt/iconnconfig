@@ -18,11 +18,20 @@ class RetSetMidiPortInfo;
 class GetInfo;
 class DeviceStructureContainer;
 class RetSetAudioGlobalParm;
+class RetSetAudioPortParm;
+class RetSetAudioChannelName;
 
 typedef std::map<unsigned int, std::shared_ptr<DeviceStructureContainer>>
-    DeviceStructure;
+	DeviceStructure;
 typedef std::map<int, std::vector<std::shared_ptr<RetSetMidiPortInfo>> *>
-    MidiPortInfos;
+	MidiPortInfos;
+typedef std::map<int, std::vector<std::shared_ptr<RetSetAudioPortParm>> *>
+	AudioPortStructure;
+
+typedef std::map<AudioChannelId, std::shared_ptr<RetSetAudioChannelName>>
+	AudioChannelNames;
+typedef std::map<ChannelDirection, AudioChannelNames> AudioDirectionChannels;
+typedef std::map<AudioPortId, AudioDirectionChannels> AudioChannelStructure;
 
 class DeviceStructureContainer {
 
@@ -59,7 +68,7 @@ class DeviceStructureContainer {
 class Device {
   public:
 	Device(unsigned int m_iInPortNumber, unsigned int m_iOutPortNumber,
-	       unsigned long m_pSerialNumber, unsigned int m_pProductId);
+		   unsigned long m_pSerialNumber, unsigned int m_pProductId);
 	Device(Device *device);
 
 	~Device();
@@ -123,13 +132,15 @@ class Device {
 		return m_pGlobalAudioParam;
 	}
 	MidiPortInfos *getMidiPortInfos() const;
+	std::shared_ptr<AudioPortStructure> getAudioPortStructure();
+
 	BYTE_VECTOR *getLastSendMessage() const;
 	BYTE_VECTOR *getLastRetrieveMessage() const;
 
 	// setter
 	void setDebug(bool value);
 	void setDeviceInformation(std::string m_sModelName,
-	                          std::string m_sDeviceName);
+							  std::string m_sDeviceName);
 	void setDefault(bool isDefault) { this->m_bIsDefault = isDefault; }
 
 	void setLastSendMessage(BYTE_VECTOR *value);
@@ -137,12 +148,22 @@ class Device {
 
 	std::shared_ptr<RetSetAudioGlobalParm> getGlobalAudioParam() const;
 
+	std::shared_ptr<AudioChannelStructure> getAudioChannelStructure();
+	AudioDirectionChannels getAudioDirectionChannels(AudioPortId audioPortId);
+	AudioChannelNames getAudioChannelNames(AudioPortId audioPortId,
+										   ChannelDirection channelDirection);
+
   private:
 	bool setupMidi();
 	bool checkSysex(BYTE_VECTOR *data);
 	void requestMidiPortInfos();
 	void addCommandToStructure(Command cmd,
-	                           DeviceStructureContainer *structureContainer);
+							   DeviceStructureContainer *structureContainer);
+
+	void queryAudioPorts();
+	AudioChannelNames queryAudioChannels(unsigned int portId,
+										 ChannelDirection direction,
+										 unsigned int numberOfChannels);
 
 	bool debug = false;
 
@@ -171,7 +192,10 @@ class Device {
 	std::string m_sModelNumber;
 
 	std::shared_ptr<RetSetMidiInfo> m_pMidiInfo;
-	std::shared_ptr<RetSetAudioGlobalParm> m_pGlobalAudioParam;
+
+	std::shared_ptr<RetSetAudioGlobalParm> m_pGlobalAudioParam = nullptr;
+	std::shared_ptr<AudioPortStructure> m_pAudioPortParms = nullptr;
+	std::shared_ptr<AudioChannelStructure> m_pAudioChannelStructure = nullptr;
 
 	std::shared_ptr<RetCommandList> m_pCommands;
 	std::shared_ptr<RetInfoList> m_pRetInfoList;
@@ -185,8 +209,8 @@ class Device {
 };
 
 void midiOutErrorCallback(RtMidiError::Type type, const std::string &errorText,
-                          void *userData);
+						  void *userData);
 void midiinErrorCallback(RtMidiError::Type type, const std::string &errorText,
-                         void *userData);
+						 void *userData);
 
 #endif // DEVICE_H

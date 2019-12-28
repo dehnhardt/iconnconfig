@@ -16,7 +16,7 @@ void GetAudioControlDetailValue::createAnswer(
 	m_pAnswer->parseAnswerData();
 }
 
-std::vector<unsigned char> *GetAudioControlDetailValue::m_pGetMessageData() {
+std::vector<unsigned char> *GetAudioControlDetailValue::getMessageData() {
 	BYTE_VECTOR *data = new BYTE_VECTOR();
 	BYTE_VECTOR *portId = getPortIdBytes();
 	data->insert(data->begin(), portId->begin(), portId->end());

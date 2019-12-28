@@ -52,7 +52,7 @@ void RetSetMidiPortRoute::setTotalNumberOfPorts(int value) {
 	m_iNumerOfExpectedBytes = getNumberOfExpectedBytes(m_iTotalNumberOfPorts);
 }
 
-std::vector<unsigned char> *RetSetMidiPortRoute::m_pGetMessageData() {
+std::vector<unsigned char> *RetSetMidiPortRoute::getMessageData() {
 	this->m_pCommandData->at(0) = 0x40;
 	BYTE_VECTOR *messageData = new BYTE_VECTOR();
 	messageData->push_back(0x01);

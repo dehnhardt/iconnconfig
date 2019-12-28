@@ -58,7 +58,7 @@ void RetSetAudioControlDetailValue::parseAnswerData() {
 	}
 }
 
-std::vector<unsigned char> *RetSetAudioControlDetailValue::m_pGetMessageData() {
+std::vector<unsigned char> *RetSetAudioControlDetailValue::getMessageData() {
 	BYTE_VECTOR *messageData = new BYTE_VECTOR();
 	BYTE_VECTOR *audioPortId = getPortIdBytes();
 

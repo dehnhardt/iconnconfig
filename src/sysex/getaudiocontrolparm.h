@@ -16,7 +16,7 @@ class GetAudioControlParm : public PortSysExMessage {
 	void setControllerNumber(unsigned int iControllerNumber);
 
   protected:
-	std::vector<unsigned char> *m_pGetMessageData();
+	std::vector<unsigned char> *getMessageData();
 
   private:
 	unsigned int m_iControllerNumber = 0;

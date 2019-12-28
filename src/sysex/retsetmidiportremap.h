@@ -41,7 +41,7 @@ class RetSetMidiPortRemap : public SysExMessage {
 	BYTE_VECTOR *createMidiChannelMessagesRemapData();
 	BYTE_VECTOR *createMidiControllerRemapData();
 
-	BYTE_VECTOR *m_pGetMessageData();
+	BYTE_VECTOR *getMessageData();
 
   public: // Getter and Setter
 	int getSettingsId() { return m_Command; }

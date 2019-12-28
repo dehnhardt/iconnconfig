@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>90</width>
-    <height>435</height>
+    <height>420</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,13 +19,13 @@
   <property name="minimumSize">
    <size>
     <width>90</width>
-    <height>435</height>
+    <height>420</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>90</width>
-    <height>440</height>
+    <height>420</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -57,7 +57,7 @@
     <number>2</number>
    </property>
    <property name="topMargin">
-    <number>2</number>
+    <number>1</number>
    </property>
    <property name="rightMargin">
     <number>2</number>
@@ -129,7 +129,7 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QFrame" name="frame">
+      <widget class="QFrame" name="m_pFrmUpperMixerPanel">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -139,14 +139,19 @@
        <property name="minimumSize">
         <size>
          <width>76</width>
-         <height>62</height>
+         <height>22</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>100</width>
-         <height>70</height>
+         <height>22</height>
         </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>7</pointsize>
+        </font>
        </property>
        <property name="frameShape">
         <enum>QFrame::StyledPanel</enum>
@@ -154,87 +159,107 @@
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <widget class="QCheckBox" name="m_pChbHighImpedance">
-        <property name="geometry">
-         <rect>
-          <x>5</x>
-          <y>4</y>
-          <width>55</width>
-          <height>16</height>
-         </rect>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <property name="spacing">
+         <number>2</number>
         </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+        <property name="leftMargin">
+         <number>2</number>
         </property>
-        <property name="font">
-         <font>
-          <pointsize>7</pointsize>
-         </font>
+        <property name="topMargin">
+         <number>2</number>
         </property>
-        <property name="styleSheet">
-         <string notr="true">border: none</string>
+        <property name="rightMargin">
+         <number>2</number>
         </property>
-        <property name="text">
-         <string>Hi Imp.</string>
+        <property name="bottomMargin">
+         <number>2</number>
         </property>
-       </widget>
-       <widget class="QCheckBox" name="m_pChbPhantomPower">
-        <property name="geometry">
-         <rect>
-          <x>5</x>
-          <y>22</y>
-          <width>51</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>7</pointsize>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">border: none</string>
-        </property>
-        <property name="text">
-         <string>Phant.</string>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="m_pChbMute">
-        <property name="geometry">
-         <rect>
-          <x>5</x>
-          <y>40</y>
-          <width>45</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>7</pointsize>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">border: none</string>
-        </property>
-        <property name="text">
-         <string>Mute</string>
-        </property>
-       </widget>
+        <item>
+         <widget class="PKMixerButton" name="m_pTbHighImpedance">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>18</width>
+            <height>18</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>18</width>
+            <height>18</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>6</pointsize>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>High Impedance</string>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <property name="text">
+           <string>Imp</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="toolButtonStyle">
+           <enum>Qt::ToolButtonTextOnly</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="PKMixerButton" name="m_pTbPhantomPower">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>18</width>
+            <height>18</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>18</width>
+            <height>18</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>6</pointsize>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Phantom Power</string>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <property name="text">
+           <string>48v</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="toolButtonStyle">
+           <enum>Qt::ToolButtonTextOnly</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </item>
      <item alignment="Qt::AlignLeft">
@@ -317,10 +342,6 @@
           <height>16777215</height>
          </size>
         </property>
-        <property name="styleSheet">
-         <string notr="true">padding-left: 0;
-margin-left: 0;</string>
-        </property>
         <property name="orientation">
          <enum>Qt::Vertical</enum>
         </property>
@@ -388,7 +409,7 @@ margin-left: 0;</string>
            </property>
            <property name="maximumSize">
             <size>
-             <width>15</width>
+             <width>12</width>
              <height>16777215</height>
             </size>
            </property>
@@ -427,7 +448,7 @@ margin-left: 0;</string>
            </property>
            <property name="maximumSize">
             <size>
-             <width>15</width>
+             <width>12</width>
              <height>16777215</height>
             </size>
            </property>
@@ -457,6 +478,204 @@ margin-left: 0;</string>
     </layout>
    </item>
    <item>
+    <widget class="QFrame" name="m_pFrmLowerMixerPanel">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>22</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>22</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">padding: 0; margin: 0;</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <property name="spacing">
+       <number>2</number>
+      </property>
+      <property name="leftMargin">
+       <number>1</number>
+      </property>
+      <property name="topMargin">
+       <number>1</number>
+      </property>
+      <property name="rightMargin">
+       <number>1</number>
+      </property>
+      <property name="bottomMargin">
+       <number>1</number>
+      </property>
+      <item>
+       <widget class="PKMixerButton" name="m_pTbMute">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>18</width>
+          <height>18</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>18</width>
+          <height>18</height>
+         </size>
+        </property>
+        <property name="baseSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>6</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Mute Channel</string>
+        </property>
+        <property name="text">
+         <string>M</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextOnly</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="PKMixerButton" name="m_pTbSolo">
+        <property name="minimumSize">
+         <size>
+          <width>18</width>
+          <height>18</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>18</width>
+          <height>18</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>6</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Channel Solo</string>
+        </property>
+        <property name="text">
+         <string>S</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextOnly</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="PKMixerButton" name="m_pTbPfl">
+        <property name="minimumSize">
+         <size>
+          <width>18</width>
+          <height>18</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>18</width>
+          <height>18</height>
+         </size>
+        </property>
+        <property name="baseSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>6</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Prefade listening</string>
+        </property>
+        <property name="text">
+         <string>Pfl</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextOnly</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="PKMixerButton" name="m_pTbInvert">
+        <property name="minimumSize">
+         <size>
+          <width>18</width>
+          <height>18</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>18</width>
+          <height>18</height>
+         </size>
+        </property>
+        <property name="baseSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>6</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Invert Channel</string>
+        </property>
+        <property name="text">
+         <string>Inv</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextOnly</enum>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QToolButton" name="m_pChbStereoLink">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
@@ -484,7 +703,7 @@ margin-left: 0;</string>
      </property>
      <property name="baseSize">
       <size>
-       <width>16</width>
+       <width>20</width>
        <height>16</height>
       </size>
      </property>
@@ -492,6 +711,9 @@ margin-left: 0;</string>
       <font>
        <pointsize>7</pointsize>
       </font>
+     </property>
+     <property name="toolTip">
+      <string>Mono/Stereo Switch</string>
      </property>
      <property name="styleSheet">
       <string notr="true">border: rgb(147, 147, 147) 2px solid;</string>
@@ -530,6 +752,11 @@ margin-left: 0;</string>
    <class>PKLevelMeter</class>
    <extends>QProgressBar</extends>
    <header>src/widgets/controls/pklevelmeter.h</header>
+  </customwidget>
+  <customwidget>
+   <class>PKMixerButton</class>
+   <extends>QToolButton</extends>
+   <header>src/widgets/controls/pkmixerbutton.h</header>
   </customwidget>
  </customwidgets>
  <resources>

@@ -7,9 +7,6 @@
 
 #include <QDockWidget>
 
-typedef std::map<int, std::vector<std::shared_ptr<RetSetAudioPortParm>> *>
-	AudioPortStructure;
-
 class AudioPortsWidget : public MultiInfoWidget {
 	Q_OBJECT
 
@@ -27,7 +24,7 @@ class AudioPortsWidget : public MultiInfoWidget {
 	void retrieveAudioPorts();
 	void getAudioPorts(
 		std::vector<std::shared_ptr<RetSetAudioPortParm>> *audioPortParms);
-	AudioPortStructure *m_pAudioPortParms = nullptr;
+	std::shared_ptr<AudioPortStructure> m_pAudioPortParms = nullptr;
 };
 
 #endif // AUDIOPORTSWIDGET_H

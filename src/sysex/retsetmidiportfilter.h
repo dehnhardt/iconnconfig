@@ -53,7 +53,7 @@ class RetSetMidiPortFilter : public SysExMessage {
 	BYTE_VECTOR *createMidiChannelMessagesFilterData();
 	BYTE_VECTOR *createMidiControllerFilterData();
 
-	BYTE_VECTOR *m_pGetMessageData();
+	BYTE_VECTOR *getMessageData();
 
   public: // Getter and Setter
 	int getSettingsId() { return m_Command; }

@@ -2,9 +2,9 @@
 #define GETAUDIOPORTPARM_H
 
 #include "../device.h"
-#include "sysexmessage.h"
+#include "portsysexmessage.h"
 
-class GetAudioPortParm : public SysExMessage {
+class GetAudioPortParm : public PortSysExMessage {
   public:
 	GetAudioPortParm(Device *device);
 	~GetAudioPortParm() override;
@@ -14,15 +14,8 @@ class GetAudioPortParm : public SysExMessage {
 	int getSettingsIndex() override { return static_cast<int>(m_iPortId); }
 	std::string getStorableValue() override { return ""; }
 
-  public:
-	// setter
-	void setPortId(unsigned int portId) { this->m_iPortId = portId; }
-
   protected:
-	std::vector<unsigned char> *m_pGetMessageData() override;
-
-  private:
-	unsigned int m_iPortId;
+	std::vector<unsigned char> *getMessageData() override;
 };
 
 #endif // GETAUDIOPORTPARM_H

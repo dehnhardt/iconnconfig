@@ -32,7 +32,7 @@ void AudioPortParmWidget::setData() {
 			m_pRetSetAudioPortParm->getAudioPortType())
 			.pixmap(QSize(30, 30)));
 	ui->m_pEditPortNumber->setText(
-		QString::number(m_pRetSetAudioPortParm->getDeviceSpecficPortNumer()));
+		QString::number(m_pRetSetAudioPortParm->getDeviceSpecficPortNumber()));
 	switch (m_pRetSetAudioPortParm->getAudioPortType()) {
 	case APT_ANALOGUE:
 		ui->m_pGbUSBDevice->setVisible(false);
@@ -110,11 +110,11 @@ void AudioPortParmWidget::setCurrentAudioConfiguration() {
 	AudioPortConfiguration *audioPortConfiguration =
 		m_pRetSetAudioPortParm->getCurrentAudioConfiguration();
 	ui->m_pCbNumberInputChannels->clear();
-	for (int i = audioPortConfiguration->minInputChannelsSupported;
+	for (unsigned int i = audioPortConfiguration->minInputChannelsSupported;
 		 i <= audioPortConfiguration->maxInputChannelsSupported; i++)
 		ui->m_pCbNumberInputChannels->addItem(QString::number(i));
 	ui->m_pCbNumberOutputChannels->clear();
-	for (int i = audioPortConfiguration->minOutputChannelsSupported;
+	for (unsigned int i = audioPortConfiguration->minOutputChannelsSupported;
 		 i <= audioPortConfiguration->maxOutputChannelsSupported; i++)
 		ui->m_pCbNumberOutputChannels->addItem(QString::number(i));
 	ui->m_pEditMaximumNumberOfPorts->setText(
@@ -169,7 +169,7 @@ void AudioPortParmWidget::createConnections() {
 	});
 	connect(ui->m_pCbNumberInputChannels, &QComboBox::currentTextChanged,
 			[=](QString text) {
-				m_pRetSetAudioPortParm->setInputChannels(text.toInt());
+				m_pRetSetAudioPortParm->setInputChannels(text.toUInt());
 				if (this->checkTotalNumberOfAudioChannels()) {
 					m_pUpdateTimer->start(1000);
 				} else {
@@ -178,7 +178,7 @@ void AudioPortParmWidget::createConnections() {
 			});
 	connect(ui->m_pCbNumberOutputChannels, &QComboBox::currentTextChanged,
 			[=](QString text) {
-				m_pRetSetAudioPortParm->setOutputChannels(text.toInt());
+				m_pRetSetAudioPortParm->setOutputChannels(text.toUInt());
 				if (this->checkTotalNumberOfAudioChannels()) {
 					m_pUpdateTimer->start(1000);
 				} else {
@@ -205,13 +205,14 @@ bool AudioPortParmWidget::checkTotalNumberOfAudioChannels() {
 			->maxAudioChannelsSupported) {
 		QMessageBox::information(
 			this, tr("Configuration Error"),
-			tr("The total number of inpot channels and output channels "
-			   "is bigger than the maximum of allowed channels"));
+			tr("The total number of input and output channels "
+			   "is greater than the maximum of allowed channels"));
 		return false;
 	}
 	return true;
 }
 
-void AudioPortParmWidget::audioConfigurationChanged() {
+void AudioPortParmWidget::audioConfigurationChanged(
+	__attribute__((unused)) unsigned int currentAudioConfigurationNumber) {
 	setCurrentAudioConfiguration();
 }

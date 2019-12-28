@@ -19,6 +19,7 @@ class AudioChannelFeatureWidget : public QFrame {
 	explicit AudioChannelFeatureWidget(
 		std::shared_ptr<RetSetAudioControlDetail> retSetAudioControlDetail,
 		QWidget *parent = nullptr);
+	explicit AudioChannelFeatureWidget(QWidget *parent = nullptr);
 	~AudioChannelFeatureWidget();
 	void setMaster(bool isMaster, QString channel2Name);
 	bool getLinkStatus();
@@ -27,7 +28,7 @@ class AudioChannelFeatureWidget : public QFrame {
 	int getChannelId() const;
 	void setChannelId(int value);
 
-  private:
+  protected:
 	Ui::AudioChannelFeatureWidget *ui;
 	QTimer *m_pUpdateTimer = nullptr;
 	int m_iDetailId = 0;
@@ -38,6 +39,7 @@ class AudioChannelFeatureWidget : public QFrame {
 	std::shared_ptr<RetSetAudioControlDetailValue>
 		m_pRetSetAudioControlDetailValue = nullptr;
 
+	void initControls();
 	void setRetSetAudioControlDetail(
 		std::shared_ptr<RetSetAudioControlDetail> retSetAudioControlDetail);
 	void queryValues();

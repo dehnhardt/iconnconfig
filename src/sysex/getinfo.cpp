@@ -25,7 +25,7 @@ GetInfo::GetInfo(Device *device, std::shared_ptr<RetInfoList> infoList)
 
 GetInfo::~GetInfo() { delete m_pRetSetInfos; }
 
-BYTE_VECTOR *GetInfo::m_pGetMessageData() {
+BYTE_VECTOR *GetInfo::getMessageData() {
 	BYTE_VECTOR *messageData = new BYTE_VECTOR();
 	messageData->push_back(this->m_InfoItem);
 	return messageData;

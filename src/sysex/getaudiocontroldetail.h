@@ -15,7 +15,7 @@ class GetAudioControlDetail : public PortSysExMessage {
 	void setDetailNumber(unsigned int iDetailNumber);
 
   protected:
-	std::vector<unsigned char> *m_pGetMessageData();
+	std::vector<unsigned char> *getMessageData();
 
   private:
 	unsigned int m_iControllerNumber = 0;
