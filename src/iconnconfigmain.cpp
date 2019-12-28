@@ -219,11 +219,11 @@ void MioMain::openDeviceGUI(Device *d) {
 	if (d->hasAudioSupport()) {
 		AudioPortsWidget *audioPortsWidget = new AudioPortsWidget(this, d);
 		this->addDock(audioPortsWidget, Qt::LeftDockWidgetArea);
-		if (d->getCommands()->isCommandSupported(GET_AUDIO_PATCHBAY_PARM) ||
+		/*if (d->getCommands()->isCommandSupported(GET_AUDIO_PATCHBAY_PARM) ||
 			d->getCommands()->isCommandSupported(GET_MIXER_PARM)) {
 			AudioWidget *audioRoutingsWidget = new AudioWidget(this, d);
 			this->addDock(audioRoutingsWidget, Qt::LeftDockWidgetArea);
-		}
+		}*/
 	}
 	addDeviceToolButtons();
 
