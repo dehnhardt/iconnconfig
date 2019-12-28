@@ -197,8 +197,11 @@
           </property>
           <property name="font">
            <font>
-            <pointsize>7</pointsize>
+            <pointsize>6</pointsize>
            </font>
+          </property>
+          <property name="toolTip">
+           <string>High Impedance</string>
           </property>
           <property name="styleSheet">
            <string notr="true"/>
@@ -236,8 +239,11 @@
           </property>
           <property name="font">
            <font>
-            <pointsize>7</pointsize>
+            <pointsize>6</pointsize>
            </font>
+          </property>
+          <property name="toolTip">
+           <string>Phantom Power</string>
           </property>
           <property name="styleSheet">
            <string notr="true"/>
@@ -538,8 +544,11 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>7</pointsize>
+          <pointsize>6</pointsize>
          </font>
+        </property>
+        <property name="toolTip">
+         <string>Mute Channel</string>
         </property>
         <property name="text">
          <string>M</string>
@@ -568,8 +577,11 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>7</pointsize>
+          <pointsize>6</pointsize>
          </font>
+        </property>
+        <property name="toolTip">
+         <string>Channel Solo</string>
         </property>
         <property name="text">
          <string>S</string>
@@ -604,8 +616,11 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>7</pointsize>
+          <pointsize>6</pointsize>
          </font>
+        </property>
+        <property name="toolTip">
+         <string>Prefade listening</string>
         </property>
         <property name="text">
          <string>Pfl</string>
@@ -640,8 +655,11 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>7</pointsize>
+          <pointsize>6</pointsize>
          </font>
+        </property>
+        <property name="toolTip">
+         <string>Invert Channel</string>
         </property>
         <property name="text">
          <string>Inv</string>
@@ -693,6 +711,9 @@
       <font>
        <pointsize>7</pointsize>
       </font>
+     </property>
+     <property name="toolTip">
+      <string>Mono/Stereo Switch</string>
      </property>
      <property name="styleSheet">
       <string notr="true">border: rgb(147, 147, 147) 2px solid;</string>

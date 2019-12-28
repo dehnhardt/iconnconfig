@@ -243,7 +243,7 @@ void AudioChannelFeatureWidget::initControls() {
 	ui->m_pTbPfl->setVisible(false);
 	ui->m_pTbInvert->setVisible(false);
 
-	ui->m_pTbMute->setColor(255, 255, 0);
+	ui->m_pTbMute->setColor(255, 236, 24);
 	ui->m_pTbSolo->setColor(0, 255, 255);
 	ui->m_pTbPfl->setColor(40, 255, 25);
 	ui->m_pTbInvert->setColor(85, 85, 255);
