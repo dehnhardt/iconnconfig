@@ -205,8 +205,8 @@ bool AudioPortParmWidget::checkTotalNumberOfAudioChannels() {
 			->maxAudioChannelsSupported) {
 		QMessageBox::information(
 			this, tr("Configuration Error"),
-			tr("The total number of inpot channels and output channels "
-			   "is bigger than the maximum of allowed channels"));
+			tr("The total number of input and output channels "
+			   "is greater than the maximum of allowed channels"));
 		return false;
 	}
 	return true;

@@ -84,19 +84,19 @@ void AudioChannelFeatureWidget::setRetSetAudioControlDetail(
 		this->ui->m_pFrmVolume->setEnabled(
 			retSetAudioControlDetail->getVolumeControlEditable());
 		this->ui->m_pSlideVolume->setDebug(false);
-		this->ui->m_pSlideVolume->setScaleType(PKSlider::ScaleType::LOGARITHM);
-		this->ui->m_pSlideVolume->setResulution(
-			retSetAudioControlDetail->getVolumeResolution());
+		this->ui->m_pSlideVolume->setScaleType(PKSlider::ScaleType::DECIBEL);
+		this->ui->m_pSlideVolume->setResulution(256);
 		this->ui->m_pSlideVolume->setMinimum(
 			retSetAudioControlDetail->getMinVolumeValue());
 		this->ui->m_pSlideVolume->setMaximum(
 			retSetAudioControlDetail->getMaxVolumeValue());
-		this->ui->m_pSlideVolume->setTickInterval(1.0f / 256.0f);
+		this->ui->m_pSlideVolume->setTickInterval(
+			retSetAudioControlDetail->getVolumeResolution());
 
 		std::cout << "Setting up Slider ("
 				  << retSetAudioControlDetail->getDetailNumber() << ", "
 				  << retSetAudioControlDetail->getChannelName()
-				  << "): minValue "
+				  << "): minValue " << std::dec
 				  << retSetAudioControlDetail->getMinVolumeValue()
 				  << " maxValue "
 				  << retSetAudioControlDetail->getMaxVolumeValue() << std::endl;
@@ -243,7 +243,7 @@ void AudioChannelFeatureWidget::initControls() {
 	ui->m_pTbPfl->setVisible(false);
 	ui->m_pTbInvert->setVisible(false);
 
-	ui->m_pTbMute->setColor(255, 255, 0);
+	ui->m_pTbMute->setColor(255, 236, 24);
 	ui->m_pTbSolo->setColor(0, 255, 255);
 	ui->m_pTbPfl->setColor(40, 255, 25);
 	ui->m_pTbInvert->setColor(85, 85, 255);

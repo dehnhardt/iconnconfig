@@ -37,18 +37,21 @@ AudioMixerChannelWidget::AudioMixerChannelWidget(
 					 m_pMixerInputParm->getAudioSourceChannelNumber());
 		}
 	}
+	ui->m_pSlideVolume->setDebug(true);
 }
 
 void AudioMixerChannelWidget::setMixerInputControl(
 	std::shared_ptr<RetMixerInputControl> retMixerInputControl) {
 	this->m_pMixerInputControl = retMixerInputControl;
 
+	ui->m_pSlideVolume->setScaleType(PKSlider::ScaleType::DECIBEL);
+	ui->m_pSlideVolume->setTickInterval(
+		m_pMixerInputControl->getVolumeResolution());
+	ui->m_pSlideVolume->setResulution(256.0f);
 	ui->m_pSlideVolume->setMinimum(
 		m_pMixerInputControl->getMinimumVolumeValue());
 	ui->m_pSlideVolume->setMaximum(
 		m_pMixerInputControl->getMaximumVolumeValue());
-	ui->m_pSlideVolume->setResulution(
-		m_pMixerInputControl->getVolumeResolution());
 
 	ui->m_pTbMute->setVisible(m_pMixerInputControl->getHasMuteControl());
 	ui->m_pTbSolo->setVisible(m_pMixerInputControl->getHasSoloControl());
