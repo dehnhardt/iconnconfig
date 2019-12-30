@@ -5,28 +5,28 @@
 
 AudioWidget::AudioWidget(MioMain *parent, Device *device, QString windowTitle)
 	: MultiInfoWidget(parent, device, windowTitle) {
-	infoSections = new std::vector<MultiInfoListEntry *>();
+	m_pInfoSections = new std::vector<MultiInfoListEntry *>();
 	MultiInfoListEntry *entry = new MultiInfoListEntry(
 		MultiInfoListEntry::AUDIO_ROUTING, tr("Audio Routing").toStdString());
-	infoSections->push_back(entry);
+	m_pInfoSections->push_back(entry);
 	entry = new MultiInfoListEntry(MultiInfoListEntry::AUDIO_MIXER,
 								   tr("Audio Mixer").toStdString());
 	entry->enabled = true;
-	infoSections->push_back(entry);
+	m_pInfoSections->push_back(entry);
 }
 
 AudioWidget::~AudioWidget() {}
 
 QWidget *AudioWidget::createWidget(MultiInfoListEntry *entry) {
 	if (entry->entryCode == MultiInfoListEntry::AUDIO_MIXER) {
-		AudioMixerWidget *audioMixerWidget = new AudioMixerWidget(device);
+		AudioMixerWidget *audioMixerWidget = new AudioMixerWidget(m_pDevice);
 		audioMixerWidget->audioConfigurationChanged(
-			device->getAudioGlobalParm()
+			m_pDevice->getAudioGlobalParm()
 				->getNumberOfActiveAudioConfiguration());
 		return audioMixerWidget;
 	}
 	if (entry->entryCode == MultiInfoListEntry::AUDIO_ROUTING)
-		return new AudioRoutingWidget(device);
+		return new AudioRoutingWidget(m_pDevice);
 
 	return nullptr;
 }
