@@ -2,6 +2,7 @@
 #include "../sysex/communicationexception.h"
 #include "../sysex/protocolexception.h"
 #include "ui_audiochannelfeaturewidget.h"
+#include <vector>
 
 AudioChannelFeatureWidget::AudioChannelFeatureWidget(
 	std::shared_ptr<RetSetAudioControlDetail> retSetAudioControlDetail,
@@ -84,14 +85,13 @@ void AudioChannelFeatureWidget::setRetSetAudioControlDetail(
 		this->ui->m_pFrmVolume->setEnabled(
 			retSetAudioControlDetail->getVolumeControlEditable());
 		this->ui->m_pSlideVolume->setDebug(false);
-		this->ui->m_pSlideVolume->setScaleType(PKSlider::ScaleType::DECIBEL);
-		this->ui->m_pSlideVolume->setResulution(256);
-		this->ui->m_pSlideVolume->setMinimum(
-			retSetAudioControlDetail->getMinVolumeValue());
-		this->ui->m_pSlideVolume->setMaximum(
-			retSetAudioControlDetail->getMaxVolumeValue());
-		this->ui->m_pSlideVolume->setTickInterval(
-			retSetAudioControlDetail->getVolumeResolution());
+		m_pSc1 = std::make_shared<DbCalc>(
+			0, 256, retSetAudioControlDetail->getMinVolumeValue() / 256,
+			retSetAudioControlDetail->getMaxVolumeValue() / 256);
+		m_pSc1->setVScaleValues(
+			std::vector<float>{-63, -50, -40, -30, -20, -10, -5, 0});
+		m_pSc1->setTicks(retSetAudioControlDetail->getVolumeResolution());
+		this->ui->m_pSlideVolume->setScaleCalc(m_pSc1);
 
 		std::cout << "Setting up Slider ("
 				  << retSetAudioControlDetail->getDetailNumber() << ", "
@@ -284,6 +284,7 @@ void AudioChannelFeatureWidget::changeMuteStatus(bool enabled) {
 }
 
 void AudioChannelFeatureWidget::changeVolume(int volume) {
+	std::cout << "Volume: " << volume << std::endl;
 	this->ui->m_pSlideVolume->setValue(volume);
 }
 
