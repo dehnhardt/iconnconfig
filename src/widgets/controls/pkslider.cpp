@@ -103,7 +103,7 @@ void PKSlider::paintEvent(QPaintEvent *event) {
 	pen.setWidth(1);
 	painter.setPen(pen);
 	QFont font = painter.font();
-	font.setPointSize(8);
+	font.setPointSize(m_iFontSize);
 	int fontOffsetY = font.pointSize() / 2 + 1;
 	painter.setFont(font);
 	QRect contents = this->contentsRect();
@@ -113,6 +113,10 @@ void PKSlider::paintEvent(QPaintEvent *event) {
 	paintLegend(painter, fontOffsetY, contents);
 	QSlider::paintEvent(event);
 }
+
+int PKSlider::getFontSize() const { return m_iFontSize; }
+
+void PKSlider::setFontSize(int iFontSize) { m_iFontSize = iFontSize; }
 
 void PKSlider::paintLegend(QPainter &painter, int fontOffsetY, QRect contents) {
 

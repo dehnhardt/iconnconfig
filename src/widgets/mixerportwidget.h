@@ -11,6 +11,7 @@ class MixerPortWidget : public QWidget {
 	explicit MixerPortWidget(unsigned int m_iPortId, QWidget *parent = nullptr);
 	void setName(QString name);
 	void addMixerPanel(QWidget *mixerPanel, unsigned int mixerChannelNumber);
+	void addStretch() { m_pMixerPanelLayout->addStretch(); }
 
   private: // members
 	QLabel *m_pPortNameLabel = nullptr;

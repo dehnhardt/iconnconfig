@@ -20,5 +20,6 @@ void MixerPortWidget::createLayout() {
 	m_pPortNameLabel = new QLabel();
 	vBoxLayout->addWidget(m_pPortNameLabel);
 	vBoxLayout->addLayout(m_pMixerPanelLayout);
+	vBoxLayout->addStretch();
 	setLayout(vBoxLayout);
 }

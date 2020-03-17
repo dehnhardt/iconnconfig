@@ -22,16 +22,17 @@ class DbCalc : public ScaleCalc {
 	float ticks() const;
 	void setTicks(float fTicks);
 
-  private: // methods
+  protected: // methods
 	void init() override;
+
+  protected: // variables
+	float m_fLogMin = 0;
+	float m_fLogMax = 0;
 
   private: // variables
 	float m_fDecVirtMin = 0;
 	float m_fDecVirtMax = 0;
 	float m_fDecVirtRange = 0;
-
-	float m_fLogMin = 0;
-	float m_fLogMax = 0;
 
 	float m_fLogRangeRel = 0;
 	float m_fLogRange = 0;

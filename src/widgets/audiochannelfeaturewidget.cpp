@@ -81,25 +81,32 @@ void AudioChannelFeatureWidget::setRetSetAudioControlDetail(
 		this->ui->m_pTbHighImpedance->setVisible(false);
 	}
 	if (retSetAudioControlDetail->hasVolumeControl()) {
+		int iMinVolume = retSetAudioControlDetail->getMinVolumeValue();
+		int iMaxVolume = retSetAudioControlDetail->getMaxVolumeValue();
+		int iVolumeResolution = retSetAudioControlDetail->getVolumeResolution();
 		this->ui->m_pFrmVolume->setVisible(true);
+		this->ui->m_pSlideVolume->setFontSize(7);
 		this->ui->m_pFrmVolume->setEnabled(
 			retSetAudioControlDetail->getVolumeControlEditable());
 		this->ui->m_pSlideVolume->setDebug(false);
-		m_pSc1 = std::make_shared<DbCalc>(
-			0, 256, retSetAudioControlDetail->getMinVolumeValue() / 256,
-			retSetAudioControlDetail->getMaxVolumeValue() / 256);
-		m_pSc1->setVScaleValues(
-			std::vector<float>{-63, -50, -40, -30, -20, -10, -5, 0});
-		m_pSc1->setTicks(retSetAudioControlDetail->getVolumeResolution());
+		m_pSc1 =
+			std::make_shared<IConnCalc>(0, 256, iMinVolume, iMaxVolume, 256);
+		/*m_pSc1->setTicks(iVolumeResolution);
+		if ((iMinVolume == -16128) && (iMaxVolume == 0)) {
+			m_pSc1->setVScaleValues(
+				std::vector<float>{-63, -50, -40, -30, -20, -10, -5, 0});
+		} else if ((iMinVolume == 0) && (iMaxVolume == 15360)) {
+			m_pSc1->setVScaleValues(
+				std::vector<float>{0, 5, 10, 20, 30, 40, 50, 63});
+		}*/
 		this->ui->m_pSlideVolume->setScaleCalc(m_pSc1);
 
 		std::cout << "Setting up Slider ("
 				  << retSetAudioControlDetail->getDetailNumber() << ", "
 				  << retSetAudioControlDetail->getChannelName()
-				  << "): minValue " << std::dec
-				  << retSetAudioControlDetail->getMinVolumeValue()
-				  << " maxValue "
-				  << retSetAudioControlDetail->getMaxVolumeValue() << std::endl;
+				  << "): minValue " << std::dec << iMinVolume << " maxValue "
+				  << iMaxVolume << ", resolution: " << iVolumeResolution
+				  << std::endl;
 
 		this->ui->m_pDialTrim->setMinimum(
 			retSetAudioControlDetail->getMinTrimValue());

@@ -29,6 +29,9 @@ class PKSlider : public QSlider {
 	ScaleType getScaleType() const;
 	void setScaleType(const ScaleType &scaleType);
 
+	int getFontSize() const;
+	void setFontSize(int iFontSize);
+
   private slots:
 	void onValueChange(float val);
 
@@ -42,6 +45,7 @@ class PKSlider : public QSlider {
   private:
 	int m_iHalfSliderHeight = 8;
 	int m_iVal = 0;
+	int m_iFontSize = 8;
 
 	std::shared_ptr<ScaleCalc> m_pScaleCalc;
 

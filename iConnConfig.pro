@@ -45,11 +45,14 @@ SOURCES +=\
     src/device.cpp \
     src/sysex/getaudiochannelname.cpp \
     src/sysex/getmixerinputcontrol.cpp \
+    src/sysex/getmixeroutputcontrol.cpp \
+    src/sysex/getmixeroutputparm.cpp \
     src/sysex/midi.cpp \
     src/devicedetection.cpp \
     src/config/configuration.cpp \
     src/devicedetectionprocessor.cpp \
     src/sysex/retmixerinputcontrol.cpp \
+    src/sysex/retmixeroutputcontrol.cpp \
     src/sysex/retsetaudiochannelname.cpp \
     src/sysex/sysexmessage.cpp \
     src/deviceselectiontablemodel.cpp \
@@ -57,6 +60,7 @@ SOURCES +=\
     src/widgets/controls/calc/calclog.cpp \
     src/widgets/controls/calc/dbcalc.cpp \
     src/widgets/controls/calc/scalecalc.cpp \
+    src/widgets/controls/iconncalc.cpp \
     src/widgets/controls/pkmixerbutton.cpp \
     src/widgets/deviceinfowidget.cpp \
     src/widgets/portswidget.cpp \
@@ -152,11 +156,14 @@ HEADERS  += \
     src/device.h \
     src/sysex/getaudiochannelname.h \
     src/sysex/getmixerinputcontrol.h \
+    src/sysex/getmixeroutputcontrol.h \
+    src/sysex/getmixeroutputparm.h \
     src/sysex/midi.h \
     src/devicedetection.h \
     src/config/configuration.h \
     src/devicedetectionprocessor.h \
     src/sysex/retmixerinputcontrol.h \
+    src/sysex/retmixeroutputcontrol.h \
     src/sysex/retsetaudiochannelname.h \
     src/sysex/sysexmessage.h \
     src/deviceselectiontablemodel.h \
@@ -165,6 +172,7 @@ HEADERS  += \
     src/widgets/controls/calc/calclog.h \
     src/widgets/controls/calc/dbcalc.h \
     src/widgets/controls/calc/scalecalc.h \
+    src/widgets/controls/iconncalc.h \
     src/widgets/controls/pkmixerbutton.h \
     src/widgets/deviceinfowidget.h \
     src/widgets/portswidget.h \

@@ -15,7 +15,7 @@ void PKMixerButton::setColor(int r, int g, int b) {
 	std::stringstream ss;
 
 	ss << "QToolButton { border: 1px solid #eeeeee; border-radius: 3px; "
-		  "background-color: rgb(255,255,255);}";
+		  "background-color: rgb(255,255,255);color: rgb(50,50,50);}";
 	ss << "QToolButton:checked { border:none; background: "
 		  "qradialgradient(cx:0, cy:0, "
 		  "radius: 1, fx:0.5, fy:0.5, stop:0 "

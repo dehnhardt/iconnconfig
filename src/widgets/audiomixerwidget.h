@@ -26,6 +26,7 @@ class AudioMixerWidget : public QWidget {
 	QComboBox *m_pCboMixerConfig = nullptr;
 	QScrollArea *m_pSAMixer = nullptr;
 	QWidget *m_pWdgMixer = nullptr;
+	QTabWidget *m_pMixerPartsTab = nullptr;
 	QHBoxLayout *m_pLAInputMixerParts = nullptr;
 	QHBoxLayout *m_pLAOutputMixerParts = nullptr;
 

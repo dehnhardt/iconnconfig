@@ -12,6 +12,8 @@ namespace Ui {
 class AudioRoutingWidget;
 }
 
+class RoutingTableModel;
+
 class AudioRoutingWidget : public QWidget {
 	Q_OBJECT
 
@@ -23,6 +25,7 @@ class AudioRoutingWidget : public QWidget {
   private:
 	Ui::AudioRoutingWidget *ui;
 	Device *m_pDevice = nullptr;
+	RoutingTableModel *m_pRoutingTableModel = nullptr;
 	unsigned int m_iNumberOfAudioPorts = 0;
 
   private:

@@ -37,22 +37,17 @@ AudioMixerChannelWidget::AudioMixerChannelWidget(
 					 m_pMixerInputParm->getAudioSourceChannelNumber());
 		}
 	}
-	ui->m_pSlideVolume->setDebug(true);
+	ui->m_pSlideVolume->setDebug(false);
 }
 
 void AudioMixerChannelWidget::setMixerInputControl(
 	std::shared_ptr<RetMixerInputControl> retMixerInputControl) {
 	this->m_pMixerInputControl = retMixerInputControl;
-
-	// ui->m_pSlideVolume->setScaleType(PKSlider::ScaleType::DECIBEL);
-	ui->m_pSlideVolume->setTickInterval(
-		m_pMixerInputControl->getVolumeResolution());
-	// ui->m_pSlideVolume->setResulution(256.0f);
-	ui->m_pSlideVolume->setMinimum(
-		m_pMixerInputControl->getMinimumVolumeValue());
-	ui->m_pSlideVolume->setMaximum(
-		m_pMixerInputControl->getMaximumVolumeValue());
-
+	ui->m_pSlideVolume->setFontSize(7);
+	this->m_pChannelCalc = std::make_shared<IConnCalc>(
+		0, 256, m_pMixerInputControl->getMinimumVolumeValue(),
+		m_pMixerInputControl->getMaximumVolumeValue(), 256);
+	ui->m_pSlideVolume->setScaleCalc(this->m_pChannelCalc);
 	ui->m_pTbMute->setVisible(m_pMixerInputControl->getHasMuteControl());
 	ui->m_pTbSolo->setVisible(m_pMixerInputControl->getHasSoloControl());
 	ui->m_pTbPfl->setVisible(m_pMixerInputControl->getHasSoloPFLControl());
@@ -63,6 +58,27 @@ void AudioMixerChannelWidget::setMixerInputControl(
 	ui->m_pTbPfl->setEnabled(m_pMixerInputControl->getSoloPFLControlEditable());
 	ui->m_pTbInvert->setEnabled(
 		m_pMixerInputControl->getInvertControlEditable());
+}
+
+void AudioMixerChannelWidget::setMixerOutputControl(
+	std::shared_ptr<RetMixerOutputControl> retMixerOutputControl) {
+	this->m_pMixerOutputControl = retMixerOutputControl;
+	ui->m_pSlideVolume->setFontSize(7);
+	this->m_pChannelCalc = std::make_shared<IConnCalc>(
+		0, 256, m_pMixerOutputControl->getMinimumVolumeValue(),
+		m_pMixerOutputControl->getMaximumVolumeValue(), 256);
+	ui->m_pSlideVolume->setScaleCalc(this->m_pChannelCalc);
+	ui->m_pTbMute->setVisible(m_pMixerOutputControl->getHasMuteControl());
+	ui->m_pTbSolo->setVisible(m_pMixerOutputControl->getHasSoloControl());
+	ui->m_pTbPfl->setVisible(m_pMixerOutputControl->getHasSoloPFLControl());
+	ui->m_pTbInvert->setVisible(m_pMixerOutputControl->getHasInvertControl());
+
+	ui->m_pTbMute->setEnabled(m_pMixerOutputControl->getMuteControlEditable());
+	ui->m_pTbSolo->setEnabled(m_pMixerOutputControl->getSoloControlEditable());
+	ui->m_pTbPfl->setEnabled(
+		m_pMixerOutputControl->getSoloPFLControlEditable());
+	ui->m_pTbInvert->setEnabled(
+		m_pMixerOutputControl->getInvertControlEditable());
 }
 
 void AudioMixerChannelWidget::createInputMenu() {
