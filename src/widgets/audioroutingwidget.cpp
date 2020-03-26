@@ -32,6 +32,7 @@ AudioRoutingWidget::AudioRoutingWidget(Device *device, QWidget *parent)
 		color: #010101; \
 	} ";
 	ui->m_pTblRouting->setStyleSheet(style);
+	ui->m_pTblRouting->setFocusPolicy(Qt::NoFocus);
 	m_pRoutingTableModel = new RoutingTableModel();
 	loadHeaderStructure();
 	loadTableData();
