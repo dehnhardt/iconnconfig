@@ -1,5 +1,5 @@
-#ifndef GETMIXERINPUTPARM_H
-#define GETMIXERINPUTPARM_H
+#ifndef GETMIXEROUTPUTPARM_H
+#define GETMIXEROUTPUTPARM_H
 
 #include "portsysexmessage.h"
 
@@ -8,7 +8,7 @@ class GetMixerOutputParm : public PortSysExMessage {
 	GetMixerOutputParm(Device *device);
 
 	// SysExMessage interface
-	void setMixerInputNumber(unsigned int iMixerInputNumber);
+	void setMixerOutputNumber(unsigned int iMixerOutputNumber);
 
   protected:
 	std::vector<unsigned char> *getMessageData() override;
@@ -16,7 +16,7 @@ class GetMixerOutputParm : public PortSysExMessage {
 					  Device *m_pDevice) override;
 
   private:
-	unsigned int m_iMixerInputNumber = 0;
+	unsigned int m_iMixerOutputNumber = 0;
 };
 
-#endif // GETMIXERINPUTPARM_H
+#endif // GETMIXEROUTPUTPARM_H

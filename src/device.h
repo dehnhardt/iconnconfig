@@ -20,6 +20,9 @@ class DeviceStructureContainer;
 class RetSetAudioGlobalParm;
 class RetSetAudioPortParm;
 class RetSetAudioChannelName;
+class RetSetMixerInputParm;
+class RetSetMixerOutputParm;
+class RetSetMixerPortParm;
 
 typedef std::map<unsigned int, std::shared_ptr<DeviceStructureContainer>>
 	DeviceStructure;
@@ -32,6 +35,10 @@ typedef std::map<AudioChannelId, std::shared_ptr<RetSetAudioChannelName>>
 	AudioChannelNames;
 typedef std::map<ChannelDirection, AudioChannelNames> AudioDirectionChannels;
 typedef std::map<AudioPortId, AudioDirectionChannels> AudioChannelStructure;
+typedef std::map<AudioPortChannelId, std::shared_ptr<RetSetMixerInputParm>>
+	AudioMixerInputChannels;
+typedef std::map<AudioPortChannelId, std::shared_ptr<RetSetMixerOutputParm>>
+	AudioMixerOutputChannels;
 
 class DeviceStructureContainer {
 
@@ -100,7 +107,7 @@ class Device {
 
 	bool loadConfigurationFromDevice();
 
-	// getter
+	// global getters
 	bool getDebug() const;
 
 	bool hasMidiSupport();
@@ -134,10 +141,13 @@ class Device {
 	MidiPortInfos *getMidiPortInfos() const;
 	std::shared_ptr<AudioPortStructure> getAudioPortStructure();
 
+	std::vector<std::shared_ptr<RetSetAudioChannelName>> m_vInputChannels;
+	std::vector<std::shared_ptr<RetSetAudioChannelName>> m_vOutputChannels;
+
 	BYTE_VECTOR *getLastSendMessage() const;
 	BYTE_VECTOR *getLastRetrieveMessage() const;
 
-	// setter
+	// global setters
 	void setDebug(bool value);
 	void setDeviceInformation(std::string m_sModelName,
 							  std::string m_sDeviceName);
@@ -146,6 +156,7 @@ class Device {
 	void setLastSendMessage(BYTE_VECTOR *value);
 	void setLastRetrieveMessage(BYTE_VECTOR *value);
 
+	// audio getters
 	std::shared_ptr<RetSetAudioGlobalParm> getGlobalAudioParam() const;
 
 	std::shared_ptr<AudioChannelStructure> getAudioChannelStructure();
@@ -153,18 +164,36 @@ class Device {
 	AudioChannelNames getAudioChannelNames(AudioPortId audioPortId,
 										   ChannelDirection channelDirection);
 
+	std::vector<std::shared_ptr<RetSetAudioChannelName>> getInputChannels();
+	std::vector<std::shared_ptr<RetSetAudioChannelName>> getOutputChannels();
+
+	std::map<AudioPortId, std::shared_ptr<RetSetAudioPortParm>>
+	getAudioPorts() const;
+	std::shared_ptr<RetSetAudioPortParm> getAudioPort(AudioPortId audioPortId);
+
+	std::shared_ptr<RetSetMixerPortParm> getMixerPortParm();
+	std::shared_ptr<AudioMixerInputChannels> getAudioMixerInputChannels();
+	std::shared_ptr<AudioMixerOutputChannels> getAudioMixerOutputChannels();
+
   private:
+	// Midi methods
 	bool setupMidi();
 	bool checkSysex(BYTE_VECTOR *data);
 	void requestMidiPortInfos();
 	void addCommandToStructure(Command cmd,
 							   DeviceStructureContainer *structureContainer);
 
+	// Audio methods
 	void queryAudioPorts();
 	AudioChannelNames queryAudioChannels(unsigned int portId,
 										 ChannelDirection direction,
 										 unsigned int numberOfChannels);
+	void queryAudioMixerChannels(ChannelDirection channelDirection);
+	void queryMixerPortParm();
 
+	// Variables
+
+	// Device variables
 	bool debug = false;
 
 	unsigned int m_iInPortNumber;
@@ -191,16 +220,25 @@ class Device {
 	std::string m_sHardwareVersion;
 	std::string m_sModelNumber;
 
+	// MIDI structures
 	std::shared_ptr<RetSetMidiInfo> m_pMidiInfo;
+	MidiPortInfos *m_pMidiPortInfos = nullptr;
 
+	// Audio structures
 	std::shared_ptr<RetSetAudioGlobalParm> m_pGlobalAudioParam = nullptr;
 	std::shared_ptr<AudioPortStructure> m_pAudioPortParms = nullptr;
 	std::shared_ptr<AudioChannelStructure> m_pAudioChannelStructure = nullptr;
+	std::map<AudioPortId, std::shared_ptr<RetSetAudioPortParm>> m_mAudioPorts;
+	std::shared_ptr<RetSetMixerPortParm> m_pRetSetMixerPortParm = nullptr;
+	std::shared_ptr<AudioMixerInputChannels> m_pAudioMixerInputChannels =
+		nullptr;
+	std::shared_ptr<AudioMixerOutputChannels> m_pAudioMixerOutputChannels =
+		nullptr;
 
+	// Global device / command variables
 	std::shared_ptr<RetCommandList> m_pCommands;
 	std::shared_ptr<RetInfoList> m_pRetInfoList;
 	std::shared_ptr<GetInfo> m_pDeviceInfo;
-	MidiPortInfos *m_pMidiPortInfos = nullptr;
 
 	DeviceStructure *m_pInformationTree = nullptr;
 

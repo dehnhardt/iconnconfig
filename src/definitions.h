@@ -1,7 +1,13 @@
 #ifndef DEFINITIONS_H
 #define DEFINITIONS_H
 
+#include <cmath>
 #include <vector>
+
+/* Macros */
+
+#define channelIndex(port, portclass, channel)                                 \
+	((port * 10 + portclass) * 100 + channel)
 
 /**
  * @brief The Command enum
@@ -181,8 +187,10 @@ typedef struct {
 } ChannelVolumes;
 
 enum ChannelDirection { CD_NONE = 0, CD_INPUT, CD_OUTPUT };
+enum AudioPortClass { PHYSICAL_PORT = 0, MIXER_PORT };
 
 typedef unsigned int AudioPortId;
 typedef unsigned int AudioChannelId;
+typedef unsigned int AudioPortChannelId;
 
 #endif // DEFINITIONS_H

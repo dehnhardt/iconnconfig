@@ -10,6 +10,9 @@
 #include "sysex/getinfolist.h"
 #include "sysex/getmidiinfo.h"
 #include "sysex/getmidiportinfo.h"
+#include "sysex/getmixerinputparm.h"
+#include "sysex/getmixeroutputparm.h"
+#include "sysex/getmixerportparm.h"
 #include "sysex/getsaverestorelist.h"
 #include "sysex/midi.h"
 #include "sysex/protocolexception.h"
@@ -20,6 +23,9 @@
 #include "sysex/retsetaudioportparm.h"
 #include "sysex/retsetmidiinfo.h"
 #include "sysex/retsetmidiportinfo.h"
+#include "sysex/retsetmixerinputparm.h"
+#include "sysex/retsetmixeroutputparm.h"
+#include "sysex/retsetmixerportparm.h"
 
 #include <array>
 #include <cstring>
@@ -361,6 +367,10 @@ bool Device::queryDeviceInfo() {
 		m_pGlobalAudioParam = std::dynamic_pointer_cast<RetSetAudioGlobalParm>(
 			getAudioGlobalParam->querySmart());
 	}
+	if (m_pCommands->isCommandSupported(Command::GET_MIXER_INPUT_CONTROL)) {
+	}
+	if (m_pCommands->isCommandSupported(Command::GET_MIXER_OUTPUT_CONTROL)) {
+	}
 	return true;
 }
 
@@ -369,6 +379,32 @@ std::shared_ptr<AudioPortStructure> Device::getAudioPortStructure() {
 		queryAudioPorts();
 	}
 	return m_pAudioPortParms;
+}
+
+std::vector<std::shared_ptr<RetSetAudioChannelName>>
+Device::getInputChannels() {
+	if (m_vInputChannels.empty()) {
+		for (AudioPortId i = 1; i <= m_iOutPortNumber; i++) {
+			AudioChannelNames acn =
+				getAudioChannelNames(i, ChannelDirection::CD_INPUT);
+			for (auto channel : acn)
+				m_vInputChannels.push_back(channel.second);
+		}
+	}
+	return m_vInputChannels;
+}
+
+std::vector<std::shared_ptr<RetSetAudioChannelName>>
+Device::getOutputChannels() {
+	if (m_vOutputChannels.empty()) {
+		for (AudioPortId i = 1; i <= m_iOutPortNumber; i++) {
+			AudioChannelNames acn =
+				getAudioChannelNames(i, ChannelDirection::CD_OUTPUT);
+			for (auto channel : acn)
+				m_vOutputChannels.push_back(channel.second);
+		}
+	}
+	return m_vOutputChannels;
 }
 
 void Device::queryAudioPorts() {
@@ -410,6 +446,7 @@ void Device::queryAudioPorts() {
 		audioPorts->push_back(retSetAudioPortParm);
 		m_pAudioChannelStructure->insert(
 			std::pair<unsigned int, AudioDirectionChannels>(i, adc));
+		m_mAudioPorts[i] = retSetAudioPortParm;
 	}
 }
 
@@ -430,6 +467,115 @@ AudioChannelNames Device::queryAudioChannels(unsigned int portId,
 			audioChannelNames[i] = retSetAudioChannelName;
 	}
 	return audioChannelNames;
+}
+
+void Device::queryAudioMixerChannels(ChannelDirection channelDirection) {
+	std::shared_ptr<RetSetMixerPortParm> mixerPortParm = getMixerPortParm();
+	std::map<unsigned int, AudioPortMixerBlock> audioPortMixerBlocks =
+		mixerPortParm->getAudioPortMixerBlocks();
+
+	if ((channelDirection == ChannelDirection::CD_INPUT) &&
+		!m_pAudioMixerInputChannels) {
+		m_pAudioMixerInputChannels =
+			std::make_shared<AudioMixerInputChannels>();
+		for (auto audioPortMixerBlockPair : audioPortMixerBlocks) {
+			AudioPortId audioMixerPortId = audioPortMixerBlockPair.first;
+			AudioPortMixerBlock audioPortMixerBlock =
+				audioPortMixerBlockPair.second;
+
+			AudioChannelId audioMixerChannelId;
+
+			for (audioMixerChannelId = 1;
+				 audioMixerChannelId <= audioPortMixerBlock.numberOfMixerInputs;
+				 ++audioMixerChannelId) {
+				std::unique_ptr<GetMixerInputParm> getMixerInputParm =
+					std::make_unique<GetMixerInputParm>(this);
+				getMixerInputParm->setPortId(audioMixerPortId);
+				getMixerInputParm->setMixerInputNumber(audioMixerChannelId);
+				AudioPortChannelId channelId =
+					channelIndex(audioMixerPortId, AudioPortClass::MIXER_PORT,
+								 audioMixerChannelId);
+				std::shared_ptr<RetSetMixerInputParm> mixerInputParm =
+					std::dynamic_pointer_cast<RetSetMixerInputParm>(
+						getMixerInputParm->querySmart());
+				m_pAudioMixerInputChannels->insert(
+					std::pair<AudioPortChannelId,
+							  std::shared_ptr<RetSetMixerInputParm>>(
+						channelId, mixerInputParm));
+			}
+		}
+	} else if ((channelDirection == ChannelDirection::CD_OUTPUT) &&
+			   !m_pAudioMixerOutputChannels) {
+		m_pAudioMixerOutputChannels =
+			std::make_shared<AudioMixerOutputChannels>();
+		for (auto audioPortMixerBlockPair : audioPortMixerBlocks) {
+			AudioPortId audioMixerPortId = audioPortMixerBlockPair.first;
+			AudioPortMixerBlock audioPortMixerBlock =
+				audioPortMixerBlockPair.second;
+			AudioChannelId audioMixerChannelId;
+
+			for (audioMixerChannelId = 1;
+				 audioMixerChannelId <=
+				 audioPortMixerBlock.numberOfMixerOutputs;
+				 ++audioMixerChannelId) {
+
+				std::unique_ptr<GetMixerOutputParm> getMixerOutputParm =
+					std::make_unique<GetMixerOutputParm>(this);
+				getMixerOutputParm->setPortId(audioMixerPortId);
+				getMixerOutputParm->setMixerOutputNumber(audioMixerChannelId);
+				AudioPortChannelId channelId =
+					channelIndex(audioMixerPortId, AudioPortClass::MIXER_PORT,
+								 audioMixerChannelId);
+				std::shared_ptr<RetSetMixerOutputParm> mixerOutputParm =
+					std::dynamic_pointer_cast<RetSetMixerOutputParm>(
+						getMixerOutputParm->querySmart());
+				m_pAudioMixerOutputChannels->insert(
+					std::pair<AudioPortChannelId,
+							  std::shared_ptr<RetSetMixerOutputParm>>(
+						channelId, mixerOutputParm));
+			}
+		}
+	}
+}
+
+std::shared_ptr<RetSetMixerPortParm> Device::getMixerPortParm() {
+	if (!m_pRetSetMixerPortParm)
+		queryMixerPortParm();
+	return m_pRetSetMixerPortParm;
+}
+
+std::shared_ptr<AudioMixerOutputChannels>
+Device::getAudioMixerOutputChannels() {
+	if (!m_pAudioMixerOutputChannels) {
+		queryAudioMixerChannels(ChannelDirection::CD_OUTPUT);
+	}
+	return m_pAudioMixerOutputChannels;
+}
+
+std::shared_ptr<AudioMixerInputChannels> Device::getAudioMixerInputChannels() {
+	if (!m_pAudioMixerInputChannels) {
+		queryAudioMixerChannels(ChannelDirection::CD_INPUT);
+	}
+	return m_pAudioMixerInputChannels;
+}
+
+void Device::queryMixerPortParm() {
+	if (!m_pRetSetMixerPortParm) {
+		std::unique_ptr<GetMixerPortParm> getMixerPortParm =
+			std::make_unique<GetMixerPortParm>(this);
+		m_pRetSetMixerPortParm = std::dynamic_pointer_cast<RetSetMixerPortParm>(
+			getMixerPortParm->querySmart());
+	}
+}
+
+std::map<AudioPortId, std::shared_ptr<RetSetAudioPortParm>>
+Device::getAudioPorts() const {
+	return m_mAudioPorts;
+}
+
+std::shared_ptr<RetSetAudioPortParm>
+Device::getAudioPort(AudioPortId audioPortId) {
+	return m_mAudioPorts[audioPortId];
 }
 
 std::shared_ptr<AudioChannelStructure> Device::getAudioChannelStructure() {

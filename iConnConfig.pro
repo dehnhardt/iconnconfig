@@ -45,6 +45,8 @@ SOURCES +=\
     src/device.cpp \
     src/sysex/getaudiochannelname.cpp \
     src/sysex/getmixerinputcontrol.cpp \
+    src/sysex/getmixerinputcontrolvalue.cpp \
+    src/sysex/getmixermetervalue.cpp \
     src/sysex/getmixeroutputcontrol.cpp \
     src/sysex/getmixeroutputparm.cpp \
     src/sysex/midi.cpp \
@@ -52,8 +54,11 @@ SOURCES +=\
     src/config/configuration.cpp \
     src/devicedetectionprocessor.cpp \
     src/sysex/retmixerinputcontrol.cpp \
+    src/sysex/retmixermetervalue.cpp \
     src/sysex/retmixeroutputcontrol.cpp \
     src/sysex/retsetaudiochannelname.cpp \
+    src/sysex/retsetmixerinputcontrolvalue.cpp \
+    src/sysex/retsetmixeroutputparm.cpp \
     src/sysex/sysexmessage.cpp \
     src/deviceselectiontablemodel.cpp \
     # src/widgets/portsettingwidget.cpp \
@@ -147,7 +152,8 @@ SOURCES +=\
     src/widgets/mixerportwidget.cpp \
     src/sysex/retsetmixerinputparm.cpp \
     src/sysex/getmixerinputparm.cpp \
-    src/widgets/audiomixerchannelwidget.cpp
+    src/widgets/audiomixerchannelwidget.cpp \
+    src/widgets/views/hierarchicalheaderview.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
@@ -156,6 +162,8 @@ HEADERS  += \
     src/device.h \
     src/sysex/getaudiochannelname.h \
     src/sysex/getmixerinputcontrol.h \
+    src/sysex/getmixerinputcontrolvalue.h \
+    src/sysex/getmixermetervalue.h \
     src/sysex/getmixeroutputcontrol.h \
     src/sysex/getmixeroutputparm.h \
     src/sysex/midi.h \
@@ -163,8 +171,11 @@ HEADERS  += \
     src/config/configuration.h \
     src/devicedetectionprocessor.h \
     src/sysex/retmixerinputcontrol.h \
+    src/sysex/retmixermetervalue.h \
     src/sysex/retmixeroutputcontrol.h \
     src/sysex/retsetaudiochannelname.h \
+    src/sysex/retsetmixerinputcontrolvalue.h \
+    src/sysex/retsetmixeroutputparm.h \
     src/sysex/sysexmessage.h \
     src/deviceselectiontablemodel.h \
     src/events/events.h \
@@ -262,7 +273,8 @@ HEADERS  += \
     src/widgets/mixerportwidget.h \
     src/sysex/retsetmixerinputparm.h \
     src/sysex/getmixerinputparm.h \
-    src/widgets/audiomixerchannelwidget.h
+    src/widgets/audiomixerchannelwidget.h \
+    src/widgets/views/hierarchicalheaderview.h
 
 FORMS    += \
     src/devicedetection.ui \

@@ -56,33 +56,33 @@ void RetMixerOutputControl::parseEditFlags(unsigned char edit_flags) {
 	m_bVolumeControlEditable = edit_flags & 1;
 }
 
-bool RetMixerOutputControl::getHasControls() const { return m_bHasControls; }
+bool RetMixerOutputControl::hasControls() const { return m_bHasControls; }
 
-bool RetMixerOutputControl::getHasVolumeControl() const {
+bool RetMixerOutputControl::hasVolumeControl() const {
 	return m_bHasVolumeControl;
 }
 
-bool RetMixerOutputControl::getHasMuteControl() const {
+bool RetMixerOutputControl::hasMuteControl() const {
 	return m_bHasMuteControl;
 }
 
-bool RetMixerOutputControl::getHasSoloControl() const {
+bool RetMixerOutputControl::hasSoloControl() const {
 	return m_bHasSoloControl;
 }
 
-bool RetMixerOutputControl::getHasSoloPFLControl() const {
+bool RetMixerOutputControl::hasSoloPFLControl() const {
 	return m_bHasSoloPFLControl;
 }
 
-bool RetMixerOutputControl::getHasStereoLinkControl() const {
+bool RetMixerOutputControl::hasStereoLinkControl() const {
 	return m_bHasStereoLinkControl;
 }
 
-bool RetMixerOutputControl::getHasInvertControl() const {
+bool RetMixerOutputControl::hasInvertControl() const {
 	return m_bHasInvertControl;
 }
 
-bool RetMixerOutputControl::getHasPanControl() const {
+bool RetMixerOutputControl::hasPanControl() const {
 	return m_bHasPanControl;
 }
 

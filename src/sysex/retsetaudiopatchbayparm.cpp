@@ -1,10 +1,11 @@
 #include "retsetaudiopatchbayparm.h"
+#include "../definitions.h"
 
 RetSetAudioPatchbayParm::RetSetAudioPatchbayParm(Device *device)
 	: PortSysExMessage(RET_SET_AUDIO_PATCHBAY_PARM, SysExMessage::QUERY,
 					   device) {
-	m_pAudioPatchbayConfiguration =
-		std::make_shared<std::vector<AudioPatchbayConfiguration>>();
+	m_pAudioPatchbayConfiguration = std::make_shared<
+		std::map<AudioPortChannelId, std::map<AudioPortChannelId, bool>>>();
 }
 
 RetSetAudioPatchbayParm::~RetSetAudioPatchbayParm() {}
@@ -17,24 +18,44 @@ void RetSetAudioPatchbayParm::parseAnswerData() {
 	offset = 4;
 	for (unsigned int i = 0; i < m_iNumberOfPatchbayConfigBlocks; i++) {
 		AudioPatchbayConfiguration apConfig;
-		apConfig.inputChannelNumber = m_pData->at(offset);
+		apConfig.sinkChannelNumber = m_pData->at(offset);
 		offset++;
-		apConfig.outputChannelNumber = m_pData->at(offset);
+		apConfig.sourceChannelNumber = m_pData->at(offset);
 		offset++;
-		apConfig.outputPortId =
+		apConfig.sourcePortId =
 			static_cast<unsigned int>(MIDI::byteJoin7bit(m_pData, offset, 2));
 		offset += 2;
-		if (apConfig.inputChannelNumber > m_iMaxInputChannel)
-			m_iMaxInputChannel = apConfig.inputChannelNumber;
-		if (apConfig.outputChannelNumber > m_iMaxOutputChannel)
-			m_iMaxOutputChannel = apConfig.outputChannelNumber;
+		if (apConfig.sinkChannelNumber > m_iMaxInputChannel)
+			m_iMaxInputChannel = apConfig.sinkChannelNumber;
+		if (apConfig.sourceChannelNumber > m_iMaxOutputChannel)
+			m_iMaxOutputChannel = apConfig.sourceChannelNumber;
 		if (debug)
-			std::cout << "Input Port: " << m_iPortId
-					  << ", Input Channel: " << apConfig.inputChannelNumber
-					  << ", Output Port: " << apConfig.outputPortId
-					  << ", OutputChannel: " << apConfig.outputChannelNumber
+			std::cout << "Source Port: " << apConfig.sourcePortId
+					  << ", SourceChannel: " << apConfig.sourceChannelNumber
+					  << ", Sink Port: " << m_iPortId
+					  << ", Sink Channel: " << apConfig.sinkChannelNumber
 					  << std::endl;
-		m_pAudioPatchbayConfiguration->push_back(apConfig);
+		if ((apConfig.sourcePortId != 0) &&
+			(apConfig.sourceChannelNumber != 0)) {
+			AudioPortChannelId sinkKey =
+				channelIndex(m_iPortId, AudioPortClass::PHYSICAL_PORT,
+							 apConfig.sinkChannelNumber);
+			AudioPortChannelId sourceKey = channelIndex(
+				apConfig.sourcePortId, AudioPortClass::PHYSICAL_PORT,
+				apConfig.sourceChannelNumber);
+			std::map<AudioPortChannelId, bool> sources;
+			try {
+				sources = m_pAudioPatchbayConfiguration->at(sinkKey);
+			} catch (__attribute__((unused)) const std::out_of_range &oor) {
+				sources = std::map<AudioPortChannelId, bool>();
+			}
+			sources.insert(
+				std::pair<AudioPortChannelId, bool>(sourceKey, true));
+			m_pAudioPatchbayConfiguration->insert(
+				std::pair<AudioPortChannelId,
+						  std::map<AudioPortChannelId, bool>>(sinkKey,
+															  sources));
+		}
 	}
 }
 
@@ -50,7 +71,8 @@ unsigned int RetSetAudioPatchbayParm::getNumberOfPatchbayConfigBlocks() const {
 	return m_iNumberOfPatchbayConfigBlocks;
 }
 
-std::shared_ptr<std::vector<AudioPatchbayConfiguration>>
+std::shared_ptr<
+	std::map<AudioPortChannelId, std::map<AudioPortChannelId, bool>>>
 RetSetAudioPatchbayParm::getAudioPatchbayConfiguration() const {
 	return m_pAudioPatchbayConfiguration;
 }

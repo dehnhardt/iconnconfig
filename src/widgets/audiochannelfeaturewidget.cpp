@@ -91,14 +91,6 @@ void AudioChannelFeatureWidget::setRetSetAudioControlDetail(
 		this->ui->m_pSlideVolume->setDebug(false);
 		m_pSc1 =
 			std::make_shared<IConnCalc>(0, 256, iMinVolume, iMaxVolume, 256);
-		/*m_pSc1->setTicks(iVolumeResolution);
-		if ((iMinVolume == -16128) && (iMaxVolume == 0)) {
-			m_pSc1->setVScaleValues(
-				std::vector<float>{-63, -50, -40, -30, -20, -10, -5, 0});
-		} else if ((iMinVolume == 0) && (iMaxVolume == 15360)) {
-			m_pSc1->setVScaleValues(
-				std::vector<float>{0, 5, 10, 20, 30, 40, 50, 63});
-		}*/
 		this->ui->m_pSlideVolume->setScaleCalc(m_pSc1);
 
 		std::cout << "Setting up Slider ("

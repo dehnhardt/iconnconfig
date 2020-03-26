@@ -2,7 +2,7 @@
 #include "retsetmixerinputparm.h"
 
 GetMixerInputParm::GetMixerInputParm(Device *device)
-    : PortSysExMessage(GET_MIXER_INPUT_PARM, SysExMessage::QUERY, device) {}
+	: PortSysExMessage(GET_MIXER_INPUT_PARM, SysExMessage::QUERY, device) {}
 
 std::vector<unsigned char> *GetMixerInputParm::getMessageData() {
 	BYTE_VECTOR *data = new BYTE_VECTOR();
@@ -14,10 +14,10 @@ std::vector<unsigned char> *GetMixerInputParm::getMessageData() {
 }
 
 void GetMixerInputParm::createAnswer(Command m_Command,
-                                     std::vector<unsigned char> *message,
-                                     Device *m_pDevice) {
+									 std::vector<unsigned char> *message,
+									 Device *m_pDevice) {
 	m_pAnswer =
-	    std::make_shared<RetSetMixerInputParm>(m_Command, message, m_pDevice);
+		std::make_shared<RetSetMixerInputParm>(m_Command, message, m_pDevice);
 	if (debug)
 		m_pAnswer->setDebug(true);
 	m_pAnswer->parseAnswerData();
