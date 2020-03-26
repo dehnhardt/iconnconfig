@@ -36,6 +36,8 @@ AudioRoutingWidget::AudioRoutingWidget(Device *device, QWidget *parent)
 	m_pRoutingTableModel = new RoutingTableModel();
 	loadHeaderStructure();
 	loadTableData();
+	connect(m_pRoutingTableModel, &RoutingTableModel::modelDataChanged, this,
+			&AudioRoutingWidget::modelDataChanged);
 }
 
 AudioRoutingWidget::~AudioRoutingWidget() {
@@ -245,6 +247,66 @@ void AudioRoutingWidget::loadTableData() {
 	ui->m_pTblRouting->setModel(m_pRoutingTableModel);
 }
 
+bool AudioRoutingWidget::modelDataChanged(QModelIndex index,
+										  AudioPortChannelId source,
+										  AudioPortChannelId sink) {
+	AudioPortClass sourcePortClass = AudioPortClass((source / 100) % 10);
+	AudioPortId sourcePortId = (source / 100 - sourcePortClass) / 10;
+	AudioChannelId sourceChannelId = source % 100;
+	AudioPortClass sinkPortClass = AudioPortClass((sink / 100) % 10);
+	AudioPortId sinkPortId = (sink / 100 - sinkPortClass) / 10;
+	AudioChannelId sinkChannelId = sink % 100;
+	if ((sinkPortClass == AudioPortClass::PHYSICAL_PORT) &&
+		(sourcePortClass == AudioPortClass::PHYSICAL_PORT)) {
+		std::shared_ptr<
+			std::map<AudioPortChannelId, std::map<AudioPortChannelId, bool>>>
+			audioPatchbayConfiguration = std::make_shared<std::map<
+				AudioPortChannelId, std::map<AudioPortChannelId, bool>>>();
+		std::shared_ptr<AudioChannelStructure> ass =
+			m_pDevice->getAudioChannelStructure();
+		AudioDirectionChannels adc = ass->at(sinkPortId);
+
+		for (auto channel : adc.at(ChannelDirection::CD_OUTPUT)) {
+			std::map<AudioPortChannelId, bool> sourceChannels;
+			AudioChannelId channelId = channel.first;
+			AudioPortChannelId out = channelIndex(
+				sinkPortId, AudioPortClass::PHYSICAL_PORT, channelId);
+			bool connected = false;
+			for (int row = 0;
+				 row < m_pRoutingTableModel->rowCount(QModelIndex()); row++) {
+				AudioPortChannelId in =
+					m_pRoutingTableModel->getRowAudioPortChanneId(
+						static_cast<unsigned long>(row));
+				connected = m_pRoutingTableModel->getValue(out, in);
+				if (connected) {
+					sourceChannels[in] = true;
+					break;
+				}
+			}
+			if (!connected) {
+				sourceChannels[0] = false;
+			}
+			audioPatchbayConfiguration->insert(
+				std::pair<AudioPortChannelId,
+						  std::map<AudioPortChannelId, bool>>(out,
+															  sourceChannels));
+		}
+		std::unique_ptr<RetSetAudioPatchbayParm> retSetAudioPatchbayParm =
+			std::make_unique<RetSetAudioPatchbayParm>(m_pDevice);
+		retSetAudioPatchbayParm->setDebug(false);
+		retSetAudioPatchbayParm->setPortId(sinkPortId);
+		retSetAudioPatchbayParm->setCmdflags(SysExMessage::QUERY);
+		retSetAudioPatchbayParm->setAudioPatchbayConfiguration(
+			audioPatchbayConfiguration);
+		if (retSetAudioPatchbayParm->execute() == 0) {
+			loadTableData();
+			return true;
+		}
+		return false;
+	}
+	return false;
+}
+
 RoutingTableModel::RoutingTableModel(QObject *parent)
 	: QAbstractTableModel(parent) {
 	m_pHorizontalHeaderItemModel = std::make_unique<QStandardItemModel>(parent);
@@ -266,6 +328,15 @@ void RoutingTableModel::addAudioPatches(
 	m_MapTableData.insert(patches->begin(), patches->end());
 }
 
+bool RoutingTableModel::getValue(AudioPortChannelId column,
+								 AudioPortChannelId row) const {
+	try {
+		return m_MapTableData.at(column).at(row);
+	} catch (__attribute__((unused)) const std::out_of_range &oor) {
+		return false;
+	}
+}
+
 QVariant RoutingTableModel::data(const QModelIndex &index, int role) const {
 	AudioPortChannelId row = m_vRows[static_cast<unsigned long>(index.row())];
 	AudioPortChannelId column =
@@ -273,12 +344,7 @@ QVariant RoutingTableModel::data(const QModelIndex &index, int role) const {
 
 	switch (role) {
 	case Qt::CheckStateRole:
-		try {
-			return m_MapTableData.at(column).at(row) ? Qt::Checked
-													 : Qt::Unchecked;
-		} catch (__attribute__((unused)) const std::out_of_range &oor) {
-			return Qt::Unchecked;
-		}
+		return getValue(column, row) ? Qt::Checked : Qt::Unchecked;
 	case Qt::BackgroundRole: {
 		int r = 220;
 		int g = 220;
@@ -325,15 +391,15 @@ bool RoutingTableModel::setData(const QModelIndex &index, const QVariant &value,
 			m_vColumns[static_cast<unsigned long>(index.column())];
 		if (!value.toBool()) {
 			try {
-				m_MapTableData.at(column).at(row) = Qt::Unchecked;
-				return true;
+				m_MapTableData.at(column).erase(row);
 			} catch (__attribute__((unused)) const std::out_of_range &oor) {
+				std::cout << "false" << std::endl;
 				return false;
 			}
 		} else {
+			eraseColumn(column);
 			try {
-				m_MapTableData.at(column).at(row) = Qt::Checked;
-				return true;
+				m_MapTableData.at(column).at(row) = true;
 			} catch (__attribute__((unused)) const std::out_of_range &oor) {
 				MixerSource s;
 				try {
@@ -343,9 +409,29 @@ bool RoutingTableModel::setData(const QModelIndex &index, const QVariant &value,
 				}
 				s[row] = true;
 				m_MapTableData[column] = s;
-				return true;
 			}
 		}
+		if (modelDataChanged(index, row, column)) {
+			emit dataChanged(
+				createIndex(static_cast<int>(row), 0),
+				createIndex(static_cast<int>(row),
+							static_cast<int>(m_vColumns.size()) - 1),
+				QVector<int>({role}));
+			std::cout << "true" << std::endl;
+			return true;
+		}
 	}
-	return true;
+	std::cout << "false" << std::endl;
+	return false;
+}
+
+void RoutingTableModel::eraseColumn(unsigned int column) {
+	for (int i = 0; i < rowCount(QModelIndex()); i++) {
+		try {
+			m_MapTableData.at(column).erase(static_cast<unsigned int>(
+				m_vRows[static_cast<unsigned int>(i)]));
+		} catch (__attribute__((unused)) const std::out_of_range &oor) {
+			// nothing to do if not already found
+		}
+	}
 }

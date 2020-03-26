@@ -423,7 +423,7 @@ void Device::queryAudioPorts() {
 		std::shared_ptr<RetSetAudioPortParm> retSetAudioPortParm =
 			std::dynamic_pointer_cast<RetSetAudioPortParm>(
 				getAudioPortParm->querySmart());
-		int audioPortType = retSetAudioPortParm->getAudioPortType();
+		AudioPortType audioPortType = retSetAudioPortParm->getAudioPortType();
 
 		AudioChannelNames acnInput =
 			queryAudioChannels(i, ChannelDirection::CD_INPUT,
@@ -439,7 +439,7 @@ void Device::queryAudioPorts() {
 			audioPorts =
 				new std::vector<std::shared_ptr<RetSetAudioPortParm>>();
 			m_pAudioPortParms->insert(
-				std::pair<int,
+				std::pair<AudioPortType,
 						  std::vector<std::shared_ptr<RetSetAudioPortParm>> *>(
 					audioPortType, audioPorts));
 		}

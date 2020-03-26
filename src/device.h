@@ -28,7 +28,8 @@ typedef std::map<unsigned int, std::shared_ptr<DeviceStructureContainer>>
 	DeviceStructure;
 typedef std::map<int, std::vector<std::shared_ptr<RetSetMidiPortInfo>> *>
 	MidiPortInfos;
-typedef std::map<int, std::vector<std::shared_ptr<RetSetAudioPortParm>> *>
+typedef std::map<AudioPortType,
+				 std::vector<std::shared_ptr<RetSetAudioPortParm>> *>
 	AudioPortStructure;
 
 typedef std::map<AudioChannelId, std::shared_ptr<RetSetAudioChannelName>>

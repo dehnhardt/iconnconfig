@@ -28,6 +28,8 @@ std::vector<unsigned char> *RetSetMixerOutputParm::getMessageData() {
 	BYTE_VECTOR *data = nullptr;
 	BYTE_VECTOR *portId = nullptr;
 
+	data = new BYTE_VECTOR();
+
 	this->m_pCommandData->at(0) = 0x40;
 
 	portId = MIDI::byteSplit7bit(m_iPortId);
@@ -41,6 +43,8 @@ std::vector<unsigned char> *RetSetMixerOutputParm::getMessageData() {
 	data->push_back(m_iMaxNameLength);
 	data->push_back(m_iNameLength);
 	data->insert(data->end(), m_sMixerName.begin(), m_sMixerName.end());
+
+	delete portId;
 	return data;
 }
 

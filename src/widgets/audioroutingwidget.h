@@ -29,6 +29,10 @@ class AudioRoutingWidget : public QWidget {
 	void loadHeaderStructure();
 	void loadTableData();
 
+  public slots:
+	bool modelDataChanged(QModelIndex index, AudioPortChannelId source,
+						  AudioPortChannelId sink);
+
   private:
 	Ui::AudioRoutingWidget *ui;
 	Device *m_pDevice = nullptr;
@@ -40,6 +44,7 @@ class AudioRoutingWidget : public QWidget {
 };
 
 class RoutingTableModel : public QAbstractTableModel {
+	Q_OBJECT
 
   public:
 	RoutingTableModel(QObject *parent = nullptr);
@@ -54,6 +59,23 @@ class RoutingTableModel : public QAbstractTableModel {
 		m_vColumns = columns;
 	}
 
+	AudioPortChannelId getRowAudioPortChanneId(unsigned long row) {
+		try {
+			return m_vRows.at(row);
+		} catch (__attribute__((unused)) const std::out_of_range &oor) {
+			return 0;
+		}
+	}
+
+	AudioPortChannelId getColumnAudioPortChanneId(unsigned long column) {
+		try {
+			return m_vColumns.at(column);
+		} catch (__attribute__((unused)) const std::out_of_range &oor) {
+			return 0;
+		}
+	}
+	bool getValue(AudioPortChannelId column, AudioPortChannelId row) const;
+
 	std::unique_ptr<QStandardItemModel> m_pHorizontalHeaderItemModel = nullptr;
 	std::unique_ptr<QStandardItemModel> m_pVerticalHeaderItemModel = nullptr;
 
@@ -64,14 +86,13 @@ class RoutingTableModel : public QAbstractTableModel {
 						 int role) override;
 	virtual Qt::ItemFlags flags(const QModelIndex &index) const override;
 
-	int columnCount(__attribute__((unused))
-					const QModelIndex &parent) const override {
+	virtual int columnCount(__attribute__((unused))
+							const QModelIndex &parent) const override {
 		return static_cast<int>(m_vColumns.size());
-
-		// QAbstractItemModel interface
 	}
-	int rowCount(__attribute__((unused))
-				 const QModelIndex &parent) const override {
+
+	virtual int rowCount(__attribute__((unused))
+						 const QModelIndex &parent) const override {
 		return static_cast<int>(m_vRows.size());
 	}
 
@@ -79,6 +100,12 @@ class RoutingTableModel : public QAbstractTableModel {
 	MixerSink m_MapTableData;
 	std::vector<AudioPortChannelId> m_vColumns;
 	std::vector<AudioPortChannelId> m_vRows;
+
+	void eraseColumn(unsigned int column);
+
+  signals:
+	bool modelDataChanged(QModelIndex index, AudioPortChannelId source,
+						  AudioPortChannelId sink);
 };
 
 #endif // AUDIOROUTINGWIDGET_H
