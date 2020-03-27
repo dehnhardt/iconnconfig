@@ -23,6 +23,9 @@ class RetSetMixerOutputParm : public PortSysExMessage {
 	unsigned int getMixerSinkChannelNumber() const;
 	void setMixerSinkChannelNumber(unsigned int iMixerSinkNumber);
 
+	void changeMixerOutputAssignment(AudioChannelId audioChanneId,
+	                                 bool assigned);
+
   protected:
 	std::vector<unsigned char> *getMessageData() override;
 

@@ -14,6 +14,15 @@
 typedef std::map<AudioPortChannelId, bool> MixerSource;
 typedef std::map<AudioPortChannelId, MixerSource> MixerSink;
 
+typedef struct {
+	AudioPortClass audioPortClass;
+	AudioPortId audioPortId;
+	AudioChannelId auioChannelId;
+} AudioRoutingChannel;
+
+std::shared_ptr<AudioRoutingChannel>
+decodeRoutingChannel(AudioPortChannelId audioPortChannelId);
+
 namespace Ui {
 class AudioRoutingWidget;
 }
@@ -31,7 +40,7 @@ class AudioRoutingWidget : public QWidget {
 
   public slots:
 	bool modelDataChanged(QModelIndex index, AudioPortChannelId source,
-						  AudioPortChannelId sink);
+						  AudioPortChannelId sink, bool value);
 
   private:
 	Ui::AudioRoutingWidget *ui;
@@ -41,6 +50,14 @@ class AudioRoutingWidget : public QWidget {
 
 	std::vector<AudioPortChannelId> m_vColumns;
 	std::vector<AudioPortChannelId> m_vRows;
+	bool modifyPhysicalPortConnection(
+		std::shared_ptr<AudioRoutingChannel> sinkChannel);
+	bool modifyMixerSinkConnection(
+		std::shared_ptr<AudioRoutingChannel> sourceChannel,
+		AudioPortChannelId sink, bool value);
+	bool modifyMixerSourceConnection(
+		AudioPortChannelId source,
+		std::shared_ptr<AudioRoutingChannel> sinkChannel, bool value);
 };
 
 class RoutingTableModel : public QAbstractTableModel {
@@ -102,10 +119,12 @@ class RoutingTableModel : public QAbstractTableModel {
 	std::vector<AudioPortChannelId> m_vRows;
 
 	void eraseColumn(unsigned int column);
+	bool checkConnectionValid(AudioPortChannelId source,
+							  AudioPortChannelId sink) const;
 
   signals:
 	bool modelDataChanged(QModelIndex index, AudioPortChannelId source,
-						  AudioPortChannelId sink);
+						  AudioPortChannelId sink, bool value);
 };
 
 #endif // AUDIOROUTINGWIDGET_H

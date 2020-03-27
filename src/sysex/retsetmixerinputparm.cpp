@@ -17,10 +17,12 @@ std::vector<unsigned char> *RetSetMixerInputParm::getMessageData() {
 	BYTE_VECTOR *portId = nullptr;
 	BYTE_VECTOR *audioSourcePortId = new BYTE_VECTOR();
 
+	data = new BYTE_VECTOR();
+
 	this->m_pCommandData->at(0) = 0x40;
 
-	portId = MIDI::byteSplit7bit(m_iPortId);
-	audioSourcePortId = MIDI::byteSplit7bit(m_iAudioSourcePortId);
+	portId = MIDI::byteSplit7bit(m_iPortId, 2);
+	audioSourcePortId = MIDI::byteSplit7bit(m_iAudioSourcePortId, 2);
 
 	data->push_back(m_iCommandVersionNumber);
 	data->insert(data->end(), portId->begin(), portId->end());
@@ -28,6 +30,8 @@ std::vector<unsigned char> *RetSetMixerInputParm::getMessageData() {
 	data->insert(data->end(), audioSourcePortId->begin(),
 				 audioSourcePortId->end());
 	data->push_back(static_cast<unsigned char>(m_iAudioSourceChannelNumber));
+	delete portId;
+	delete audioSourcePortId;
 	return data;
 }
 

@@ -23,14 +23,15 @@ AudioRoutingWidget::AudioRoutingWidget(Device *device, QWidget *parent)
 		 font-size: 8pt; \
 	} \
 	QTableView::indicator{ \
-		color: #b1b1b1; \
+		border-radius: 7px; \
 		border: 0; \
 	} \
-	QTableView::indicator:checked{\
+	QTableView::indicator:enabled{ \
+		background-color: #c9c9c9; \
+	} \
+	QTableView::indicator:checked{ \
 		background-color: #a23232; \
-		border-radius: 7px; \
-		color: #010101; \
-	} ";
+	}";
 	ui->m_pTblRouting->setStyleSheet(style);
 	ui->m_pTblRouting->setFocusPolicy(Qt::NoFocus);
 	m_pRoutingTableModel = new RoutingTableModel();
@@ -191,7 +192,8 @@ void AudioRoutingWidget::loadHeaderStructure() {
 void AudioRoutingWidget::loadTableData() {
 	std::unique_ptr<GetAudioPatchbayParm> getAudioPatchdayParm =
 		std::make_unique<GetAudioPatchbayParm>(m_pDevice);
-	getAudioPatchdayParm->setDebug(true);
+	getAudioPatchdayParm->setDebug(false);
+	// Audio Channels
 	for (unsigned int i = 0; i < m_iNumberOfAudioPorts; i++) {
 		getAudioPatchdayParm->setPortId(i + 1);
 		std::shared_ptr<RetSetAudioPatchbayParm> retSetAudioPatchbayParm =
@@ -247,62 +249,108 @@ void AudioRoutingWidget::loadTableData() {
 	ui->m_pTblRouting->setModel(m_pRoutingTableModel);
 }
 
-bool AudioRoutingWidget::modelDataChanged(QModelIndex index,
+bool AudioRoutingWidget::modelDataChanged(__attribute__((unused))
+										  QModelIndex index,
 										  AudioPortChannelId source,
-										  AudioPortChannelId sink) {
-	AudioPortClass sourcePortClass = AudioPortClass((source / 100) % 10);
-	AudioPortId sourcePortId = (source / 100 - sourcePortClass) / 10;
-	AudioChannelId sourceChannelId = source % 100;
-	AudioPortClass sinkPortClass = AudioPortClass((sink / 100) % 10);
-	AudioPortId sinkPortId = (sink / 100 - sinkPortClass) / 10;
-	AudioChannelId sinkChannelId = sink % 100;
-	if ((sinkPortClass == AudioPortClass::PHYSICAL_PORT) &&
-		(sourcePortClass == AudioPortClass::PHYSICAL_PORT)) {
-		std::shared_ptr<
-			std::map<AudioPortChannelId, std::map<AudioPortChannelId, bool>>>
-			audioPatchbayConfiguration = std::make_shared<std::map<
-				AudioPortChannelId, std::map<AudioPortChannelId, bool>>>();
-		std::shared_ptr<AudioChannelStructure> ass =
-			m_pDevice->getAudioChannelStructure();
-		AudioDirectionChannels adc = ass->at(sinkPortId);
+										  AudioPortChannelId sink, bool value) {
+	std::shared_ptr<AudioRoutingChannel> sourceChannel =
+		decodeRoutingChannel(source);
+	std::shared_ptr<AudioRoutingChannel> sinkChannel =
+		decodeRoutingChannel(sink);
 
-		for (auto channel : adc.at(ChannelDirection::CD_OUTPUT)) {
-			std::map<AudioPortChannelId, bool> sourceChannels;
-			AudioChannelId channelId = channel.first;
-			AudioPortChannelId out = channelIndex(
-				sinkPortId, AudioPortClass::PHYSICAL_PORT, channelId);
-			bool connected = false;
-			for (int row = 0;
-				 row < m_pRoutingTableModel->rowCount(QModelIndex()); row++) {
-				AudioPortChannelId in =
-					m_pRoutingTableModel->getRowAudioPortChanneId(
-						static_cast<unsigned long>(row));
-				connected = m_pRoutingTableModel->getValue(out, in);
-				if (connected) {
-					sourceChannels[in] = true;
-					break;
-				}
-			}
-			if (!connected) {
-				sourceChannels[0] = false;
-			}
-			audioPatchbayConfiguration->insert(
-				std::pair<AudioPortChannelId,
-						  std::map<AudioPortChannelId, bool>>(out,
-															  sourceChannels));
-		}
-		std::unique_ptr<RetSetAudioPatchbayParm> retSetAudioPatchbayParm =
-			std::make_unique<RetSetAudioPatchbayParm>(m_pDevice);
-		retSetAudioPatchbayParm->setDebug(false);
-		retSetAudioPatchbayParm->setPortId(sinkPortId);
-		retSetAudioPatchbayParm->setCmdflags(SysExMessage::QUERY);
-		retSetAudioPatchbayParm->setAudioPatchbayConfiguration(
-			audioPatchbayConfiguration);
-		if (retSetAudioPatchbayParm->execute() == 0) {
-			loadTableData();
-			return true;
-		}
+	// If both audio port classes are physical ports, use
+	// RetSetAudioPatchbayParm
+	if ((sinkChannel->audioPortClass == AudioPortClass::PHYSICAL_PORT) &&
+		(sourceChannel->audioPortClass == AudioPortClass::PHYSICAL_PORT)) {
+		return modifyPhysicalPortConnection(sinkChannel);
+	} else if ((sinkChannel->audioPortClass == AudioPortClass::MIXER_PORT) &&
+			   (sourceChannel->audioPortClass ==
+				AudioPortClass::PHYSICAL_PORT)) {
+		return modifyMixerSinkConnection(sourceChannel, sink, value);
+	} else if ((sinkChannel->audioPortClass == AudioPortClass::PHYSICAL_PORT) &&
+			   (sourceChannel->audioPortClass == AudioPortClass::MIXER_PORT) &&
+			   (sourceChannel->audioPortId == sinkChannel->audioPortId)) {
+		return modifyMixerSourceConnection(source, sinkChannel, value);
+	}
+	return false;
+}
+
+bool AudioRoutingWidget::modifyMixerSinkConnection(
+	std::shared_ptr<AudioRoutingChannel> sourceChannel, AudioPortChannelId sink,
+	bool value) {
+	try {
+		std::shared_ptr<RetSetMixerInputParm> retSetMixerInputParm =
+			m_pDevice->getAudioMixerInputChannels()->at(sink);
+		retSetMixerInputParm->setDebug(true);
+		retSetMixerInputParm->setAudioSourcePortId(
+			value ? sourceChannel->audioPortId : 0);
+		retSetMixerInputParm->setAudioSourceChannelNumber(
+			value ? sourceChannel->auioChannelId : 0);
+		return (retSetMixerInputParm->execute() == 0);
+	} catch (...) {
 		return false;
+	}
+}
+
+bool AudioRoutingWidget::modifyMixerSourceConnection(
+	AudioPortChannelId source, std::shared_ptr<AudioRoutingChannel> sinkChannel,
+	bool value) {
+	try {
+		std::shared_ptr<RetSetMixerOutputParm> retSetMixerOutpuParm =
+			m_pDevice->getAudioMixerOutputChannels()->at(source);
+		retSetMixerOutpuParm->setDebug(true);
+		retSetMixerOutpuParm->changeMixerOutputAssignment(
+			sinkChannel->auioChannelId, value);
+		return (retSetMixerOutpuParm->execute() == 0);
+	} catch (...) {
+		return false;
+	}
+}
+
+bool AudioRoutingWidget::modifyPhysicalPortConnection(
+	std::shared_ptr<AudioRoutingChannel> sinkChannel) {
+	std::shared_ptr<
+		std::map<AudioPortChannelId, std::map<AudioPortChannelId, bool>>>
+		audioPatchbayConfiguration = std::make_shared<
+			std::map<AudioPortChannelId, std::map<AudioPortChannelId, bool>>>();
+	std::shared_ptr<AudioChannelStructure> ass =
+		m_pDevice->getAudioChannelStructure();
+	AudioDirectionChannels adc = ass->at(sinkChannel->audioPortId);
+
+	for (auto channel : adc.at(ChannelDirection::CD_OUTPUT)) {
+		std::map<AudioPortChannelId, bool> sourceChannels;
+		AudioChannelId channelId = channel.first;
+		AudioPortChannelId out = channelIndex(
+			sinkChannel->audioPortId, AudioPortClass::PHYSICAL_PORT, channelId);
+		bool connected = false;
+		for (int row = 0; row < m_pRoutingTableModel->rowCount(QModelIndex());
+			 row++) {
+			AudioPortChannelId in =
+				m_pRoutingTableModel->getRowAudioPortChanneId(
+					static_cast<unsigned long>(row));
+			connected = m_pRoutingTableModel->getValue(out, in);
+			if (connected) {
+				sourceChannels[in] = true;
+				break;
+			}
+		}
+		if (!connected) {
+			sourceChannels[0] = false;
+		}
+		audioPatchbayConfiguration->insert(
+			std::pair<AudioPortChannelId, std::map<AudioPortChannelId, bool>>(
+				out, sourceChannels));
+	}
+	std::unique_ptr<RetSetAudioPatchbayParm> retSetAudioPatchbayParm =
+		std::make_unique<RetSetAudioPatchbayParm>(m_pDevice);
+	retSetAudioPatchbayParm->setDebug(true);
+	retSetAudioPatchbayParm->setPortId(sinkChannel->audioPortId);
+	retSetAudioPatchbayParm->setCmdflags(SysExMessage::QUERY);
+	retSetAudioPatchbayParm->setAudioPatchbayConfiguration(
+		audioPatchbayConfiguration);
+	if (retSetAudioPatchbayParm->execute() == 0) {
+		loadTableData();
+		return true;
 	}
 	return false;
 }
@@ -360,9 +408,9 @@ QVariant RoutingTableModel::data(const QModelIndex &index, int role) const {
 		}
 		return QColor(r, g, b);
 	}
-	case Qt::ForegroundRole: {
+	/*case Qt::ForegroundRole: {
 		return QColor(200, 200, 255);
-	}
+	}*/
 	case HierarchicalHeaderView::HorizontalHeaderDataRole: {
 		QVariant v;
 		v.setValue(dynamic_cast<QObject *>(m_pHorizontalHeaderItemModel.get()));
@@ -379,6 +427,11 @@ QVariant RoutingTableModel::data(const QModelIndex &index, int role) const {
 
 Qt::ItemFlags RoutingTableModel::flags(__attribute__((unused))
 									   const QModelIndex &index) const {
+	AudioPortChannelId row = m_vRows[static_cast<unsigned long>(index.row())];
+	AudioPortChannelId column =
+		m_vColumns[static_cast<unsigned long>(index.column())];
+	if (!checkConnectionValid(row, column))
+		return Qt::ItemIsUserCheckable;
 	return Qt::ItemIsUserCheckable | Qt::ItemIsEnabled;
 }
 
@@ -389,11 +442,16 @@ bool RoutingTableModel::setData(const QModelIndex &index, const QVariant &value,
 			m_vRows[static_cast<unsigned long>(index.row())];
 		AudioPortChannelId column =
 			m_vColumns[static_cast<unsigned long>(index.column())];
+		if (!checkConnectionValid(row, column)) {
+			std::cout << "c: false" << std::endl;
+			return false;
+		}
+		std::cout << "c: true" << std::endl;
 		if (!value.toBool()) {
 			try {
 				m_MapTableData.at(column).erase(row);
 			} catch (__attribute__((unused)) const std::out_of_range &oor) {
-				std::cout << "false" << std::endl;
+				std::cout << "false 1" << std::endl;
 				return false;
 			}
 		} else {
@@ -411,17 +469,17 @@ bool RoutingTableModel::setData(const QModelIndex &index, const QVariant &value,
 				m_MapTableData[column] = s;
 			}
 		}
-		if (modelDataChanged(index, row, column)) {
+		if (modelDataChanged(index, row, column, value.toBool())) {
 			emit dataChanged(
 				createIndex(static_cast<int>(row), 0),
 				createIndex(static_cast<int>(row),
 							static_cast<int>(m_vColumns.size()) - 1),
 				QVector<int>({role}));
-			std::cout << "true" << std::endl;
+			std::cout << "true 1" << std::endl;
 			return true;
 		}
 	}
-	std::cout << "false" << std::endl;
+	std::cout << "false 2" << std::endl;
 	return false;
 }
 
@@ -434,4 +492,30 @@ void RoutingTableModel::eraseColumn(unsigned int column) {
 			// nothing to do if not already found
 		}
 	}
+}
+
+bool RoutingTableModel::checkConnectionValid(AudioPortChannelId source,
+											 AudioPortChannelId sink) const {
+	std::shared_ptr<AudioRoutingChannel> sourceChannel =
+		decodeRoutingChannel(source);
+	std::shared_ptr<AudioRoutingChannel> sinkChannel =
+		decodeRoutingChannel(sink);
+	if (sourceChannel->audioPortClass == AudioPortClass::PHYSICAL_PORT)
+		return true;
+	if ((sourceChannel->audioPortClass == AudioPortClass::MIXER_PORT) &&
+		(sinkChannel->audioPortClass == AudioPortClass::PHYSICAL_PORT) &&
+		(sourceChannel->audioPortId == sinkChannel->audioPortId))
+		return true;
+	return false;
+}
+
+std::shared_ptr<AudioRoutingChannel>
+decodeRoutingChannel(AudioPortChannelId audioPortChannelId) {
+	std::shared_ptr<AudioRoutingChannel> channel =
+		std::make_shared<AudioRoutingChannel>();
+	channel->audioPortClass = AudioPortClass((audioPortChannelId / 100) % 10);
+	channel->audioPortId =
+		(audioPortChannelId / 100 - channel->audioPortClass) / 10;
+	channel->auioChannelId = audioPortChannelId % 100;
+	return channel;
 }
