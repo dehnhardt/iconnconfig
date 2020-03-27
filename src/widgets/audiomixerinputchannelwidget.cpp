@@ -14,9 +14,8 @@
 AudioMixerInputChannelWidget::AudioMixerInputChannelWidget(
 	Device *device, unsigned int portId, unsigned int channelNumber,
 	ChannelDirection channelDirection, QWidget *parent)
-	: QFrame(parent), ui(new Ui::AudioChannelFeatureWidget), m_pDevice(device),
-	  m_iPortId(portId), m_iChannelNumber(channelNumber),
-	  m_channelDirection(channelDirection) {
+	: AudioMixerChannelWidget(device, portId, channelNumber, channelDirection,
+							  parent) {
 	ui->setupUi(this);
 	initControls();
 	QVBoxLayout *l =
@@ -45,7 +44,7 @@ AudioMixerInputChannelWidget::AudioMixerInputChannelWidget(
 }
 
 AudioMixerInputChannelWidget::AudioMixerInputChannelWidget(QWidget *parent)
-	: QFrame(parent), ui(new Ui::AudioChannelFeatureWidget) {
+	: AudioMixerChannelWidget(parent) {
 	ui->setupUi(this);
 }
 
@@ -69,14 +68,8 @@ void AudioMixerInputChannelWidget::setMixerInputControl(
 	ui->m_pTbPfl->setEnabled(m_pMixerInputControl->getSoloPFLControlEditable());
 	ui->m_pTbInvert->setEnabled(
 		m_pMixerInputControl->getInvertControlEditable());
-
-	if (m_pMixerInputControl->hasControls()) {
-		queryInputValues();
-		if (this->m_pretSetMixerInputControlValue)
-			setInputValues(this->m_pretSetMixerInputControlValue);
-		m_pUpdateTimer = new QTimer();
-		m_pUpdateTimer->setSingleShot(true);
-	}
+	channelInit = true;
+	refreshStatus();
 }
 
 void AudioMixerInputChannelWidget::createInputMenu() {
@@ -224,7 +217,7 @@ void AudioMixerInputChannelWidget::queryInputValues() {
 	// getMixerInputControlValue->setMixerInputNumber(1);
 
 	try {
-		m_pretSetMixerInputControlValue =
+		m_pRetSetMixerInputControlValue =
 			std::dynamic_pointer_cast<RetSetMixerInputControlValue>(
 				getMixerInputControlValue->querySmart());
 	} catch (ProtocolException protocolException) {
@@ -237,6 +230,12 @@ void AudioMixerInputChannelWidget::queryInputValues() {
 void AudioMixerInputChannelWidget::setInputValues(
 	std::shared_ptr<RetSetMixerInputControlValue>
 		retSetMixerInputControlValue) {
+	QString name =
+		"CN: " + QString::number(m_iChannelNumber) + " IN " +
+		QString::number(retSetMixerInputControlValue->getMixerInputNumber()) +
+		" ON: " +
+		QString::number(retSetMixerInputControlValue->getMixerOutputNumber());
+	this->ui->m_pLblChannelName->setText(name);
 	if (m_pMixerInputControl->hasVolumeControl() &&
 		retSetMixerInputControlValue->hasVolumeControl()) {
 		ui->m_pSlideVolume->setValue(retSetMixerInputControlValue->getVolume());
@@ -244,9 +243,9 @@ void AudioMixerInputChannelWidget::setInputValues(
 		if (m_pMixerInputControl->getVolumeControlEditable()) {
 			connect(this->ui->m_pSlideVolume, &PKSlider::valueChanged,
 					[=](int value) {
-						this->m_pretSetMixerInputControlValue->setVolume(value);
+						this->m_pRetSetMixerInputControlValue->setVolume(value);
 						this->m_pUpdateTimer->start(10);
-						emit this->volumeChanged(value);
+						emit volumeChanged(value);
 					});
 		}
 	}
@@ -257,9 +256,9 @@ void AudioMixerInputChannelWidget::setInputValues(
 		if (m_pMixerInputControl->getMuteControlEditable()) {
 			connect(this->ui->m_pTbMute, &QToolButton::toggled,
 					[=](bool state) {
-						this->m_pretSetMixerInputControlValue->setMute(state);
+						this->m_pRetSetMixerInputControlValue->setMute(state);
 						this->m_pUpdateTimer->start(10);
-						emit this->muteStatusChanged(state);
+						emit muteStatusChanged(state);
 					});
 		}
 	}
@@ -268,9 +267,9 @@ void AudioMixerInputChannelWidget::setInputValues(
 		retSetMixerInputControlValue->setHasSoloControl(false);
 		if (m_pMixerInputControl->getSoloControlEditable()) {
 			connect(ui->m_pTbSolo, &QToolButton::clicked, [=](bool state) {
-				this->m_pretSetMixerInputControlValue->setSolo(state);
+				this->m_pRetSetMixerInputControlValue->setSolo(state);
 				this->m_pUpdateTimer->start(10);
-				emit this->soloStatusChanged(state);
+				emit soloStatusChanged(state);
 			});
 		}
 	}
@@ -279,9 +278,9 @@ void AudioMixerInputChannelWidget::setInputValues(
 		retSetMixerInputControlValue->setHasSoloPFLControl(false);
 		if (m_pMixerInputControl->getSoloPFLControlEditable()) {
 			connect(ui->m_pTbPfl, &QToolButton::clicked, [=](bool state) {
-				this->m_pretSetMixerInputControlValue->setSoloPFL(state);
+				this->m_pRetSetMixerInputControlValue->setSoloPFL(state);
 				this->m_pUpdateTimer->start(10);
-				emit this->soloPFLStatusChanged(state);
+				emit soloPFLStatusChanged(state);
 			});
 		}
 	}
@@ -290,9 +289,9 @@ void AudioMixerInputChannelWidget::setInputValues(
 		retSetMixerInputControlValue->setHasInvertControl(false);
 		if (m_pMixerInputControl->getInvertControlEditable()) {
 			connect(ui->m_pTbInvert, &QToolButton::clicked, [=](bool state) {
-				this->m_pretSetMixerInputControlValue->setInvert(state);
+				this->m_pRetSetMixerInputControlValue->setInvert(state);
 				this->m_pUpdateTimer->start(10);
-				emit this->invertStatusChanged(state);
+				emit invertStatusChanged(state);
 			});
 		}
 	}
@@ -303,20 +302,39 @@ void AudioMixerInputChannelWidget::setInputValues(
 		if (m_pMixerInputControl->getStereoLinkControlEditable()) {
 			connect(ui->m_pChbStereoLink, &QToolButton::clicked,
 					[=](bool clicked) {
-						this->m_pretSetMixerInputControlValue->setSteroLink(
+						this->m_pRetSetMixerInputControlValue->setSteroLink(
 							clicked);
 						this->m_pUpdateTimer->start(10);
-						emit this->linkStatusChanged(m_iChannelNumber, clicked);
+						emit linkStatusChanged(m_iChannelNumber, clicked);
 					});
 		}
 	}
 }
 
-void AudioMixerInputChannelWidget::changeMeterVolume(unsigned int channel,
-													 int value) {
-	if (channel == m_iChannelNumber) {
-		ui->m_pPBLeft->setValue(value);
+void AudioMixerInputChannelWidget::changeLinkStatus(bool enabled) {}
+
+void AudioMixerInputChannelWidget::setMaster(bool isMaster,
+											 QString channel2Name) {
+	this->ui->m_pPBRight->setVisible(isMaster);
+	m_bIsMaster = isMaster;
+	/*if (isMaster) {
+		QString name =
+			this->m_pRetSetMixerInputControlValue->getChannelName().c_str();
+		name.append(" / ");
+		name.append(channel2Name);
+		ui->m_pLblChannelName->setText(name);
+	} else {
+		ui->m_pLblChannelName->setText(
+			this->m_pretSetMixerInputControlValue->getChannelName().c_str());
+	}*/
+}
+
+void AudioMixerInputChannelWidget::refreshStatus() {
+	if (m_pMixerInputControl->hasControls() && channelInit) {
+		queryInputValues();
+		if (this->m_pRetSetMixerInputControlValue)
+			setInputValues(this->m_pRetSetMixerInputControlValue);
+		m_pUpdateTimer = new QTimer();
+		m_pUpdateTimer->setSingleShot(true);
 	}
-	if (m_bIsMaster && channel == m_iChannelNumber + 1)
-		ui->m_pPBRight->setValue(value);
 }

@@ -62,6 +62,7 @@ SOURCES +=\
     src/sysex/sysexmessage.cpp \
     src/deviceselectiontablemodel.cpp \
     # src/widgets/portsettingwidget.cpp \
+    src/widgets/audiomixerchannelwidget.cpp \
     src/widgets/audiomixerinputchannelwidget.cpp \
     src/widgets/audiomixeroutputchannelwidget.cpp \
     src/widgets/controls/calc/calclog.cpp \
@@ -181,6 +182,7 @@ HEADERS  += \
     src/deviceselectiontablemodel.h \
     src/events/events.h \
     src/device.h \
+    src/widgets/audiomixerchannelwidget.h \
     src/widgets/audiomixerinputchannelwidget.h \
     src/widgets/audiomixeroutputchannelwidget.h \
     src/widgets/controls/calc/calclog.h \

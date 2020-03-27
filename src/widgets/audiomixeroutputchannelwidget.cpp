@@ -14,9 +14,8 @@
 AudioMixerOutputChannelWidget::AudioMixerOutputChannelWidget(
 	Device *device, unsigned int portId, unsigned int channelNumber,
 	ChannelDirection channelDirection, QWidget *parent)
-	: QFrame(parent), ui(new Ui::AudioChannelFeatureWidget), m_pDevice(device),
-	  m_iPortId(portId), m_iChannelNumber(channelNumber),
-	  m_channelDirection(channelDirection) {
+	: AudioMixerChannelWidget(device, portId, channelNumber, channelDirection,
+							  parent) {
 	ui->setupUi(this);
 	initControls();
 	QVBoxLayout *l =
@@ -45,7 +44,7 @@ AudioMixerOutputChannelWidget::AudioMixerOutputChannelWidget(
 }
 
 AudioMixerOutputChannelWidget::AudioMixerOutputChannelWidget(QWidget *parent)
-	: QFrame(parent), ui(new Ui::AudioChannelFeatureWidget) {
+	: AudioMixerChannelWidget(parent) {
 	ui->setupUi(this);
 }
 
@@ -78,6 +77,11 @@ void AudioMixerOutputChannelWidget::setMixerOutputControl(
 		m_pUpdateTimer->setSingleShot(true);*/
 	}
 }
+
+void AudioMixerOutputChannelWidget::setMaster(bool isMaster,
+											  QString channel2Name) {}
+
+void AudioMixerOutputChannelWidget::refreshStatus() {}
 
 void AudioMixerOutputChannelWidget::initControls() {
 	ui->m_pTbHighImpedance->setVisible(false);
@@ -236,6 +240,8 @@ void AudioMixerOutputChannelWidget::queryOutputValues() {
 		std::cerr << oor.what() << std::endl;
 	}*/
 }
+
+void AudioMixerOutputChannelWidget::changeLinkStatus(bool enabled) {}
 
 void AudioMixerOutputChannelWidget::changeOutput(
 	unsigned int audioSinkPortId, std::string audioSinkPortName,

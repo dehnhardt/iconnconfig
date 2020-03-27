@@ -10,7 +10,8 @@
 #include "audiochannelfeaturewidget.h"
 #include "controls/iconncalc.h"
 
-#include <QFrame>
+#include "audiomixerchannelwidget.h"
+
 #include <QMenu>
 #include <QObject>
 #include <QToolButton>
@@ -19,7 +20,7 @@ namespace Ui {
 class AudioChannelFeatureWidget;
 }
 
-class AudioMixerInputChannelWidget : public QFrame {
+class AudioMixerInputChannelWidget : public AudioMixerChannelWidget {
 	Q_OBJECT
 
   public:
@@ -29,34 +30,28 @@ class AudioMixerInputChannelWidget : public QFrame {
 										  QWidget *parent = nullptr);
 	explicit AudioMixerInputChannelWidget(QWidget *parent = nullptr);
 
-	~AudioMixerInputChannelWidget();
+	~AudioMixerInputChannelWidget() override;
 
 	void setMixerInputControl(
 		std::shared_ptr<RetMixerInputControl> retMixerInputControl);
 
-  public slots:
-	void changeMeterVolume(unsigned int channel, int value);
+	void setMaster(bool isMaster, QString channel2Name) override;
+	void refreshStatus() override;
 
   protected:
-	Ui::AudioChannelFeatureWidget *ui;
 	void initControls();
 
   private:
 	QToolButton *m_pBtnSelectConnection = nullptr;
 	QMenu *m_pConnectionMenu = nullptr;
-	Device *m_pDevice = nullptr;
 	std::shared_ptr<ScaleCalc> m_pChannelCalc = nullptr;
 	QTimer *m_pUpdateTimer = nullptr;
 
-	unsigned int m_iPortId = 0;
-	unsigned int m_iChannelNumber = 0;
-	bool m_bIsMaster = false;
-	ChannelDirection m_channelDirection = ChannelDirection::CD_NONE;
 	std::shared_ptr<RetSetMixerInputParm> m_pMixerInputParm = nullptr;
 	std::shared_ptr<RetMixerInputControl> m_pMixerInputControl = nullptr;
 
 	std::shared_ptr<RetSetMixerInputControlValue>
-		m_pretSetMixerInputControlValue = nullptr;
+		m_pRetSetMixerInputControlValue = nullptr;
 
   private: // methods
 	void createInputMenu();
@@ -72,20 +67,12 @@ class AudioMixerInputChannelWidget : public QFrame {
 	void setInputValues(std::shared_ptr<RetSetMixerInputControlValue>
 							retSetMixerInputControlValue);
   private slots:
+	virtual void changeLinkStatus(bool enabled) override;
 	void changeInput(unsigned int audioSourcePortId,
 					 std::string audioSourcePortName,
 					 unsigned int audioSourceChannelNumber,
 					 std::string audioSourceChannelName,
 					 AudioPortType audioPortType);
-
-  signals:
-	void linkStatusChanged(unsigned int m_iChannelNumber, bool status);
-	void soloStatusChanged(bool status);
-	void soloPFLStatusChanged(bool status);
-	void invertStatusChanged(bool status);
-	void muteStatusChanged(bool status);
-	void volumeChanged(int volume);
-	void panChanged(int trim);
 };
 
 #endif // AUDIOMIXERINPUTCHANNELWIDGET_H

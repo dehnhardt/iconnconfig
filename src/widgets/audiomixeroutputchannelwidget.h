@@ -8,6 +8,7 @@
 #include "../sysex/retsetmixeroutputparm.h"
 
 #include "audiochannelfeaturewidget.h"
+#include "audiomixerchannelwidget.h"
 #include "controls/iconncalc.h"
 
 #include <QFrame>
@@ -19,7 +20,7 @@ namespace Ui {
 class AudioChannelFeatureWidget;
 }
 
-class AudioMixerOutputChannelWidget : public QFrame {
+class AudioMixerOutputChannelWidget : public AudioMixerChannelWidget {
 	Q_OBJECT
 
   public:
@@ -29,29 +30,26 @@ class AudioMixerOutputChannelWidget : public QFrame {
 										   QWidget *parent = nullptr);
 	explicit AudioMixerOutputChannelWidget(QWidget *parent = nullptr);
 
-	~AudioMixerOutputChannelWidget();
+	~AudioMixerOutputChannelWidget() override;
 
 	void setMixerOutputControl(
 		std::shared_ptr<RetMixerOutputControl> retMixerOutputControl);
+
+	void setMaster(bool isMaster, QString channel2Name) override;
+	void refreshStatus() override;
 
   public slots:
 	void changeMeterVolume(unsigned int channel, int value);
 
   protected:
-	Ui::AudioChannelFeatureWidget *ui;
 	void initControls();
 
   private:
 	QToolButton *m_pBtnSelectConnection = nullptr;
 	QMenu *m_pConnectionMenu = nullptr;
-	Device *m_pDevice = nullptr;
 	std::shared_ptr<ScaleCalc> m_pChannelCalc = nullptr;
 	QTimer *m_pUpdateTimer = nullptr;
 
-	unsigned int m_iPortId = 0;
-	unsigned int m_iChannelNumber = 0;
-	bool m_bIsMaster = false;
-	ChannelDirection m_channelDirection = ChannelDirection::CD_NONE;
 	std::shared_ptr<RetSetMixerOutputParm> m_pMixerOutputParm = nullptr;
 	std::shared_ptr<RetMixerOutputControl> m_pMixerOutputControl = nullptr;
 
@@ -69,19 +67,12 @@ class AudioMixerOutputChannelWidget : public QFrame {
 
 	void queryOutputValues();
   private slots:
+	virtual void changeLinkStatus(bool enabled) override;
 	void changeOutput(unsigned int audioSourcePortId,
 					  std::string audioSourcePortName,
 					  unsigned int audioSourceChannelNumber,
 					  std::string audioSourceChannelName,
 					  AudioPortType audioPortType);
-  signals:
-	void linkStatusChanged(unsigned int m_iChannelNumber, bool status);
-	void soloStatusChanged(bool status);
-	void soloPFLStatusChanged(bool status);
-	void invertStatusChanged(bool status);
-	void muteStatusChanged(bool status);
-	void volumeChanged(int volume);
-	void panChanged(int trim);
 };
 
 #endif // AUDIOMIXEROUTPUTCHANNELWIDGET_H
