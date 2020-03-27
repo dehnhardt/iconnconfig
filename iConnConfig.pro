@@ -62,6 +62,8 @@ SOURCES +=\
     src/sysex/sysexmessage.cpp \
     src/deviceselectiontablemodel.cpp \
     # src/widgets/portsettingwidget.cpp \
+    src/widgets/audiomixerinputchannelwidget.cpp \
+    src/widgets/audiomixeroutputchannelwidget.cpp \
     src/widgets/controls/calc/calclog.cpp \
     src/widgets/controls/calc/dbcalc.cpp \
     src/widgets/controls/calc/scalecalc.cpp \
@@ -152,7 +154,6 @@ SOURCES +=\
     src/widgets/mixerportwidget.cpp \
     src/sysex/retsetmixerinputparm.cpp \
     src/sysex/getmixerinputparm.cpp \
-    src/widgets/audiomixerchannelwidget.cpp \
     src/widgets/views/hierarchicalheaderview.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
@@ -180,6 +181,8 @@ HEADERS  += \
     src/deviceselectiontablemodel.h \
     src/events/events.h \
     src/device.h \
+    src/widgets/audiomixerinputchannelwidget.h \
+    src/widgets/audiomixeroutputchannelwidget.h \
     src/widgets/controls/calc/calclog.h \
     src/widgets/controls/calc/dbcalc.h \
     src/widgets/controls/calc/scalecalc.h \
@@ -273,7 +276,6 @@ HEADERS  += \
     src/widgets/mixerportwidget.h \
     src/sysex/retsetmixerinputparm.h \
     src/sysex/getmixerinputparm.h \
-    src/widgets/audiomixerchannelwidget.h \
     src/widgets/views/hierarchicalheaderview.h
 
 FORMS    += \

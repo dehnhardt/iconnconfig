@@ -285,7 +285,7 @@
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="m_pTrimPanLabel">
         <property name="geometry">
          <rect>
           <x>10</x>

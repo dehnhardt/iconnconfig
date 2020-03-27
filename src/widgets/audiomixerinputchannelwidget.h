@@ -1,5 +1,5 @@
-#ifndef AUDIOMIXERCHANNEL_H
-#define AUDIOMIXERCHANNEL_H
+#ifndef AUDIOMIXERINPUTCHANNELWIDGET_H
+#define AUDIOMIXERINPUTCHANNELWIDGET_H
 
 #include "../sysex/retmixerinputcontrol.h"
 #include "../sysex/retmixeroutputcontrol.h"
@@ -19,22 +19,20 @@ namespace Ui {
 class AudioChannelFeatureWidget;
 }
 
-class AudioMixerChannelWidget : public QFrame {
+class AudioMixerInputChannelWidget : public QFrame {
 	Q_OBJECT
 
   public:
-	explicit AudioMixerChannelWidget(Device *device, unsigned int portId,
-									 unsigned int channelNumber,
-									 ChannelDirection channelDirection,
-									 QWidget *parent = nullptr);
-	explicit AudioMixerChannelWidget(QWidget *parent = nullptr);
+	explicit AudioMixerInputChannelWidget(Device *device, unsigned int portId,
+										  unsigned int channelNumber,
+										  ChannelDirection channelDirection,
+										  QWidget *parent = nullptr);
+	explicit AudioMixerInputChannelWidget(QWidget *parent = nullptr);
 
-	~AudioMixerChannelWidget();
+	~AudioMixerInputChannelWidget();
 
 	void setMixerInputControl(
 		std::shared_ptr<RetMixerInputControl> retMixerInputControl);
-	void setMixerOutputControl(
-		std::shared_ptr<RetMixerOutputControl> retMixerOutputControl);
 
   public slots:
 	void changeMeterVolume(unsigned int channel, int value);
@@ -55,14 +53,10 @@ class AudioMixerChannelWidget : public QFrame {
 	bool m_bIsMaster = false;
 	ChannelDirection m_channelDirection = ChannelDirection::CD_NONE;
 	std::shared_ptr<RetSetMixerInputParm> m_pMixerInputParm = nullptr;
-	std::shared_ptr<RetSetMixerOutputParm> m_pMixerOutputParm = nullptr;
 	std::shared_ptr<RetMixerInputControl> m_pMixerInputControl = nullptr;
-	std::shared_ptr<RetMixerOutputControl> m_pMixerOutputControl = nullptr;
 
 	std::shared_ptr<RetSetMixerInputControlValue>
 		m_pretSetMixerInputControlValue = nullptr;
-	/*	std::shared_ptr<RetSetMixerOutputControlValue>
-			m_pretSetMixerOutputControlValue = nullptr;*/
 
   private: // methods
 	void createInputMenu();
@@ -74,16 +68,7 @@ class AudioMixerChannelWidget : public QFrame {
 					  std::string audioSourceChannelName,
 					  AudioPortType audioPortType);
 
-	void createOutputMenu();
-	void setOutput(std::vector<unsigned int> audioSinkChannelNumbers);
-	void setOutputName(unsigned int audioSourcePortId,
-					   std::string audioSourcePortName,
-					   unsigned int audioSourceChannelNumber,
-					   std::string audioSourceChannelName,
-					   AudioPortType audioPortType);
-
 	void queryInputValues();
-	void queryOutputValues();
 	void setInputValues(std::shared_ptr<RetSetMixerInputControlValue>
 							retSetMixerInputControlValue);
   private slots:
@@ -93,11 +78,6 @@ class AudioMixerChannelWidget : public QFrame {
 					 std::string audioSourceChannelName,
 					 AudioPortType audioPortType);
 
-	void changeOutput(unsigned int audioSourcePortId,
-					  std::string audioSourcePortName,
-					  unsigned int audioSourceChannelNumber,
-					  std::string audioSourceChannelName,
-					  AudioPortType audioPortType);
   signals:
 	void linkStatusChanged(unsigned int m_iChannelNumber, bool status);
 	void soloStatusChanged(bool status);
@@ -108,4 +88,4 @@ class AudioMixerChannelWidget : public QFrame {
 	void panChanged(int trim);
 };
 
-#endif // AUDIOMIXERCHANNEL_H
+#endif // AUDIOMIXERINPUTCHANNELWIDGET_H

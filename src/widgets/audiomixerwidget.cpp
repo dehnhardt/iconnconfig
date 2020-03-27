@@ -10,7 +10,8 @@
 #include "../sysex/retsetaudioglobalparm.h"
 #include "../sysex/retsetaudiopatchbayparm.h"
 #include "../sysex/retsetmixerparm.h"
-#include "audiomixerchannelwidget.h"
+#include "audiomixerinputchannelwidget.h"
+#include "audiomixeroutputchannelwidget.h"
 #include "centralwidget.h"
 #include "mixerportwidget.h"
 
@@ -122,11 +123,12 @@ void AudioMixerWidget::mixerConfigurationChanged(
 				std::dynamic_pointer_cast<RetMixerInputControl>(
 					getInputControl->querySmart());
 			for (unsigned int i = 1; i <= mb.numberOfMixerInputs; i++) {
-				AudioMixerChannelWidget *amcw = new AudioMixerChannelWidget(
-					m_pDevice, portId, i, ChannelDirection::CD_INPUT);
+				AudioMixerInputChannelWidget *amcw =
+					new AudioMixerInputChannelWidget(
+						m_pDevice, portId, i, ChannelDirection::CD_INPUT);
 				amcw->setMixerInputControl(retMixerInputControl);
 				connect(mpw, &MixerPortWidget::inMeterValueChanged, amcw,
-						&AudioMixerChannelWidget::changeMeterVolume);
+						&AudioMixerInputChannelWidget::changeMeterVolume);
 				mpw->addMixerPanel(amcw, i);
 			}
 		}
@@ -139,11 +141,12 @@ void AudioMixerWidget::mixerConfigurationChanged(
 				std::dynamic_pointer_cast<RetMixerOutputControl>(
 					getOutputControl->querySmart());
 			for (unsigned int i = 1; i <= mb.numberOfMixerOutputs; i++) {
-				AudioMixerChannelWidget *amcw = new AudioMixerChannelWidget(
-					m_pDevice, portId, i, ChannelDirection::CD_OUTPUT);
+				AudioMixerOutputChannelWidget *amcw =
+					new AudioMixerOutputChannelWidget(
+						m_pDevice, portId, i, ChannelDirection::CD_OUTPUT);
 				amcw->setMixerOutputControl(retMixerOutputControl);
 				connect(mpw, &MixerPortWidget::outMeterValueChanged, amcw,
-						&AudioMixerChannelWidget::changeMeterVolume);
+						&AudioMixerOutputChannelWidget::changeMeterVolume);
 				mpw->addMixerPanel(amcw, i);
 			}
 			mpw->addStretch();
