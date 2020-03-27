@@ -283,7 +283,6 @@ void AudioChannelFeatureWidget::changeMuteStatus(bool enabled) {
 }
 
 void AudioChannelFeatureWidget::changeVolume(int volume) {
-	std::cout << "Volume: " << volume << std::endl;
 	this->ui->m_pSlideVolume->setValue(volume);
 }
 
