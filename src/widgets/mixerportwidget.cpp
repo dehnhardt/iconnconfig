@@ -9,17 +9,23 @@ MixerPortWidget::MixerPortWidget(unsigned int portId, Device *device,
 	m_pGetMixerMeterValue = std::make_unique<GetMixerMeterValue>(m_pDevice);
 	m_pGetMixerMeterValue->setPortId(portId);
 	this->m_pVolumeTimer = new QTimer();
-	// m_pVolumeTimer->setSingleShot(true);
 	connect(m_pVolumeTimer, &QTimer::timeout, this,
 			&MixerPortWidget::timerElapsed);
 }
 
 void MixerPortWidget::setName(QString name) { m_pPortNameLabel->setText(name); }
 
-void MixerPortWidget::addMixerPanel(QWidget *mixerPanel,
+void MixerPortWidget::addMixerPanel(AudioMixerChannelWidget *mixerPanel,
+									ChannelDirection portDirection,
 									unsigned int mixerChannelNumber) {
-	m_MapAttachedChannels[mixerChannelNumber] = mixerPanel;
+	if (portDirection == ChannelDirection::CD_INPUT) {
+		m_MapAttachedInputChannels[mixerChannelNumber] = mixerPanel;
+	} else if (portDirection == ChannelDirection::CD_OUTPUT) {
+		m_MapAttachedOutputChannels[mixerChannelNumber] = mixerPanel;
+	}
 	m_pMixerPanelLayout->addWidget(mixerPanel);
+	connect(mixerPanel, &AudioMixerChannelWidget::linkStatusChanged, this,
+			&MixerPortWidget::linkStatusChanged);
 }
 
 void MixerPortWidget::setNumberOfInputChannels(
@@ -61,9 +67,6 @@ void MixerPortWidget::getVolumes() {
 }
 
 void MixerPortWidget::timerElapsed() {
-	/*++m_iCurrentMeterQuery;
-	if (m_iCurrentMeterQuery > m_INumberOfOutputChannels)
-		m_iCurrentMeterQuery = 1;*/
 	for (unsigned int i = 1; i <= m_INumberOfOutputChannels; i++) {
 		m_pGetMixerMeterValue->setOutputNumber(i);
 		std::shared_ptr<RetMixerMeterValue> rapmv =
@@ -86,6 +89,9 @@ void MixerPortWidget::timerElapsed() {
 
 void MixerPortWidget::showEvent(QShowEvent *event) {
 	std::cout << "start" << std::endl;
+	for (auto widget : m_MapAttachedInputChannels) {
+		widget.second->refreshStatus();
+	}
 	m_pVolumeTimer->start(20);
 	QWidget::showEvent(event);
 }
@@ -94,4 +100,55 @@ void MixerPortWidget::hideEvent(QHideEvent *event) {
 	std::cout << "stop" << std::endl;
 	m_pVolumeTimer->stop();
 	QWidget::hideEvent(event);
+}
+
+void MixerPortWidget::linkStatusChanged(AudioChannelId mixerChannelId,
+										ChannelDirection channelDirection,
+										bool status) {
+	AudioMixerChannelWidget *master = nullptr;
+	AudioMixerChannelWidget *slave = nullptr;
+	if (mixerChannelId < 1)
+		return;
+	if (mixerChannelId % 2) {
+		if (channelDirection == ChannelDirection::CD_INPUT) {
+			master = this->m_MapAttachedInputChannels[mixerChannelId];
+			slave = this->m_MapAttachedInputChannels[mixerChannelId + 1];
+		}
+		master->changeLinkStatus(status);
+	} else {
+		if (channelDirection == ChannelDirection::CD_INPUT) {
+			master = this->m_MapAttachedInputChannels[mixerChannelId];
+			slave = this->m_MapAttachedInputChannels[mixerChannelId - 1];
+		}
+		slave->changeLinkStatus(status);
+	}
+	master->setMaster(status, slave->getChannelName());
+	slave->setVisible(!status);
+	if (status) {
+		connect(master, &AudioMixerChannelWidget::volumeChanged, slave,
+				&AudioMixerChannelWidget::changeVolume);
+		/*connect(master, &AudioMixerChannelWidget::panChanged, slave,
+				&AudioMixerChannelWidget::changePan);*/
+		connect(master, &AudioMixerChannelWidget::soloStatusChanged, slave,
+				&AudioMixerChannelWidget::changeSoloStatus);
+		connect(master, &AudioMixerChannelWidget::soloPFLStatusChanged, slave,
+				&AudioMixerChannelWidget::changePFLStatus);
+		connect(master, &AudioMixerChannelWidget::invertStatusChanged, slave,
+				&AudioMixerChannelWidget::changeInvertStatus);
+		connect(master, &AudioMixerChannelWidget::muteStatusChanged, slave,
+				&AudioMixerChannelWidget::changeMuteStatus);
+	} else {
+		disconnect(master, &AudioMixerChannelWidget::volumeChanged, slave,
+				   &AudioMixerChannelWidget::changeVolume);
+		/*disconnect(master, &AudioMixerChannelWidget::panChanged, slave,
+				   &AudioMixerChannelWidget::changePan);*/
+		disconnect(master, &AudioMixerChannelWidget::soloStatusChanged, slave,
+				   &AudioMixerChannelWidget::changeSoloStatus);
+		disconnect(master, &AudioMixerChannelWidget::soloPFLStatusChanged,
+				   slave, &AudioMixerChannelWidget::changePFLStatus);
+		disconnect(master, &AudioMixerChannelWidget::invertStatusChanged, slave,
+				   &AudioMixerChannelWidget::changeInvertStatus);
+		disconnect(master, &AudioMixerChannelWidget::muteStatusChanged, slave,
+				   &AudioMixerChannelWidget::changeMuteStatus);
+	}
 }

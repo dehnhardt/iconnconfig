@@ -123,16 +123,26 @@ void RetSetMixerInputControlValue::parseExistFlags(unsigned char exist_flags) {
 	m_bHasVolumeControl = (exist_flags & 1);
 }
 
+unsigned char RetSetMixerInputControlValue::getMixerInputNumber() const {
+	return m_iMixerInputNumber;
+}
+
+unsigned char RetSetMixerInputControlValue::getMixerOutputNumber() const {
+	return m_iMixerOutputNumber;
+}
+
 bool RetSetMixerInputControlValue::getInvert() const { return m_bInvert; }
 
 void RetSetMixerInputControlValue::setInvert(bool bInvert) {
 	m_bInvert = bInvert;
+	m_bHasInvertControl = true;
 }
 
 bool RetSetMixerInputControlValue::getSoloPFL() const { return m_bSoloPFL; }
 
 void RetSetMixerInputControlValue::setSoloPFL(bool bSoloPFL) {
 	m_bSoloPFL = bSoloPFL;
+	m_bHasSoloPFLControl = true;
 }
 
 bool RetSetMixerInputControlValue::hasSoloPFLControl() const {
@@ -167,6 +177,13 @@ void RetSetMixerInputControlValue::setVolume(int iVolume) {
 	m_bHasVolumeControl = true;
 }
 
+int RetSetMixerInputControlValue::getPan() const { return m_iPan; }
+
+void RetSetMixerInputControlValue::setPan(int pan) {
+	m_iPan = pan;
+	m_bHasPanControl = true;
+}
+
 bool RetSetMixerInputControlValue::getMute() const { return m_bMute; }
 
 void RetSetMixerInputControlValue::setMute(bool bMute) {
@@ -183,7 +200,10 @@ void RetSetMixerInputControlValue::setSteroLink(bool bSteroLink) {
 
 bool RetSetMixerInputControlValue::getSolo() const { return m_bSolo; }
 
-void RetSetMixerInputControlValue::setSolo(bool solo) { m_bSolo = solo; }
+void RetSetMixerInputControlValue::setSolo(bool solo) {
+	m_bSolo = solo;
+	m_bHasSoloControl = true;
+}
 
 bool RetSetMixerInputControlValue::hasVolumeControl() const {
 	return m_bHasVolumeControl;

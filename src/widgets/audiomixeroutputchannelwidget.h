@@ -67,6 +67,7 @@ class AudioMixerOutputChannelWidget : public AudioMixerChannelWidget {
 
 	void queryOutputValues();
   private slots:
+	void audioChannelValueChanged() override;
 	virtual void changeLinkStatus(bool enabled) override;
 	void changeOutput(unsigned int audioSourcePortId,
 					  std::string audioSourcePortName,

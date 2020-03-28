@@ -3,6 +3,7 @@
 
 #include "../device.h"
 #include "../sysex/getmixermetervalue.h"
+#include "audiomixerchannelwidget.h"
 
 #include <QHBoxLayout>
 #include <QLabel>
@@ -16,7 +17,9 @@ class MixerPortWidget : public QWidget {
 	explicit MixerPortWidget(unsigned int m_iPortId, Device *device,
 							 QWidget *parent = nullptr);
 	void setName(QString name);
-	void addMixerPanel(QWidget *mixerPanel, unsigned int mixerChannelNumber);
+	void addMixerPanel(AudioMixerChannelWidget *mixerPanel,
+					   ChannelDirection portDirection,
+					   unsigned int mixerChannelNumber);
 	void addStretch() { m_pMixerPanelLayout->addStretch(); }
 
 	void setNumberOfInputChannels(unsigned int iNumberOfInputChannels);
@@ -31,7 +34,10 @@ class MixerPortWidget : public QWidget {
 	unsigned int m_iPortId = 0;
 	unsigned int m_iXNumber = 0;
 	std::unique_ptr<GetMixerMeterValue> m_pGetMixerMeterValue = nullptr;
-	std::map<unsigned int, QWidget *> m_MapAttachedChannels;
+	std::map<unsigned int, AudioMixerChannelWidget *>
+		m_MapAttachedInputChannels;
+	std::map<unsigned int, AudioMixerChannelWidget *>
+		m_MapAttachedOutputChannels;
 	unsigned int m_iNumberOfInputChannels = 0;
 	unsigned int m_INumberOfOutputChannels = 0;
 	unsigned int m_iCurrentMeterQuery = 0;
@@ -47,6 +53,10 @@ class MixerPortWidget : public QWidget {
   protected:
 	void showEvent(QShowEvent *event) override;
 	void hideEvent(QHideEvent *event) override;
+
+  public slots:
+	void linkStatusChanged(AudioChannelId mixerChannelId,
+						   ChannelDirection channelDirection, bool status);
 
   signals:
 	void inMeterValueChanged(int channel, int value);

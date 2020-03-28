@@ -3,6 +3,7 @@
 
 #include <QFrame>
 #include <QObject>
+#include <QTimer>
 
 #include "../device.h"
 
@@ -22,26 +23,32 @@ class AudioMixerChannelWidget : public QFrame {
 
 	virtual void setMaster(bool isMaster, QString channel2Name) = 0;
 	virtual void refreshStatus() = 0;
+	virtual QString getChannelName();
 
   protected:
 	Ui::AudioChannelFeatureWidget *ui;
+	QTimer *m_pUpdateTimer = nullptr;
 	ChannelDirection m_channelDirection = ChannelDirection::CD_NONE;
 	Device *m_pDevice = nullptr;
 	bool channelInit = false;
-	unsigned int m_iPortId = 0;
-	unsigned int m_iChannelNumber = 0;
+	AudioPortId m_iPortId = 0;
+	AudioChannelId m_iMixerChannelId = 0;
 	bool m_bIsMaster = false;
 
 	void initControls();
 
   signals:
-	void linkStatusChanged(unsigned int m_iChannelNumber, bool status);
+	void linkStatusChanged(AudioChannelId m_iMixerChannelId,
+						   ChannelDirection portDirection, bool status);
 	void soloStatusChanged(bool status);
 	void soloPFLStatusChanged(bool status);
 	void invertStatusChanged(bool status);
 	void muteStatusChanged(bool status);
 	void volumeChanged(int volume);
 	void panChanged(int trim);
+
+  private slots:
+	virtual void audioChannelValueChanged() = 0;
 
   public slots:
 	virtual void changeLinkStatus(bool enabled) = 0;

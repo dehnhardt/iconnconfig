@@ -6,14 +6,26 @@ AudioMixerChannelWidget::AudioMixerChannelWidget(
 	ChannelDirection channelDirection, QWidget *parent)
 	: QFrame(parent), ui(new Ui::AudioChannelFeatureWidget),
 	  m_channelDirection(channelDirection), m_pDevice(device),
-	  m_iPortId(portId), m_iChannelNumber(channelNumber) {}
+	  m_iPortId(portId), m_iMixerChannelId(channelNumber) {
+	m_pUpdateTimer = new QTimer();
+	m_pUpdateTimer->setInterval(10);
+	m_pUpdateTimer->setSingleShot(true);
+	connect(m_pUpdateTimer, &QTimer::timeout, this,
+			&AudioMixerChannelWidget::audioChannelValueChanged);
+}
 
 AudioMixerChannelWidget::AudioMixerChannelWidget(QWidget *parent)
 	: QFrame(parent), ui(new Ui::AudioChannelFeatureWidget) {}
 
 AudioMixerChannelWidget::~AudioMixerChannelWidget() {}
 
+QString AudioMixerChannelWidget::getChannelName() {
+	return QString::number(m_iMixerChannelId);
+}
+
 void AudioMixerChannelWidget::initControls() {
+
+	ui->m_pDialTrim->setVisible(false);
 	ui->m_pTbHighImpedance->setVisible(false);
 	ui->m_pTbPhantomPower->setVisible(false);
 	ui->m_pTbMute->setVisible(false);
@@ -59,9 +71,9 @@ void AudioMixerChannelWidget::changePan(int pan) {
 
 void AudioMixerChannelWidget::changeMeterVolume(unsigned int channel,
 												int value) {
-	if (channel == m_iChannelNumber) {
+	if (channel == m_iMixerChannelId) {
 		ui->m_pPBLeft->setValue(value);
 	}
-	if (m_bIsMaster && channel == m_iChannelNumber + 1)
+	if (m_bIsMaster && channel == m_iMixerChannelId + 1)
 		ui->m_pPBRight->setValue(value);
 }

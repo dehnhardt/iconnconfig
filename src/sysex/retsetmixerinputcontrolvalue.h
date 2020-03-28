@@ -41,6 +41,7 @@ class RetSetMixerInputControlValue : public PortSysExMessage {
 	bool hasInvertControl() const;
 	void setHasInvertControl(bool bHasInvertControl);
 
+	// value getter / setter
 	bool getSteroLink() const;
 	void setSteroLink(bool getSteroLink);
 
@@ -58,6 +59,13 @@ class RetSetMixerInputControlValue : public PortSysExMessage {
 
 	int getVolume() const;
 	void setVolume(int getVolume);
+
+	int getPan() const;
+	void setPan(int pan);
+
+	unsigned char getMixerOutputNumber() const;
+
+	unsigned char getMixerInputNumber() const;
 
   private:
 	void parseExistFlags(unsigned char exist_flags);

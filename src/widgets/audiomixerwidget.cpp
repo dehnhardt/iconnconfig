@@ -129,7 +129,7 @@ void AudioMixerWidget::mixerConfigurationChanged(
 				amcw->setMixerInputControl(retMixerInputControl);
 				connect(mpw, &MixerPortWidget::inMeterValueChanged, amcw,
 						&AudioMixerInputChannelWidget::changeMeterVolume);
-				mpw->addMixerPanel(amcw, i);
+				mpw->addMixerPanel(amcw, ChannelDirection::CD_INPUT, i);
 			}
 		}
 		if (mb.numberOfMixerOutputs > 0) {
@@ -147,7 +147,7 @@ void AudioMixerWidget::mixerConfigurationChanged(
 				amcw->setMixerOutputControl(retMixerOutputControl);
 				connect(mpw, &MixerPortWidget::outMeterValueChanged, amcw,
 						&AudioMixerOutputChannelWidget::changeMeterVolume);
-				mpw->addMixerPanel(amcw, i);
+				mpw->addMixerPanel(amcw, ChannelDirection::CD_OUTPUT, i);
 			}
 			mpw->addStretch();
 		}

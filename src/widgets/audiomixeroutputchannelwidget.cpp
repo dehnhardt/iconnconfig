@@ -23,7 +23,7 @@ AudioMixerOutputChannelWidget::AudioMixerOutputChannelWidget(
 	std::unique_ptr<GetMixerOutputParm> getMixerOutputParm =
 		std::make_unique<GetMixerOutputParm>(device);
 	getMixerOutputParm->setPortId(m_iPortId);
-	getMixerOutputParm->setMixerOutputNumber(m_iChannelNumber);
+	getMixerOutputParm->setMixerOutputNumber(m_iMixerChannelId);
 	m_pMixerOutputParm = std::dynamic_pointer_cast<RetSetMixerOutputParm>(
 		getMixerOutputParm->querySmart());
 	ui->m_pLblChannelName->setText(m_pMixerOutputParm->getMixerName().c_str());
@@ -241,6 +241,8 @@ void AudioMixerOutputChannelWidget::queryOutputValues() {
 	}*/
 }
 
+void AudioMixerOutputChannelWidget::audioChannelValueChanged() {}
+
 void AudioMixerOutputChannelWidget::changeLinkStatus(bool enabled) {}
 
 void AudioMixerOutputChannelWidget::changeOutput(
@@ -253,9 +255,9 @@ void AudioMixerOutputChannelWidget::changeOutput(
 
 void AudioMixerOutputChannelWidget::changeMeterVolume(unsigned int channel,
 													  int value) {
-	if (channel == m_iChannelNumber) {
+	if (channel == m_iMixerChannelId) {
 		ui->m_pPBLeft->setValue(value);
 	}
-	if (m_bIsMaster && channel == m_iChannelNumber + 1)
+	if (m_bIsMaster && channel == m_iMixerChannelId + 1)
 		ui->m_pPBRight->setValue(value);
 }

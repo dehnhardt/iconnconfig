@@ -36,22 +36,22 @@ class AudioMixerInputChannelWidget : public AudioMixerChannelWidget {
 		std::shared_ptr<RetMixerInputControl> retMixerInputControl);
 
 	void setMaster(bool isMaster, QString channel2Name) override;
+	void refreshInput();
 	void refreshStatus() override;
-
-  protected:
-	void initControls();
 
   private:
 	QToolButton *m_pBtnSelectConnection = nullptr;
 	QMenu *m_pConnectionMenu = nullptr;
 	std::shared_ptr<ScaleCalc> m_pChannelCalc = nullptr;
-	QTimer *m_pUpdateTimer = nullptr;
 
 	std::shared_ptr<RetSetMixerInputParm> m_pMixerInputParm = nullptr;
 	std::shared_ptr<RetMixerInputControl> m_pMixerInputControl = nullptr;
 
 	std::shared_ptr<RetSetMixerInputControlValue>
 		m_pRetSetMixerInputControlValue = nullptr;
+
+	AudioPortId m_iSourcePortId = 0;
+	AudioChannelId m_iSourceChannelId = 0;
 
   private: // methods
 	void createInputMenu();
@@ -66,7 +66,9 @@ class AudioMixerInputChannelWidget : public AudioMixerChannelWidget {
 	void queryInputValues();
 	void setInputValues(std::shared_ptr<RetSetMixerInputControlValue>
 							retSetMixerInputControlValue);
+
   private slots:
+	void audioChannelValueChanged() override;
 	virtual void changeLinkStatus(bool enabled) override;
 	void changeInput(unsigned int audioSourcePortId,
 					 std::string audioSourcePortName,
