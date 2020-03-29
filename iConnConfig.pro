@@ -48,6 +48,7 @@ SOURCES +=\
     src/sysex/getmixerinputcontrolvalue.cpp \
     src/sysex/getmixermetervalue.cpp \
     src/sysex/getmixeroutputcontrol.cpp \
+    src/sysex/getmixeroutputcontrolvalue.cpp \
     src/sysex/getmixeroutputparm.cpp \
     src/sysex/midi.cpp \
     src/devicedetection.cpp \
@@ -58,6 +59,7 @@ SOURCES +=\
     src/sysex/retmixeroutputcontrol.cpp \
     src/sysex/retsetaudiochannelname.cpp \
     src/sysex/retsetmixerinputcontrolvalue.cpp \
+    src/sysex/retsetmixeroutputcontrolvalue.cpp \
     src/sysex/retsetmixeroutputparm.cpp \
     src/sysex/sysexmessage.cpp \
     src/deviceselectiontablemodel.cpp \
@@ -167,6 +169,7 @@ HEADERS  += \
     src/sysex/getmixerinputcontrolvalue.h \
     src/sysex/getmixermetervalue.h \
     src/sysex/getmixeroutputcontrol.h \
+    src/sysex/getmixeroutputcontrolvalue.h \
     src/sysex/getmixeroutputparm.h \
     src/sysex/midi.h \
     src/devicedetection.h \
@@ -177,6 +180,7 @@ HEADERS  += \
     src/sysex/retmixeroutputcontrol.h \
     src/sysex/retsetaudiochannelname.h \
     src/sysex/retsetmixerinputcontrolvalue.h \
+    src/sysex/retsetmixeroutputcontrolvalue.h \
     src/sysex/retsetmixeroutputparm.h \
     src/sysex/sysexmessage.h \
     src/deviceselectiontablemodel.h \

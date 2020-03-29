@@ -1,18 +1,17 @@
-#include "retsetmixerinputcontrolvalue.h"
+#include "retsetmixeroutputcontrolvalue.h"
 
-RetSetMixerInputControlValue::RetSetMixerInputControlValue(Device *device)
-	: PortSysExMessage(Command::RET_SET_MIXER_OUTPUT_CONTROL_VALUE,
+RetSetMixerOutputControlValue::RetSetMixerOutputControlValue(Device *device)
+	: PortSysExMessage(Command::RET_SET_MIXER_INPUT_CONTROL_VALUE,
 					   SysExMessage::QUERY, device) {}
 
-RetSetMixerInputControlValue::~RetSetMixerInputControlValue() {}
+RetSetMixerOutputControlValue::~RetSetMixerOutputControlValue() {}
 
-void RetSetMixerInputControlValue::parseAnswerData() {
+void RetSetMixerOutputControlValue::parseAnswerData() {
 	unsigned long offset = 0;
 	m_iCommandVersionNumber = m_pData->at(0);
 	m_iPortId = static_cast<unsigned int>(MIDI::byteJoin7bit(m_pData, 1, 2));
 	m_iMixerOutputNumber = m_pData->at(3);
-	m_iMixerInputNumber = m_pData->at(4);
-	offset = 5;
+	offset = 4;
 	parseExistFlags(m_pData->at(offset));
 	offset++;
 	if (m_bHasVolumeControl) {
@@ -24,8 +23,8 @@ void RetSetMixerInputControlValue::parseAnswerData() {
 		offset++;
 	}
 	if (m_bHasSoloControl) {
-		m_bSolo = m_pData->at(offset) == 1;
-		offset++;
+		m_iSolo = MIDI::bytesToSignedInt(m_pData, offset, 3);
+		offset += 3;
 	}
 	if (m_bHasSoloPFLControl) {
 		m_bSoloPFL = m_pData->at(offset) == 1;
@@ -46,7 +45,7 @@ void RetSetMixerInputControlValue::parseAnswerData() {
 	}
 }
 
-std::vector<unsigned char> *RetSetMixerInputControlValue::getMessageData() {
+std::vector<unsigned char> *RetSetMixerOutputControlValue::getMessageData() {
 	BYTE_VECTOR *messageData = new BYTE_VECTOR();
 	BYTE_VECTOR *audioPortId = getPortIdBytes();
 
@@ -55,7 +54,6 @@ std::vector<unsigned char> *RetSetMixerInputControlValue::getMessageData() {
 	messageData->insert(messageData->end(), audioPortId->begin(),
 						audioPortId->end());
 	messageData->push_back(m_iMixerOutputNumber);
-	messageData->push_back(m_iMixerInputNumber);
 	unsigned char existFlag = 0;
 
 	BYTE_VECTOR *variableData = new BYTE_VECTOR();
@@ -73,7 +71,10 @@ std::vector<unsigned char> *RetSetMixerInputControlValue::getMessageData() {
 	}
 	if (m_bHasSoloControl) {
 		existFlag += 4;
-		variableData->push_back(m_bSolo ? 1 : 0);
+		BYTE_VECTOR *pan = MIDI::byteSplit7bit(
+			MIDI::inv2sComplement(static_cast<short>(m_iPan)), 3);
+		variableData->insert(variableData->end(), pan->begin(), pan->end());
+		delete pan;
 	}
 	if (m_bHasSoloPFLControl) {
 		existFlag += 8;
@@ -103,7 +104,7 @@ std::vector<unsigned char> *RetSetMixerInputControlValue::getMessageData() {
 	return messageData;
 }
 
-void RetSetMixerInputControlValue::reset() {
+void RetSetMixerOutputControlValue::reset() {
 	m_bHasPanControl = false;
 	m_bHasInvertControl = false;
 	m_bHasStereoLinkControl = false;
@@ -113,7 +114,7 @@ void RetSetMixerInputControlValue::reset() {
 	m_bHasVolumeControl = false;
 }
 
-void RetSetMixerInputControlValue::parseExistFlags(unsigned char exist_flags) {
+void RetSetMixerOutputControlValue::parseExistFlags(unsigned char exist_flags) {
 	m_bHasPanControl = (exist_flags & 64);
 	m_bHasInvertControl = (exist_flags & 32);
 	m_bHasStereoLinkControl = (exist_flags & 16);
@@ -123,117 +124,117 @@ void RetSetMixerInputControlValue::parseExistFlags(unsigned char exist_flags) {
 	m_bHasVolumeControl = (exist_flags & 1);
 }
 
-unsigned char RetSetMixerInputControlValue::getMixerInputNumber() const {
-	return m_iMixerInputNumber;
-}
-
-unsigned char RetSetMixerInputControlValue::getMixerOutputNumber() const {
+unsigned char RetSetMixerOutputControlValue::getMixerOutputNumber() const {
 	return m_iMixerOutputNumber;
 }
 
-bool RetSetMixerInputControlValue::getInvert() const { return m_bInvert; }
+bool RetSetMixerOutputControlValue::getInvert() const { return m_bInvert; }
 
-void RetSetMixerInputControlValue::setInvert(bool bInvert) {
+void RetSetMixerOutputControlValue::setInvert(bool bInvert) {
 	m_bInvert = bInvert;
 	m_bHasInvertControl = true;
 }
 
-bool RetSetMixerInputControlValue::getSoloPFL() const { return m_bSoloPFL; }
+bool RetSetMixerOutputControlValue::getSoloPFL() const { return m_bSoloPFL; }
 
-void RetSetMixerInputControlValue::setSoloPFL(bool bSoloPFL) {
+void RetSetMixerOutputControlValue::setSoloPFL(bool bSoloPFL) {
 	m_bSoloPFL = bSoloPFL;
 	m_bHasSoloPFLControl = true;
 }
 
-bool RetSetMixerInputControlValue::hasSoloPFLControl() const {
+bool RetSetMixerOutputControlValue::hasSoloPFLControl() const {
 	return m_bHasSoloPFLControl;
 }
 
-void RetSetMixerInputControlValue::setHasSoloPFLControl(
+void RetSetMixerOutputControlValue::setHasSoloPFLControl(
 	bool bHasSoloPFLControl) {
 	m_bHasSoloPFLControl = bHasSoloPFLControl;
 }
 
-bool RetSetMixerInputControlValue::hasInvertControl() const {
+bool RetSetMixerOutputControlValue::hasInvertControl() const {
 	return m_bHasInvertControl;
 }
 
-void RetSetMixerInputControlValue::setHasInvertControl(bool bHasInvertControl) {
+void RetSetMixerOutputControlValue::setHasInvertControl(
+	bool bHasInvertControl) {
 	m_bHasInvertControl = bHasInvertControl;
 }
 
-bool RetSetMixerInputControlValue::hasPanControl() const {
+bool RetSetMixerOutputControlValue::hasPanControl() const {
 	return m_bHasPanControl;
 }
 
-void RetSetMixerInputControlValue::setHasPanControl(bool bHasPanControl) {
+void RetSetMixerOutputControlValue::setHasPanControl(bool bHasPanControl) {
 	m_bHasPanControl = bHasPanControl;
 }
 
-int RetSetMixerInputControlValue::getVolume() const { return m_iVolume; }
+int RetSetMixerOutputControlValue::getVolume() const { return m_iVolume; }
 
-void RetSetMixerInputControlValue::setVolume(int iVolume) {
+void RetSetMixerOutputControlValue::setVolume(int iVolume) {
 	m_iVolume = iVolume;
 	m_bHasVolumeControl = true;
 }
 
-int RetSetMixerInputControlValue::getPan() const { return m_iPan; }
+int RetSetMixerOutputControlValue::getPan() const { return m_iPan; }
 
-void RetSetMixerInputControlValue::setPan(int pan) {
+void RetSetMixerOutputControlValue::setPan(int pan) {
 	m_iPan = pan;
 	m_bHasPanControl = true;
 }
 
-bool RetSetMixerInputControlValue::getMute() const { return m_bMute; }
+bool RetSetMixerOutputControlValue::getMute() const { return m_bMute; }
 
-void RetSetMixerInputControlValue::setMute(bool bMute) {
+void RetSetMixerOutputControlValue::setMute(bool bMute) {
 	m_bMute = bMute;
 	m_bHasMuteControl = true;
 }
 
-bool RetSetMixerInputControlValue::getSteroLink() const { return m_bSteroLink; }
+bool RetSetMixerOutputControlValue::getSteroLink() const {
+	return m_bSteroLink;
+}
 
-void RetSetMixerInputControlValue::setSteroLink(bool bSteroLink) {
+void RetSetMixerOutputControlValue::setSteroLink(bool bSteroLink) {
 	m_bSteroLink = bSteroLink;
 	m_bHasStereoLinkControl = true;
 }
 
-bool RetSetMixerInputControlValue::getSolo() const { return m_bSolo; }
+int RetSetMixerOutputControlValue::getSolo() const { return m_iSolo; }
 
-void RetSetMixerInputControlValue::setSolo(bool solo) {
-	m_bSolo = solo;
+void RetSetMixerOutputControlValue::setSolo(int solo) {
+	m_iSolo = solo;
 	m_bHasSoloControl = true;
 }
 
-bool RetSetMixerInputControlValue::hasVolumeControl() const {
+bool RetSetMixerOutputControlValue::hasVolumeControl() const {
 	return m_bHasVolumeControl;
 }
 
-void RetSetMixerInputControlValue::setHasVolumeControl(bool bHasVolumeControl) {
+void RetSetMixerOutputControlValue::setHasVolumeControl(
+	bool bHasVolumeControl) {
 	m_bHasVolumeControl = bHasVolumeControl;
 }
 
-bool RetSetMixerInputControlValue::hasMuteControl() const {
+bool RetSetMixerOutputControlValue::hasMuteControl() const {
 	return m_bHasMuteControl;
 }
 
-void RetSetMixerInputControlValue::setHasMuteControl(bool bHasMuteControl) {
+void RetSetMixerOutputControlValue::setHasMuteControl(bool bHasMuteControl) {
 	m_bHasMuteControl = bHasMuteControl;
 }
 
-bool RetSetMixerInputControlValue::hasStereoLinkControl() const {
+bool RetSetMixerOutputControlValue::hasStereoLinkControl() const {
 	return m_bHasStereoLinkControl;
 }
 
-void RetSetMixerInputControlValue::setHasStereoLinkControl(
+void RetSetMixerOutputControlValue::setHasStereoLinkControl(
 	bool bHasStereoLinkControl) {
 	m_bHasStereoLinkControl = bHasStereoLinkControl;
 }
 
-bool RetSetMixerInputControlValue::hasSoloControl() const {
+bool RetSetMixerOutputControlValue::hasSoloControl() const {
 	return m_bHasSoloControl;
 }
 
-void RetSetMixerInputControlValue::setHasSoloControl(bool hasSoloControl) {
+void RetSetMixerOutputControlValue::setHasSoloControl(bool hasSoloControl) {
 	m_bHasSoloControl = hasSoloControl;
 }

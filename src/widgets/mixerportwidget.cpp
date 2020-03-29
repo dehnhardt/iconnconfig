@@ -53,7 +53,7 @@ void MixerPortWidget::createLayout() {
 	vBoxLayout->addStretch();
 	setLayout(vBoxLayout);
 	connect(m_pVolButton, &QPushButton::released, this,
-			&MixerPortWidget::getVolumes);
+			&MixerPortWidget::timerElapsed);
 }
 
 void MixerPortWidget::getVolumes() {
@@ -80,8 +80,7 @@ void MixerPortWidget::timerElapsed() {
 										 channelVolume->volume);
 			for (auto channelVolume = v.out.begin();
 				 channelVolume != v.out.end(); ++channelVolume)
-				emit outMeterValueChanged(channelVolume->channel,
-										  channelVolume->volume);
+				emit outMeterValueChanged(i, channelVolume->volume);
 			rapmv.reset();
 		}
 	}
@@ -90,6 +89,9 @@ void MixerPortWidget::timerElapsed() {
 void MixerPortWidget::showEvent(QShowEvent *event) {
 	std::cout << "start" << std::endl;
 	for (auto widget : m_MapAttachedInputChannels) {
+		widget.second->refreshStatus();
+	}
+	for (auto widget : m_MapAttachedOutputChannels) {
 		widget.second->refreshStatus();
 	}
 	m_pVolumeTimer->start(20);
@@ -114,11 +116,19 @@ void MixerPortWidget::linkStatusChanged(AudioChannelId mixerChannelId,
 			master = this->m_MapAttachedInputChannels[mixerChannelId];
 			slave = this->m_MapAttachedInputChannels[mixerChannelId + 1];
 		}
+		if (channelDirection == ChannelDirection::CD_OUTPUT) {
+			master = this->m_MapAttachedOutputChannels[mixerChannelId];
+			slave = this->m_MapAttachedOutputChannels[mixerChannelId + 1];
+		}
 		master->changeLinkStatus(status);
 	} else {
 		if (channelDirection == ChannelDirection::CD_INPUT) {
-			master = this->m_MapAttachedInputChannels[mixerChannelId];
-			slave = this->m_MapAttachedInputChannels[mixerChannelId - 1];
+			master = this->m_MapAttachedInputChannels[mixerChannelId - 1];
+			slave = this->m_MapAttachedInputChannels[mixerChannelId];
+		}
+		if (channelDirection == ChannelDirection::CD_OUTPUT) {
+			master = this->m_MapAttachedOutputChannels[mixerChannelId - 1];
+			slave = this->m_MapAttachedOutputChannels[mixerChannelId];
 		}
 		slave->changeLinkStatus(status);
 	}
@@ -127,8 +137,8 @@ void MixerPortWidget::linkStatusChanged(AudioChannelId mixerChannelId,
 	if (status) {
 		connect(master, &AudioMixerChannelWidget::volumeChanged, slave,
 				&AudioMixerChannelWidget::changeVolume);
-		/*connect(master, &AudioMixerChannelWidget::panChanged, slave,
-				&AudioMixerChannelWidget::changePan);*/
+		connect(master, &AudioMixerChannelWidget::panChanged, slave,
+				&AudioMixerChannelWidget::changePan);
 		connect(master, &AudioMixerChannelWidget::soloStatusChanged, slave,
 				&AudioMixerChannelWidget::changeSoloStatus);
 		connect(master, &AudioMixerChannelWidget::soloPFLStatusChanged, slave,
@@ -140,8 +150,8 @@ void MixerPortWidget::linkStatusChanged(AudioChannelId mixerChannelId,
 	} else {
 		disconnect(master, &AudioMixerChannelWidget::volumeChanged, slave,
 				   &AudioMixerChannelWidget::changeVolume);
-		/*disconnect(master, &AudioMixerChannelWidget::panChanged, slave,
-				   &AudioMixerChannelWidget::changePan);*/
+		disconnect(master, &AudioMixerChannelWidget::panChanged, slave,
+				   &AudioMixerChannelWidget::changePan);
 		disconnect(master, &AudioMixerChannelWidget::soloStatusChanged, slave,
 				   &AudioMixerChannelWidget::changeSoloStatus);
 		disconnect(master, &AudioMixerChannelWidget::soloPFLStatusChanged,

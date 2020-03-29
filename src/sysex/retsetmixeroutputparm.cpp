@@ -7,11 +7,11 @@ RetSetMixerOutputParm::RetSetMixerOutputParm(Device *device)
 void RetSetMixerOutputParm::parseAnswerData() {
 	m_iCommandVersionNumber = m_pData->at(0);
 	m_iPortId = static_cast<unsigned int>(MIDI::byteJoin8bit(m_pData, 1, 2));
-	m_iMixerSinkChannelNumber = m_pData->at(3);
+	m_iChannelNumber = m_pData->at(3);
 	m_iNumberOfOutputAssignments = m_pData->at(4);
 	unsigned long offset = 5;
 	for (unsigned int i = 0; i < m_iNumberOfOutputAssignments; i++) {
-		m_vAudioSourceChannelIds.push_back(
+		m_vAudioSinkChannelIds.push_back(
 			m_pData->at(offset + static_cast<unsigned long>(i)));
 		++offset;
 	}
@@ -37,11 +37,11 @@ std::vector<unsigned char> *RetSetMixerOutputParm::getMessageData() {
 	data->insert(data->end(), portId->begin(), portId->end());
 
 	m_iNumberOfOutputAssignments =
-		static_cast<unsigned char>(m_vAudioSourceChannelIds.size());
+		static_cast<unsigned char>(m_vAudioSinkChannelIds.size());
 
-	data->push_back(static_cast<unsigned char>(m_iMixerSinkChannelNumber));
+	data->push_back(static_cast<unsigned char>(m_iChannelNumber));
 	data->push_back(m_iNumberOfOutputAssignments);
-	for (unsigned int channel : m_vAudioSourceChannelIds) {
+	for (unsigned int channel : m_vAudioSinkChannelIds) {
 		data->push_back(static_cast<unsigned char>(channel));
 	}
 	data->push_back(m_iMaxNameLength);
@@ -53,32 +53,32 @@ std::vector<unsigned char> *RetSetMixerOutputParm::getMessageData() {
 }
 
 unsigned int RetSetMixerOutputParm::getMixerSinkChannelNumber() const {
-	return m_iMixerSinkChannelNumber;
+	return m_iChannelNumber;
 }
 
-void RetSetMixerOutputParm::setMixerSinkChannelNumber(
+void RetSetMixerOutputParm::setMixerChannelNumber(
 	unsigned int iMixerSourcePortNumber) {
-	m_iMixerSinkChannelNumber = iMixerSourcePortNumber;
+	m_iChannelNumber = iMixerSourcePortNumber;
 }
 
 void RetSetMixerOutputParm::changeMixerOutputAssignment(
 	AudioChannelId audioChanneId, bool assigned) {
 	if (assigned) {
-		for (AudioChannelId existingAudioChannelId : m_vAudioSourceChannelIds) {
+		for (AudioChannelId existingAudioChannelId : m_vAudioSinkChannelIds) {
 			if (existingAudioChannelId == audioChanneId)
 				return;
 		}
-		m_vAudioSourceChannelIds.push_back(audioChanneId);
+		m_vAudioSinkChannelIds.push_back(audioChanneId);
 	} else {
 		for (std::vector<unsigned int>::iterator it =
-				 m_vAudioSourceChannelIds.begin();
-			 it < m_vAudioSourceChannelIds.end(); ++it) {
+				 m_vAudioSinkChannelIds.begin();
+			 it < m_vAudioSinkChannelIds.end(); ++it) {
 			if (*it == audioChanneId)
-				m_vAudioSourceChannelIds.erase(it);
+				m_vAudioSinkChannelIds.erase(it);
 		}
 	}
 	m_iNumberOfOutputAssignments =
-		static_cast<unsigned char>(m_vAudioSourceChannelIds.size());
+		static_cast<unsigned char>(m_vAudioSinkChannelIds.size());
 }
 
 std::string RetSetMixerOutputParm::getMixerName() const { return m_sMixerName; }

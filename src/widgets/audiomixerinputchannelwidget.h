@@ -2,10 +2,8 @@
 #define AUDIOMIXERINPUTCHANNELWIDGET_H
 
 #include "../sysex/retmixerinputcontrol.h"
-#include "../sysex/retmixeroutputcontrol.h"
 #include "../sysex/retsetmixerinputcontrolvalue.h"
 #include "../sysex/retsetmixerinputparm.h"
-#include "../sysex/retsetmixeroutputparm.h"
 
 #include "audiochannelfeaturewidget.h"
 #include "controls/iconncalc.h"

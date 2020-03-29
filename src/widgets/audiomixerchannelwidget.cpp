@@ -25,13 +25,16 @@ QString AudioMixerChannelWidget::getChannelName() {
 
 void AudioMixerChannelWidget::initControls() {
 
-	ui->m_pDialTrim->setVisible(false);
+	ui->m_pDial->setVisible(false);
+	ui->m_plblTrimPan->setVisible(false);
+	ui->m_pSlidePan->setVisible(false);
 	ui->m_pTbHighImpedance->setVisible(false);
 	ui->m_pTbPhantomPower->setVisible(false);
 	ui->m_pTbMute->setVisible(false);
 	ui->m_pTbSolo->setVisible(false);
 	ui->m_pTbPfl->setVisible(false);
 	ui->m_pTbInvert->setVisible(false);
+	ui->m_pChbStereoLink->setVisible(false);
 
 	ui->m_pTbMute->setColor(255, 0, 0);
 	ui->m_pTbSolo->setColor(255, 188, 17);
@@ -66,7 +69,7 @@ void AudioMixerChannelWidget::changeVolume(int volume) {
 }
 
 void AudioMixerChannelWidget::changePan(int pan) {
-	this->ui->m_pDialTrim->setValue(pan);
+	this->ui->m_pDial->setValue(pan);
 }
 
 void AudioMixerChannelWidget::changeMeterVolume(unsigned int channel,

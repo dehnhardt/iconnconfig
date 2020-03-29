@@ -100,11 +100,11 @@ void AudioChannelFeatureWidget::setRetSetAudioControlDetail(
 				  << iMaxVolume << ", resolution: " << iVolumeResolution
 				  << std::endl;
 
-		this->ui->m_pDialTrim->setMinimum(
+		this->ui->m_pDial->setMinimum(
 			retSetAudioControlDetail->getMinTrimValue());
-		this->ui->m_pDialTrim->setMaximum(
+		this->ui->m_pDial->setMaximum(
 			retSetAudioControlDetail->getMaxTrimValue());
-		connect(this->ui->m_pDialTrim, &QSlider::valueChanged,
+		connect(this->ui->m_pDial, &QSlider::valueChanged,
 				[](int val) { std::cout << std::dec << val << std::endl; });
 	} else {
 		this->ui->m_pFrmVolume->setVisible(false);
@@ -138,7 +138,7 @@ void AudioChannelFeatureWidget::setValues(
 		retSetAudioControlDetailValue->hasVolumeControl()) {
 		ui->m_pSlideVolume->setValue(
 			retSetAudioControlDetailValue->getVolume());
-		ui->m_pDialTrim->setValue(retSetAudioControlDetailValue->getTrim());
+		ui->m_pDial->setValue(retSetAudioControlDetailValue->getTrim());
 		retSetAudioControlDetailValue->setHasVolumeControl(false);
 		if (m_pAudioControlDetail->getVolumeControlEditable()) {
 			connect(this->ui->m_pSlideVolume, &PKSlider::valueChanged,
@@ -148,12 +148,11 @@ void AudioChannelFeatureWidget::setValues(
 						this->m_pUpdateTimer->start(10);
 						emit this->volumeChanged(value);
 					});
-			connect(this->ui->m_pDialTrim, &QDial::valueChanged,
-					[=](int value) {
-						this->m_pRetSetAudioControlDetailValue->setTrim(value);
-						this->m_pUpdateTimer->start(10);
-						emit this->trimChanged(value);
-					});
+			connect(this->ui->m_pDial, &QDial::valueChanged, [=](int value) {
+				this->m_pRetSetAudioControlDetailValue->setTrim(value);
+				this->m_pUpdateTimer->start(10);
+				emit this->trimChanged(value);
+			});
 		}
 	}
 	if (m_pAudioControlDetail->hasMuteControl() &&
@@ -287,7 +286,7 @@ void AudioChannelFeatureWidget::changeVolume(int volume) {
 }
 
 void AudioChannelFeatureWidget::changeTrim(int trim) {
-	this->ui->m_pDialTrim->setValue(trim);
+	this->ui->m_pDial->setValue(trim);
 }
 
 void AudioChannelFeatureWidget::setVolume(int volume) {

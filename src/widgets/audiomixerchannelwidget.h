@@ -35,7 +35,7 @@ class AudioMixerChannelWidget : public QFrame {
 	AudioChannelId m_iMixerChannelId = 0;
 	bool m_bIsMaster = false;
 
-	void initControls();
+	virtual void initControls();
 
   signals:
 	void linkStatusChanged(AudioChannelId m_iMixerChannelId,

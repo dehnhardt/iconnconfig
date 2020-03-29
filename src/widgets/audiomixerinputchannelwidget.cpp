@@ -32,7 +32,6 @@ AudioMixerInputChannelWidget::AudioMixerInputChannelWidget(
 			QToolButton::ToolButtonPopupMode::MenuButtonPopup);
 		m_pBtnSelectConnection->setToolButtonStyle(
 			Qt::ToolButtonTextBesideIcon);
-		// refreshInput();
 	}
 
 	ui->m_pSlideVolume->setDebug(false);
@@ -50,7 +49,7 @@ void AudioMixerInputChannelWidget::setMixerInputControl(
 
 	this->m_pMixerInputControl = retMixerInputControl;
 
-	ui->m_pDialTrim->setVisible(m_pMixerInputControl->hasPanControl());
+	ui->m_pSlidePan->setVisible(m_pMixerInputControl->hasPanControl());
 	ui->m_pSlideVolume->setVisible(m_pMixerInputControl->hasVolumeControl());
 	ui->m_pTbMute->setVisible(m_pMixerInputControl->hasMuteControl());
 	ui->m_pTbSolo->setVisible(m_pMixerInputControl->hasSoloControl());
@@ -59,7 +58,7 @@ void AudioMixerInputChannelWidget::setMixerInputControl(
 	ui->m_pChbStereoLink->setVisible(
 		m_pMixerInputControl->hasStereoLinkControl());
 
-	ui->m_pDialTrim->setEnabled(m_pMixerInputControl->getPanControlEditable());
+	ui->m_pSlidePan->setEnabled(m_pMixerInputControl->getPanControlEditable());
 	ui->m_pSlideVolume->setVisible(m_pMixerInputControl->hasVolumeControl());
 	ui->m_pTbMute->setEnabled(m_pMixerInputControl->getMuteControlEditable());
 	ui->m_pTbSolo->setEnabled(m_pMixerInputControl->getSoloControlEditable());
@@ -70,14 +69,13 @@ void AudioMixerInputChannelWidget::setMixerInputControl(
 		m_pMixerInputControl->getStereoLinkControlEditable());
 
 	if (m_pMixerInputControl->hasPanControl()) {
-		ui->m_pDialTrim->setMinimum(-127);
-		ui->m_pDialTrim->setMaximum(127);
+		ui->m_pSlidePan->setMinimum(-127);
+		ui->m_pSlidePan->setMaximum(127);
 		if (m_pMixerInputControl->getPanControlEditable()) {
-			connect(this->ui->m_pDialTrim, &QDial::valueChanged,
+			connect(this->ui->m_pSlidePan, &QDial::valueChanged,
 					[=](int value) {
 						this->m_pRetSetMixerInputControlValue->setPan(value);
 						this->m_pUpdateTimer->start();
-						std::cout << "Pan: " << std::dec << value << std::endl;
 						emit panChanged(value);
 					});
 		}
@@ -89,7 +87,7 @@ void AudioMixerInputChannelWidget::setMixerInputControl(
 			m_pMixerInputControl->getMaximumVolumeValue(), 256);
 		ui->m_pSlideVolume->setScaleCalc(this->m_pChannelCalc);
 		if (m_pMixerInputControl->getVolumeControlEditable()) {
-			ui->m_pDialTrim->setEnabled(m_pMixerInputControl->hasPanControl());
+			ui->m_pSlidePan->setEnabled(m_pMixerInputControl->hasPanControl());
 			connect(this->ui->m_pSlideVolume, &PKSlider::valueChanged,
 					[=](int value) {
 						this->m_pRetSetMixerInputControlValue->setVolume(value);
@@ -296,9 +294,7 @@ void AudioMixerInputChannelWidget::setInputValues(
 		QString::number(retSetMixerInputControlValue->getMixerOutputNumber());*/
 	if (m_pMixerInputControl->hasPanControl() &&
 		retSetMixerInputControlValue->hasPanControl()) {
-		std::cout << "Pan init: " << retSetMixerInputControlValue->getPan()
-				  << std::endl;
-		ui->m_pDialTrim->setValue(retSetMixerInputControlValue->getPan());
+		ui->m_pSlidePan->setValue(retSetMixerInputControlValue->getPan());
 		retSetMixerInputControlValue->setHasPanControl(false);
 	}
 	if (m_pMixerInputControl->hasVolumeControl() &&

@@ -60,24 +60,15 @@ void PKSlider::setScaleCalc(std::shared_ptr<ScaleCalc> scaleCalc) {
 	setMaximum(static_cast<int>(scaleCalc->maxAllowedValue()));
 }
 
-void PKSlider::setMinimum(int val) {
-	std::cout << "setMinimum: " << val << std::endl;
-	QSlider::setMinimum(val);
-}
+void PKSlider::setMinimum(int val) { QSlider::setMinimum(val); }
 
-void PKSlider::setMaximum(int val) {
-	std::cout << "setMaximum: " << val << std::endl;
-	QSlider::setMaximum(val);
-}
+void PKSlider::setMaximum(int val) { QSlider::setMaximum(val); }
 
 void PKSlider::setValue(int val) { setValue(static_cast<float>(val)); }
 
 void PKSlider::setValue(float val) {
-	std::cout << "setValue(): " << val;
 	if (m_pScaleCalc) {
 		float calcVal = m_pScaleCalc->encode(val);
-		std::cout << ", encoded: " << calcVal;
-		std::cout << std::endl;
 		QSlider::setValue(static_cast<int>(calcVal));
 	} else {
 		QSlider::setValue(static_cast<int>(val));
@@ -86,15 +77,12 @@ void PKSlider::setValue(float val) {
 }
 
 void PKSlider::onValueChange(float val) {
-	// std::cout << "onValueChange() raw:" << val;
 	if (m_pScaleCalc) {
 		float decoded = m_pScaleCalc->decode(val);
-		// std::cout << ", decoded: " << decoded;
 		valueChanged(static_cast<int>(decoded));
 	} else {
 		valueChanged(static_cast<int>(val));
 	}
-	// std::cout << std::endl;
 }
 
 void PKSlider::paintEvent(QPaintEvent *event) {

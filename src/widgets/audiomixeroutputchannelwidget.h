@@ -1,10 +1,8 @@
 #ifndef AUDIOMIXEROUTPUTCHANNELWIDGET_H
 #define AUDIOMIXEROUTPUTCHANNELWIDGET_H
 
-#include "../sysex/retmixerinputcontrol.h"
 #include "../sysex/retmixeroutputcontrol.h"
-#include "../sysex/retsetmixerinputcontrolvalue.h"
-#include "../sysex/retsetmixerinputparm.h"
+#include "../sysex/retsetmixeroutputcontrolvalue.h"
 #include "../sysex/retsetmixeroutputparm.h"
 
 #include "audiochannelfeaturewidget.h"
@@ -36,25 +34,19 @@ class AudioMixerOutputChannelWidget : public AudioMixerChannelWidget {
 		std::shared_ptr<RetMixerOutputControl> retMixerOutputControl);
 
 	void setMaster(bool isMaster, QString channel2Name) override;
+	void refreshOutput();
 	void refreshStatus() override;
-
-  public slots:
-	void changeMeterVolume(unsigned int channel, int value);
-
-  protected:
-	void initControls();
 
   private:
 	QToolButton *m_pBtnSelectConnection = nullptr;
 	QMenu *m_pConnectionMenu = nullptr;
 	std::shared_ptr<ScaleCalc> m_pChannelCalc = nullptr;
-	QTimer *m_pUpdateTimer = nullptr;
 
 	std::shared_ptr<RetSetMixerOutputParm> m_pMixerOutputParm = nullptr;
 	std::shared_ptr<RetMixerOutputControl> m_pMixerOutputControl = nullptr;
 
-	/*	std::shared_ptr<RetSetMixerOutputControlValue>
-			m_pretSetMixerOutputControlValue = nullptr;*/
+	std::shared_ptr<RetSetMixerOutputControlValue>
+		m_pRetSetMixerOutputControlValue = nullptr;
 
   private: // methods
 	void createOutputMenu();
@@ -66,6 +58,9 @@ class AudioMixerOutputChannelWidget : public AudioMixerChannelWidget {
 					   AudioPortType audioPortType);
 
 	void queryOutputValues();
+	void setOutputValues(std::shared_ptr<RetSetMixerOutputControlValue>
+							 retSetMixerOutputControlValue);
+
   private slots:
 	void audioChannelValueChanged() override;
 	virtual void changeLinkStatus(bool enabled) override;
