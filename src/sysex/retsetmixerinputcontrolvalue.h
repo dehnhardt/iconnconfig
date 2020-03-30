@@ -18,7 +18,7 @@ class RetSetMixerInputControlValue : public PortSysExMessage {
 	// SysExMessage interface
 	std::vector<unsigned char> *getMessageData() override;
 
-	void reset();
+	void clean();
 
 	bool hasStereoLinkControl() const;
 	void setHasStereoLinkControl(bool hasStereoLinkControl);

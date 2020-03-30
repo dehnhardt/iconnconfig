@@ -235,11 +235,13 @@ void AudioChannelFeatureWidget::setChannelId(int value) {
 
 void AudioChannelFeatureWidget::initControls() {
 	ui->m_pTbHighImpedance->setVisible(false);
+	ui->m_pSlidePan->setVisible(false);
 	ui->m_pTbPhantomPower->setVisible(false);
 	ui->m_pTbMute->setVisible(false);
 	ui->m_pTbSolo->setVisible(false);
 	ui->m_pTbPfl->setVisible(false);
 	ui->m_pTbInvert->setVisible(false);
+	ui->m_pFrmUpperMixerPanel2->setVisible(false);
 
 	ui->m_pTbMute->setColor(255, 236, 24);
 	ui->m_pTbSolo->setColor(0, 255, 255);

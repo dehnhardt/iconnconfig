@@ -38,8 +38,6 @@ class AudioMixerOutputChannelWidget : public AudioMixerChannelWidget {
 	void refreshStatus() override;
 
   private:
-	QToolButton *m_pBtnSelectConnection = nullptr;
-	QMenu *m_pConnectionMenu = nullptr;
 	std::shared_ptr<ScaleCalc> m_pChannelCalc = nullptr;
 
 	std::shared_ptr<RetSetMixerOutputParm> m_pMixerOutputParm = nullptr;

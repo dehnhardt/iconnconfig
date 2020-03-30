@@ -39,6 +39,10 @@ void MixerPortWidget::setNumberOfOutputChannels(
 	m_iCurrentMeterQuery = 0;
 }
 
+void MixerPortWidget::setOutputOffset(unsigned int iOutputOffset) {
+	m_iOutputOffset = iOutputOffset;
+}
+
 void MixerPortWidget::createLayout() {
 	QBoxLayout *vBoxLayout = new QVBoxLayout();
 	QBoxLayout *hBoxLayout = new QHBoxLayout();
@@ -67,8 +71,8 @@ void MixerPortWidget::getVolumes() {
 }
 
 void MixerPortWidget::timerElapsed() {
-	for (unsigned int i = 1; i <= m_INumberOfOutputChannels; i++) {
-		m_pGetMixerMeterValue->setOutputNumber(i);
+	for (unsigned int i = 0; i < m_INumberOfOutputChannels; i++) {
+		m_pGetMixerMeterValue->setOutputNumber(m_iOutputOffset + i);
 		std::shared_ptr<RetMixerMeterValue> rapmv =
 			std::dynamic_pointer_cast<RetMixerMeterValue>(
 				m_pGetMixerMeterValue->querySmart());
@@ -80,7 +84,8 @@ void MixerPortWidget::timerElapsed() {
 										 channelVolume->volume);
 			for (auto channelVolume = v.out.begin();
 				 channelVolume != v.out.end(); ++channelVolume)
-				emit outMeterValueChanged(i, channelVolume->volume);
+				emit outMeterValueChanged(m_iOutputOffset + i,
+										  channelVolume->volume);
 			rapmv.reset();
 		}
 	}
@@ -134,31 +139,47 @@ void MixerPortWidget::linkStatusChanged(AudioChannelId mixerChannelId,
 	}
 	master->setMaster(status, slave->getChannelName());
 	slave->setVisible(!status);
+	if (channelDirection == ChannelDirection::CD_INPUT) {
+		if (status) {
+			connect(master, &AudioMixerChannelWidget::volumeChanged, slave,
+					&AudioMixerChannelWidget::changeVolume);
+			connect(master, &AudioMixerChannelWidget::panChanged, slave,
+					&AudioMixerChannelWidget::changePan);
+			connect(master, &AudioMixerChannelWidget::soloStatusChanged, slave,
+					&AudioMixerChannelWidget::changeSoloStatus);
+			connect(master, &AudioMixerChannelWidget::soloPFLStatusChanged,
+					slave, &AudioMixerChannelWidget::changePFLStatus);
+			connect(master, &AudioMixerChannelWidget::invertStatusChanged,
+					slave, &AudioMixerChannelWidget::changeInvertStatus);
+			connect(master, &AudioMixerChannelWidget::muteStatusChanged, slave,
+					&AudioMixerChannelWidget::changeMuteStatus);
+		} else {
+			disconnect(master, &AudioMixerChannelWidget::volumeChanged, slave,
+					   &AudioMixerChannelWidget::changeVolume);
+			disconnect(master, &AudioMixerChannelWidget::panChanged, slave,
+					   &AudioMixerChannelWidget::changePan);
+			disconnect(master, &AudioMixerChannelWidget::soloStatusChanged,
+					   slave, &AudioMixerChannelWidget::changeSoloStatus);
+			disconnect(master, &AudioMixerChannelWidget::soloPFLStatusChanged,
+					   slave, &AudioMixerChannelWidget::changePFLStatus);
+			disconnect(master, &AudioMixerChannelWidget::invertStatusChanged,
+					   slave, &AudioMixerChannelWidget::changeInvertStatus);
+			disconnect(master, &AudioMixerChannelWidget::muteStatusChanged,
+					   slave, &AudioMixerChannelWidget::changeMuteStatus);
+		}
+	}
 	if (status) {
-		connect(master, &AudioMixerChannelWidget::volumeChanged, slave,
-				&AudioMixerChannelWidget::changeVolume);
-		connect(master, &AudioMixerChannelWidget::panChanged, slave,
-				&AudioMixerChannelWidget::changePan);
-		connect(master, &AudioMixerChannelWidget::soloStatusChanged, slave,
-				&AudioMixerChannelWidget::changeSoloStatus);
-		connect(master, &AudioMixerChannelWidget::soloPFLStatusChanged, slave,
-				&AudioMixerChannelWidget::changePFLStatus);
-		connect(master, &AudioMixerChannelWidget::invertStatusChanged, slave,
-				&AudioMixerChannelWidget::changeInvertStatus);
-		connect(master, &AudioMixerChannelWidget::muteStatusChanged, slave,
-				&AudioMixerChannelWidget::changeMuteStatus);
+		QVBoxLayout *l = static_cast<QVBoxLayout *>(
+			master->getSecondConnectionFrame()->layout());
+		if (l) {
+			l->addWidget(slave->getConnectionButton());
+			master->getSecondConnectionFrame()->setEnabled(true);
+		}
 	} else {
-		disconnect(master, &AudioMixerChannelWidget::volumeChanged, slave,
-				   &AudioMixerChannelWidget::changeVolume);
-		disconnect(master, &AudioMixerChannelWidget::panChanged, slave,
-				   &AudioMixerChannelWidget::changePan);
-		disconnect(master, &AudioMixerChannelWidget::soloStatusChanged, slave,
-				   &AudioMixerChannelWidget::changeSoloStatus);
-		disconnect(master, &AudioMixerChannelWidget::soloPFLStatusChanged,
-				   slave, &AudioMixerChannelWidget::changePFLStatus);
-		disconnect(master, &AudioMixerChannelWidget::invertStatusChanged, slave,
-				   &AudioMixerChannelWidget::changeInvertStatus);
-		disconnect(master, &AudioMixerChannelWidget::muteStatusChanged, slave,
-				   &AudioMixerChannelWidget::changeMuteStatus);
+		QLayout *l = slave->getFirstConnectionFrame()->layout();
+		if (l) {
+			l->addWidget(slave->getConnectionButton());
+			master->getSecondConnectionFrame()->setEnabled(false);
+		}
 	}
 }

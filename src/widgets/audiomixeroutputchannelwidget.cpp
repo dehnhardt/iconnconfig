@@ -30,7 +30,8 @@ AudioMixerOutputChannelWidget::AudioMixerOutputChannelWidget(
 	if (l) {
 		m_pBtnSelectConnection = new QToolButton();
 		m_pBtnSelectConnection->setCheckable(false);
-		l->addWidget(new QLabel(tr("In")));
+		l->addWidget(new QLabel(tr("Out")));
+		l->addStretch();
 		l->addWidget(m_pBtnSelectConnection);
 		createOutputMenu();
 		m_pBtnSelectConnection->setMenu(m_pConnectionMenu);
@@ -39,7 +40,6 @@ AudioMixerOutputChannelWidget::AudioMixerOutputChannelWidget(
 		m_pBtnSelectConnection->setToolButtonStyle(
 			Qt::ToolButtonTextBesideIcon);
 	}
-
 	ui->m_pSlideVolume->setDebug(false);
 }
 
@@ -121,25 +121,16 @@ void AudioMixerOutputChannelWidget::setMixerOutputControl(
 		}
 	}
 	if (m_pMixerOutputControl->hasSoloControl()) {
-		this->ui->m_plblTrimPan->setText(tr("Solo Volume"));
+		this->ui->m_plblTrimPan->setText(tr("Solo Vol."));
 		this->ui->m_plblTrimPan->setVisible(true);
-		float min = this->m_pChannelCalc->encode(
-			m_pMixerOutputControl->getMinimumVolumeValue());
-		float max = this->m_pChannelCalc->encode(
-			m_pMixerOutputControl->getMaximumVolumeValue());
-		std::cout << "Solo min: " << min << " (" << std::dec
-				  << m_pMixerOutputControl->getMinimumVolumeValue()
-				  << "), Solo max: " << max << ",(" << std::dec
-				  << m_pMixerOutputControl->getMaximumVolumeValue() << ")"
-				  << std::endl;
-		ui->m_pDial->setMinimum(min);
-		ui->m_pDial->setMaximum(max);
+		ui->m_pDial->setMinimum(static_cast<int>(this->m_pChannelCalc->encode(
+			m_pMixerOutputControl->getMinimumVolumeValue())));
+		ui->m_pDial->setMaximum(static_cast<int>(this->m_pChannelCalc->encode(
+			m_pMixerOutputControl->getMaximumVolumeValue())));
 		if (m_pMixerOutputControl->getSoloControlEditable()) {
 			connect(ui->m_pDial, &QDial::valueChanged, [=](int value) {
-				float decoded = this->m_pChannelCalc->decode(value);
-				std::cout << "Set Solo-Value " << decoded << "(" << std::dec
-						  << value << ")" << std::endl;
-				this->m_pRetSetMixerOutputControlValue->setSolo(decoded);
+				this->m_pRetSetMixerOutputControlValue->setSolo(
+					static_cast<int>(this->m_pChannelCalc->decode(value)));
 				this->m_pUpdateTimer->start();
 				emit soloStatusChanged(value);
 			});
@@ -175,21 +166,19 @@ void AudioMixerOutputChannelWidget::setMixerOutputControl(
 					});
 		}
 	}
-	channelInit = true;
+	m_bChannelInit = true;
 }
 
 void AudioMixerOutputChannelWidget::setMaster(bool isMaster,
+											  __attribute__((unused))
 											  QString channel2Name) {
 	this->ui->m_pPBRight->setVisible(isMaster);
 	m_bIsMaster = isMaster;
-	/*if (isMaster) {
-		QString name = this->getChannelName();
-		name.append(" / ");
-		name.append(channel2Name);
-		ui->m_pLblChannelName->setText(name);
+	if (isMaster) {
+		ui->m_pLblConnection2->setText("Out 2");
 	} else {
-		ui->m_pLblChannelName->setText(this->getChannelName());
-	}*/
+		ui->m_pLblConnection2->setText(tr("-- Mono --"));
+	}
 }
 
 void AudioMixerOutputChannelWidget::createOutputMenu() {
@@ -331,11 +320,6 @@ void AudioMixerOutputChannelWidget::queryOutputValues() {
 void AudioMixerOutputChannelWidget::setOutputValues(
 	std::shared_ptr<RetSetMixerOutputControlValue>
 		retSetMixerOutputControlValue) {
-	/*QString name =
-		"CN: " + QString::number(m_iMixerChannelId) + " IN " +
-		QString::number(retSetMixerOutputControlValue->getMixerInputNumber()) +
-		" ON: " +
-		QString::number(retSetMixerOutputControlValue->getMixerOutputNumber());*/
 	if (m_pMixerOutputControl->hasPanControl() &&
 		retSetMixerOutputControlValue->hasPanControl()) {
 		ui->m_pSlidePan->setValue(retSetMixerOutputControlValue->getPan());
@@ -353,16 +337,8 @@ void AudioMixerOutputChannelWidget::setOutputValues(
 		retSetMixerOutputControlValue->setHasMuteControl(false);
 	}
 	if (m_pMixerOutputControl->hasSoloControl()) {
-		std::cout << "get Solo Value: (" << m_iMixerChannelId << ") "
-				  << retSetMixerOutputControlValue->getSolo() << ", encoded: "
-				  << this->m_pChannelCalc->encode(
-						 retSetMixerOutputControlValue->getSolo())
-				  << ", decoded: "
-				  << this->m_pChannelCalc->decode(
-						 retSetMixerOutputControlValue->getSolo())
-				  << std::endl;
-		ui->m_pDial->setValue(this->m_pChannelCalc->encode(
-			retSetMixerOutputControlValue->getSolo()));
+		ui->m_pDial->setValue(static_cast<int>(this->m_pChannelCalc->encode(
+			retSetMixerOutputControlValue->getSolo())));
 		retSetMixerOutputControlValue->setHasSoloControl(false);
 	}
 	if (m_pMixerOutputControl->hasSoloPFLControl()) {
@@ -384,8 +360,8 @@ void AudioMixerOutputChannelWidget::setOutputValues(
 
 void AudioMixerOutputChannelWidget::audioChannelValueChanged() {
 	std::cout << "Value Changed " << std::endl;
-	if (this->m_pRetSetMixerOutputControlValue->execute()) {
-		refreshStatus();
+	if (this->m_pRetSetMixerOutputControlValue->execute() == 0) {
+		m_pRetSetMixerOutputControlValue->clean();
 	}
 }
 
@@ -416,7 +392,7 @@ void AudioMixerOutputChannelWidget::refreshOutput() {
 void AudioMixerOutputChannelWidget::refreshStatus() {
 	refreshOutput();
 	changeMeterVolume(m_iMixerChannelId, -10);
-	if (m_pMixerOutputControl->hasControls() && channelInit) {
+	if (m_pMixerOutputControl->hasControls() && m_bChannelInit) {
 		queryOutputValues();
 		if (this->m_pRetSetMixerOutputControlValue)
 			setOutputValues(this->m_pRetSetMixerOutputControlValue);

@@ -71,10 +71,10 @@ std::vector<unsigned char> *RetSetMixerOutputControlValue::getMessageData() {
 	}
 	if (m_bHasSoloControl) {
 		existFlag += 4;
-		BYTE_VECTOR *pan = MIDI::byteSplit7bit(
-			MIDI::inv2sComplement(static_cast<short>(m_iPan)), 3);
-		variableData->insert(variableData->end(), pan->begin(), pan->end());
-		delete pan;
+		BYTE_VECTOR *solo = MIDI::byteSplit7bit(
+			MIDI::inv2sComplement(static_cast<short>(m_iSolo)), 3);
+		variableData->insert(variableData->end(), solo->begin(), solo->end());
+		delete solo;
 	}
 	if (m_bHasSoloPFLControl) {
 		existFlag += 8;
@@ -104,7 +104,7 @@ std::vector<unsigned char> *RetSetMixerOutputControlValue::getMessageData() {
 	return messageData;
 }
 
-void RetSetMixerOutputControlValue::reset() {
+void RetSetMixerOutputControlValue::clean() {
 	m_bHasPanControl = false;
 	m_bHasInvertControl = false;
 	m_bHasStereoLinkControl = false;

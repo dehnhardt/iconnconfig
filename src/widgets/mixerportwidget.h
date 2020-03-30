@@ -25,6 +25,8 @@ class MixerPortWidget : public QWidget {
 	void setNumberOfInputChannels(unsigned int iNumberOfInputChannels);
 	void setNumberOfOutputChannels(unsigned int INumberOfOutputChannels);
 
+	void setOutputOffset(unsigned int iOutputOffset);
+
   private: // members
 	Device *m_pDevice = nullptr;
 	QLabel *m_pPortNameLabel = nullptr;
@@ -40,6 +42,7 @@ class MixerPortWidget : public QWidget {
 		m_MapAttachedOutputChannels;
 	unsigned int m_iNumberOfInputChannels = 0;
 	unsigned int m_INumberOfOutputChannels = 0;
+	unsigned int m_iOutputOffset = 0;
 	unsigned int m_iCurrentMeterQuery = 0;
 
   private: // methods
@@ -59,8 +62,8 @@ class MixerPortWidget : public QWidget {
 						   ChannelDirection channelDirection, bool status);
 
   signals:
-	void inMeterValueChanged(int channel, int value);
-	void outMeterValueChanged(int channel, int value);
+	void inMeterValueChanged(unsigned int channel, int value);
+	void outMeterValueChanged(unsigned int channel, int value);
 };
 
 #endif // MIXERPORTWIDGET_H

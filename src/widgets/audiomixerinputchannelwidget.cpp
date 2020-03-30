@@ -24,7 +24,7 @@ AudioMixerInputChannelWidget::AudioMixerInputChannelWidget(
 	if (l) {
 		m_pBtnSelectConnection = new QToolButton();
 		m_pBtnSelectConnection->setCheckable(false);
-		l->addWidget(new QLabel(tr("In")));
+		l->addWidget(new QLabel(tr("In   ")));
 		l->addWidget(m_pBtnSelectConnection);
 		createInputMenu();
 		m_pBtnSelectConnection->setMenu(m_pConnectionMenu);
@@ -145,7 +145,7 @@ void AudioMixerInputChannelWidget::setMixerInputControl(
 					});
 		}
 	}
-	channelInit = true;
+	m_bChannelInit = true;
 }
 
 void AudioMixerInputChannelWidget::createInputMenu() {
@@ -260,17 +260,23 @@ void AudioMixerInputChannelWidget::changeInput(
 	unsigned int audioSourcePortId, std::string audioSourcePortName,
 	unsigned int audioSourceChannelNumber, std::string audioSourceChannelName,
 	AudioPortType audioPortType) {
-	setInputName(audioSourcePortId, audioSourcePortName,
-				 audioSourceChannelNumber, audioSourceChannelName,
-				 audioPortType);
+
+	m_pMixerInputParm->setAudioSourcePortId(audioSourcePortId);
+	m_pMixerInputParm->setAudioSourceChannelNumber(audioSourceChannelNumber);
+	if (m_pMixerInputParm->execute() == 0) {
+		setInputName(audioSourcePortId, audioSourcePortName,
+					 audioSourceChannelNumber, audioSourceChannelName,
+					 audioPortType);
+	}
 }
 
 void AudioMixerInputChannelWidget::queryInputValues() {
 	std::unique_ptr<GetMixerInputControlValue> getMixerInputControlValue =
 		std::make_unique<GetMixerInputControlValue>(m_pDevice);
 	getMixerInputControlValue->setPortId(m_iPortId);
-	getMixerInputControlValue->setMixerOutputNumber(
-		m_pMixerInputParm->getAudioSourcePortId());
+	/*getMixerInputControlValue->setMixerOutputNumber(
+		m_pMixerInputParm->getAudioSourcePortId());*/
+	getMixerInputControlValue->setMixerOutputNumber(m_iConnectedOutputChannel);
 	getMixerInputControlValue->setMixerInputNumber(m_iMixerChannelId);
 
 	try {
@@ -329,8 +335,8 @@ void AudioMixerInputChannelWidget::setInputValues(
 }
 
 void AudioMixerInputChannelWidget::audioChannelValueChanged() {
-	if (this->m_pRetSetMixerInputControlValue->execute()) {
-		refreshStatus();
+	if (this->m_pRetSetMixerInputControlValue->execute() == 0) {
+		m_pRetSetMixerInputControlValue->clean();
 	}
 }
 
@@ -349,8 +355,10 @@ void AudioMixerInputChannelWidget::setMaster(bool isMaster,
 		name.append(" / ");
 		name.append(channel2Name);
 		ui->m_pLblChannelName->setText(name);
+		ui->m_pLblConnection2->setText("In 2");
 	} else {
 		ui->m_pLblChannelName->setText(this->getChannelName());
+		ui->m_pLblConnection2->setText(tr("-- Mono --"));
 	}
 }
 
@@ -368,10 +376,14 @@ void AudioMixerInputChannelWidget::refreshInput() {
 void AudioMixerInputChannelWidget::refreshStatus() {
 	refreshInput();
 	changeMeterVolume(m_iMixerChannelId, -10);
-	if (m_pMixerInputControl->hasControls() && channelInit &&
-		m_iSourceChannelId && m_iSourcePortId) {
+	if (m_pMixerInputControl->hasControls() && m_bChannelInit) {
 		queryInputValues();
 		if (this->m_pRetSetMixerInputControlValue)
 			setInputValues(this->m_pRetSetMixerInputControlValue);
 	}
+}
+
+void AudioMixerInputChannelWidget::setConnectedOutputChannel(
+	const AudioChannelId &iConnectedOutputChannel) {
+	m_iConnectedOutputChannel = iConnectedOutputChannel;
 }

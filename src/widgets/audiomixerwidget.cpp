@@ -14,6 +14,7 @@
 #include "audiomixeroutputchannelwidget.h"
 #include "centralwidget.h"
 #include "mixerportwidget.h"
+#include "portdisplayhelper.h"
 
 #include <QHBoxLayout>
 #include <QLabel>
@@ -113,7 +114,8 @@ void AudioMixerWidget::mixerConfigurationChanged(
 		unsigned int portId = it->first;
 		AudioPortMixerBlock mb = it->second;
 		if (mb.numberOfMixerOutputs > 0) {
-			for (unsigned int i = 1; i < mb.numberOfMixerOutputs;) {
+			for (AudioChannelId audioOutputChannelId = 1;
+				 audioOutputChannelId < mb.numberOfMixerOutputs;) {
 				std::unique_ptr<GetMixerOutputControl> getOutputControl =
 					std::make_unique<GetMixerOutputControl>(m_pDevice);
 				getOutputControl->setPortId(portId);
@@ -121,8 +123,9 @@ void AudioMixerWidget::mixerConfigurationChanged(
 					std::dynamic_pointer_cast<RetMixerOutputControl>(
 						getOutputControl->querySmart());
 				MixerPortWidget *mpw = new MixerPortWidget(portId, m_pDevice);
-
-				mpw->setName(tr("Port ") + QString::number(portId));
+				mpw->setOutputOffset(audioOutputChannelId);
+				// mpw->setName(tr("Port ") + QString::number(portId));
+				QString portName;
 				if (mb.numberOfMixerInputs > 0) {
 					mpw->setNumberOfInputChannels(mb.numberOfMixerInputs);
 					std::unique_ptr<GetMixerInputControl> getInputControl =
@@ -131,31 +134,53 @@ void AudioMixerWidget::mixerConfigurationChanged(
 					std::shared_ptr<RetMixerInputControl> retMixerInputControl =
 						std::dynamic_pointer_cast<RetMixerInputControl>(
 							getInputControl->querySmart());
-					for (unsigned int i = 1; i <= mb.numberOfMixerInputs; i++) {
+					for (AudioChannelId audioInputChannelId = 1;
+						 audioInputChannelId <= mb.numberOfMixerInputs;
+						 audioInputChannelId++) {
 						AudioMixerInputChannelWidget *amcw =
 							new AudioMixerInputChannelWidget(
-								m_pDevice, portId, i,
+								m_pDevice, portId, audioInputChannelId,
 								ChannelDirection::CD_INPUT);
 						amcw->setMixerInputControl(retMixerInputControl);
+						amcw->setConnectedOutputChannel(audioOutputChannelId);
 						connect(
 							mpw, &MixerPortWidget::inMeterValueChanged, amcw,
 							&AudioMixerInputChannelWidget::changeMeterVolume);
-						mpw->addMixerPanel(amcw, ChannelDirection::CD_INPUT, i);
+						mpw->addMixerPanel(amcw, ChannelDirection::CD_INPUT,
+										   audioInputChannelId);
 					}
 				}
 				mpw->setNumberOfOutputChannels(2);
-				for (unsigned int j = 1; j <= 2; j++, i++) {
+				for (unsigned int j = 0; j < 2; j++, audioOutputChannelId++) {
 					AudioMixerOutputChannelWidget *amcw =
 						new AudioMixerOutputChannelWidget(
-							m_pDevice, portId, i, ChannelDirection::CD_OUTPUT);
+							m_pDevice, portId, audioOutputChannelId,
+							ChannelDirection::CD_OUTPUT);
 					amcw->setMixerOutputControl(retMixerOutputControl);
 					connect(mpw, &MixerPortWidget::outMeterValueChanged, amcw,
 							&AudioMixerOutputChannelWidget::changeMeterVolume);
-					mpw->addMixerPanel(amcw, ChannelDirection::CD_OUTPUT, i);
+					mpw->addMixerPanel(amcw, ChannelDirection::CD_OUTPUT,
+									   audioOutputChannelId);
+					if (j == 0) {
+						AudioPortChannelId audioPortChannelId =
+							channelIndex(portId, AudioPortClass::MIXER_PORT,
+										 audioOutputChannelId);
+						try {
+							portName = m_pDevice->getAudioMixerOutputChannels()
+										   ->at(audioPortChannelId)
+										   ->getMixerName()
+										   .c_str();
+						} catch (...) {
+							portName = tr("unknown");
+						}
+					}
 				}
 				mpw->addStretch();
-				m_pMixerPartsTab->addTab(mpw,
-										 tr("Port ") + QString::number(portId));
+				m_pMixerPartsTab->addTab(
+					mpw,
+					PortDisplayHelper::getAudioPortIcon(
+						m_pDevice->getAudioPort(portId)->getAudioPortType()),
+					tr("Port ") + QString::number(portId) + " / " + portName);
 			}
 		}
 	}

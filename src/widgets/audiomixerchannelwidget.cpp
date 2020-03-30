@@ -19,6 +19,18 @@ AudioMixerChannelWidget::AudioMixerChannelWidget(QWidget *parent)
 
 AudioMixerChannelWidget::~AudioMixerChannelWidget() {}
 
+QFrame *AudioMixerChannelWidget::getFirstConnectionFrame() {
+	return this->ui->m_pFrmUpperMixerPanel;
+}
+
+QFrame *AudioMixerChannelWidget::getSecondConnectionFrame() {
+	return this->ui->m_pFrmUpperMixerPanel2;
+}
+
+QToolButton *AudioMixerChannelWidget::getConnectionButton() {
+	return m_pBtnSelectConnection;
+}
+
 QString AudioMixerChannelWidget::getChannelName() {
 	return QString::number(m_iMixerChannelId);
 }
@@ -35,6 +47,7 @@ void AudioMixerChannelWidget::initControls() {
 	ui->m_pTbPfl->setVisible(false);
 	ui->m_pTbInvert->setVisible(false);
 	ui->m_pChbStereoLink->setVisible(false);
+	ui->m_pFrmUpperMixerPanel2->setEnabled(false);
 
 	ui->m_pTbMute->setColor(255, 0, 0);
 	ui->m_pTbSolo->setColor(255, 188, 17);

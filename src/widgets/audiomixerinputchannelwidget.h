@@ -37,9 +37,10 @@ class AudioMixerInputChannelWidget : public AudioMixerChannelWidget {
 	void refreshInput();
 	void refreshStatus() override;
 
+	void
+	setConnectedOutputChannel(const AudioChannelId &iConnectedOutputChannel);
+
   private:
-	QToolButton *m_pBtnSelectConnection = nullptr;
-	QMenu *m_pConnectionMenu = nullptr;
 	std::shared_ptr<ScaleCalc> m_pChannelCalc = nullptr;
 
 	std::shared_ptr<RetSetMixerInputParm> m_pMixerInputParm = nullptr;
@@ -50,6 +51,7 @@ class AudioMixerInputChannelWidget : public AudioMixerChannelWidget {
 
 	AudioPortId m_iSourcePortId = 0;
 	AudioChannelId m_iSourceChannelId = 0;
+	AudioChannelId m_iConnectedOutputChannel = 0;
 
   private: // methods
 	void createInputMenu();

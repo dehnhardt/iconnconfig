@@ -103,7 +103,7 @@ std::vector<unsigned char> *RetSetMixerInputControlValue::getMessageData() {
 	return messageData;
 }
 
-void RetSetMixerInputControlValue::reset() {
+void RetSetMixerInputControlValue::clean() {
 	m_bHasPanControl = false;
 	m_bHasInvertControl = false;
 	m_bHasStereoLinkControl = false;

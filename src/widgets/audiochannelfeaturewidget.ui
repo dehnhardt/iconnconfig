@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>90</width>
-    <height>420</height>
+    <height>440</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,13 +19,13 @@
   <property name="minimumSize">
    <size>
     <width>90</width>
-    <height>420</height>
+    <height>440</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>90</width>
-    <height>420</height>
+    <height>440</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -128,6 +128,9 @@
    </item>
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="spacing">
+      <number>2</number>
+     </property>
      <item>
       <widget class="QFrame" name="m_pFrmUpperMixerPanel">
        <property name="sizePolicy">
@@ -262,6 +265,66 @@
        </layout>
       </widget>
      </item>
+     <item>
+      <widget class="QFrame" name="m_pFrmUpperMixerPanel2">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>76</width>
+         <height>22</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>100</width>
+         <height>22</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>7</pointsize>
+        </font>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <property name="spacing">
+         <number>2</number>
+        </property>
+        <property name="leftMargin">
+         <number>2</number>
+        </property>
+        <property name="topMargin">
+         <number>2</number>
+        </property>
+        <property name="rightMargin">
+         <number>2</number>
+        </property>
+        <property name="bottomMargin">
+         <number>2</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="m_pLblConnection2">
+          <property name="text">
+           <string notr="true">-- Mono --</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
      <item alignment="Qt::AlignLeft">
       <widget class="QFrame" name="m_pFrmVolume">
        <property name="sizePolicy">
@@ -288,10 +351,10 @@
        <widget class="QLabel" name="m_plblTrimPan">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>22</width>
-          <height>16</height>
+          <x>5</x>
+          <y>5</y>
+          <width>40</width>
+          <height>21</height>
          </rect>
         </property>
         <property name="sizePolicy">
@@ -300,9 +363,15 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="minimumSize">
+         <size>
+          <width>40</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
-          <width>30</width>
+          <width>40</width>
           <height>16777215</height>
          </size>
         </property>
@@ -312,16 +381,22 @@
          </font>
         </property>
         <property name="text">
-         <string>Trim</string>
+         <string>Trim:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="PKSlider" name="m_pSlideVolume">
         <property name="geometry">
          <rect>
           <x>40</x>
-          <y>60</y>
+          <y>40</y>
           <width>40</width>
-          <height>261</height>
+          <height>281</height>
          </rect>
         </property>
         <property name="sizePolicy">
@@ -361,8 +436,8 @@
        <widget class="QDial" name="m_pDial">
         <property name="geometry">
          <rect>
-          <x>40</x>
-          <y>10</y>
+          <x>50</x>
+          <y>0</y>
           <width>30</width>
           <height>31</height>
          </rect>
@@ -387,9 +462,9 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>60</y>
+          <y>40</y>
           <width>37</width>
-          <height>261</height>
+          <height>281</height>
          </rect>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout">
@@ -480,10 +555,13 @@
         <property name="geometry">
          <rect>
           <x>4</x>
-          <y>40</y>
+          <y>25</y>
           <width>70</width>
           <height>16</height>
          </rect>
+        </property>
+        <property name="toolTip">
+         <string>Pan / Balance</string>
         </property>
         <property name="styleSheet">
          <string notr="true">QSlider { padding: 0; margin: 0;}
@@ -509,12 +587,13 @@ QSlider::add-page:horizontal {
   margin-right: 2px;
 }
 QSlider::handle:horizontal {
-  background: #ced7d9;
+  background: #11CC11;
   border: 1px solid #777;
-  width: 10px;
-  margin-right: -2px;
-  margin-left: -2px;
-  border-radius: 4px;
+  width: 6px;
+  height: 10px;
+  margin-top: -2px;
+  margin-bottom: -2px;
+  border-radius: 3px;
 }
 </string>
         </property>

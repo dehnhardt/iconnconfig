@@ -2,8 +2,10 @@
 #define AUDIOMIXERCHANNELWIDGET_H
 
 #include <QFrame>
+#include <QMenu>
 #include <QObject>
 #include <QTimer>
+#include <QToolButton>
 
 #include "../device.h"
 
@@ -21,6 +23,10 @@ class AudioMixerChannelWidget : public QFrame {
 	AudioMixerChannelWidget(QWidget *parent);
 	~AudioMixerChannelWidget();
 
+	QFrame *getFirstConnectionFrame();
+	QFrame *getSecondConnectionFrame();
+	QToolButton *getConnectionButton();
+
 	virtual void setMaster(bool isMaster, QString channel2Name) = 0;
 	virtual void refreshStatus() = 0;
 	virtual QString getChannelName();
@@ -28,9 +34,11 @@ class AudioMixerChannelWidget : public QFrame {
   protected:
 	Ui::AudioChannelFeatureWidget *ui;
 	QTimer *m_pUpdateTimer = nullptr;
+	QToolButton *m_pBtnSelectConnection = nullptr;
+	QMenu *m_pConnectionMenu = nullptr;
 	ChannelDirection m_channelDirection = ChannelDirection::CD_NONE;
 	Device *m_pDevice = nullptr;
-	bool channelInit = false;
+	bool m_bChannelInit = false;
 	AudioPortId m_iPortId = 0;
 	AudioChannelId m_iMixerChannelId = 0;
 	bool m_bIsMaster = false;
