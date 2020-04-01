@@ -11,8 +11,7 @@ void RetSetMixerOutputParm::parseAnswerData() {
 	m_iNumberOfOutputAssignments = m_pData->at(4);
 	unsigned long offset = 5;
 	for (unsigned int i = 0; i < m_iNumberOfOutputAssignments; i++) {
-		m_vAudioSinkChannelIds.push_back(
-			m_pData->at(offset + static_cast<unsigned long>(i)));
+		m_vAudioSinkChannelIds.push_back(m_pData->at(offset));
 		++offset;
 	}
 	m_iMaxNameLength = m_pData->at(offset);
@@ -63,18 +62,23 @@ void RetSetMixerOutputParm::setMixerChannelNumber(
 
 void RetSetMixerOutputParm::changeMixerOutputAssignment(
 	AudioChannelId audioChanneId, bool assigned) {
-	if (assigned) {
-		for (AudioChannelId existingAudioChannelId : m_vAudioSinkChannelIds) {
-			if (existingAudioChannelId == audioChanneId)
-				return;
-		}
-		m_vAudioSinkChannelIds.push_back(audioChanneId);
+	if (audioChanneId == 0) {
+		m_vAudioSinkChannelIds.clear();
 	} else {
-		for (std::vector<unsigned int>::iterator it =
-				 m_vAudioSinkChannelIds.begin();
-			 it < m_vAudioSinkChannelIds.end(); ++it) {
-			if (*it == audioChanneId)
-				m_vAudioSinkChannelIds.erase(it);
+		if (assigned) {
+			for (AudioChannelId existingAudioChannelId :
+				 m_vAudioSinkChannelIds) {
+				if (existingAudioChannelId == audioChanneId)
+					return;
+			}
+			m_vAudioSinkChannelIds.push_back(audioChanneId);
+		} else {
+			for (std::vector<unsigned int>::iterator it =
+					 m_vAudioSinkChannelIds.begin();
+				 it < m_vAudioSinkChannelIds.end(); ++it) {
+				if (*it == audioChanneId)
+					m_vAudioSinkChannelIds.erase(it);
+			}
 		}
 	}
 	m_iNumberOfOutputAssignments =

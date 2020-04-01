@@ -34,19 +34,21 @@ class AudioRoutingWidget : public QWidget {
 
   public:
 	explicit AudioRoutingWidget(Device *device, QWidget *parent = nullptr);
-	~AudioRoutingWidget();
+	~AudioRoutingWidget() override;
 	void loadHeaderStructure();
 	void loadTableData();
 
   public slots:
 	bool modelDataChanged(QModelIndex index, AudioPortChannelId source,
 						  AudioPortChannelId sink, bool value);
+	void needsDataReload();
 
   private:
 	Ui::AudioRoutingWidget *ui;
 	Device *m_pDevice = nullptr;
 	RoutingTableModel *m_pRoutingTableModel = nullptr;
 	unsigned int m_iNumberOfAudioPorts = 0;
+	bool m_bDataReload = true;
 
 	std::vector<AudioPortChannelId> m_vColumns;
 	std::vector<AudioPortChannelId> m_vRows;
@@ -58,13 +60,18 @@ class AudioRoutingWidget : public QWidget {
 	bool modifyMixerSourceConnection(
 		AudioPortChannelId source,
 		std::shared_ptr<AudioRoutingChannel> sinkChannel, bool value);
+
+	// QWidget interface
+  protected:
+	virtual void showEvent(QShowEvent *event) override;
 };
 
 class RoutingTableModel : public QAbstractTableModel {
 	Q_OBJECT
 
   public:
-	RoutingTableModel(QObject *parent = nullptr);
+	RoutingTableModel(AudioRoutingWidget *audioRoutingWidget,
+					  QObject *parent = nullptr);
 
 	void setAudioPatchbayParm(
 		const std::shared_ptr<RetSetAudioPatchbayParm> audioPatchbayParm);
@@ -75,6 +82,8 @@ class RoutingTableModel : public QAbstractTableModel {
 	void setColumns(std::vector<AudioPortChannelId> columns) {
 		m_vColumns = columns;
 	}
+	void cleanData();
+	void refreshAll();
 
 	AudioPortChannelId getRowAudioPortChanneId(unsigned long row) {
 		try {
@@ -91,6 +100,7 @@ class RoutingTableModel : public QAbstractTableModel {
 			return 0;
 		}
 	}
+
 	bool getValue(AudioPortChannelId column, AudioPortChannelId row) const;
 
 	std::unique_ptr<QStandardItemModel> m_pHorizontalHeaderItemModel = nullptr;
@@ -117,6 +127,8 @@ class RoutingTableModel : public QAbstractTableModel {
 	MixerSink m_MapTableData;
 	std::vector<AudioPortChannelId> m_vColumns;
 	std::vector<AudioPortChannelId> m_vRows;
+
+	AudioRoutingWidget *m_pAudioRoutigWidget = nullptr;
 
 	void eraseColumn(unsigned int column);
 	bool checkConnectionValid(AudioPortChannelId source,

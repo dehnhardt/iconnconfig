@@ -60,10 +60,12 @@ class MixerPortWidget : public QWidget {
   public slots:
 	void linkStatusChanged(AudioChannelId mixerChannelId,
 						   ChannelDirection channelDirection, bool status);
+	void changeChannelConnection();
 
   signals:
 	void inMeterValueChanged(unsigned int channel, int value);
 	void outMeterValueChanged(unsigned int channel, int value);
+	void channelConnectionChanged();
 };
 
 #endif // MIXERPORTWIDGET_H

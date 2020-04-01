@@ -545,15 +545,20 @@ std::shared_ptr<RetSetMixerPortParm> Device::getMixerPortParm() {
 }
 
 std::shared_ptr<AudioMixerOutputChannels>
-Device::getAudioMixerOutputChannels() {
-	if (!m_pAudioMixerOutputChannels) {
+Device::getAudioMixerOutputChannels(bool refresh) {
+	if (!m_pAudioMixerOutputChannels || refresh) {
+		if (refresh)
+			m_pAudioMixerOutputChannels = nullptr;
 		queryAudioMixerChannels(ChannelDirection::CD_OUTPUT);
 	}
 	return m_pAudioMixerOutputChannels;
 }
 
-std::shared_ptr<AudioMixerInputChannels> Device::getAudioMixerInputChannels() {
-	if (!m_pAudioMixerInputChannels) {
+std::shared_ptr<AudioMixerInputChannels>
+Device::getAudioMixerInputChannels(bool refresh) {
+	if (!m_pAudioMixerInputChannels || refresh) {
+		if (refresh)
+			m_pAudioMixerInputChannels = nullptr;
 		queryAudioMixerChannels(ChannelDirection::CD_INPUT);
 	}
 	return m_pAudioMixerInputChannels;

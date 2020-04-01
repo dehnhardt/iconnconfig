@@ -11,8 +11,14 @@ class AudioWidget : public MultiInfoWidget {
 
   public:
 	AudioWidget(MioMain *parent = nullptr, Device *m_pDevice = nullptr,
-				QString windowTitle = tr("Audio Routing"));
+				QString windowTitle = tr("Audio Mixing/Routing"));
 	~AudioWidget();
+
+  public slots:
+	void changeChannelConnection();
+
+  signals:
+	void channelConnectionChanged();
 
   protected:
 	QWidget *createWidget(MultiInfoListEntry *entry);

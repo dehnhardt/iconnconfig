@@ -1,8 +1,10 @@
 #include "audiomixerchannelwidget.h"
 #include "ui_audiochannelfeaturewidget.h"
 
+#include "../sysex/retsetaudioportparm.h"
+
 AudioMixerChannelWidget::AudioMixerChannelWidget(
-	Device *device, unsigned int portId, unsigned int channelNumber,
+	Device *device, AudioPortId portId, AudioChannelId channelNumber,
 	ChannelDirection channelDirection, QWidget *parent)
 	: QFrame(parent), ui(new Ui::AudioChannelFeatureWidget),
 	  m_channelDirection(channelDirection), m_pDevice(device),
@@ -10,6 +12,7 @@ AudioMixerChannelWidget::AudioMixerChannelWidget(
 	m_pUpdateTimer = new QTimer();
 	m_pUpdateTimer->setInterval(10);
 	m_pUpdateTimer->setSingleShot(true);
+	m_iPortType = m_pDevice->getAudioPort(portId)->getAudioPortType();
 	connect(m_pUpdateTimer, &QTimer::timeout, this,
 			&AudioMixerChannelWidget::audioChannelValueChanged);
 }

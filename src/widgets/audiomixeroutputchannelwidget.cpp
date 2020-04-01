@@ -30,8 +30,8 @@ AudioMixerOutputChannelWidget::AudioMixerOutputChannelWidget(
 	if (l) {
 		m_pBtnSelectConnection = new QToolButton();
 		m_pBtnSelectConnection->setCheckable(false);
-		l->addWidget(new QLabel(tr("Out")));
-		l->addStretch();
+		QLabel *lbl = new QLabel(tr("O 1"));
+		l->addWidget(lbl);
 		l->addWidget(m_pBtnSelectConnection);
 		createOutputMenu();
 		m_pBtnSelectConnection->setMenu(m_pConnectionMenu);
@@ -175,9 +175,11 @@ void AudioMixerOutputChannelWidget::setMaster(bool isMaster,
 	this->ui->m_pPBRight->setVisible(isMaster);
 	m_bIsMaster = isMaster;
 	if (isMaster) {
-		ui->m_pLblConnection2->setText("Out 2");
+		ui->m_pLblConnection2->setText("O 2");
+		ui->m_pLblConnection2->setAlignment(Qt::AlignLeft);
 	} else {
 		ui->m_pLblConnection2->setText(tr("-- Mono --"));
+		ui->m_pLblConnection2->setAlignment(Qt::AlignCenter);
 	}
 }
 
@@ -189,13 +191,10 @@ void AudioMixerOutputChannelWidget::createOutputMenu() {
 		m_pDevice->getAudioPortStructure();
 	QAction *qANone = m_pConnectionMenu->addAction(tr(" - none - "));
 	QAction *qAMultiple = m_pConnectionMenu->addAction(tr(" - multiple - "));
-	connect(qANone, &QAction::triggered, [=]() {
+	qAMultiple->setEnabled(false);
+	connect(qANone, &QAction::triggered, [=](bool active) {
 		std::cout << "Audio port selected" << std::endl;
-		changeOutput(0, "", 0, "", AudioPortType::APT_NONE);
-	});
-	connect(qAMultiple, &QAction::triggered, [=]() {
-		std::cout << "Audio port selected" << std::endl;
-		changeOutput(0, "", 0, "", AudioPortType::APT_NONE);
+		changeOutput(0, active);
 	});
 	AudioPortStructure::iterator itPortType;
 	for (itPortType = aps->begin(); itPortType != aps->end(); ++itPortType) {
@@ -227,11 +226,10 @@ void AudioMixerOutputChannelWidget::createOutputMenu() {
 								  channelName->getChannelName().c_str());
 				a->setCheckable(true);
 				a->setProperty("channelId", channelId);
-				connect(a, &QAction::triggered, [=]() {
-					std::cout << "Audio port selected" << std::endl;
-					changeOutput(portId, app->getPortName(), channelId,
-								 channelName->getChannelName(),
-								 AudioPortType(section));
+				connect(a, &QAction::triggered, [=](bool active) {
+					std::cout << "Audio port triggered"
+							  << (active ? " true" : " false") << std::endl;
+					changeOutput(channelId, active);
 				});
 			}
 		}
@@ -242,14 +240,14 @@ void AudioMixerOutputChannelWidget::setOutput(
 	std::vector<unsigned int> audioSinkChannelNumbers) {
 	if (audioSinkChannelNumbers.size() == 0) {
 		setOutputName(0, "none", 0, "", AudioPortType::APT_NONE);
-		return;
 	} else if (audioSinkChannelNumbers.size() > 1) {
 		setOutputName(0, "multiple", 0, "", AudioPortType::APT_NONE);
 	}
-	for (unsigned int channel : audioSinkChannelNumbers) {
-		for (QAction *action : m_pConnectionMenu->actions()) {
+	for (QAction *action : m_pConnectionMenu->actions()) {
+		bool found = false;
+		for (unsigned int channel : audioSinkChannelNumbers) {
 			if (action->property("channelId") == channel) {
-				action->setChecked(true);
+				found = true;
 				if (audioSinkChannelNumbers.size() == 1) {
 					if (channel == 0) {
 						setOutputName(0, "none", 0, "",
@@ -262,12 +260,12 @@ void AudioMixerOutputChannelWidget::setOutput(
 							channelNames[channel];
 						setOutputName(m_iPortId, "none", channel,
 									  channelName->getChannelName(),
-									  AudioPortType::APT_NONE);
+									  m_iPortType);
 					}
-					break;
 				}
 			}
 		}
+		action->setChecked(found);
 	}
 }
 
@@ -359,7 +357,6 @@ void AudioMixerOutputChannelWidget::setOutputValues(
 }
 
 void AudioMixerOutputChannelWidget::audioChannelValueChanged() {
-	std::cout << "Value Changed " << std::endl;
 	if (this->m_pRetSetMixerOutputControlValue->execute() == 0) {
 		m_pRetSetMixerOutputControlValue->clean();
 	}
@@ -372,11 +369,15 @@ void AudioMixerOutputChannelWidget::changeLinkStatus(bool enabled) {
 }
 
 void AudioMixerOutputChannelWidget::changeOutput(
-	unsigned int audioSinkPortId, std::string audioSinkPortName,
-	unsigned int audioSinkChannelNumber, std::string audioSinkChannelName,
-	AudioPortType audioPortType) {
-	setOutputName(audioSinkPortId, audioSinkPortName, audioSinkChannelNumber,
-				  audioSinkChannelName, audioPortType);
+	unsigned int audioSinkChannelNumber, bool active) {
+	m_pMixerOutputParm->setDebug(true);
+	m_pMixerOutputParm->changeMixerOutputAssignment(audioSinkChannelNumber,
+													active);
+	if (m_pMixerOutputParm->execute() == 0) {
+		m_pDevice->getAudioMixerOutputChannels(true);
+		refreshOutput();
+		emit channelConnectionChanged();
+	}
 }
 
 void AudioMixerOutputChannelWidget::refreshOutput() {

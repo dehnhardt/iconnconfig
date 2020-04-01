@@ -37,6 +37,10 @@ class AudioMixerWidget : public QWidget {
   public slots:
 	void audioConfigurationChanged(unsigned int audioConfigurationNumber);
 	void mixerConfigurationChanged(unsigned int mixerConfigurationNumber);
+	void changeChannelConnection();
+
+  signals:
+	void channelConnectionChanged();
 };
 
 #endif // AUDIOMIXERWIDGET_H

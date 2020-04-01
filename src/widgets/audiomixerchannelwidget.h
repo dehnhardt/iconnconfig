@@ -16,8 +16,8 @@ class AudioChannelFeatureWidget;
 class AudioMixerChannelWidget : public QFrame {
 	Q_OBJECT
   public:
-	AudioMixerChannelWidget(Device *device, unsigned int portId,
-							unsigned int channelNumber,
+	AudioMixerChannelWidget(Device *device, AudioPortId portId,
+							AudioChannelId channelNumber,
 							ChannelDirection channelDirection, QWidget *parent);
 
 	AudioMixerChannelWidget(QWidget *parent);
@@ -40,6 +40,7 @@ class AudioMixerChannelWidget : public QFrame {
 	Device *m_pDevice = nullptr;
 	bool m_bChannelInit = false;
 	AudioPortId m_iPortId = 0;
+	AudioPortType m_iPortType = AudioPortType::APT_NONE;
 	AudioChannelId m_iMixerChannelId = 0;
 	bool m_bIsMaster = false;
 
@@ -54,6 +55,7 @@ class AudioMixerChannelWidget : public QFrame {
 	void muteStatusChanged(bool status);
 	void volumeChanged(int volume);
 	void panChanged(int trim);
+	void channelConnectionChanged();
 
   private slots:
 	virtual void audioChannelValueChanged() = 0;

@@ -34,9 +34,9 @@ AudioRoutingWidget::AudioRoutingWidget(Device *device, QWidget *parent)
 	}";
 	ui->m_pTblRouting->setStyleSheet(style);
 	ui->m_pTblRouting->setFocusPolicy(Qt::NoFocus);
-	m_pRoutingTableModel = new RoutingTableModel();
+	m_pRoutingTableModel = new RoutingTableModel(this);
 	loadHeaderStructure();
-	loadTableData();
+	ui->m_pTblRouting->setModel(m_pRoutingTableModel);
 	connect(m_pRoutingTableModel, &RoutingTableModel::modelDataChanged, this,
 			&AudioRoutingWidget::modelDataChanged);
 }
@@ -189,6 +189,14 @@ void AudioRoutingWidget::loadHeaderStructure() {
 	m_pRoutingTableModel->setColumns(m_vColumns);
 }
 
+void AudioRoutingWidget::showEvent(__attribute__((unused)) QShowEvent *event) {
+	if (m_bDataReload) {
+		std::cout << "show with reload" << std::endl;
+		m_pRoutingTableModel->refreshAll();
+		m_bDataReload = false;
+	}
+}
+
 void AudioRoutingWidget::loadTableData() {
 	std::unique_ptr<GetAudioPatchbayParm> getAudioPatchdayParm =
 		std::make_unique<GetAudioPatchbayParm>(m_pDevice);
@@ -245,9 +253,9 @@ void AudioRoutingWidget::loadTableData() {
 		}
 	}
 	m_pRoutingTableModel->addAudioPatches(mixerConnections);
-
-	ui->m_pTblRouting->setModel(m_pRoutingTableModel);
 }
+
+void AudioRoutingWidget::needsDataReload() { m_bDataReload = true; }
 
 bool AudioRoutingWidget::modelDataChanged(__attribute__((unused))
 										  QModelIndex index,
@@ -355,8 +363,9 @@ bool AudioRoutingWidget::modifyPhysicalPortConnection(
 	return false;
 }
 
-RoutingTableModel::RoutingTableModel(QObject *parent)
-	: QAbstractTableModel(parent) {
+RoutingTableModel::RoutingTableModel(AudioRoutingWidget *audioRoutingWidget,
+									 QObject *parent)
+	: QAbstractTableModel(parent), m_pAudioRoutigWidget(audioRoutingWidget) {
 	m_pHorizontalHeaderItemModel = std::make_unique<QStandardItemModel>(parent);
 	m_pVerticalHeaderItemModel = std::make_unique<QStandardItemModel>(parent);
 }
@@ -519,3 +528,12 @@ decodeRoutingChannel(AudioPortChannelId audioPortChannelId) {
 	channel->auioChannelId = audioPortChannelId % 100;
 	return channel;
 }
+
+void RoutingTableModel::refreshAll() {
+	beginResetModel();
+	m_MapTableData.clear();
+	m_pAudioRoutigWidget->loadTableData();
+	endResetModel();
+}
+
+void RoutingTableModel::cleanData() { m_MapTableData.clear(); }

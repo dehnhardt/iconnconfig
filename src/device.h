@@ -173,8 +173,10 @@ class Device {
 	std::shared_ptr<RetSetAudioPortParm> getAudioPort(AudioPortId audioPortId);
 
 	std::shared_ptr<RetSetMixerPortParm> getMixerPortParm();
-	std::shared_ptr<AudioMixerInputChannels> getAudioMixerInputChannels();
-	std::shared_ptr<AudioMixerOutputChannels> getAudioMixerOutputChannels();
+	std::shared_ptr<AudioMixerInputChannels>
+	getAudioMixerInputChannels(bool refresh = false);
+	std::shared_ptr<AudioMixerOutputChannels>
+	getAudioMixerOutputChannels(bool refresh = false);
 
   private:
 	// Midi methods

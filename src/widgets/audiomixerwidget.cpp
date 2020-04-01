@@ -162,6 +162,8 @@ void AudioMixerWidget::mixerConfigurationChanged(
 					mpw->addMixerPanel(amcw, ChannelDirection::CD_OUTPUT,
 									   audioOutputChannelId);
 					if (j == 0) {
+						// Use the name of the first output from evey output
+						// pair as the panel name
 						AudioPortChannelId audioPortChannelId =
 							channelIndex(portId, AudioPortClass::MIXER_PORT,
 										 audioOutputChannelId);
@@ -181,7 +183,13 @@ void AudioMixerWidget::mixerConfigurationChanged(
 					PortDisplayHelper::getAudioPortIcon(
 						m_pDevice->getAudioPort(portId)->getAudioPortType()),
 					tr("Port ") + QString::number(portId) + " / " + portName);
+				connect(mpw, &MixerPortWidget::channelConnectionChanged, this,
+						&AudioMixerWidget::changeChannelConnection);
 			}
 		}
 	}
+}
+
+void AudioMixerWidget::changeChannelConnection() {
+	emit channelConnectionChanged();
 }

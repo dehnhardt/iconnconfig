@@ -26,6 +26,8 @@ void MixerPortWidget::addMixerPanel(AudioMixerChannelWidget *mixerPanel,
 	m_pMixerPanelLayout->addWidget(mixerPanel);
 	connect(mixerPanel, &AudioMixerChannelWidget::linkStatusChanged, this,
 			&MixerPortWidget::linkStatusChanged);
+	connect(mixerPanel, &AudioMixerChannelWidget::channelConnectionChanged,
+			this, &MixerPortWidget::channelConnectionChanged);
 }
 
 void MixerPortWidget::setNumberOfInputChannels(
@@ -72,6 +74,7 @@ void MixerPortWidget::getVolumes() {
 
 void MixerPortWidget::timerElapsed() {
 	for (unsigned int i = 0; i < m_INumberOfOutputChannels; i++) {
+		m_pGetMixerMeterValue->setPortDirections(PortDirection::BOTH);
 		m_pGetMixerMeterValue->setOutputNumber(m_iOutputOffset + i);
 		std::shared_ptr<RetMixerMeterValue> rapmv =
 			std::dynamic_pointer_cast<RetMixerMeterValue>(
@@ -80,12 +83,18 @@ void MixerPortWidget::timerElapsed() {
 			ChannelVolumes v = rapmv->getVolumes();
 			for (auto channelVolume = v.in.begin(); channelVolume != v.in.end();
 				 ++channelVolume)
-				emit inMeterValueChanged(channelVolume->channel,
-										 channelVolume->volume);
+				emit inMeterValueChanged(
+					static_cast<unsigned int>(channelVolume->channel),
+					channelVolume->volume);
 			for (auto channelVolume = v.out.begin();
-				 channelVolume != v.out.end(); ++channelVolume)
+				 channelVolume != v.out.end(); ++channelVolume) {
+				if ((m_iPortId == 1) && channelVolume->volume)
+					std::cout << "Output volume for port " << m_iPortId
+							  << " channel " << (m_iOutputOffset + i) << " = "
+							  << channelVolume->volume << std::endl;
 				emit outMeterValueChanged(m_iOutputOffset + i,
 										  channelVolume->volume);
+			}
 			rapmv.reset();
 		}
 	}
@@ -182,4 +191,8 @@ void MixerPortWidget::linkStatusChanged(AudioChannelId mixerChannelId,
 			master->getSecondConnectionFrame()->setEnabled(false);
 		}
 	}
+}
+
+void MixerPortWidget::changeChannelConnection() {
+	emit channelConnectionChanged();
 }

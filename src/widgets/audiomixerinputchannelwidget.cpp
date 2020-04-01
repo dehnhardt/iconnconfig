@@ -24,7 +24,7 @@ AudioMixerInputChannelWidget::AudioMixerInputChannelWidget(
 	if (l) {
 		m_pBtnSelectConnection = new QToolButton();
 		m_pBtnSelectConnection->setCheckable(false);
-		l->addWidget(new QLabel(tr("In   ")));
+		l->addWidget(new QLabel(tr("In 1")));
 		l->addWidget(m_pBtnSelectConnection);
 		createInputMenu();
 		m_pBtnSelectConnection->setMenu(m_pConnectionMenu);
@@ -264,9 +264,11 @@ void AudioMixerInputChannelWidget::changeInput(
 	m_pMixerInputParm->setAudioSourcePortId(audioSourcePortId);
 	m_pMixerInputParm->setAudioSourceChannelNumber(audioSourceChannelNumber);
 	if (m_pMixerInputParm->execute() == 0) {
+		m_pDevice->getAudioMixerInputChannels(true);
 		setInputName(audioSourcePortId, audioSourcePortName,
 					 audioSourceChannelNumber, audioSourceChannelName,
 					 audioPortType);
+		emit channelConnectionChanged();
 	}
 }
 
@@ -356,9 +358,11 @@ void AudioMixerInputChannelWidget::setMaster(bool isMaster,
 		name.append(channel2Name);
 		ui->m_pLblChannelName->setText(name);
 		ui->m_pLblConnection2->setText("In 2");
+		ui->m_pLblConnection2->setAlignment(Qt::AlignLeft);
 	} else {
 		ui->m_pLblChannelName->setText(this->getChannelName());
 		ui->m_pLblConnection2->setText(tr("-- Mono --"));
+		ui->m_pLblConnection2->setAlignment(Qt::AlignCenter);
 	}
 }
 
