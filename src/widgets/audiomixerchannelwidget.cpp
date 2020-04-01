@@ -38,6 +38,31 @@ QString AudioMixerChannelWidget::getChannelName() {
 	return QString::number(m_iMixerChannelId);
 }
 
+int AudioMixerChannelWidget::getPanValue() {
+	return this->ui->m_pSlidePan->value();
+}
+
+void AudioMixerChannelWidget::setPanValue(int value) {
+	this->ui->m_pSlidePan->setValue(value);
+}
+
+int AudioMixerChannelWidget::calculateBalance(int panL, int panR) {
+	int balance = (panL + panR) / 2;
+	return balance;
+}
+
+int AudioMixerChannelWidget::calculatePanL(int balance) {
+	int min = this->ui->m_pSlidePan->minimum();
+	int panL = balance <= 0 ? min : min + 2 * balance;
+	return panL;
+}
+
+int AudioMixerChannelWidget::calculatePanR(int balance) {
+	int max = this->ui->m_pSlidePan->maximum();
+	int panR = balance >= 0 ? max : max + 2 * balance;
+	return panR;
+}
+
 void AudioMixerChannelWidget::initControls() {
 
 	ui->m_pDial->setVisible(false);

@@ -184,12 +184,18 @@ void MixerPortWidget::linkStatusChanged(AudioChannelId mixerChannelId,
 			l->addWidget(slave->getConnectionButton());
 			master->getSecondConnectionFrame()->setEnabled(true);
 		}
+		int balance = master->calculateBalance(master->getPanValue(),
+											   slave->getPanValue());
+		master->setPanValue(balance);
 	} else {
 		QLayout *l = slave->getFirstConnectionFrame()->layout();
 		if (l) {
 			l->addWidget(slave->getConnectionButton());
 			master->getSecondConnectionFrame()->setEnabled(false);
 		}
+		int balance = master->getPanValue();
+		master->setPanValue(master->calculatePanL(balance));
+		slave->setPanValue(master->calculatePanR(balance));
 	}
 }
 

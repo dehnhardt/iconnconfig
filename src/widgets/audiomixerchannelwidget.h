@@ -31,6 +31,12 @@ class AudioMixerChannelWidget : public QFrame {
 	virtual void refreshStatus() = 0;
 	virtual QString getChannelName();
 
+	int getPanValue();
+	void setPanValue(int value);
+	int calculateBalance(int panL, int panR);
+	int calculatePanL(int balance);
+	int calculatePanR(int balance);
+
   protected:
 	Ui::AudioChannelFeatureWidget *ui;
 	QTimer *m_pUpdateTimer = nullptr;
@@ -43,6 +49,7 @@ class AudioMixerChannelWidget : public QFrame {
 	AudioPortType m_iPortType = AudioPortType::APT_NONE;
 	AudioChannelId m_iMixerChannelId = 0;
 	bool m_bIsMaster = false;
+	unsigned int m_iPanSplit = 0;
 
 	virtual void initControls();
 
