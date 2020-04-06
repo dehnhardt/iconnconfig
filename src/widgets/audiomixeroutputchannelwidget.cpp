@@ -109,6 +109,25 @@ void AudioMixerOutputChannelWidget::setMixerOutputControl(
 						emit volumeChanged(value);
 					});
 		}
+		this->ui->m_pPBLeft->setScaleCalc(
+			std::make_shared<IConnCalc>(0, 256, -60, 6, 1));
+		this->ui->m_pPBLeft->setLevelWarning(-3);
+		this->ui->m_pPBLeft->setLevelCritical(0);
+		this->ui->m_pPBLeft->setShowWarningColor(true);
+		this->ui->m_pPBLeft->setShowCriticalColor(true);
+		this->ui->m_pPBLeft->setHoldMaxValue(true);
+		this->ui->m_pPBLeft->setShowOverloadSignal(true);
+		this->ui->m_pPBLeft->reset();
+
+		this->ui->m_pPBRight->setScaleCalc(
+			std::make_shared<IConnCalc>(0, 256, -60, 6, 1));
+		this->ui->m_pPBRight->setLevelWarning(-3);
+		this->ui->m_pPBRight->setLevelCritical(0);
+		this->ui->m_pPBRight->setShowWarningColor(true);
+		this->ui->m_pPBRight->setShowCriticalColor(true);
+		this->ui->m_pPBRight->setHoldMaxValue(true);
+		this->ui->m_pPBRight->setShowOverloadSignal(true);
+		this->ui->m_pPBRight->reset();
 	}
 	if (m_pMixerOutputControl->hasMuteControl()) {
 		if (m_pMixerOutputControl->getMuteControlEditable()) {
@@ -392,7 +411,6 @@ void AudioMixerOutputChannelWidget::refreshOutput() {
 
 void AudioMixerOutputChannelWidget::refreshStatus() {
 	refreshOutput();
-	changeMeterVolume(m_iMixerChannelId, -10);
 	if (m_pMixerOutputControl->hasControls() && m_bChannelInit) {
 		queryOutputValues();
 		if (this->m_pRetSetMixerOutputControlValue)

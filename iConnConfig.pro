@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 DISTFILES = .astylerc \
-    AUTHOR.md
+    AUTHOR.md \
 
 QT       += core gui
 
@@ -39,6 +39,7 @@ win32: DEFINES += __WINDOWS_MM__
 TRANSLATIONS = tr/iconnconfig_de_DE.ts \
                tr/iconnconfig_fr_FR.ts
 
+
 SOURCES +=\
         src/RtMidi.cpp \
     src/main.cpp \
@@ -67,9 +68,6 @@ SOURCES +=\
     src/widgets/audiomixerchannelwidget.cpp \
     src/widgets/audiomixerinputchannelwidget.cpp \
     src/widgets/audiomixeroutputchannelwidget.cpp \
-    src/widgets/controls/calc/calclog.cpp \
-    src/widgets/controls/calc/dbcalc.cpp \
-    src/widgets/controls/calc/scalecalc.cpp \
     src/widgets/controls/iconncalc.cpp \
     src/widgets/controls/pkmixerbutton.cpp \
     src/widgets/deviceinfowidget.cpp \
@@ -144,7 +142,6 @@ SOURCES +=\
     src/sysex/retaudioportmetervalue.cpp \
     src/sysex/getaudiodeviceparm.cpp \
     src/sysex/retsetaudiodeviceparm.cpp \
-    src/widgets/controls/pklevelmeter.cpp \
     src/sysex/getaudiopatchbayparm.cpp \
     src/sysex/retsetaudiopatchbayparm.cpp \
     src/widgets/audiomixerwidget.cpp \
@@ -189,9 +186,6 @@ HEADERS  += \
     src/widgets/audiomixerchannelwidget.h \
     src/widgets/audiomixerinputchannelwidget.h \
     src/widgets/audiomixeroutputchannelwidget.h \
-    src/widgets/controls/calc/calclog.h \
-    src/widgets/controls/calc/dbcalc.h \
-    src/widgets/controls/calc/scalecalc.h \
     src/widgets/controls/iconncalc.h \
     src/widgets/controls/pkmixerbutton.h \
     src/widgets/deviceinfowidget.h \
@@ -269,7 +263,6 @@ HEADERS  += \
     src/sysex/retaudioportmetervalue.h \
     src/sysex/getaudiodeviceparm.h \
     src/sysex/retsetaudiodeviceparm.h \
-    src/widgets/controls/pklevelmeter.h \
     src/sysex/getaudiopatchbayparm.h \
     src/sysex/retsetaudiopatchbayparm.h \
     src/widgets/audiomixerwidget.h \
@@ -316,3 +309,7 @@ DISTFILES += \
     tr/iconnconfig_fr_FR.ts \
     tr/iconnconfig_fr_FR.qm \
     .astylerc
+
+include(../PKControls/pklevelmeter.pri)
+
+message($$INCLUDEPATH)

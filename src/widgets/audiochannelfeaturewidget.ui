@@ -496,17 +496,35 @@
              <pointsize>7</pointsize>
             </font>
            </property>
-           <property name="value">
-            <number>24</number>
+           <property name="levelMax">
+            <double>100.000000000000000</double>
            </property>
-           <property name="textVisible">
+           <property name="level">
+            <double>0.000000000000000</double>
+           </property>
+           <property name="levelWarning">
+            <double>0.000000000000000</double>
+           </property>
+           <property name="levelCritical">
+            <double>0.000000000000000</double>
+           </property>
+           <property name="showWarningColor">
             <bool>false</bool>
            </property>
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
+           <property name="showCriticalColor">
+            <bool>false</bool>
            </property>
-           <property name="textDirection">
-            <enum>QProgressBar::TopToBottom</enum>
+           <property name="showOverloadSignal">
+            <bool>false</bool>
+           </property>
+           <property name="holdMaxValue">
+            <bool>false</bool>
+           </property>
+           <property name="value" stdset="0">
+            <number>24</number>
+           </property>
+           <property name="textVisible" stdset="0">
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -535,17 +553,32 @@
              <pointsize>7</pointsize>
             </font>
            </property>
-           <property name="value">
-            <number>24</number>
+           <property name="level">
+            <double>0.000000000000000</double>
            </property>
-           <property name="textVisible">
+           <property name="levelWarning">
+            <double>0.000000000000000</double>
+           </property>
+           <property name="levelCritical">
+            <double>0.000000000000000</double>
+           </property>
+           <property name="showWarningColor">
             <bool>false</bool>
            </property>
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
+           <property name="showCriticalColor">
+            <bool>false</bool>
            </property>
-           <property name="textDirection">
-            <enum>QProgressBar::TopToBottom</enum>
+           <property name="showOverloadSignal">
+            <bool>false</bool>
+           </property>
+           <property name="holdMaxValue">
+            <bool>false</bool>
+           </property>
+           <property name="value" stdset="0">
+            <number>24</number>
+           </property>
+           <property name="textVisible" stdset="0">
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -878,14 +911,14 @@ QSlider::handle:horizontal {
  </widget>
  <customwidgets>
   <customwidget>
+   <class>PKLevelMeter</class>
+   <extends>QWidget</extends>
+   <header>pklevelmeter.h</header>
+  </customwidget>
+  <customwidget>
    <class>PKSlider</class>
    <extends>QSlider</extends>
    <header>src/widgets/controls/pkslider.h</header>
-  </customwidget>
-  <customwidget>
-   <class>PKLevelMeter</class>
-   <extends>QProgressBar</extends>
-   <header>src/widgets/controls/pklevelmeter.h</header>
   </customwidget>
   <customwidget>
    <class>PKMixerButton</class>

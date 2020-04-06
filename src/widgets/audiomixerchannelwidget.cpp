@@ -3,6 +3,8 @@
 
 #include "../sysex/retsetaudioportparm.h"
 
+#include <math.h>
+
 AudioMixerChannelWidget::AudioMixerChannelWidget(
 	Device *device, AudioPortId portId, AudioChannelId channelNumber,
 	ChannelDirection channelDirection, QWidget *parent)
@@ -85,8 +87,15 @@ void AudioMixerChannelWidget::initControls() {
 	ui->m_pTbPhantomPower->setColor(255, 0, 0);
 
 	this->ui->m_pPBRight->setVisible(false);
-	this->ui->m_pPBLeft->setRange(1, 8192);
-	this->ui->m_pPBRight->setRange(1, 8192);
+	/*this->ui->m_pPBLeft->setLevelMin(1);
+	this->ui->m_pPBLeft->setLevelWarning(5632);
+	this->ui->m_pPBLeft->setLevelCritical(6400);
+	this->ui->m_pPBLeft->setLevelMax(8192);
+
+	this->ui->m_pPBRight->setLevelMin(1);
+	this->ui->m_pPBRight->setLevelWarning(5632);
+	this->ui->m_pPBRight->setLevelCritical(6400);
+	this->ui->m_pPBRight->setLevelMax(8192);*/
 }
 
 void AudioMixerChannelWidget::changeSoloStatus(bool enabled) {
@@ -115,9 +124,13 @@ void AudioMixerChannelWidget::changePan(int pan) {
 
 void AudioMixerChannelWidget::changeMeterVolume(unsigned int channel,
 												int value) {
+	float dbVal = static_cast<float>(20 * log(value / 8192.0));
+	if (isnan(dbVal))
+		std::cout << "NAN" << std::endl;
 	if (channel == m_iMixerChannelId) {
-		ui->m_pPBLeft->setValue(value);
+		ui->m_pPBLeft->setLevel(dbVal);
 	}
-	if (m_bIsMaster && channel == m_iMixerChannelId + 1)
-		ui->m_pPBRight->setValue(value);
+	if (m_bIsMaster && (channel == (m_iMixerChannelId + 1))) {
+		ui->m_pPBRight->setLevel(dbVal);
+	}
 }

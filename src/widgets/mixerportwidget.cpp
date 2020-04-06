@@ -74,8 +74,9 @@ void MixerPortWidget::getVolumes() {
 
 void MixerPortWidget::timerElapsed() {
 	for (unsigned int i = 0; i < m_INumberOfOutputChannels; i++) {
+		AudioChannelId outputChannelId = m_iOutputOffset + i;
 		m_pGetMixerMeterValue->setPortDirections(PortDirection::BOTH);
-		m_pGetMixerMeterValue->setOutputNumber(m_iOutputOffset + i);
+		m_pGetMixerMeterValue->setOutputNumber(outputChannelId);
 		std::shared_ptr<RetMixerMeterValue> rapmv =
 			std::dynamic_pointer_cast<RetMixerMeterValue>(
 				m_pGetMixerMeterValue->querySmart());
@@ -83,16 +84,17 @@ void MixerPortWidget::timerElapsed() {
 			ChannelVolumes v = rapmv->getVolumes();
 			for (auto channelVolume = v.in.begin(); channelVolume != v.in.end();
 				 ++channelVolume)
-				emit inMeterValueChanged(
-					static_cast<unsigned int>(channelVolume->channel),
-					channelVolume->volume);
+				if ((channelVolume->channel % 2) == (outputChannelId % 2))
+					emit inMeterValueChanged(
+						static_cast<unsigned int>(channelVolume->channel),
+						channelVolume->volume);
 			for (auto channelVolume = v.out.begin();
 				 channelVolume != v.out.end(); ++channelVolume) {
 				if ((m_iPortId == 1) && channelVolume->volume)
 					std::cout << "Output volume for port " << m_iPortId
 							  << " channel " << (m_iOutputOffset + i) << " = "
 							  << channelVolume->volume << std::endl;
-				emit outMeterValueChanged(m_iOutputOffset + i,
+				emit outMeterValueChanged(outputChannelId,
 										  channelVolume->volume);
 			}
 			rapmv.reset();
@@ -108,7 +110,7 @@ void MixerPortWidget::showEvent(QShowEvent *event) {
 	for (auto widget : m_MapAttachedOutputChannels) {
 		widget.second->refreshStatus();
 	}
-	m_pVolumeTimer->start(20);
+	m_pVolumeTimer->start(100);
 	QWidget::showEvent(event);
 }
 

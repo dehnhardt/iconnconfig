@@ -95,6 +95,23 @@ void AudioMixerInputChannelWidget::setMixerInputControl(
 						emit volumeChanged(value);
 					});
 		}
+		this->ui->m_pPBLeft->setScaleCalc(
+			std::make_shared<IConnCalc>(0, 256, -60, 6, 1));
+		this->ui->m_pPBLeft->setLevelWarning(-3);
+		this->ui->m_pPBLeft->setLevelCritical(0);
+		this->ui->m_pPBLeft->setShowWarningColor(true);
+		this->ui->m_pPBLeft->setShowCriticalColor(true);
+		this->ui->m_pPBLeft->setHoldMaxValue(true);
+		this->ui->m_pPBLeft->reset();
+
+		this->ui->m_pPBRight->setScaleCalc(
+			std::make_shared<IConnCalc>(0, 256, -60, 6, 1));
+		this->ui->m_pPBRight->setLevelWarning(-3);
+		this->ui->m_pPBRight->setLevelCritical(0);
+		this->ui->m_pPBRight->setShowWarningColor(true);
+		this->ui->m_pPBRight->setShowCriticalColor(true);
+		this->ui->m_pPBRight->setHoldMaxValue(true);
+		this->ui->m_pPBRight->reset();
 	}
 	if (m_pMixerInputControl->hasMuteControl()) {
 		if (m_pMixerInputControl->getMuteControlEditable()) {
@@ -276,8 +293,6 @@ void AudioMixerInputChannelWidget::queryInputValues() {
 	std::unique_ptr<GetMixerInputControlValue> getMixerInputControlValue =
 		std::make_unique<GetMixerInputControlValue>(m_pDevice);
 	getMixerInputControlValue->setPortId(m_iPortId);
-	/*getMixerInputControlValue->setMixerOutputNumber(
-		m_pMixerInputParm->getAudioSourcePortId());*/
 	getMixerInputControlValue->setMixerOutputNumber(m_iConnectedOutputChannel);
 	getMixerInputControlValue->setMixerInputNumber(m_iMixerChannelId);
 
@@ -295,11 +310,6 @@ void AudioMixerInputChannelWidget::queryInputValues() {
 void AudioMixerInputChannelWidget::setInputValues(
 	std::shared_ptr<RetSetMixerInputControlValue>
 		retSetMixerInputControlValue) {
-	/*QString name =
-		"CN: " + QString::number(m_iMixerChannelId) + " IN " +
-		QString::number(retSetMixerInputControlValue->getMixerInputNumber()) +
-		" ON: " +
-		QString::number(retSetMixerInputControlValue->getMixerOutputNumber());*/
 	if (m_pMixerInputControl->hasPanControl() &&
 		retSetMixerInputControlValue->hasPanControl()) {
 		ui->m_pSlidePan->setValue(retSetMixerInputControlValue->getPan());
@@ -379,7 +389,6 @@ void AudioMixerInputChannelWidget::refreshInput() {
 
 void AudioMixerInputChannelWidget::refreshStatus() {
 	refreshInput();
-	changeMeterVolume(m_iMixerChannelId, -10);
 	if (m_pMixerInputControl->hasControls() && m_bChannelInit) {
 		queryInputValues();
 		if (this->m_pRetSetMixerInputControlValue)

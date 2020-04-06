@@ -100,6 +100,16 @@ void AudioChannelFeatureWidget::setRetSetAudioControlDetail(
 				  << iMaxVolume << ", resolution: " << iVolumeResolution
 				  << std::endl;
 
+		this->ui->m_pPBLeft->setLevelMin(1);
+		this->ui->m_pPBLeft->setLevelWarning(5632);
+		this->ui->m_pPBLeft->setLevelCritical(6400);
+		this->ui->m_pPBLeft->setLevelMax(8192);
+
+		this->ui->m_pPBRight->setLevelMin(1);
+		this->ui->m_pPBRight->setLevelWarning(5632);
+		this->ui->m_pPBRight->setLevelCritical(6400);
+		this->ui->m_pPBRight->setLevelMax(8192);
+
 		this->ui->m_pDial->setMinimum(
 			retSetAudioControlDetail->getMinTrimValue());
 		this->ui->m_pDial->setMaximum(
@@ -251,8 +261,6 @@ void AudioChannelFeatureWidget::initControls() {
 	ui->m_pTbPhantomPower->setColor(255, 0, 0);
 
 	this->ui->m_pPBRight->setVisible(false);
-	this->ui->m_pPBLeft->setRange(1, 8192);
-	this->ui->m_pPBRight->setRange(1, 8192);
 }
 
 void AudioChannelFeatureWidget::audioChannelValueChanged() {
@@ -292,13 +300,13 @@ void AudioChannelFeatureWidget::changeTrim(int trim) {
 }
 
 void AudioChannelFeatureWidget::setVolume(int volume) {
-	this->ui->m_pPBLeft->setValue(volume);
+	this->ui->m_pPBLeft->setLevel(volume);
 }
 
 void AudioChannelFeatureWidget::changeMeterVolume(int channel, int value) {
 	if (channel == m_iChannelId) {
-		ui->m_pPBLeft->setValue(value);
+		ui->m_pPBLeft->setLevel(value);
 	}
 	if (m_bIsMaster && channel == m_iChannelId + 1)
-		ui->m_pPBRight->setValue(value);
+		ui->m_pPBRight->setLevel(value);
 }
