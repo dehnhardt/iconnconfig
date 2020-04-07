@@ -102,6 +102,7 @@ void AudioMixerInputChannelWidget::setMixerInputControl(
 		this->ui->m_pPBLeft->setShowWarningColor(true);
 		this->ui->m_pPBLeft->setShowCriticalColor(true);
 		this->ui->m_pPBLeft->setHoldMaxValue(true);
+		this->ui->m_pPBLeft->setShowOverloadSignal(true);
 		this->ui->m_pPBLeft->reset();
 
 		this->ui->m_pPBRight->setScaleCalc(
@@ -111,6 +112,7 @@ void AudioMixerInputChannelWidget::setMixerInputControl(
 		this->ui->m_pPBRight->setShowWarningColor(true);
 		this->ui->m_pPBRight->setShowCriticalColor(true);
 		this->ui->m_pPBRight->setHoldMaxValue(true);
+		this->ui->m_pPBRight->setShowOverloadSignal(true);
 		this->ui->m_pPBRight->reset();
 	}
 	if (m_pMixerInputControl->hasMuteControl()) {
