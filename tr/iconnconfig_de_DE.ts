@@ -564,7 +564,7 @@ Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm un
     </message>
     <message>
         <location filename="../src/widgets/deviceinfowidget.cpp" line="40"/>
-        <source>Global Audio Konfiguration</source>
+        <source>Global Audio Configuration</source>
         <translation>Globale Audionkonfiguration</translation>
     </message>
     <message>
@@ -790,32 +790,32 @@ Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm un
         <translation type="vanished">MIDI Kanal</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="358"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="366"/>
         <source>Pitch Bend</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="360"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="368"/>
         <source>Mono Key Pressure</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="362"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="370"/>
         <source>Program Change</source>
         <translation>Programmwechsel</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="364"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="372"/>
         <source>Control Change</source>
         <translation>Controllerwechsel</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="366"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="374"/>
         <source>Poly Key Pressure</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="368"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="376"/>
         <source>Note On / Note Off</source>
         <translatorcomment>Note an / Note aus</translatorcomment>
         <translation></translation>
@@ -824,37 +824,37 @@ Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm un
 <context>
     <name>MidiChannelMessagesRemapTM</name>
     <message>
-        <location filename="../src/widgets/portremapsettingswidget.cpp" line="278"/>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="284"/>
         <source>Pitch Bend</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/widgets/portremapsettingswidget.cpp" line="280"/>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="286"/>
         <source>Mono Key Pressure</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/widgets/portremapsettingswidget.cpp" line="282"/>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="288"/>
         <source>Program Change</source>
         <translation>Programmwechsel</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portremapsettingswidget.cpp" line="284"/>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="290"/>
         <source>Control Change</source>
         <translation>Controllerwechsel</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portremapsettingswidget.cpp" line="286"/>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="292"/>
         <source>Poly Key Pressure</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/widgets/portremapsettingswidget.cpp" line="288"/>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="294"/>
         <source>Note On / Note Off</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/widgets/portremapsettingswidget.cpp" line="290"/>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="296"/>
         <source>Map to Channel</source>
         <translation></translation>
     </message>
@@ -862,12 +862,12 @@ Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm un
 <context>
     <name>MidiControllerFilterTM</name>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="252"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="257"/>
         <source>MIDI-Controller</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="254"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="259"/>
         <source>all</source>
         <translation>alle</translation>
     </message>
@@ -875,17 +875,17 @@ Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm un
 <context>
     <name>MidiControllerRemapTM</name>
     <message>
-        <location filename="../src/widgets/portremapsettingswidget.cpp" line="157"/>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="161"/>
         <source>MIDI-Controller Source</source>
         <translation>Quell-Controller Nummer</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portremapsettingswidget.cpp" line="159"/>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="163"/>
         <source>MIDI-Controller Destination</source>
         <translation>Ziel-Controller Nummer</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portremapsettingswidget.cpp" line="161"/>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="165"/>
         <source>all</source>
         <translation>alle</translation>
     </message>
@@ -917,31 +917,42 @@ Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm un
         <translation>Hilfe</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.ui" line="107"/>
+        <location filename="../src/iconnconfigmain.ui" line="82"/>
+        <location filename="../src/iconnconfigmain.ui" line="126"/>
+        <source>Language</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/iconnconfigmain.ui" line="116"/>
         <source>About</source>
         <translation>Über</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.ui" line="112"/>
+        <location filename="../src/iconnconfigmain.ui" line="121"/>
         <source>Redetect Devices</source>
         <translation>Geräteerkennung erneut starten</translation>
+    </message>
+    <message>
+        <location filename="../src/iconnconfigmain.ui" line="134"/>
+        <source>English</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>toolBar</source>
         <translation type="vanished">Werkzeugleiste</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.ui" line="86"/>
+        <location filename="../src/iconnconfigmain.ui" line="95"/>
         <source>Quit</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.ui" line="91"/>
+        <location filename="../src/iconnconfigmain.ui" line="100"/>
         <source>Open Device</source>
         <translation>Gerät öffnen</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.ui" line="102"/>
+        <location filename="../src/iconnconfigmain.ui" line="111"/>
         <source>Device1</source>
         <translation>Gerät 1</translation>
     </message>
@@ -955,51 +966,56 @@ Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm un
         <translation type="obsolete">Gerät öffnen</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="162"/>
+        <location filename="../src/iconnconfigmain.cpp" line="163"/>
         <source>Save current settings to device</source>
         <translation>Momentane Einstellungen in das Gerät schreiben</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="171"/>
+        <location filename="../src/iconnconfigmain.cpp" line="172"/>
         <source>Restore settings from device</source>
         <translation>Einstellungen des Gerätes auslesen</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="180"/>
+        <location filename="../src/iconnconfigmain.cpp" line="181"/>
         <source>Reset settings to factory default</source>
         <translation>Alle Einstellungen auf Werkeinstellungen zurücksetzen</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="194"/>
+        <location filename="../src/iconnconfigmain.cpp" line="195"/>
         <source>Device Actions</source>
         <translation>Geräte Funktionen</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="244"/>
+        <location filename="../src/iconnconfigmain.cpp" line="245"/>
         <source>Store current settings to device?</source>
         <translation>Alle Einstellungen in Gerät speichern?</translation>
+    </message>
+    <message>
+        <location filename="../src/iconnconfigmain.cpp" line="396"/>
+        <source>Current Language changed to %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Store current setings to device?</source>
         <translation type="vanished">Alle Einstellungen im Gerät sichern?</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="254"/>
+        <location filename="../src/iconnconfigmain.cpp" line="255"/>
         <source>Waiting 10 seconds for device to be responsive again</source>
         <translation>Warte 10 Sekunden auf das Gerät</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="255"/>
+        <location filename="../src/iconnconfigmain.cpp" line="256"/>
         <source>Exit application</source>
         <translation>Anwendung beenden</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="280"/>
+        <location filename="../src/iconnconfigmain.cpp" line="281"/>
         <source>Read all settings from device?</source>
         <translation>Alle Einstellungen vom Gerät lesen?</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="292"/>
+        <location filename="../src/iconnconfigmain.cpp" line="293"/>
         <source>Reset all settings to factory default?</source>
         <translation>Alle Einstellungen auf Werkeinstellungen zurücksetzen?</translation>
     </message>
@@ -1242,7 +1258,7 @@ Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm un
 <context>
     <name>main</name>
     <message>
-        <location filename="../src/main.cpp" line="39"/>
+        <location filename="../src/main.cpp" line="41"/>
         <source>filename to read settings from.</source>
         <translation>Name der Datei aus der die Einstellungen gelesen werden sollen.</translation>
     </message>

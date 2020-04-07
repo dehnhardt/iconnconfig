@@ -5,7 +5,8 @@
 #-------------------------------------------------
 
 DISTFILES = .astylerc \
-    AUTHOR.md \
+    AUTHOR.md \ \
+    tr/iconnconfig_en_EN.ts
 
 QT       += core gui
 
@@ -37,8 +38,8 @@ win32: DEFINES += __WINDOWS_MM__
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 TRANSLATIONS = tr/iconnconfig_de_DE.ts \
-               tr/iconnconfig_fr_FR.ts
-
+               tr/iconnconfig_fr_FR.ts \
+               tr/iconnconfig_en_EN.ts
 
 SOURCES +=\
         src/RtMidi.cpp \

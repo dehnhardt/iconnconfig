@@ -37,7 +37,7 @@ DeviceInfoWidget::DeviceInfoWidget(MioMain *parent, Device *device,
 			MultiInfoListEntry::SECTION, tr("Audio").toStdString()));
 		m_pInfoSections->push_back(new MultiInfoListEntry(
 			MultiInfoListEntry::AUDIO_INFO,
-			tr("Global Audio Konfiguration").toStdString()));
+			tr("Global Audio Configuration").toStdString()));
 	}
 }
 

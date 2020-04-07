@@ -56,6 +56,7 @@ MioMain::MioMain(QCommandLineParser *parser, QWidget *parent)
 	if (!installSignalHandlers())
 		qWarning("%s", "Signal handlers not installed!");
 	readSettings();
+	createLanguageMenu();
 	if (readDevicesFromSettings())
 		openDefaultDevice();
 	else
@@ -310,6 +311,92 @@ void MioMain::closeEvent(QCloseEvent *event) {
 	event->accept();
 }
 
+void MioMain::changeEvent(QEvent *event) {
+	if (nullptr != event) {
+		switch (event->type()) {
+		// this event is send if a translator is loaded
+		case QEvent::LanguageChange:
+			m_pUi->retranslateUi(this);
+			break;
+		// this event is send, if the system, language changes
+		case QEvent::LocaleChange: {
+			QString locale = QLocale::system().name();
+			locale.truncate(locale.lastIndexOf('_'));
+			loadLanguage(locale);
+		} break;
+		default:
+			break;
+		}
+	}
+
+	QMainWindow::changeEvent(event);
+}
+
+void MioMain::slotLanguageChanged(QAction *action) {
+	if (nullptr != action) {
+		// load the language dependant on the action content
+		loadLanguage(action->data().toString());
+		setWindowIcon(action->icon());
+	}
+}
+
+void MioMain::createLanguageMenu() {
+	QActionGroup *langGroup = new QActionGroup(m_pUi->menuLanguage);
+	langGroup->setExclusive(true);
+
+	connect(langGroup, SIGNAL(triggered(QAction *)), this,
+			SLOT(slotLanguageChanged(QAction *)));
+
+	// format systems language
+	QString defaultLocale = QLocale::system().name(); // e.g. "de_DE"
+	// defaultLocale.truncate(defaultLocale.lastIndexOf("_")); // e.g. "de"
+
+	QDir dir(":/translations/tr");
+	QStringList fileNames = dir.entryList(QStringList("iconnconfig_*.qm"));
+
+	for (int i = 0; i < fileNames.size(); ++i) {
+		// get locale extracted by filename
+		QString locale;
+		locale = fileNames[i];                     // "TranslationExample_de.qm"
+		locale.truncate(locale.lastIndexOf('.'));  // "TranslationExample_de"
+		locale.remove(0, locale.indexOf("_") + 1); // "de"
+
+		QString lang = QLocale::languageToString(QLocale(locale).language());
+
+		QAction *action = new QAction(lang, this);
+		action->setCheckable(true);
+		action->setData(locale);
+		action->setEnabled(false);
+
+		m_pUi->menuLanguage->addAction(action);
+		langGroup->addAction(action);
+
+		// set default translators and language checked
+		if (defaultLocale == locale) {
+			action->setChecked(true);
+		}
+	}
+	m_pUi->menuLanguage->setVisible(false);
+}
+
+void MioMain::loadLanguage(const QString &rLanguage) {
+	if (m_currLang != rLanguage) {
+		m_currLang = rLanguage;
+		QLocale locale = QLocale(m_currLang);
+		QLocale::setDefault(locale);
+		QString languageName = QLocale::languageToString(locale.language());
+		QString filePath =
+			QString(":/translations/tr/iconnconfig_%1.qm").arg(rLanguage);
+		QString langPath = QString("qt_%1.qm").arg(rLanguage);
+		switchTranslator(
+			m_translator,
+			QString(":/translations/tr/iconnconfig_%1.qm").arg(rLanguage));
+		switchTranslator(m_translatorQt, QString("qt_%1.qm").arg(rLanguage));
+		this->m_pUi->statusBar->showMessage(
+			tr("Current Language changed to %1").arg(languageName));
+	}
+}
+
 void MioMain::openDetectionWindow() {
 	m_pDeviceDetectionWindow = new DeviceDetection(this);
 	m_pDeviceDetectionWindow->exec();
@@ -499,4 +586,13 @@ void MioMain::connectSignals() {
 			SLOT(openAboutDialog()));
 	connect(this->m_pUi->actionRedetectDevices, SIGNAL(triggered()), this,
 			SLOT(openDetectionWindow()));
+}
+
+void switchTranslator(QTranslator &translator, const QString &filename) {
+	// remove the old translator
+	qApp->removeTranslator(&translator);
+
+	// load the new translator
+	if (translator.load(filename))
+		qApp->installTranslator(&translator);
 }
