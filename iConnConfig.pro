@@ -310,6 +310,13 @@ DISTFILES += \
     tr/iconnconfig_fr_FR.qm \
     .astylerc
 
-include(../PKControls/pklevelmeter.pri)
+# Some controls are in a separate project und needs to be included here
 
-message($$INCLUDEPATH)
+exists(../PKControls/pklevelmeter.pri){
+    include(../PKControls/pklevelmeter.pri)
+} else {
+    error( The sources for pk controls are missing. \
+    Please chechout from here 'https://codeberg.org/dehnhardt/PKControls.git' \
+    in the same root directory as iConnConfig)
+}
+
