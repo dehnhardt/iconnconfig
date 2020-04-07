@@ -66,4 +66,4 @@ Later I found the complete documentation for sysex-data from IConnectivity.
 * (2019-04-20) Start with the audiomixer. Create all in- and output channels
 * (2019-04-23) Create branch for the audiomixer. It seems to be a big addition which might take some weeks.
 * (2019-12-28) Create a branch with audio port settings only _Branch v0.4-beta_
-* (2020-04-07) Merged audiomixer branch into master. Routing and mixing works. Some visual updates to controls and grids.
+* (2020-04-07) Merged audiomixer branch into master. [Routing](https://github.com/dehnhardt/iconnconfig/wiki#audio-routing) and [mixing](https://github.com/dehnhardt/iconnconfig/wiki#audio-mixer) works. Some visual updates to controls and grids.
