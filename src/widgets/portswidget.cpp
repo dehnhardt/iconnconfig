@@ -13,7 +13,7 @@
 
 PortsWidget::PortsWidget(MioMain *parent, Device *device, QString windowTitle)
 	: MultiInfoWidget(parent, device, windowTitle) {
-	infoSections = new std::vector<MultiInfoListEntry *>();
+	m_pInfoSections = new std::vector<MultiInfoListEntry *>();
 	if (device->getCommands()->isCommandSupported(
 			Command::GET_MIDI_PORT_INFO)) {
 		getMidiPortSections(device);
@@ -39,7 +39,7 @@ void PortsWidget::getMidiPorts(
 		entry->message = midiPortInfo;
 		// TODO: mark port as disabled
 		// entry->enabled = midiPortInfo->getInputEnabled();
-		infoSections->push_back(entry);
+		m_pInfoSections->push_back(entry);
 	}
 }
 
@@ -56,7 +56,7 @@ void PortsWidget::getMidiPortSections(Device *device) {
 			PortDisplayHelper::getMidiPortTypeName(portType);
 		if (jack > 0)
 			portTypeName += " " + std::to_string(jack);
-		infoSections->push_back(
+		m_pInfoSections->push_back(
 			new MultiInfoListEntry(MultiInfoListEntry::SECTION, portTypeName));
 		std::vector<std::shared_ptr<RetSetMidiPortInfo>> *midiPortInfos =
 			it->second;
@@ -74,25 +74,25 @@ QWidget *PortsWidget::createWidget(MultiInfoListEntry *entry) {
 	connect(portInfoWidget, &PortInfoWidget::changePortName, entry,
 			&MultiInfoListEntry::changeName);
 	portTabWidget->addTab(portInfoWidget, "MIDI-Port Info");
-	if (device->getCommands()->isCommandSupported(
+	if (m_pDevice->getCommands()->isCommandSupported(
 			Command::GET_MIDI_PORT_ROUTE)) {
 		PortRoutingWidget *w =
-			new PortRoutingWidget(device, portNumber, this->parentWidget());
+			new PortRoutingWidget(m_pDevice, portNumber, this->parentWidget());
 		QScrollArea *a = new QScrollArea(portTabWidget);
 		a->setWidget(w);
 		portTabWidget->addTab(a, tr("MIDI-Port Routing"));
 	}
 	// TODO: smart_pointer
-	if (device->getCommands()->isCommandSupported(
+	if (m_pDevice->getCommands()->isCommandSupported(
 			Command::GET_MIDI_PORT_FILTER)) {
 		PortFilterWidget *portFilterWidget =
-			new PortFilterWidget(device, portNumber, this->parentWidget());
+			new PortFilterWidget(m_pDevice, portNumber, this->parentWidget());
 		portTabWidget->addTab(portFilterWidget, tr("MIDI-Port Filter"));
 	}
-	if (device->getCommands()->isCommandSupported(
+	if (m_pDevice->getCommands()->isCommandSupported(
 			Command::GET_MIDI_PORT_REMAP)) {
 		PortRemapWidget *portRemapWidget =
-			new PortRemapWidget(device, portNumber, this->parentWidget());
+			new PortRemapWidget(m_pDevice, portNumber, this->parentWidget());
 		portTabWidget->addTab(portRemapWidget, tr("MIDI-Port Remap"));
 	}
 	return portTabWidget;

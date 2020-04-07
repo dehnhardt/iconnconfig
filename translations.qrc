@@ -2,5 +2,6 @@
     <qresource prefix="/translations">
         <file>tr/iconnconfig_de_DE.qm</file>
         <file>tr/iconnconfig_fr_FR.qm</file>
+        <file>tr/iconnconfig_en_EN.qm</file>
     </qresource>
 </RCC>

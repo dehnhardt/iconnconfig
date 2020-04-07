@@ -28,9 +28,9 @@ class MultiInfoWidget : public QDockWidget {
 	// members
   protected:
 	Ui::MultiInfoWidget *ui;
-	Device *device;
-	int lastSelectedSection = 0;
-	std::vector<MultiInfoListEntry *> *infoSections = nullptr;
+	Device *m_pDevice;
+	int m_iLastSelectedSection = 0;
+	std::vector<MultiInfoListEntry *> *m_pInfoSections = nullptr;
 
   public:
 	QMap<std::string, QWidget *> infoWidgets;

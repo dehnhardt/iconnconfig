@@ -11,7 +11,7 @@ class PortsWidget : public MultiInfoWidget {
 	Q_OBJECT
 
   public:
-	explicit PortsWidget(MioMain *parent = nullptr, Device *device = nullptr,
+	explicit PortsWidget(MioMain *parent = nullptr, Device *m_pDevice = nullptr,
 						 QString windowTitle = tr("MIDI-Ports"));
 	~PortsWidget();
 
@@ -19,7 +19,7 @@ class PortsWidget : public MultiInfoWidget {
 	QWidget *createWidget(MultiInfoListEntry *entry);
 
   private:
-	void getMidiPortSections(Device *device);
+	void getMidiPortSections(Device *m_pDevice);
 	void getMidiPorts(
 		std::vector<std::shared_ptr<RetSetMidiPortInfo>> *midiPortInfos);
 };

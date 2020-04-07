@@ -1,5 +1,4 @@
 #include "getmixerinputcontrol.h"
-
 #include "retmixerinputcontrol.h"
 
 GetMixerInputControl::GetMixerInputControl(Device *device)

@@ -18,26 +18,26 @@ DeviceInfoWidget::DeviceInfoWidget(MioMain *parent, Device *device,
 								   std::shared_ptr<GetInfo> deviceInfo,
 								   QString windowTitle)
 	: MultiInfoWidget(parent, device, windowTitle), m_pDeviceInfo(deviceInfo) {
-	infoSections = new std::vector<MultiInfoListEntry *>();
+	m_pInfoSections = new std::vector<MultiInfoListEntry *>();
 	if (device->getCommands()->isCommandSupported(Command::GET_INFO_LIST))
-		infoSections->push_back(
+		m_pInfoSections->push_back(
 			new MultiInfoListEntry(MultiInfoListEntry::GLOBAL_DEVICE_INFO,
 								   tr("Global").toStdString()));
 	if (device->getCommands()->isCommandSupported(
 			Command::GET_ETHERNET_PORT_INFO)) {
 		int networkAdapters = device->getMidiInfo()->getEthernetJacks();
 		for (int i = 0; i < networkAdapters; i++) {
-			infoSections->push_back(
+			m_pInfoSections->push_back(
 				new MultiInfoListEntry(MultiInfoListEntry::NETWORK_INFO,
 									   tr("Network").toStdString(), i));
 		}
 	}
 	if (device->hasAudioSupport()) {
-		infoSections->push_back(new MultiInfoListEntry(
+		m_pInfoSections->push_back(new MultiInfoListEntry(
 			MultiInfoListEntry::SECTION, tr("Audio").toStdString()));
-		infoSections->push_back(new MultiInfoListEntry(
+		m_pInfoSections->push_back(new MultiInfoListEntry(
 			MultiInfoListEntry::AUDIO_INFO,
-			tr("Global Audio Konfiguration").toStdString()));
+			tr("Global Audio Configuration").toStdString()));
 	}
 }
 
@@ -76,7 +76,7 @@ QWidget *DeviceInfoWidget::createWidget(MultiInfoListEntry *entry) {
 	case MultiInfoListEntry::NETWORK_INFO: {
 		QScrollArea *a = new QScrollArea();
 		GetEthernetPortInfo *getEthernetPortInfo =
-			new GetEthernetPortInfo(this->device);
+			new GetEthernetPortInfo(this->m_pDevice);
 		getEthernetPortInfo->setDebug(false);
 		RetSetEthernetPortInfo *retSetEthernetPortInfo =
 			static_cast<RetSetEthernetPortInfo *>(getEthernetPortInfo->query());
@@ -88,7 +88,7 @@ QWidget *DeviceInfoWidget::createWidget(MultiInfoListEntry *entry) {
 	};
 	case MultiInfoListEntry::AUDIO_INFO: {
 		GlobalAudioConfigurationWidget *globalAudioConfigurationWidget =
-			new GlobalAudioConfigurationWidget(device->getGlobalAudioParam(),
+			new GlobalAudioConfigurationWidget(m_pDevice->getGlobalAudioParam(),
 											   this);
 		return globalAudioConfigurationWidget;
 	}

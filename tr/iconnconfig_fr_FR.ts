@@ -139,77 +139,82 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="204"/>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="207"/>
         <source>High Impedance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="210"/>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="213"/>
         <source>Imp</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="246"/>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="249"/>
         <source>Phantom Power</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="252"/>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="255"/>
         <source>48v</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="315"/>
-        <source>Trim</source>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="384"/>
+        <source>Trim:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="551"/>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="597"/>
+        <source>Pan / Balance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="718"/>
         <source>Mute Channel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="554"/>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="721"/>
         <source>M</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="584"/>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="751"/>
         <source>Channel Solo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="587"/>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="754"/>
         <source>S</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="623"/>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="790"/>
         <source>Prefade listening</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="626"/>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="793"/>
         <source>Pfl</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="662"/>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="829"/>
         <source>Invert Channel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="665"/>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="832"/>
         <source>Inv</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="716"/>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="883"/>
         <source>Mono/Stereo Switch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="722"/>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="889"/>
         <source>Link</source>
         <translation type="unfinished"></translation>
     </message>
@@ -243,30 +248,85 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
     </message>
 </context>
 <context>
-    <name>AudioMixerChannelWidget</name>
+    <name>AudioMixerInputChannelWidget</name>
     <message>
-        <location filename="../src/widgets/audiomixerchannelwidget.cpp" line="29"/>
-        <source>In</source>
+        <location filename="../src/widgets/audiomixerinputchannelwidget.cpp" line="27"/>
+        <source>In 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiomixerchannelwidget.cpp" line="74"/>
+        <location filename="../src/widgets/audiomixerinputchannelwidget.cpp" line="176"/>
         <source> - none - </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiomixerchannelwidget.cpp" line="158"/>
-        <location filename="../src/widgets/audiomixerchannelwidget.cpp" line="159"/>
+        <location filename="../src/widgets/audiomixerinputchannelwidget.cpp" line="262"/>
+        <location filename="../src/widgets/audiomixerinputchannelwidget.cpp" line="263"/>
         <source>none</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiomixerchannelwidget.cpp" line="164"/>
+        <location filename="../src/widgets/audiomixerinputchannelwidget.cpp" line="268"/>
         <source>Port </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiomixerchannelwidget.cpp" line="165"/>
+        <location filename="../src/widgets/audiomixerinputchannelwidget.cpp" line="269"/>
+        <source>Channel </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/audiomixerinputchannelwidget.cpp" line="376"/>
+        <source>-- Mono --</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AudioMixerOutputChannelWidget</name>
+    <message>
+        <location filename="../src/widgets/audiomixeroutputchannelwidget.cpp" line="33"/>
+        <source>O 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/audiomixeroutputchannelwidget.cpp" line="143"/>
+        <source>Solo Vol.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/audiomixeroutputchannelwidget.cpp" line="200"/>
+        <source>-- Mono --</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/audiomixeroutputchannelwidget.cpp" line="211"/>
+        <source> - none - </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/audiomixeroutputchannelwidget.cpp" line="212"/>
+        <source> - multiple - </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/audiomixeroutputchannelwidget.cpp" line="297"/>
+        <location filename="../src/widgets/audiomixeroutputchannelwidget.cpp" line="298"/>
+        <source>none</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/audiomixeroutputchannelwidget.cpp" line="301"/>
+        <location filename="../src/widgets/audiomixeroutputchannelwidget.cpp" line="302"/>
+        <source>multiple</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/audiomixeroutputchannelwidget.cpp" line="309"/>
+        <source>Port </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/audiomixeroutputchannelwidget.cpp" line="310"/>
         <source>Channel </source>
         <translation type="unfinished"></translation>
     </message>
@@ -279,18 +339,18 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiomixerwidget.cpp" line="35"/>
+        <location filename="../src/widgets/audiomixerwidget.cpp" line="40"/>
         <source>Mixer Config</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiomixerwidget.cpp" line="108"/>
-        <source>Input Port </source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/widgets/audiomixerwidget.cpp" line="176"/>
+        <source>unknown</source>
+        <translation type="unfinished">inconnu</translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiomixerwidget.cpp" line="125"/>
-        <source>Output Port </source>
+        <location filename="../src/widgets/audiomixerwidget.cpp" line="185"/>
+        <source>Port </source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -411,18 +471,18 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
 <context>
     <name>AudioWidget</name>
     <message>
-        <location filename="../src/widgets/audiowidget.cpp" line="10"/>
+        <location filename="../src/widgets/audiowidget.cpp" line="13"/>
         <source>Audio Routing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiowidget.cpp" line="13"/>
+        <location filename="../src/widgets/audiowidget.cpp" line="10"/>
         <source>Audio Mixer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/widgets/audiowidget.h" line="14"/>
-        <source>Audio</source>
+        <source>Audio Mixing/Routing</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -461,7 +521,7 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
     </message>
     <message>
         <location filename="../src/widgets/deviceinfowidget.cpp" line="40"/>
-        <source>Global Audio Konfiguration</source>
+        <source>Global Audio Configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -683,32 +743,32 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
 <context>
     <name>MidiChannelMessagesFilterTM</name>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="341"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="366"/>
         <source>Pitch Bend</source>
         <translation>Modulation de hauteur tonale</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="343"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="368"/>
         <source>Mono Key Pressure</source>
         <translation>Pression de touche mono</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="345"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="370"/>
         <source>Program Change</source>
         <translation>Program Change</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="347"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="372"/>
         <source>Control Change</source>
         <translation>Control Change</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="349"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="374"/>
         <source>Poly Key Pressure</source>
         <translation>Pression de touche poly</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="351"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="376"/>
         <source>Note On / Note Off</source>
         <translation>Note On / Note Off</translation>
     </message>
@@ -716,37 +776,37 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
 <context>
     <name>MidiChannelMessagesRemapTM</name>
     <message>
-        <location filename="../src/widgets/portremapsettingswidget.cpp" line="261"/>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="284"/>
         <source>Pitch Bend</source>
         <translation>Modulation de hauteur tonale</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portremapsettingswidget.cpp" line="263"/>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="286"/>
         <source>Mono Key Pressure</source>
         <translation>Pression de touche mono</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portremapsettingswidget.cpp" line="265"/>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="288"/>
         <source>Program Change</source>
         <translation>Program Change</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portremapsettingswidget.cpp" line="267"/>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="290"/>
         <source>Control Change</source>
         <translation>Control Change</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portremapsettingswidget.cpp" line="269"/>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="292"/>
         <source>Poly Key Pressure</source>
         <translation>Pression de touche poly</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portremapsettingswidget.cpp" line="271"/>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="294"/>
         <source>Note On / Note Off</source>
         <translation>Note On / Note Off</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portremapsettingswidget.cpp" line="273"/>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="296"/>
         <source>Map to Channel</source>
         <translation>Assigner à un canal</translation>
     </message>
@@ -754,12 +814,12 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
 <context>
     <name>MidiControllerFilterTM</name>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="234"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="257"/>
         <source>MIDI-Controller</source>
         <translation>Contrôleur MIDI</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="236"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="259"/>
         <source>all</source>
         <translation>tout</translation>
     </message>
@@ -767,17 +827,17 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
 <context>
     <name>MidiControllerRemapTM</name>
     <message>
-        <location filename="../src/widgets/portremapsettingswidget.cpp" line="139"/>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="161"/>
         <source>MIDI-Controller Source</source>
         <translation>Origine du contrôleur MIDI</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portremapsettingswidget.cpp" line="141"/>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="163"/>
         <source>MIDI-Controller Destination</source>
         <translation>Destination du contrôleur MIDI</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portremapsettingswidget.cpp" line="143"/>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="165"/>
         <source>all</source>
         <translation>tout</translation>
     </message>
@@ -809,31 +869,42 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
         <translation>Aide</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.ui" line="107"/>
+        <location filename="../src/iconnconfigmain.ui" line="82"/>
+        <location filename="../src/iconnconfigmain.ui" line="126"/>
+        <source>Language</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/iconnconfigmain.ui" line="116"/>
         <source>About</source>
         <translation>À propos</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.ui" line="112"/>
+        <location filename="../src/iconnconfigmain.ui" line="121"/>
         <source>Redetect Devices</source>
         <translation>Redétecter les périphériques</translation>
+    </message>
+    <message>
+        <location filename="../src/iconnconfigmain.ui" line="134"/>
+        <source>English</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>toolBar</source>
         <translation type="vanished">barre d&apos;outils</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.ui" line="86"/>
+        <location filename="../src/iconnconfigmain.ui" line="95"/>
         <source>Quit</source>
         <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.ui" line="91"/>
+        <location filename="../src/iconnconfigmain.ui" line="100"/>
         <source>Open Device</source>
         <translation>Ouvrir le périphérique</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.ui" line="102"/>
+        <location filename="../src/iconnconfigmain.ui" line="111"/>
         <source>Device1</source>
         <translation>Périphérique 1</translation>
     </message>
@@ -847,49 +918,54 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
         <translation type="obsolete">ouvrir le périphérique</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="162"/>
+        <location filename="../src/iconnconfigmain.cpp" line="163"/>
         <source>Save current settings to device</source>
         <translation>Sauvegarder les paramètres actuels dans le périphérique</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="171"/>
+        <location filename="../src/iconnconfigmain.cpp" line="172"/>
         <source>Restore settings from device</source>
         <translation>Restaurer les paramètres depuis le périphérique</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="180"/>
+        <location filename="../src/iconnconfigmain.cpp" line="181"/>
         <source>Reset settings to factory default</source>
         <translation>Réinitialiser les paramètres au défaut d&apos;usine</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="194"/>
+        <location filename="../src/iconnconfigmain.cpp" line="195"/>
         <source>Device Actions</source>
         <translation>Actions du périphérique</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="244"/>
+        <location filename="../src/iconnconfigmain.cpp" line="245"/>
         <source>Store current settings to device?</source>
         <translation>Stocker les paramètres actuels dans le périphérique ?</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="254"/>
+        <location filename="../src/iconnconfigmain.cpp" line="255"/>
         <source>Waiting 10 seconds for device to be responsive again</source>
         <translation>Attendre 10 secondes pour que le périphérique soit de nouveau réactif</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="255"/>
+        <location filename="../src/iconnconfigmain.cpp" line="256"/>
         <source>Exit application</source>
         <translation>Quitter l&apos;application</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="280"/>
+        <location filename="../src/iconnconfigmain.cpp" line="281"/>
         <source>Read all settings from device?</source>
         <translation>Lire tous les parapètres depuis le périphérique ?</translation>
     </message>
     <message>
-        <location filename="../src/iconnconfigmain.cpp" line="292"/>
+        <location filename="../src/iconnconfigmain.cpp" line="293"/>
         <source>Reset all settings to factory default?</source>
         <translation>Réinitialiser tous les paramètres aux valeurs d&apos;usine ?</translation>
+    </message>
+    <message>
+        <location filename="../src/iconnconfigmain.cpp" line="396"/>
+        <source>Current Language changed to %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1120,7 +1196,7 @@ Il a fournit également une rustine pour faire que MioConfig fonctionne avec QT-
 <context>
     <name>main</name>
     <message>
-        <location filename="../src/main.cpp" line="39"/>
+        <location filename="../src/main.cpp" line="41"/>
         <source>filename to read settings from.</source>
         <translation>nom du fichier dans lequel lire les paramètres.</translation>
     </message>

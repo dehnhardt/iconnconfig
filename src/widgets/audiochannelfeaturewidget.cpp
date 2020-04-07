@@ -2,6 +2,7 @@
 #include "../sysex/communicationexception.h"
 #include "../sysex/protocolexception.h"
 #include "ui_audiochannelfeaturewidget.h"
+#include <vector>
 
 AudioChannelFeatureWidget::AudioChannelFeatureWidget(
 	std::shared_ptr<RetSetAudioControlDetail> retSetAudioControlDetail,
@@ -80,32 +81,40 @@ void AudioChannelFeatureWidget::setRetSetAudioControlDetail(
 		this->ui->m_pTbHighImpedance->setVisible(false);
 	}
 	if (retSetAudioControlDetail->hasVolumeControl()) {
+		int iMinVolume = retSetAudioControlDetail->getMinVolumeValue();
+		int iMaxVolume = retSetAudioControlDetail->getMaxVolumeValue();
+		int iVolumeResolution = retSetAudioControlDetail->getVolumeResolution();
 		this->ui->m_pFrmVolume->setVisible(true);
+		this->ui->m_pSlideVolume->setFontSize(7);
 		this->ui->m_pFrmVolume->setEnabled(
 			retSetAudioControlDetail->getVolumeControlEditable());
 		this->ui->m_pSlideVolume->setDebug(false);
-		this->ui->m_pSlideVolume->setScaleType(PKSlider::ScaleType::DECIBEL);
-		this->ui->m_pSlideVolume->setResulution(256);
-		this->ui->m_pSlideVolume->setMinimum(
-			retSetAudioControlDetail->getMinVolumeValue());
-		this->ui->m_pSlideVolume->setMaximum(
-			retSetAudioControlDetail->getMaxVolumeValue());
-		this->ui->m_pSlideVolume->setTickInterval(
-			retSetAudioControlDetail->getVolumeResolution());
+		m_pSc1 =
+			std::make_shared<IConnCalc>(0, 256, iMinVolume, iMaxVolume, 256);
+		this->ui->m_pSlideVolume->setScaleCalc(m_pSc1);
 
 		std::cout << "Setting up Slider ("
 				  << retSetAudioControlDetail->getDetailNumber() << ", "
 				  << retSetAudioControlDetail->getChannelName()
-				  << "): minValue " << std::dec
-				  << retSetAudioControlDetail->getMinVolumeValue()
-				  << " maxValue "
-				  << retSetAudioControlDetail->getMaxVolumeValue() << std::endl;
+				  << "): minValue " << std::dec << iMinVolume << " maxValue "
+				  << iMaxVolume << ", resolution: " << iVolumeResolution
+				  << std::endl;
 
-		this->ui->m_pDialTrim->setMinimum(
+		this->ui->m_pPBLeft->setLevelMin(1);
+		this->ui->m_pPBLeft->setLevelWarning(5632);
+		this->ui->m_pPBLeft->setLevelCritical(6400);
+		this->ui->m_pPBLeft->setLevelMax(8192);
+
+		this->ui->m_pPBRight->setLevelMin(1);
+		this->ui->m_pPBRight->setLevelWarning(5632);
+		this->ui->m_pPBRight->setLevelCritical(6400);
+		this->ui->m_pPBRight->setLevelMax(8192);
+
+		this->ui->m_pDial->setMinimum(
 			retSetAudioControlDetail->getMinTrimValue());
-		this->ui->m_pDialTrim->setMaximum(
+		this->ui->m_pDial->setMaximum(
 			retSetAudioControlDetail->getMaxTrimValue());
-		connect(this->ui->m_pDialTrim, &QSlider::valueChanged,
+		connect(this->ui->m_pDial, &QSlider::valueChanged,
 				[](int val) { std::cout << std::dec << val << std::endl; });
 	} else {
 		this->ui->m_pFrmVolume->setVisible(false);
@@ -139,7 +148,7 @@ void AudioChannelFeatureWidget::setValues(
 		retSetAudioControlDetailValue->hasVolumeControl()) {
 		ui->m_pSlideVolume->setValue(
 			retSetAudioControlDetailValue->getVolume());
-		ui->m_pDialTrim->setValue(retSetAudioControlDetailValue->getTrim());
+		ui->m_pDial->setValue(retSetAudioControlDetailValue->getTrim());
 		retSetAudioControlDetailValue->setHasVolumeControl(false);
 		if (m_pAudioControlDetail->getVolumeControlEditable()) {
 			connect(this->ui->m_pSlideVolume, &PKSlider::valueChanged,
@@ -149,12 +158,11 @@ void AudioChannelFeatureWidget::setValues(
 						this->m_pUpdateTimer->start(10);
 						emit this->volumeChanged(value);
 					});
-			connect(this->ui->m_pDialTrim, &QDial::valueChanged,
-					[=](int value) {
-						this->m_pRetSetAudioControlDetailValue->setTrim(value);
-						this->m_pUpdateTimer->start(10);
-						emit this->trimChanged(value);
-					});
+			connect(this->ui->m_pDial, &QDial::valueChanged, [=](int value) {
+				this->m_pRetSetAudioControlDetailValue->setTrim(value);
+				this->m_pUpdateTimer->start(10);
+				emit this->trimChanged(value);
+			});
 		}
 	}
 	if (m_pAudioControlDetail->hasMuteControl() &&
@@ -237,11 +245,13 @@ void AudioChannelFeatureWidget::setChannelId(int value) {
 
 void AudioChannelFeatureWidget::initControls() {
 	ui->m_pTbHighImpedance->setVisible(false);
+	ui->m_pSlidePan->setVisible(false);
 	ui->m_pTbPhantomPower->setVisible(false);
 	ui->m_pTbMute->setVisible(false);
 	ui->m_pTbSolo->setVisible(false);
 	ui->m_pTbPfl->setVisible(false);
 	ui->m_pTbInvert->setVisible(false);
+	ui->m_pFrmUpperMixerPanel2->setVisible(false);
 
 	ui->m_pTbMute->setColor(255, 236, 24);
 	ui->m_pTbSolo->setColor(0, 255, 255);
@@ -251,8 +261,6 @@ void AudioChannelFeatureWidget::initControls() {
 	ui->m_pTbPhantomPower->setColor(255, 0, 0);
 
 	this->ui->m_pPBRight->setVisible(false);
-	this->ui->m_pPBLeft->setRange(1, 8192);
-	this->ui->m_pPBRight->setRange(1, 8192);
 }
 
 void AudioChannelFeatureWidget::audioChannelValueChanged() {
@@ -288,17 +296,17 @@ void AudioChannelFeatureWidget::changeVolume(int volume) {
 }
 
 void AudioChannelFeatureWidget::changeTrim(int trim) {
-	this->ui->m_pDialTrim->setValue(trim);
+	this->ui->m_pDial->setValue(trim);
 }
 
 void AudioChannelFeatureWidget::setVolume(int volume) {
-	this->ui->m_pPBLeft->setValue(volume);
+	this->ui->m_pPBLeft->setLevel(volume);
 }
 
 void AudioChannelFeatureWidget::changeMeterVolume(int channel, int value) {
 	if (channel == m_iChannelId) {
-		ui->m_pPBLeft->setValue(value);
+		ui->m_pPBLeft->setLevel(value);
 	}
 	if (m_bIsMaster && channel == m_iChannelId + 1)
-		ui->m_pPBRight->setValue(value);
+		ui->m_pPBRight->setLevel(value);
 }

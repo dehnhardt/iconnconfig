@@ -74,7 +74,16 @@
     <property name="title">
      <string>Help</string>
     </property>
+    <widget class="QMenu" name="menuLanguage">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="title">
+      <string>Language</string>
+     </property>
+    </widget>
     <addaction name="actionAbout"/>
+    <addaction name="menuLanguage"/>
    </widget>
    <addaction name="menuMio10_Config"/>
    <addaction name="menuDevice"/>
@@ -110,6 +119,19 @@
   <action name="actionRedetectDevices">
    <property name="text">
     <string>Redetect Devices</string>
+   </property>
+  </action>
+  <action name="actionLanguage">
+   <property name="text">
+    <string>Language</string>
+   </property>
+  </action>
+  <action name="actionEnglish">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>English</string>
    </property>
   </action>
  </widget>

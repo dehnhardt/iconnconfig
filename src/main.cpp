@@ -16,6 +16,8 @@ int main(int argc, char *argv[]) {
 
 	QTranslator mioConfigTranslator;
 	QTranslator qtTranslator;
+	QLocale::setDefault(QLocale("en_EN"));
+
 	if (mioConfigTranslator.load(QLocale(), QLatin1String("iconnconfig"),
 								 QLatin1String("_"),
 								 QLatin1String(":/translations/tr"))) {

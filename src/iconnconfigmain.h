@@ -10,6 +10,7 @@
 #include <QMainWindow>
 #include <QSettings>
 #include <QToolBar>
+#include <QTranslator>
 
 namespace Ui {
 class MioMain;
@@ -20,7 +21,7 @@ class MioMain : public QMainWindow {
 
   public:
 	explicit MioMain(QCommandLineParser *parser, QWidget *parent = nullptr);
-	~MioMain();
+	~MioMain() override;
 	void setConfigurationFile(QString *file) {
 		this->m_sConfigurationFile = file;
 	}
@@ -30,10 +31,17 @@ class MioMain : public QMainWindow {
 	static MioMain *getMainWin();
 
   protected:
-	void closeEvent(QCloseEvent *event);
+	void closeEvent(QCloseEvent *event) override;
+	void changeEvent(QEvent *event) override;
+
+  protected slots:
+	void slotLanguageChanged(QAction *action);
 
   private:
 	// methods
+	void createLanguageMenu();
+	void loadLanguage(const QString &rLanguage);
+
 	void connectSignals();
 	void readSettings();
 	bool readDevicesFromSettings();
@@ -72,6 +80,11 @@ class MioMain : public QMainWindow {
 
 	QSettings *m_pConfiguration = nullptr;
 
+	QTranslator
+		m_translator; /*'''< contains the translations for this application*/
+	QTranslator m_translatorQt; /*'''< contains the translations for qt*/
+	QString m_currLang;         /*'''< contains the currently loaded language*/
+
   private:
 	static MioMain *pMainWindow;
 	static int sigpipe[2];
@@ -92,5 +105,7 @@ class MioMain : public QMainWindow {
 	void signalAction(int);
 	void openAboutDialog();
 };
+
+void switchTranslator(QTranslator &translator, const QString &filename);
 
 #endif // MIOMAIN_H

@@ -15,7 +15,7 @@
 AudioPortsWidget::AudioPortsWidget(MioMain *parent, Device *device,
 								   QString windowTitle)
 	: MultiInfoWidget(parent, device, windowTitle) {
-	infoSections = new std::vector<MultiInfoListEntry *>();
+	m_pInfoSections = new std::vector<MultiInfoListEntry *>();
 	// m_pAudioPortParms = new AudioPortStructure();
 	if (device->getCommands()->isCommandSupported(
 			Command::GET_AUDIO_PORT_PARM)) {
@@ -48,7 +48,7 @@ void AudioPortsWidget::getAudioPorts(
 			audioPortParm->getAudioPortType());
 		entry->message = audioPortParm;
 		entry->enabled = true;
-		infoSections->push_back(entry);
+		m_pInfoSections->push_back(entry);
 	}
 }
 
@@ -60,7 +60,7 @@ void AudioPortsWidget::getAudioPortSections() {
 		AudioPortType audioPortType = static_cast<AudioPortType>(section);
 		std::string portTypeName =
 			PortDisplayHelper::getAudioPortTypeName(audioPortType);
-		infoSections->push_back(
+		m_pInfoSections->push_back(
 			new MultiInfoListEntry(MultiInfoListEntry::SECTION, portTypeName));
 		std::vector<std::shared_ptr<RetSetAudioPortParm>> *audioPortParms =
 			it->second;
@@ -96,7 +96,7 @@ void AudioPortsWidget::retrieveAudioPorts() {
 		audioPorts->push_back(retSetAudioPortParm);
 	}
 	*/
-	m_pAudioPortParms = device->getAudioPortStructure();
+	m_pAudioPortParms = m_pDevice->getAudioPortStructure();
 }
 
 QWidget *AudioPortsWidget::createWidget(MultiInfoListEntry *entry) {
@@ -112,10 +112,10 @@ QWidget *AudioPortsWidget::createWidget(MultiInfoListEntry *entry) {
 			&MultiInfoListEntry::changeName);
 
 	layout->addWidget(audioPortParmWidget);
-	if (device->getCommands()->isCommandSupported(
+	if (m_pDevice->getCommands()->isCommandSupported(
 			Command::GET_AUDIO_DEVICE_PARM)) {
 		std::unique_ptr<GetAudioDeviceParm> getAudioControlParm =
-			std::make_unique<GetAudioDeviceParm>(device);
+			std::make_unique<GetAudioDeviceParm>(m_pDevice);
 		getAudioControlParm->setPortId(portId);
 		std::shared_ptr<RetSetAudioDeviceParm> retSetAudioDeviceParm =
 			std::dynamic_pointer_cast<RetSetAudioDeviceParm>(
@@ -123,7 +123,7 @@ QWidget *AudioPortsWidget::createWidget(MultiInfoListEntry *entry) {
 		audioPortParmWidget->setAudioDeviceParm(retSetAudioDeviceParm);
 		if (retSetAudioDeviceParm->getMaxControllers() > 0) {
 			AudioControlParmWidget *audioControlParmWidget =
-				new AudioControlParmWidget(device, portId,
+				new AudioControlParmWidget(m_pDevice, portId,
 										   retSetAudioDeviceParm);
 			QSizePolicy sp;
 			sp.setHorizontalPolicy(QSizePolicy::Expanding);
