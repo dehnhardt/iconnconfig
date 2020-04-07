@@ -11,10 +11,13 @@ Surely some more...
 
 ## preconditions
 you need to checkout separate controls/widgets from https://codeberg.org/dehnhardt/PKControls.git
-They must be found in the same root directory as iconnconfig
-|
-|- iconnconfig
-|- PKControls
+They must be found in the same root as iconnconfig  
+```
+- root 
+ |- iconnconfig  
+ |- PKControls  
+```
+ 
 This way, the additional sources should be included without any changes
 
 ## compile
