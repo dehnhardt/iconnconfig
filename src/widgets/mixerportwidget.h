@@ -16,6 +16,7 @@ class MixerPortWidget : public QWidget {
   public:
 	explicit MixerPortWidget(unsigned int m_iPortId, Device *device,
 							 QWidget *parent = nullptr);
+	~MixerPortWidget() override;
 	void setName(QString name);
 	void addMixerPanel(AudioMixerChannelWidget *mixerPanel,
 					   ChannelDirection portDirection,

@@ -22,7 +22,10 @@ AudioMixerChannelWidget::AudioMixerChannelWidget(
 AudioMixerChannelWidget::AudioMixerChannelWidget(QWidget *parent)
 	: QFrame(parent), ui(new Ui::AudioChannelFeatureWidget) {}
 
-AudioMixerChannelWidget::~AudioMixerChannelWidget() {}
+AudioMixerChannelWidget::~AudioMixerChannelWidget() {
+	delete m_pUpdateTimer;
+	delete ui;
+}
 
 QFrame *AudioMixerChannelWidget::getFirstConnectionFrame() {
 	return this->ui->m_pFrmUpperMixerPanel;

@@ -1,21 +1,21 @@
 #include "retsetmixerinputparm.h"
 
 RetSetMixerInputParm::RetSetMixerInputParm(Device *device)
-	: PortSysExMessage(RET_SET_MIXER_INPUT_PARM, SysExMessage::QUERY, device) {}
+    : PortSysExMessage(RET_SET_MIXER_INPUT_PARM, SysExMessage::QUERY, device) {}
 
 void RetSetMixerInputParm::parseAnswerData() {
 	m_iCommandVersionNumber = m_pData->at(0);
 	m_iPortId = static_cast<unsigned int>(MIDI::byteJoin8bit(m_pData, 1, 2));
 	m_iMixerInputNumber = m_pData->at(3);
 	m_iAudioSourcePortId =
-		static_cast<unsigned int>(MIDI::byteJoin8bit(m_pData, 4, 2));
+	    static_cast<unsigned int>(MIDI::byteJoin8bit(m_pData, 4, 2));
 	m_iAudioSourceChannelNumber = m_pData->at(6);
 }
 
 std::vector<unsigned char> *RetSetMixerInputParm::getMessageData() {
 	BYTE_VECTOR *data = nullptr;
 	BYTE_VECTOR *portId = nullptr;
-	BYTE_VECTOR *audioSourcePortId = new BYTE_VECTOR();
+	BYTE_VECTOR *audioSourcePortId = nullptr;
 
 	data = new BYTE_VECTOR();
 
@@ -28,7 +28,7 @@ std::vector<unsigned char> *RetSetMixerInputParm::getMessageData() {
 	data->insert(data->end(), portId->begin(), portId->end());
 	data->push_back(static_cast<unsigned char>(m_iMixerInputNumber));
 	data->insert(data->end(), audioSourcePortId->begin(),
-				 audioSourcePortId->end());
+	             audioSourcePortId->end());
 	data->push_back(static_cast<unsigned char>(m_iAudioSourceChannelNumber));
 	delete portId;
 	delete audioSourcePortId;
@@ -40,7 +40,7 @@ unsigned int RetSetMixerInputParm::getAudioSourceChannelNumber() const {
 }
 
 void RetSetMixerInputParm::setAudioSourceChannelNumber(
-	unsigned int iAudioSourceChannelNumber) {
+    unsigned int iAudioSourceChannelNumber) {
 	m_iAudioSourceChannelNumber = iAudioSourceChannelNumber;
 }
 
@@ -49,6 +49,6 @@ unsigned int RetSetMixerInputParm::getAudioSourcePortId() const {
 }
 
 void RetSetMixerInputParm::setAudioSourcePortId(
-	unsigned int iAudioSourcePortId) {
+    unsigned int iAudioSourcePortId) {
 	m_iAudioSourcePortId = iAudioSourcePortId;
 }

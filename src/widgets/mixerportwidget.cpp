@@ -13,6 +13,8 @@ MixerPortWidget::MixerPortWidget(unsigned int portId, Device *device,
 			&MixerPortWidget::timerElapsed);
 }
 
+MixerPortWidget::~MixerPortWidget() { delete m_pVolumeTimer; }
+
 void MixerPortWidget::setName(QString name) { m_pPortNameLabel->setText(name); }
 
 void MixerPortWidget::addMixerPanel(AudioMixerChannelWidget *mixerPanel,
@@ -50,7 +52,7 @@ void MixerPortWidget::createLayout() {
 	QBoxLayout *hBoxLayout = new QHBoxLayout();
 	m_pMixerPanelLayout = new QHBoxLayout();
 	m_pPortNameLabel = new QLabel();
-	m_pVolButton = new QPushButton("Volumes");
+	// m_pVolButton = new QPushButton("Volumes");
 	hBoxLayout->addWidget(m_pPortNameLabel);
 	hBoxLayout->addWidget(m_pVolButton);
 	hBoxLayout->addStretch();
@@ -58,8 +60,8 @@ void MixerPortWidget::createLayout() {
 	vBoxLayout->addLayout(m_pMixerPanelLayout);
 	vBoxLayout->addStretch();
 	setLayout(vBoxLayout);
-	connect(m_pVolButton, &QPushButton::released, this,
-			&MixerPortWidget::timerElapsed);
+	/* connect(m_pVolButton, &QPushButton::released, this,
+			&MixerPortWidget::timerElapsed);*/
 }
 
 void MixerPortWidget::getVolumes() {

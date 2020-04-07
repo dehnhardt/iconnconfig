@@ -97,7 +97,7 @@ void AudioMixerInputChannelWidget::setMixerInputControl(
 		}
 		this->ui->m_pPBLeft->setScaleCalc(
 			std::make_shared<IConnCalc>(0, 256, -60, 6, 1));
-		this->ui->m_pPBLeft->setLevelWarning(-3);
+		this->ui->m_pPBLeft->setLevelWarning(-6);
 		this->ui->m_pPBLeft->setLevelCritical(0);
 		this->ui->m_pPBLeft->setShowWarningColor(true);
 		this->ui->m_pPBLeft->setShowCriticalColor(true);
@@ -106,7 +106,7 @@ void AudioMixerInputChannelWidget::setMixerInputControl(
 
 		this->ui->m_pPBRight->setScaleCalc(
 			std::make_shared<IConnCalc>(0, 256, -60, 6, 1));
-		this->ui->m_pPBRight->setLevelWarning(-3);
+		this->ui->m_pPBRight->setLevelWarning(-6);
 		this->ui->m_pPBRight->setLevelCritical(0);
 		this->ui->m_pPBRight->setShowWarningColor(true);
 		this->ui->m_pPBRight->setShowCriticalColor(true);

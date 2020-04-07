@@ -39,7 +39,7 @@ void AudioMixerWidget::createLayout() {
 
 	QLabel *lblMixerConfig = new QLabel(tr("Mixer Config"));
 	m_pCboMixerConfig = new QComboBox();
-	m_pCboMixerConfig->setEditable(false);
+	m_pCboMixerConfig->setEnabled(false);
 	m_pSAMixer = new QScrollArea();
 	m_pSAMixer->setWidgetResizable(true);
 
