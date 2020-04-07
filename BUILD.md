@@ -9,6 +9,17 @@ at least
 
 Surely some more...
 
+## preconditions
+you need to checkout separate controls/widgets from https://codeberg.org/dehnhardt/PKControls.git
+They must be found in the same root as iconnconfig  
+```
+- root 
+ |- iconnconfig  
+ |- PKControls  
+```
+ 
+This way, the additional sources should be included without any changes
+
 ## compile
 * change to this directory
 * qmake (be shure that QMake uses at least QT 5.2. e.g. with the switch: qmake -qt=5)
