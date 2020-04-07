@@ -10,18 +10,20 @@ PortRemapSettingsWidget::PortRemapSettingsWidget(PortDirection direction,
 	: QWidget(parent), ui(new Ui::PortRemapSettingsWidget),
 	  portRemapDirection(direction) {
 	const QString style = "QTableView { \
-		 gridline-color: #aaaaa8;  \
-		 padding: 0; \
-		 font-size: 8pt; \
-	} \
-	QTableView::indicator{ \
-		color: #b1b1b1; \
-		border: 0; \
-	} \
-	QTableView::indicator:checked{\
-		background-color: #a23232; \
-		border-radius: 7px; \
-	} ";
+			 gridline-color: #aaaaa8;  \
+			 padding: 0; \
+			 font-size: 8pt; \
+		} \
+		QTableView::indicator{ \
+			border-radius: 7px; \
+			border: 0; \
+		} \
+		QTableView::indicator:enabled{ \
+			background-color: #c9c9c9; \
+		} \
+		QTableView::indicator:checked{ \
+			background-color: #a23232; \
+		}";
 	ui->setupUi(this);
 
 	MidiControllerComboDelegate *comboDelegate =
@@ -144,6 +146,8 @@ QVariant MidiControllerRemapTM::data(const QModelIndex &index, int role) const {
 					   ? Qt::Checked
 					   : Qt::Unchecked;
 		break;
+	case Qt::BackgroundRole:
+		return QColor(220, 220, 220);
 	}
 	return QVariant();
 }
@@ -265,6 +269,8 @@ QVariant MidiChannelMessagesRemapTM::data(const QModelIndex &index,
 		case 6:
 			return QVariant(midiChannelMessagesRemap->remapChannel);
 		}
+	case Qt::BackgroundRole:
+		return QColor(220, 220, 220);
 	}
 	return QVariant();
 }

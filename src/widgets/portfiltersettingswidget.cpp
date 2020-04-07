@@ -9,19 +9,22 @@ PortFilterSettingsWidget::PortFilterSettingsWidget(PortDirection direction,
 	: QWidget(parent), ui(new Ui::PortFilterSettingsWidget),
 	  portFilterDirection(direction) {
 	ui->setupUi(this);
+
 	const QString style = "QTableView { \
-		 gridline-color: #aaaaa8;  \
-		 padding: 0; \
-		 font-size: 8pt; \
-	} \
-	QTableView::indicator{ \
-		color: #b1b1b1; \
-		border: 0; \
-	} \
-	QTableView::indicator:checked{\
-		background-color: #a23232; \
-		border-radius: 7px; \
-	} ";
+			 gridline-color: #aaaaa8;  \
+			 padding: 0; \
+			 font-size: 8pt; \
+		} \
+		QTableView::indicator{ \
+			border-radius: 7px; \
+			border: 0; \
+		} \
+		QTableView::indicator:enabled{ \
+			background-color: #c9c9c9; \
+		} \
+		QTableView::indicator:checked{ \
+			background-color: #a23232; \
+		}";
 
 	MidiControllerComboDelegate *comboDelegate =
 		new MidiControllerComboDelegate();
@@ -239,6 +242,8 @@ QVariant MidiControllerFilterTM::data(const QModelIndex &index,
 					   ? Qt::Checked
 					   : Qt::Unchecked;
 		break;
+	case Qt::BackgroundRole:
+		return QColor(220, 220, 220);
 	}
 	return QVariant();
 }
@@ -345,7 +350,10 @@ QVariant MidiChannelMessagesFilterTM::data(const QModelIndex &index,
 			return boolToCheckState(
 				midiChannelMessagesFilter->filterMidiNoteOnOffEvents);
 		}
+	case Qt::BackgroundRole:
+		return QColor(220, 220, 220);
 	}
+
 	return QVariant();
 }
 
