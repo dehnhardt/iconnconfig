@@ -12,7 +12,7 @@ class AudioPortsWidget : public MultiInfoWidget {
 
   public:
 	explicit AudioPortsWidget(MioMain *parent = nullptr,
-							  Device *device = nullptr,
+							  Device *m_pDevice = nullptr,
 							  QString windowTitle = tr("Audio-Ports"));
 	~AudioPortsWidget();
 

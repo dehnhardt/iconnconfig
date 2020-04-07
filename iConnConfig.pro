@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 DISTFILES = .astylerc \
-    AUTHOR.md
+    AUTHOR.md \
 
 QT       += core gui
 
@@ -39,21 +39,36 @@ win32: DEFINES += __WINDOWS_MM__
 TRANSLATIONS = tr/iconnconfig_de_DE.ts \
                tr/iconnconfig_fr_FR.ts
 
+
 SOURCES +=\
         src/RtMidi.cpp \
     src/main.cpp \
     src/device.cpp \
     src/sysex/getaudiochannelname.cpp \
     src/sysex/getmixerinputcontrol.cpp \
+    src/sysex/getmixerinputcontrolvalue.cpp \
+    src/sysex/getmixermetervalue.cpp \
+    src/sysex/getmixeroutputcontrol.cpp \
+    src/sysex/getmixeroutputcontrolvalue.cpp \
+    src/sysex/getmixeroutputparm.cpp \
     src/sysex/midi.cpp \
     src/devicedetection.cpp \
     src/config/configuration.cpp \
     src/devicedetectionprocessor.cpp \
     src/sysex/retmixerinputcontrol.cpp \
+    src/sysex/retmixermetervalue.cpp \
+    src/sysex/retmixeroutputcontrol.cpp \
     src/sysex/retsetaudiochannelname.cpp \
+    src/sysex/retsetmixerinputcontrolvalue.cpp \
+    src/sysex/retsetmixeroutputcontrolvalue.cpp \
+    src/sysex/retsetmixeroutputparm.cpp \
     src/sysex/sysexmessage.cpp \
     src/deviceselectiontablemodel.cpp \
     # src/widgets/portsettingwidget.cpp \
+    src/widgets/audiomixerchannelwidget.cpp \
+    src/widgets/audiomixerinputchannelwidget.cpp \
+    src/widgets/audiomixeroutputchannelwidget.cpp \
+    src/widgets/controls/iconncalc.cpp \
     src/widgets/controls/pkmixerbutton.cpp \
     src/widgets/deviceinfowidget.cpp \
     src/widgets/portswidget.cpp \
@@ -127,7 +142,6 @@ SOURCES +=\
     src/sysex/retaudioportmetervalue.cpp \
     src/sysex/getaudiodeviceparm.cpp \
     src/sysex/retsetaudiodeviceparm.cpp \
-    src/widgets/controls/pklevelmeter.cpp \
     src/sysex/getaudiopatchbayparm.cpp \
     src/sysex/retsetaudiopatchbayparm.cpp \
     src/widgets/audiomixerwidget.cpp \
@@ -140,7 +154,7 @@ SOURCES +=\
     src/widgets/mixerportwidget.cpp \
     src/sysex/retsetmixerinputparm.cpp \
     src/sysex/getmixerinputparm.cpp \
-    src/widgets/audiomixerchannelwidget.cpp
+    src/widgets/views/hierarchicalheaderview.cpp
 
 INCLUDEPATH += /usr/include/libusb-1.0/
 
@@ -149,16 +163,30 @@ HEADERS  += \
     src/device.h \
     src/sysex/getaudiochannelname.h \
     src/sysex/getmixerinputcontrol.h \
+    src/sysex/getmixerinputcontrolvalue.h \
+    src/sysex/getmixermetervalue.h \
+    src/sysex/getmixeroutputcontrol.h \
+    src/sysex/getmixeroutputcontrolvalue.h \
+    src/sysex/getmixeroutputparm.h \
     src/sysex/midi.h \
     src/devicedetection.h \
     src/config/configuration.h \
     src/devicedetectionprocessor.h \
     src/sysex/retmixerinputcontrol.h \
+    src/sysex/retmixermetervalue.h \
+    src/sysex/retmixeroutputcontrol.h \
     src/sysex/retsetaudiochannelname.h \
+    src/sysex/retsetmixerinputcontrolvalue.h \
+    src/sysex/retsetmixeroutputcontrolvalue.h \
+    src/sysex/retsetmixeroutputparm.h \
     src/sysex/sysexmessage.h \
     src/deviceselectiontablemodel.h \
     src/events/events.h \
     src/device.h \
+    src/widgets/audiomixerchannelwidget.h \
+    src/widgets/audiomixerinputchannelwidget.h \
+    src/widgets/audiomixeroutputchannelwidget.h \
+    src/widgets/controls/iconncalc.h \
     src/widgets/controls/pkmixerbutton.h \
     src/widgets/deviceinfowidget.h \
     src/widgets/portswidget.h \
@@ -235,7 +263,6 @@ HEADERS  += \
     src/sysex/retaudioportmetervalue.h \
     src/sysex/getaudiodeviceparm.h \
     src/sysex/retsetaudiodeviceparm.h \
-    src/widgets/controls/pklevelmeter.h \
     src/sysex/getaudiopatchbayparm.h \
     src/sysex/retsetaudiopatchbayparm.h \
     src/widgets/audiomixerwidget.h \
@@ -248,7 +275,7 @@ HEADERS  += \
     src/widgets/mixerportwidget.h \
     src/sysex/retsetmixerinputparm.h \
     src/sysex/getmixerinputparm.h \
-    src/widgets/audiomixerchannelwidget.h
+    src/widgets/views/hierarchicalheaderview.h
 
 FORMS    += \
     src/devicedetection.ui \
@@ -282,3 +309,14 @@ DISTFILES += \
     tr/iconnconfig_fr_FR.ts \
     tr/iconnconfig_fr_FR.qm \
     .astylerc
+
+# Some controls are in a separate project und needs to be included here
+
+exists(../PKControls/pklevelmeter.pri){
+    include(../PKControls/pklevelmeter.pri)
+} else {
+    error( The sources for pk controls are missing. \
+    Please chechout from here 'https://codeberg.org/dehnhardt/PKControls.git' \
+    in the same root directory as iConnConfig)
+}
+

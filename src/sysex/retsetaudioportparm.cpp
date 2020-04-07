@@ -18,8 +18,8 @@ void RetSetAudioPortParm::parseAnswerData() {
 	m_iCommandVersionNumber = m_pData->at(0);
 	m_iPortId = static_cast<unsigned int>(MIDI::byteJoin7bit(m_pData, 1, 2));
 	m_audioPortType = static_cast<AudioPortType>(m_pData->at(3));
-	m_iInputChannels = m_pData->at(4);
-	m_iOutputChannels = m_pData->at(5);
+	m_iOutputChannels = m_pData->at(4);
+	m_iInputChannels = m_pData->at(5);
 	m_iNumberOfPortConfigurationBlocks = m_pData->at(6);
 	m_pAudioPortConfigurations = new AudioPortConfiguration
 		*[static_cast<unsigned long>(m_iNumberOfPortConfigurationBlocks)];
@@ -80,8 +80,8 @@ std::vector<unsigned char> *RetSetAudioPortParm::getMessageData() {
 	data->insert(data->end(), totalNumberOfAudioPorts->begin(),
 				 totalNumberOfAudioPorts->end());
 	data->push_back(m_audioPortType);
-	data->push_back(static_cast<unsigned char>(m_iInputChannels));
 	data->push_back(static_cast<unsigned char>(m_iOutputChannels));
+	data->push_back(static_cast<unsigned char>(m_iInputChannels));
 	data->push_back(0);
 	data->push_back(static_cast<unsigned char>(m_iMaxPortNameLength));
 	data->push_back(static_cast<unsigned char>(m_sPortName.size()));

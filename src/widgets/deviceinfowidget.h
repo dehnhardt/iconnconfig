@@ -11,7 +11,7 @@ class DeviceInfoWidget : public MultiInfoWidget {
 
   public:
 	explicit DeviceInfoWidget(MioMain *parent = nullptr,
-							  Device *device = nullptr,
+							  Device *m_pDevice = nullptr,
 							  std::shared_ptr<GetInfo> m_pDeviceInfo = nullptr,
 							  QString windowTitle = tr("Device Information"));
 	~DeviceInfoWidget();

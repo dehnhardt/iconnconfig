@@ -3,12 +3,12 @@
 #include "ui_multiinfowidget.h"
 
 MultiInfoWidget::MultiInfoWidget(MioMain *parent, Device *device,
-                                 QString windowTitle)
-    : QDockWidget(parent), ui(new Ui::MultiInfoWidget), device(device) {
+								 QString windowTitle)
+	: QDockWidget(parent), ui(new Ui::MultiInfoWidget), m_pDevice(device) {
 	ui->setupUi(this);
 	setWindowTitle(windowTitle);
 	connect(this->ui->infoList, &QListWidget::currentRowChanged, this,
-	        &MultiInfoWidget::currentRowChanged);
+			&MultiInfoWidget::currentRowChanged);
 	connect(this, SIGNAL(visibilityChanged(bool)), this, SLOT(visible(bool)));
 
 	// hack to delete the titlebar
@@ -19,24 +19,24 @@ MultiInfoWidget::MultiInfoWidget(MioMain *parent, Device *device,
 
 MultiInfoWidget::~MultiInfoWidget() {
 	disconnect(this->ui->infoList, &QListWidget::currentRowChanged, this,
-	           &MultiInfoWidget::currentRowChanged);
-	if (infoSections != nullptr) {
+			   &MultiInfoWidget::currentRowChanged);
+	if (m_pInfoSections != nullptr) {
 		std::vector<MultiInfoListEntry *>::iterator it;
-		for (it = infoSections->begin(); it < infoSections->end(); ++it) {
+		for (it = m_pInfoSections->begin(); it < m_pInfoSections->end(); ++it) {
 			if (*it) {
 				MultiInfoListEntry *e = (*it);
 				delete e;
 			}
 		}
-		infoSections->clear();
-		delete infoSections;
+		m_pInfoSections->clear();
+		delete m_pInfoSections;
 	}
 	delete ui;
 }
 
 void MultiInfoWidget::currentRowChanged(int currentRow) {
 	MultiInfoListEntry *selectedInfo =
-	    infoSections->at(static_cast<unsigned long>(currentRow));
+		m_pInfoSections->at(static_cast<unsigned long>(currentRow));
 	if (!selectedInfo->enabled)
 		return;
 	if (selectedInfo->widget == nullptr) {
@@ -56,7 +56,7 @@ void MultiInfoWidget::visible(bool visible) {
 
 void MultiInfoWidget::createInfoSections() {
 	std::vector<MultiInfoListEntry *>::iterator it;
-	for (it = infoSections->begin(); it != infoSections->end(); ++it) {
+	for (it = m_pInfoSections->begin(); it != m_pInfoSections->end(); ++it) {
 		MultiInfoListEntry *entry = (*it);
 		QListWidgetItem *item = new QListWidgetItem();
 		entry->m_pListWidgetItem = item;
@@ -84,7 +84,7 @@ void MultiInfoWidget::createInfoSections() {
 int MultiInfoWidget::getFirstSelectableRow() {
 	for (int i = 0; i < this->ui->infoList->count(); ++i) {
 		MultiInfoListEntry *selectedInfo =
-		    infoSections->at(static_cast<unsigned long>(i));
+			m_pInfoSections->at(static_cast<unsigned long>(i));
 		if (selectedInfo->enabled)
 			return i;
 	}

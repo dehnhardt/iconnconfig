@@ -9,6 +9,23 @@ PortFilterSettingsWidget::PortFilterSettingsWidget(PortDirection direction,
 	: QWidget(parent), ui(new Ui::PortFilterSettingsWidget),
 	  portFilterDirection(direction) {
 	ui->setupUi(this);
+
+	const QString style = "QTableView { \
+			 gridline-color: #aaaaa8;  \
+			 padding: 0; \
+			 font-size: 8pt; \
+		} \
+		QTableView::indicator{ \
+			border-radius: 7px; \
+			border: 0; \
+		} \
+		QTableView::indicator:enabled{ \
+			background-color: #c9c9c9; \
+		} \
+		QTableView::indicator:checked{ \
+			background-color: #a23232; \
+		}";
+
 	MidiControllerComboDelegate *comboDelegate =
 		new MidiControllerComboDelegate();
 	ui->m_pTblMidiControllerFilter->setItemDelegateForColumn(0, comboDelegate);
@@ -16,10 +33,14 @@ PortFilterSettingsWidget::PortFilterSettingsWidget(PortDirection direction,
 		QHeaderView::ResizeToContents);
 	ui->m_pTblMidiControllerFilter->verticalHeader()->setSectionResizeMode(
 		QHeaderView::ResizeToContents);
+	ui->m_pTblMidiControllerFilter->setStyleSheet(style);
+	ui->m_pTblMidiControllerFilter->setFocusPolicy(Qt::NoFocus);
 	ui->m_pTblMidiChannelMessageFilter->horizontalHeader()
 		->setSectionResizeMode(QHeaderView::ResizeToContents);
 	ui->m_pTblMidiChannelMessageFilter->verticalHeader()->setSectionResizeMode(
 		QHeaderView::ResizeToContents);
+	ui->m_pTblMidiChannelMessageFilter->setStyleSheet(style);
+	ui->m_pTblMidiChannelMessageFilter->setFocusPolicy(Qt::NoFocus);
 	createConnections();
 }
 
@@ -221,6 +242,8 @@ QVariant MidiControllerFilterTM::data(const QModelIndex &index,
 					   ? Qt::Checked
 					   : Qt::Unchecked;
 		break;
+	case Qt::BackgroundRole:
+		return QColor(220, 220, 220);
 	}
 	return QVariant();
 }
@@ -278,8 +301,7 @@ bool MidiControllerFilterTM::setData(const QModelIndex &index,
 
 Qt::ItemFlags MidiControllerFilterTM::flags(const QModelIndex &index) const {
 	if (index.column() > 0)
-		return Qt::ItemIsUserCheckable | Qt::ItemIsEnabled |
-			   Qt::ItemIsSelectable;
+		return Qt::ItemIsUserCheckable | Qt::ItemIsEnabled;
 	return Qt::ItemIsEditable | QAbstractTableModel::flags(index);
 }
 
@@ -328,7 +350,10 @@ QVariant MidiChannelMessagesFilterTM::data(const QModelIndex &index,
 			return boolToCheckState(
 				midiChannelMessagesFilter->filterMidiNoteOnOffEvents);
 		}
+	case Qt::BackgroundRole:
+		return QColor(220, 220, 220);
 	}
+
 	return QVariant();
 }
 
@@ -399,7 +424,7 @@ bool MidiChannelMessagesFilterTM::setData(const QModelIndex &index,
 Qt::ItemFlags MidiChannelMessagesFilterTM::flags(const QModelIndex
 												 __attribute__((unused)) &
 												 index) const {
-	return Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+	return Qt::ItemIsUserCheckable | Qt::ItemIsEnabled;
 }
 
 Qt::CheckState MidiChannelMessagesFilterTM::boolToCheckState(bool value) const {

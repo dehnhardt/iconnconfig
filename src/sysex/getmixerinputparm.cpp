@@ -9,6 +9,7 @@ std::vector<unsigned char> *GetMixerInputParm::getMessageData() {
 	BYTE_VECTOR *portId = getPortIdBytes();
 	data->insert(data->end(), portId->begin(), portId->end());
 	data->push_back(static_cast<unsigned char>(m_iMixerInputNumber));
+	delete portId;
 	return data;
 }
 

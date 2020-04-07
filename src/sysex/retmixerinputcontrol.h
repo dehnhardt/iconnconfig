@@ -7,18 +7,18 @@ class RetMixerInputControl : public PortSysExMessage {
   public:
 	RetMixerInputControl(Device *device);
 	RetMixerInputControl(Command cmd, BYTE_VECTOR *message, Device *device)
-		: PortSysExMessage(cmd, message, device) {}
+	    : PortSysExMessage(cmd, message, device) {}
 	virtual ~RetMixerInputControl() override;
 	void parseAnswerData() override;
 
-	bool getHasControls() const;
-	bool getHasVolumeControl() const;
-	bool getHasMuteControl() const;
-	bool getHasSoloControl() const;
-	bool getHasSoloPFLControl() const;
-	bool getHasStereoLinkControl() const;
-	bool getHasInvertControl() const;
-	bool getHasPanControl() const;
+	bool hasControls() const;
+	bool hasVolumeControl() const;
+	bool hasMuteControl() const;
+	bool hasSoloControl() const;
+	bool hasSoloPFLControl() const;
+	bool hasStereoLinkControl() const;
+	bool hasInvertControl() const;
+	bool hasPanControl() const;
 
 	bool getVolumeControlEditable() const;
 	bool getMuteControlEditable() const;

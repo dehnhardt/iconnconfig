@@ -9,7 +9,23 @@ PortRemapSettingsWidget::PortRemapSettingsWidget(PortDirection direction,
 												 QWidget *parent)
 	: QWidget(parent), ui(new Ui::PortRemapSettingsWidget),
 	  portRemapDirection(direction) {
+	const QString style = "QTableView { \
+			 gridline-color: #aaaaa8;  \
+			 padding: 0; \
+			 font-size: 8pt; \
+		} \
+		QTableView::indicator{ \
+			border-radius: 7px; \
+			border: 0; \
+		} \
+		QTableView::indicator:enabled{ \
+			background-color: #c9c9c9; \
+		} \
+		QTableView::indicator:checked{ \
+			background-color: #a23232; \
+		}";
 	ui->setupUi(this);
+
 	MidiControllerComboDelegate *comboDelegate =
 		new MidiControllerComboDelegate();
 	MidiChannelComboDelegate *midiChannelDelegate =
@@ -20,12 +36,16 @@ PortRemapSettingsWidget::PortRemapSettingsWidget(PortDirection direction,
 		QHeaderView::ResizeToContents);
 	ui->m_pTblMidiControllerRemap->verticalHeader()->setSectionResizeMode(
 		QHeaderView::ResizeToContents);
+	ui->m_pTblMidiControllerRemap->setStyleSheet(style);
+	ui->m_pTblMidiControllerRemap->setFocusPolicy(Qt::NoFocus);
 	ui->m_pTblMidiChannelMessageRemap->setItemDelegateForRow(
 		6, midiChannelDelegate);
 	ui->m_pTblMidiChannelMessageRemap->horizontalHeader()->setSectionResizeMode(
 		QHeaderView::ResizeToContents);
 	ui->m_pTblMidiChannelMessageRemap->verticalHeader()->setSectionResizeMode(
 		QHeaderView::ResizeToContents);
+	ui->m_pTblMidiChannelMessageRemap->setStyleSheet(style);
+	ui->m_pTblMidiChannelMessageRemap->setFocusPolicy(Qt::NoFocus);
 	createConnections();
 }
 
@@ -126,6 +146,8 @@ QVariant MidiControllerRemapTM::data(const QModelIndex &index, int role) const {
 					   ? Qt::Checked
 					   : Qt::Unchecked;
 		break;
+	case Qt::BackgroundRole:
+		return QColor(220, 220, 220);
 	}
 	return QVariant();
 }
@@ -191,8 +213,7 @@ bool MidiControllerRemapTM::setData(const QModelIndex &index,
 
 Qt::ItemFlags MidiControllerRemapTM::flags(const QModelIndex &index) const {
 	if (index.column() > 0)
-		return Qt::ItemIsUserCheckable | Qt::ItemIsEnabled |
-			   Qt::ItemIsSelectable;
+		return Qt::ItemIsUserCheckable | Qt::ItemIsEnabled;
 	return Qt::ItemIsEditable | QAbstractTableModel::flags(index);
 }
 
@@ -248,6 +269,8 @@ QVariant MidiChannelMessagesRemapTM::data(const QModelIndex &index,
 		case 6:
 			return QVariant(midiChannelMessagesRemap->remapChannel);
 		}
+	case Qt::BackgroundRole:
+		return QColor(220, 220, 220);
 	}
 	return QVariant();
 }
@@ -329,8 +352,7 @@ bool MidiChannelMessagesRemapTM::setData(const QModelIndex &index,
 Qt::ItemFlags
 MidiChannelMessagesRemapTM::flags(const QModelIndex &index) const {
 	if (index.row() < 6)
-		return Qt::ItemIsUserCheckable | Qt::ItemIsEnabled |
-			   Qt::ItemIsSelectable;
+		return Qt::ItemIsUserCheckable | Qt::ItemIsEnabled;
 	return Qt::ItemIsEditable | QAbstractTableModel::flags(index);
 }
 

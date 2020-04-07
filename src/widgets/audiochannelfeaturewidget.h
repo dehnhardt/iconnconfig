@@ -5,6 +5,8 @@
 #include "../sysex/retsetaudiocontroldetail.h"
 #include "../sysex/retsetaudiocontroldetailvalue.h"
 
+#include "controls/iconncalc.h"
+
 #include <QFrame>
 #include <QTimer>
 
@@ -34,6 +36,7 @@ class AudioChannelFeatureWidget : public QFrame {
 	int m_iDetailId = 0;
 	int m_iChannelId = 0;
 	bool m_bIsMaster = false;
+	std::shared_ptr<IConnCalc> m_pSc1;
 
 	std::shared_ptr<RetSetAudioControlDetail> m_pAudioControlDetail;
 	std::shared_ptr<RetSetAudioControlDetailValue>

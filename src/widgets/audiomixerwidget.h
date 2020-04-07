@@ -26,6 +26,7 @@ class AudioMixerWidget : public QWidget {
 	QComboBox *m_pCboMixerConfig = nullptr;
 	QScrollArea *m_pSAMixer = nullptr;
 	QWidget *m_pWdgMixer = nullptr;
+	QTabWidget *m_pMixerPartsTab = nullptr;
 	QHBoxLayout *m_pLAInputMixerParts = nullptr;
 	QHBoxLayout *m_pLAOutputMixerParts = nullptr;
 
@@ -36,6 +37,10 @@ class AudioMixerWidget : public QWidget {
   public slots:
 	void audioConfigurationChanged(unsigned int audioConfigurationNumber);
 	void mixerConfigurationChanged(unsigned int mixerConfigurationNumber);
+	void changeChannelConnection();
+
+  signals:
+	void channelConnectionChanged();
 };
 
 #endif // AUDIOMIXERWIDGET_H
