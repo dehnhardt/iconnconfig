@@ -139,77 +139,86 @@ Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm un
         <translation>Formular</translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="204"/>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="207"/>
         <source>High Impedance</source>
         <translation>Hohe Impedanz</translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="210"/>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="213"/>
         <source>Imp</source>
         <translation>Imp</translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="246"/>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="249"/>
         <source>Phantom Power</source>
         <translation>Phantomspannung einschalten</translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="252"/>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="255"/>
         <source>48v</source>
         <translation>48v</translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="315"/>
         <source>Trim</source>
-        <translation>Trim</translation>
+        <translation type="vanished">Trim</translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="551"/>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="384"/>
+        <source>Trim:</source>
+        <translation>Trim:</translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="597"/>
+        <source>Pan / Balance</source>
+        <translation>Pan / Balance</translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="718"/>
         <source>Mute Channel</source>
         <translation>Kanal stummschalten</translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="554"/>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="721"/>
         <source>M</source>
         <translation>M</translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="584"/>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="751"/>
         <source>Channel Solo</source>
         <translation>Kanal im Solo-Modus wiedergeben</translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="587"/>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="754"/>
         <source>S</source>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="623"/>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="790"/>
         <source>Prefade listening</source>
         <translation>Anhören vor Laustärkekanpassung</translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="626"/>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="793"/>
         <source>Pfl</source>
         <translation>Pfl</translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="662"/>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="829"/>
         <source>Invert Channel</source>
         <translation>Kanal invertieren</translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="665"/>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="832"/>
         <source>Inv</source>
         <translation>Inv</translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="716"/>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="883"/>
         <source>Mono/Stereo Switch</source>
         <translation>Umschalten von zwei Monokanälen in einen Stereokanal</translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="722"/>
+        <location filename="../src/widgets/audiochannelfeaturewidget.ui" line="889"/>
         <source>Link</source>
         <translation>Link</translation>
     </message>
@@ -245,28 +254,106 @@ Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm un
 <context>
     <name>AudioMixerChannelWidget</name>
     <message>
-        <location filename="../src/widgets/audiomixerchannelwidget.cpp" line="29"/>
         <source>In</source>
-        <translation>In</translation>
+        <translation type="vanished">In</translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiomixerchannelwidget.cpp" line="74"/>
+        <source> - none - </source>
+        <translation type="vanished"> -nichts- </translation>
+    </message>
+    <message>
+        <source>none</source>
+        <translation type="vanished">nichts</translation>
+    </message>
+    <message>
+        <source>Port </source>
+        <translation type="vanished">Anschluss </translation>
+    </message>
+    <message>
+        <source>Channel </source>
+        <translation type="vanished">Kanal </translation>
+    </message>
+</context>
+<context>
+    <name>AudioMixerInputChannelWidget</name>
+    <message>
+        <location filename="../src/widgets/audiomixerinputchannelwidget.cpp" line="27"/>
+        <source>In 1</source>
+        <translation>In 1</translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/audiomixerinputchannelwidget.cpp" line="176"/>
         <source> - none - </source>
         <translation> -nichts- </translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiomixerchannelwidget.cpp" line="158"/>
-        <location filename="../src/widgets/audiomixerchannelwidget.cpp" line="159"/>
+        <location filename="../src/widgets/audiomixerinputchannelwidget.cpp" line="262"/>
+        <location filename="../src/widgets/audiomixerinputchannelwidget.cpp" line="263"/>
         <source>none</source>
         <translation>nichts</translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiomixerchannelwidget.cpp" line="164"/>
+        <location filename="../src/widgets/audiomixerinputchannelwidget.cpp" line="268"/>
         <source>Port </source>
         <translation>Anschluss </translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiomixerchannelwidget.cpp" line="165"/>
+        <location filename="../src/widgets/audiomixerinputchannelwidget.cpp" line="269"/>
+        <source>Channel </source>
+        <translation>Kanal </translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/audiomixerinputchannelwidget.cpp" line="376"/>
+        <source>-- Mono --</source>
+        <translation>-- Mono --</translation>
+    </message>
+</context>
+<context>
+    <name>AudioMixerOutputChannelWidget</name>
+    <message>
+        <location filename="../src/widgets/audiomixeroutputchannelwidget.cpp" line="33"/>
+        <source>O 1</source>
+        <translation>O 1</translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/audiomixeroutputchannelwidget.cpp" line="143"/>
+        <source>Solo Vol.</source>
+        <translation>Solo Vol.</translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/audiomixeroutputchannelwidget.cpp" line="200"/>
+        <source>-- Mono --</source>
+        <translation>-- Mono --</translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/audiomixeroutputchannelwidget.cpp" line="211"/>
+        <source> - none - </source>
+        <translation> -nichts- </translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/audiomixeroutputchannelwidget.cpp" line="212"/>
+        <source> - multiple - </source>
+        <translation> - mehrere - </translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/audiomixeroutputchannelwidget.cpp" line="297"/>
+        <location filename="../src/widgets/audiomixeroutputchannelwidget.cpp" line="298"/>
+        <source>none</source>
+        <translation>nichts</translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/audiomixeroutputchannelwidget.cpp" line="301"/>
+        <location filename="../src/widgets/audiomixeroutputchannelwidget.cpp" line="302"/>
+        <source>multiple</source>
+        <translation>mehrere</translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/audiomixeroutputchannelwidget.cpp" line="309"/>
+        <source>Port </source>
+        <translation>Anschluss </translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/audiomixeroutputchannelwidget.cpp" line="310"/>
         <source>Channel </source>
         <translation>Kanal </translation>
     </message>
@@ -279,19 +366,27 @@ Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm un
         <translation>Formular</translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiomixerwidget.cpp" line="35"/>
+        <location filename="../src/widgets/audiomixerwidget.cpp" line="40"/>
         <source>Mixer Config</source>
-        <translation>Mixer Konfig</translation>
+        <translation>Mixer Konfiguration</translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiomixerwidget.cpp" line="108"/>
+        <location filename="../src/widgets/audiomixerwidget.cpp" line="176"/>
+        <source>unknown</source>
+        <translation>Unbekannt</translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/audiomixerwidget.cpp" line="185"/>
+        <source>Port </source>
+        <translation>Anschluss </translation>
+    </message>
+    <message>
         <source>Input Port </source>
-        <translation>Eingang </translation>
+        <translation type="vanished">Eingang </translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiomixerwidget.cpp" line="125"/>
         <source>Output Port </source>
-        <translation>Ausgang </translation>
+        <translation type="vanished">Ausgang </translation>
     </message>
 </context>
 <context>
@@ -415,19 +510,23 @@ Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm un
 <context>
     <name>AudioWidget</name>
     <message>
-        <location filename="../src/widgets/audiowidget.cpp" line="10"/>
+        <location filename="../src/widgets/audiowidget.cpp" line="13"/>
         <source>Audio Routing</source>
         <translation>Audio Routing</translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiowidget.cpp" line="13"/>
+        <location filename="../src/widgets/audiowidget.cpp" line="10"/>
         <source>Audio Mixer</source>
         <translation>Audio Mixer</translation>
     </message>
     <message>
-        <location filename="../src/widgets/audiowidget.h" line="14"/>
         <source>Audio</source>
-        <translation>Audio</translation>
+        <translation type="vanished">Audio</translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/audiowidget.h" line="14"/>
+        <source>Audio Mixing/Routing</source>
+        <translation>Audio Mixer/Routing</translation>
     </message>
 </context>
 <context>
@@ -691,32 +790,32 @@ Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm un
         <translation type="vanished">MIDI Kanal</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="341"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="358"/>
         <source>Pitch Bend</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="343"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="360"/>
         <source>Mono Key Pressure</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="345"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="362"/>
         <source>Program Change</source>
         <translation>Programmwechsel</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="347"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="364"/>
         <source>Control Change</source>
         <translation>Controllerwechsel</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="349"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="366"/>
         <source>Poly Key Pressure</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="351"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="368"/>
         <source>Note On / Note Off</source>
         <translatorcomment>Note an / Note aus</translatorcomment>
         <translation></translation>
@@ -725,37 +824,37 @@ Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm un
 <context>
     <name>MidiChannelMessagesRemapTM</name>
     <message>
-        <location filename="../src/widgets/portremapsettingswidget.cpp" line="261"/>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="278"/>
         <source>Pitch Bend</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/widgets/portremapsettingswidget.cpp" line="263"/>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="280"/>
         <source>Mono Key Pressure</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/widgets/portremapsettingswidget.cpp" line="265"/>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="282"/>
         <source>Program Change</source>
         <translation>Programmwechsel</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portremapsettingswidget.cpp" line="267"/>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="284"/>
         <source>Control Change</source>
         <translation>Controllerwechsel</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portremapsettingswidget.cpp" line="269"/>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="286"/>
         <source>Poly Key Pressure</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/widgets/portremapsettingswidget.cpp" line="271"/>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="288"/>
         <source>Note On / Note Off</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/widgets/portremapsettingswidget.cpp" line="273"/>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="290"/>
         <source>Map to Channel</source>
         <translation></translation>
     </message>
@@ -763,12 +862,12 @@ Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm un
 <context>
     <name>MidiControllerFilterTM</name>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="234"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="252"/>
         <source>MIDI-Controller</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="236"/>
+        <location filename="../src/widgets/portfiltersettingswidget.cpp" line="254"/>
         <source>all</source>
         <translation>alle</translation>
     </message>
@@ -776,17 +875,17 @@ Desweiteren hat er eine Patch bereitgestellt, der es erlaubt, dieses Programm un
 <context>
     <name>MidiControllerRemapTM</name>
     <message>
-        <location filename="../src/widgets/portremapsettingswidget.cpp" line="139"/>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="157"/>
         <source>MIDI-Controller Source</source>
         <translation>Quell-Controller Nummer</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portremapsettingswidget.cpp" line="141"/>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="159"/>
         <source>MIDI-Controller Destination</source>
         <translation>Ziel-Controller Nummer</translation>
     </message>
     <message>
-        <location filename="../src/widgets/portremapsettingswidget.cpp" line="143"/>
+        <location filename="../src/widgets/portremapsettingswidget.cpp" line="161"/>
         <source>all</source>
         <translation>alle</translation>
     </message>
