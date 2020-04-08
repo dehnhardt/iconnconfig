@@ -1,9 +1,10 @@
 [Desktop Entry]
 Version=1.0
 Name=iConnConfig
-Comment=Icon devices configuration application
-Comment[fr]=Application de configuration pour périphériques Icon
-Exec=iConnConfig
+Comment=IConnectivity devices configuration application
+Comment[fr]=Application de configuration pour périphériques 
+Comment[de]=Anwendung zum konfigurieren von IConnectivity MIDI und Audio Interfaces
+Exec=iconnconfig
 Terminal=false
 Icon=iconnconfig
 Type=Application

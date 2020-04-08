@@ -21,6 +21,13 @@ build_deb {
     INSTALLS += target
     INSTALLS.CONFIG += executable
     target.path += $$PREFIX/bin
+    desktop.files += resources/iconnconfig.desktop
+    desktop.path += $$PREFIX/share/applications
+    INSTALLS += desktop 
+    icons.files += resources/iconnconfig.png 
+    icons.files += resources/iconnconfig.xpm
+    icons.path += $$PREFIX/share/icons
+    INSTALLS += icons
     message(creating makefile for deb-package - target_path: $$target.path )
 }
 
@@ -311,6 +318,9 @@ DISTFILES += \
     RELEASENOTES.md \
     BUILD.md \
     AUTHOR.md \
+    resources/iconnconfig.desktop \
+    resources/iconnconfig.png \
+    resources/iconnconfig.xpm \
     tr/iconnconfig_de_DE.ts \
     tr/iconnconfig_de_DE.qm \
     tr/iconnconfig_fr_FR.ts \
