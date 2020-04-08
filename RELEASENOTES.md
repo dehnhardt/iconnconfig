@@ -15,6 +15,21 @@
   * in general error handling is currently nearly not implemented. I still don't have a concept
   * (1) after reading the settings from flash or restoring to factory default, the application might crash - I'm still not sure what the problem is.
 
+### 0.4
+#### General
+* dependencies
+ * I moved some controls to a separate project. See BUILD.md for instructions
+
+#### Linux
+* new functionality
+ * configuration of audio enabled devices integrated
+  * global audio configuration
+  * audio mixing
+  * audio routing
+* fixes
+ * better error handling
+ * memory leaks fixed
+
 ### Windows
 someone might try;-)
 

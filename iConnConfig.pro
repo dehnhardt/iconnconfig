@@ -4,19 +4,32 @@
 #
 #-------------------------------------------------
 
-DISTFILES = .astylerc \
-    AUTHOR.md \ \
-    tr/iconnconfig_en_EN.ts
 
 QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = iConnConfig
+TARGET = iconnconfig
 TEMPLATE = app
 
 CONFIG += c++14
 QMAKE_CXXFLAGS += -std=c++14
+
+# option for building a debian package
+build_deb {
+    DESTDIR = build
+    INSTALLS += target
+    INSTALLS.CONFIG += executable
+    target.path += $$PREFIX/bin
+    desktop.files += resources/iconnconfig.desktop
+    desktop.path += $$PREFIX/share/applications
+    INSTALLS += desktop 
+    icons.files += resources/iconnconfig.png 
+    icons.files += resources/iconnconfig.xpm
+    icons.path += $$PREFIX/share/icons
+    INSTALLS += icons
+    message(creating makefile for deb-package - target_path: $$target.path )
+}
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked as deprecated (the exact warnings
@@ -65,7 +78,6 @@ SOURCES +=\
     src/sysex/retsetmixeroutputparm.cpp \
     src/sysex/sysexmessage.cpp \
     src/deviceselectiontablemodel.cpp \
-    # src/widgets/portsettingwidget.cpp \
     src/widgets/audiomixerchannelwidget.cpp \
     src/widgets/audiomixerinputchannelwidget.cpp \
     src/widgets/audiomixeroutputchannelwidget.cpp \
@@ -305,10 +317,16 @@ DISTFILES += \
     README.md \
     RELEASENOTES.md \
     BUILD.md \
+    AUTHOR.md \
+    resources/iconnconfig.desktop \
+    resources/iconnconfig.png \
+    resources/iconnconfig.xpm \
     tr/iconnconfig_de_DE.ts \
     tr/iconnconfig_de_DE.qm \
     tr/iconnconfig_fr_FR.ts \
     tr/iconnconfig_fr_FR.qm \
+    tr/iconnconfig_en_EN.ts \
+    tr/iconnconfig_en_EN.qm \
     .astylerc
 
 # Some controls are in a separate project und needs to be included here
