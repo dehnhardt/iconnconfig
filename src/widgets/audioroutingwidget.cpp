@@ -398,8 +398,8 @@ bool RoutingTableModel::getValue(AudioPortChannelId column,
 }
 
 QVariant RoutingTableModel::data(const QModelIndex &index, int role) const {
-	AudioPortChannelId row;
-	AudioPortChannelId column;
+	AudioPortChannelId row = 0;
+	AudioPortChannelId column = 0;
 
 	try {
 		row = m_vRows.at(static_cast<unsigned long>(index.row()));
@@ -425,9 +425,6 @@ QVariant RoutingTableModel::data(const QModelIndex &index, int role) const {
 		}
 		return QColor(r, g, b);
 	}
-	/*case Qt::ForegroundRole: {
-		return QColor(200, 200, 255);
-	}*/
 	case HierarchicalHeaderView::HorizontalHeaderDataRole: {
 		QVariant v;
 		v.setValue(dynamic_cast<QObject *>(m_pHorizontalHeaderItemModel.get()));

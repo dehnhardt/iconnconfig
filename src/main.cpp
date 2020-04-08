@@ -12,7 +12,7 @@ int main(int argc, char *argv[]) {
 	QCoreApplication::setOrganizationName("punkt-k");
 	QCoreApplication::setOrganizationDomain("www.punkt-k.de");
 	QCoreApplication::setApplicationName("iConnConfig");
-	QCoreApplication::setApplicationVersion("0.1.5-alpha");
+	QCoreApplication::setApplicationVersion("0.4");
 
 	QTranslator mioConfigTranslator;
 	QTranslator qtTranslator;
