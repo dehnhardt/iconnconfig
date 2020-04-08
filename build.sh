@@ -18,10 +18,9 @@ if [ "$1" == "build_deb" ]
 then
 	cd .. 
 	qmake -o Makefile PREFIX=debian/iconnconfig/usr CONFIG+=build_deb iconnconfig/iConnConfig.pro
-	#tar cf ../iconnconfig_$RELEASE.rig.tar.gz ../iconnconfig/iconnconfig PKControls
 	cd $MYDIR
 else
 	qmake PREFIX=/usr
-	# make
+	make
 fi
 
