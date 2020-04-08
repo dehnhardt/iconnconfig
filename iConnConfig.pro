@@ -17,12 +17,11 @@ QMAKE_CXXFLAGS += -std=c++14
 
 # option for building a debian package
 build_deb {
-    message(creating makefile for deb-package)
     DESTDIR = build
     INSTALLS += target
     INSTALLS.CONFIG += executable
     target.path += $$PREFIX/bin
-    message(target_path: $$target.path )
+    message(creating makefile for deb-package - target_path: $$target.path )
 }
 
 # The following define makes your compiler emit warnings if you use
