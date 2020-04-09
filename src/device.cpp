@@ -318,8 +318,11 @@ bool Device::queryDeviceInfo() {
 
 	m_pDeviceInfo = std::make_shared<GetInfo>(this, m_pRetInfoList);
 
-	if (m_pRetInfoList->isInfoImplemented(GetInfo::DEVICE_NAME))
+	if (m_pRetInfoList->isInfoImplemented(GetInfo::DEVICE_NAME)) {
 		m_sDeviceName = m_pDeviceInfo->getItemValue(GetInfo::DEVICE_NAME);
+		midiin->setPortName("iConnCfg " + m_sDeviceName);
+		midiout->setPortName("iConnCfg " + m_sDeviceName);
+	}
 
 	if (m_pRetInfoList->isInfoImplemented(GetInfo::ACCESSORY_NAME))
 		m_sModelName = m_pDeviceInfo->getItemValue(GetInfo::ACCESSORY_NAME);
