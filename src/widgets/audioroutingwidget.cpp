@@ -23,6 +23,8 @@ AudioRoutingWidget::AudioRoutingWidget(Device *device, QWidget *parent)
 		 font-size: 8pt; \
 	} \
 	QTableView::indicator{ \
+		width: 14; \
+		height: 14; \
 		border-radius: 7px; \
 		border: 0; \
 	} \
