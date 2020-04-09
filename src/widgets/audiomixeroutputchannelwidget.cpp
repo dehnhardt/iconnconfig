@@ -206,6 +206,7 @@ void AudioMixerOutputChannelWidget::createOutputMenu() {
 	QFont menuFont = ui->m_pFrmUpperMixerPanel->font();
 	m_pConnectionMenu = new QMenu();
 	m_pConnectionMenu->setFont(menuFont);
+	m_pBtnSelectConnection->setFont(menuFont);
 	std::shared_ptr<AudioPortStructure> aps =
 		m_pDevice->getAudioPortStructure();
 	QAction *qANone = m_pConnectionMenu->addAction(tr(" - none - "));
