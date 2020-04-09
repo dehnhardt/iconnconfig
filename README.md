@@ -1,9 +1,9 @@
 # iconnconfig
 **Also find this repo at https://codeberg.org/dehnhardt/IConnConfig**
 
-Linux based configuration utility for IConnectivity interfaces. (Currently only MIDI configuration and part of Audio configuration is implemented on combined interfaces)
-After trying to get the vendor provided config-utility to work under Wine without success I started analyzing the usb packets to write an Linux enabled version.
-Later I found the complete documentation for sysex-data from IConnectivity.
+Linux based configuration utility for IConnectivity interfaces. MIDI and Audio configuration is implemented.
+Since the SysEx interface is very well documented by iConnectivity, most of the functionality is implemented.
+The extensions (Command Version Number 2) - presumably for the newer devices - are not implemented, because such a device is not available to me.
 
 ## Implemented
 * Device detection
@@ -18,7 +18,7 @@ Later I found the complete documentation for sysex-data from IConnectivity.
   * Global Audio Parameter
   * Audio Port Parameter
   * Audio Input and Output Configuration
- 
+
 ## Tested Devices
 * MIO 4
 * MIO 10
@@ -30,7 +30,7 @@ Later I found the complete documentation for sysex-data from IConnectivity.
 * (2017-03-17) device recognition works
 * (2017-03-24) initiate device communication
 * (2017-04-03) start with parser for returned messages
-* (2017-04-09) decision for docked layout as main GUI 
+* (2017-04-09) decision for docked layout as main GUI
 * (2017-04-12) implemented method to check if commands are available for specific device before trying to execute them
 * (2017-05-13) only scan all ports if no devices are in config
 * (2017-05-14) First working update of device data: Device name can be changed
@@ -48,7 +48,7 @@ Later I found the complete documentation for sysex-data from IConnectivity.
 * (2017-07-18) "About Box" added, credits to everyone...
 * (2017-08-05) Translations, translations....
 * (2017-08-12) Tested with iConnect Audio 4+: MIDI functionality works, audio is to come
-* (2017-09-05) Enhanced error messages 
+* (2017-09-05) Enhanced error messages
 * (2019-02-13) French translations added by Olivier Humbert
 * (2019-02-13) Fixes in translation code from JP Cimalando
 * (2019-02-14) Fix bug in error handling, Fix wrong calculation of command id, All initializations of pointers changed from 0 or NULL to nullptr
@@ -56,7 +56,7 @@ Later I found the complete documentation for sysex-data from IConnectivity.
 * (2019-02-22) Added [portfilter configuration](https://github.com/dehnhardt/wikis/blob/master/mioconfig/pictures/PortFilterSettings.png) for system messages, channel messages and controllers for in- and output ports
 * (2019-02-22) Changed the portrouting panel slightly
 * (2019-02-23) Add [portinfo widget](https://github.com/dehnhardt/wikis/blob/master/mioconfig/pictures/PortSettings.png). Port name and status can now be changed
-* (2019-02-26) Add [portmapping widget](https://github.com/dehnhardt/wikis/blob/master/mioconfig/pictures/PortRemapSettings.png) for in- and output ports. 
+* (2019-02-26) Add [portmapping widget](https://github.com/dehnhardt/wikis/blob/master/mioconfig/pictures/PortRemapSettings.png) for in- and output ports.
 * __(2019-02-26) MIDI configuration is complete__ _Branch v0.3-beta_
 * (2019-03-05) [Global audio settings](https://github.com/dehnhardt/wikis/blob/master/mioconfig/pictures/GlobalAudioParm.png) can be configured
 * (2019-03-07) [Audioport parameter](https://github.com/dehnhardt/wikis/blob/master/mioconfig/pictures/AudioPortParm.png) can now be configured
