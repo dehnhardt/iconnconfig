@@ -15,6 +15,8 @@ PortRemapSettingsWidget::PortRemapSettingsWidget(PortDirection direction,
 			 font-size: 8pt; \
 		} \
 		QTableView::indicator{ \
+			width: 14; \
+			height: 14; \
 			border-radius: 7px; \
 			border: 0; \
 		} \

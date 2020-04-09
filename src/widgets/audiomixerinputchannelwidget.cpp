@@ -169,8 +169,10 @@ void AudioMixerInputChannelWidget::setMixerInputControl(
 
 void AudioMixerInputChannelWidget::createInputMenu() {
 	QFont menuFont = ui->m_pFrmUpperMixerPanel->font();
+	menuFont.setPointSize(ui->m_pFrmUpperMixerPanel->font().pointSize());
 	m_pConnectionMenu = new QMenu();
 	m_pConnectionMenu->setFont(menuFont);
+	m_pBtnSelectConnection->setFont(menuFont);
 	std::shared_ptr<AudioPortStructure> aps =
 		m_pDevice->getAudioPortStructure();
 	QAction *qANone = m_pConnectionMenu->addAction(tr(" - none - "));
