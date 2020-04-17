@@ -85,7 +85,7 @@ void AudioMixerOutputChannelWidget::setMixerOutputControl(
 									-1);
 		ui->m_pSlidePan->setMaximum(m_pMixerOutputControl->getMaxPanValue());
 		if (m_pMixerOutputControl->getPanControlEditable()) {
-			connect(this->ui->m_pSlidePan, &QDial::valueChanged,
+			connect(this->ui->m_pSlidePan, &QSlider::valueChanged,
 					[=](int value) {
 						this->m_pRetSetMixerOutputControlValue->setPan(value);
 						this->m_pUpdateTimer->start();
@@ -142,12 +142,13 @@ void AudioMixerOutputChannelWidget::setMixerOutputControl(
 	if (m_pMixerOutputControl->hasSoloControl()) {
 		this->ui->m_plblTrimPan->setText(tr("Solo Vol."));
 		this->ui->m_plblTrimPan->setVisible(true);
-		ui->m_pDial->setMinimum(static_cast<int>(this->m_pChannelCalc->encode(
+		/*ui->m_pDial->setMinimum(static_cast<int>(this->m_pChannelCalc->encode(
 			m_pMixerOutputControl->getMinimumVolumeValue())));
 		ui->m_pDial->setMaximum(static_cast<int>(this->m_pChannelCalc->encode(
-			m_pMixerOutputControl->getMaximumVolumeValue())));
+			m_pMixerOutputControl->getMaximumVolumeValue())));*/
+		this->ui->m_pDial->setScaleCalc(this->m_pChannelCalc);
 		if (m_pMixerOutputControl->getSoloControlEditable()) {
-			connect(ui->m_pDial, &QDial::valueChanged, [=](int value) {
+			connect(ui->m_pDial, &PKDial::valueChanged, [=](int value) {
 				this->m_pRetSetMixerOutputControlValue->setSolo(
 					static_cast<int>(this->m_pChannelCalc->decode(value)));
 				this->m_pUpdateTimer->start();

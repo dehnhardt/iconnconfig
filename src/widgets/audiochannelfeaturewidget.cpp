@@ -114,7 +114,7 @@ void AudioChannelFeatureWidget::setRetSetAudioControlDetail(
 			retSetAudioControlDetail->getMinTrimValue());
 		this->ui->m_pDial->setMaximum(
 			retSetAudioControlDetail->getMaxTrimValue());
-		connect(this->ui->m_pDial, &QSlider::valueChanged,
+		connect(this->ui->m_pDial, &PKDial::valueChanged,
 				[](int val) { std::cout << std::dec << val << std::endl; });
 	} else {
 		this->ui->m_pFrmVolume->setVisible(false);
@@ -158,7 +158,7 @@ void AudioChannelFeatureWidget::setValues(
 						this->m_pUpdateTimer->start(10);
 						emit this->volumeChanged(value);
 					});
-			connect(this->ui->m_pDial, &QDial::valueChanged, [=](int value) {
+			connect(this->ui->m_pDial, &PKDial::valueChanged, [=](int value) {
 				this->m_pRetSetAudioControlDetailValue->setTrim(value);
 				this->m_pUpdateTimer->start(10);
 				emit this->trimChanged(value);

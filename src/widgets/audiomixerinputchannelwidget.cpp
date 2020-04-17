@@ -72,7 +72,7 @@ void AudioMixerInputChannelWidget::setMixerInputControl(
 		ui->m_pSlidePan->setMinimum(-127);
 		ui->m_pSlidePan->setMaximum(127);
 		if (m_pMixerInputControl->getPanControlEditable()) {
-			connect(this->ui->m_pSlidePan, &QDial::valueChanged,
+			connect(this->ui->m_pSlidePan, &QSlider::valueChanged,
 					[=](int value) {
 						this->m_pRetSetMixerInputControlValue->setPan(value);
 						this->m_pUpdateTimer->start();

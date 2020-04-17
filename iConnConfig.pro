@@ -23,8 +23,8 @@ build_deb {
     target.path += $$PREFIX/bin
     desktop.files += resources/iconnconfig.desktop
     desktop.path += $$PREFIX/share/applications
-    INSTALLS += desktop 
-    icons.files += resources/iconnconfig.png 
+    INSTALLS += desktop
+    icons.files += resources/iconnconfig.png
     icons.files += resources/iconnconfig.xpm
     icons.path += $$PREFIX/share/icons
     INSTALLS += icons
@@ -339,3 +339,10 @@ exists(../PKControls/pklevelmeter.pri){
     in the same root directory as iConnConfig)
 }
 
+exists(../PKControls/pkdial.pri){
+    include(../PKControls/pkdial.pri)
+} else {
+    error( The sources for pk controls are missing. \
+    Please chechout from here 'https://codeberg.org/dehnhardt/PKControls.git' \
+    in the same root directory as iConnConfig)
+}
