@@ -142,9 +142,13 @@ void AudioMixerWidget::mixerConfigurationChanged(
 								m_pDevice, portId, audioInputChannelId,
 								ChannelDirection::CD_INPUT);
 						amcw->setMixerInputControl(retMixerInputControl);
+						// calculate OutputChannelId: Adding 1 to all even input
+						// channels
+						AudioChannelId virtualAudioOutputChannelId =
+							audioOutputChannelId + 1 -
+							(audioInputChannelId % 2);
 						amcw->setConnectedOutputChannel(
-							audioOutputChannelId +
-							(1 - (audioInputChannelId % 2)));
+							virtualAudioOutputChannelId);
 						connect(
 							mpw, &MixerPortWidget::inMeterValueChanged, amcw,
 							&AudioMixerInputChannelWidget::changeMeterVolume);
