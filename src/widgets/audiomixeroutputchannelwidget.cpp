@@ -142,10 +142,6 @@ void AudioMixerOutputChannelWidget::setMixerOutputControl(
 	if (m_pMixerOutputControl->hasSoloControl()) {
 		this->ui->m_plblTrimPan->setText(tr("Solo Vol."));
 		this->ui->m_plblTrimPan->setVisible(true);
-		/*ui->m_pDial->setMinimum(static_cast<int>(this->m_pChannelCalc->encode(
-			m_pMixerOutputControl->getMinimumVolumeValue())));
-		ui->m_pDial->setMaximum(static_cast<int>(this->m_pChannelCalc->encode(
-			m_pMixerOutputControl->getMaximumVolumeValue())));*/
 		this->ui->m_pDial->setScaleCalc(this->m_pChannelCalc);
 		if (m_pMixerOutputControl->getSoloControlEditable()) {
 			connect(ui->m_pDial, &PKDial::valueChanged, [=](int value) {
@@ -328,7 +324,7 @@ void AudioMixerOutputChannelWidget::queryOutputValues() {
 		this->m_pRetSetMixerOutputControlValue =
 			std::dynamic_pointer_cast<RetSetMixerOutputControlValue>(
 				getMixerOutputControlValue->querySmart());
-		this->m_pRetSetMixerOutputControlValue->setDebug(true);
+		this->m_pRetSetMixerOutputControlValue->setDebug(false);
 	} catch (ProtocolException protocolException) {
 		std::cerr << protocolException.getErrorMessage() << std::endl;
 	} catch (std::out_of_range oor) {

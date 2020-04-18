@@ -314,28 +314,34 @@ void AudioMixerInputChannelWidget::queryInputValues() {
 void AudioMixerInputChannelWidget::setInputValues(
 	std::shared_ptr<RetSetMixerInputControlValue>
 		retSetMixerInputControlValue) {
-	if (m_pMixerInputControl->hasPanControl() &&
-		retSetMixerInputControlValue->hasPanControl()) {
-		ui->m_pSlidePan->setValue(retSetMixerInputControlValue->getPan());
-		retSetMixerInputControlValue->setHasPanControl(false);
-	}
-	if (m_pMixerInputControl->hasVolumeControl() &&
-		retSetMixerInputControlValue->hasVolumeControl()) {
-		ui->m_pSlideVolume->setValue(retSetMixerInputControlValue->getVolume());
-		retSetMixerInputControlValue->setHasVolumeControl(false);
-	}
-	if (m_pMixerInputControl->hasMuteControl() &&
-		retSetMixerInputControlValue->hasMuteControl()) {
-		ui->m_pTbMute->setChecked(retSetMixerInputControlValue->getMute());
-		retSetMixerInputControlValue->setHasMuteControl(false);
-	}
-	if (m_pMixerInputControl->hasSoloControl()) {
-		ui->m_pTbSolo->setChecked(retSetMixerInputControlValue->getSolo());
-		retSetMixerInputControlValue->setHasSoloControl(false);
-	}
-	if (m_pMixerInputControl->hasSoloPFLControl()) {
-		ui->m_pTbPfl->setChecked(retSetMixerInputControlValue->getSoloPFL());
-		retSetMixerInputControlValue->setHasSoloPFLControl(false);
+	if (!m_bIsSlave ||
+		((retSetMixerInputControlValue->getMixerInputNumber() % 2) == 1)) {
+		std::cout << "read values " << m_iMixerChannelId << std::endl;
+		if (m_pMixerInputControl->hasPanControl() &&
+			retSetMixerInputControlValue->hasPanControl()) {
+			ui->m_pSlidePan->setValue(retSetMixerInputControlValue->getPan());
+			retSetMixerInputControlValue->setHasPanControl(false);
+		}
+		if (m_pMixerInputControl->hasVolumeControl() &&
+			retSetMixerInputControlValue->hasVolumeControl()) {
+			ui->m_pSlideVolume->setValue(
+				retSetMixerInputControlValue->getVolume());
+			retSetMixerInputControlValue->setHasVolumeControl(false);
+		}
+		if (m_pMixerInputControl->hasMuteControl() &&
+			retSetMixerInputControlValue->hasMuteControl()) {
+			ui->m_pTbMute->setChecked(retSetMixerInputControlValue->getMute());
+			retSetMixerInputControlValue->setHasMuteControl(false);
+		}
+		if (m_pMixerInputControl->hasSoloControl()) {
+			ui->m_pTbSolo->setChecked(retSetMixerInputControlValue->getSolo());
+			retSetMixerInputControlValue->setHasSoloControl(false);
+		}
+		if (m_pMixerInputControl->hasSoloPFLControl()) {
+			ui->m_pTbPfl->setChecked(
+				retSetMixerInputControlValue->getSoloPFL());
+			retSetMixerInputControlValue->setHasSoloPFLControl(false);
+		}
 	}
 	if (m_pMixerInputControl->hasInvertControl()) {
 		ui->m_pTbInvert->setChecked(retSetMixerInputControlValue->getInvert());
@@ -351,6 +357,7 @@ void AudioMixerInputChannelWidget::setInputValues(
 }
 
 void AudioMixerInputChannelWidget::audioChannelValueChanged() {
+	this->m_pRetSetMixerInputControlValue->setDebug(true);
 	if (this->m_pRetSetMixerInputControlValue->execute() == 0) {
 		m_pRetSetMixerInputControlValue->clean();
 	}

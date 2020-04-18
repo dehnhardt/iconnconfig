@@ -68,6 +68,12 @@ int AudioMixerChannelWidget::calculatePanR(int balance) {
 	return panR;
 }
 
+bool AudioMixerChannelWidget::master() { return m_bIsMaster; }
+
+bool AudioMixerChannelWidget::slave() { return m_bIsSlave; }
+
+void AudioMixerChannelWidget::setSlave(bool b_slave) { m_bIsSlave = b_slave; }
+
 void AudioMixerChannelWidget::initControls() {
 
 	ui->m_pDial->setVisible(false);

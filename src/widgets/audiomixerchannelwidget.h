@@ -36,6 +36,9 @@ class AudioMixerChannelWidget : public QFrame {
 	int calculateBalance(int panL, int panR);
 	int calculatePanL(int balance);
 	int calculatePanR(int balance);
+	bool master();
+	bool slave();
+	void setSlave(bool b_slave);
 
   protected:
 	Ui::AudioChannelFeatureWidget *ui;
@@ -49,6 +52,7 @@ class AudioMixerChannelWidget : public QFrame {
 	AudioPortType m_iPortType = AudioPortType::APT_NONE;
 	AudioChannelId m_iMixerChannelId = 0;
 	bool m_bIsMaster = false;
+	bool m_bIsSlave = false;
 	unsigned int m_iPanSplit = 0;
 
 	virtual void initControls();
