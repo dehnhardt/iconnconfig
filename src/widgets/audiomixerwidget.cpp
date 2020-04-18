@@ -124,7 +124,6 @@ void AudioMixerWidget::mixerConfigurationChanged(
 						getOutputControl->querySmart());
 				MixerPortWidget *mpw = new MixerPortWidget(portId, m_pDevice);
 				mpw->setOutputOffset(audioOutputChannelId);
-				// mpw->setName(tr("Port ") + QString::number(portId));
 				QString portName;
 				if (mb.numberOfMixerInputs > 0) {
 					mpw->setNumberOfInputChannels(mb.numberOfMixerInputs);
@@ -142,13 +141,7 @@ void AudioMixerWidget::mixerConfigurationChanged(
 								m_pDevice, portId, audioInputChannelId,
 								ChannelDirection::CD_INPUT);
 						amcw->setMixerInputControl(retMixerInputControl);
-						// calculate OutputChannelId: Adding 1 to all even input
-						// channels
-						AudioChannelId virtualAudioOutputChannelId =
-							audioOutputChannelId + 1 -
-							(audioInputChannelId % 2);
-						amcw->setConnectedOutputChannel(
-							virtualAudioOutputChannelId);
+						amcw->setConnectedOutputChannel(audioOutputChannelId);
 						connect(
 							mpw, &MixerPortWidget::inMeterValueChanged, amcw,
 							&AudioMixerInputChannelWidget::changeMeterVolume);
