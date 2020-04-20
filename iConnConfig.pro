@@ -309,6 +309,8 @@ unix:!macx: LIBS += -lasound \
                     -lpthread \
                     -lusb-1.0
 
+win32: LIBS += -lwinmm
+
 RESOURCES += \
     translations.qrc \
     resources.qrc
