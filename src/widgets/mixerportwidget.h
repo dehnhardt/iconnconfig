@@ -19,7 +19,7 @@ class MixerPortWidget : public QWidget {
 	~MixerPortWidget() override;
 	void setName(QString name);
 	void addMixerPanel(AudioMixerChannelWidget *mixerPanel,
-					   ChannelDirection portDirection,
+					   pk::ChannelDirection portDirection,
 					   unsigned int mixerChannelNumber);
 	void addStretch() { m_pMixerPanelLayout->addStretch(); }
 
@@ -60,7 +60,7 @@ class MixerPortWidget : public QWidget {
 
   public slots:
 	void linkStatusChanged(AudioChannelId mixerChannelId,
-						   ChannelDirection channelDirection, bool status);
+						   pk::ChannelDirection channelDirection, bool status);
 	void changeChannelConnection();
 
   signals:

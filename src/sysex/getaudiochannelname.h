@@ -13,14 +13,14 @@ class GetAudioChannelName : public PortSysExMessage {
 					  Device *m_pDevice);
 
 	void setChannelNumber(unsigned int iChannelNumber);
-	void setChannelDirection(const ChannelDirection &channelDirection);
+	void setChannelDirection(const pk::ChannelDirection &channelDirection);
 
   protected:
 	std::vector<unsigned char> *getMessageData();
 
   private:
 	unsigned int m_iChannelNumber = 0;
-	ChannelDirection m_channelDirection = ChannelDirection::CD_NONE;
+	pk::ChannelDirection m_channelDirection = pk::ChannelDirection::CD_NONE;
 };
 
 #endif // GETAUDIOCHANNELNAME_H

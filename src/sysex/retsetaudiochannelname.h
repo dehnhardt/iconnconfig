@@ -20,11 +20,11 @@ class RetSetAudioChannelName : public PortSysExMessage {
 
 	void setAudioChannelNumber(unsigned int iAudioChannelNumber);
 
-	void setChannelDirection(const ChannelDirection &ChannelDirection);
+	void setChannelDirection(const pk::ChannelDirection &channelDirection);
 
   private:
 	unsigned int m_iAudioChannelNumber = 0;
-	ChannelDirection m_ChannelDirection = ChannelDirection::CD_NONE;
+	pk::ChannelDirection m_ChannelDirection = pk::ChannelDirection::CD_NONE;
 	unsigned int m_iMaximumChannelNameLength = 0;
 	unsigned int m_iNameLength = 0;
 	std::string m_sChannelName;

@@ -34,7 +34,7 @@ typedef std::map<pk::AudioPortType,
 
 typedef std::map<AudioChannelId, std::shared_ptr<RetSetAudioChannelName>>
 	AudioChannelNames;
-typedef std::map<ChannelDirection, AudioChannelNames> AudioDirectionChannels;
+typedef std::map<pk::ChannelDirection, AudioChannelNames> AudioDirectionChannels;
 typedef std::map<AudioPortId, AudioDirectionChannels> AudioChannelStructure;
 typedef std::map<AudioPortChannelId, std::shared_ptr<RetSetMixerInputParm>>
 	AudioMixerInputChannels;
@@ -163,7 +163,7 @@ class Device {
 	std::shared_ptr<AudioChannelStructure> getAudioChannelStructure();
 	AudioDirectionChannels getAudioDirectionChannels(AudioPortId audioPortId);
 	AudioChannelNames getAudioChannelNames(AudioPortId audioPortId,
-										   ChannelDirection channelDirection);
+										   pk::ChannelDirection channelDirection);
 
 	std::vector<std::shared_ptr<RetSetAudioChannelName>> getInputChannels();
 	std::vector<std::shared_ptr<RetSetAudioChannelName>> getOutputChannels();
@@ -189,9 +189,9 @@ class Device {
 	// Audio methods
 	void queryAudioPorts();
 	AudioChannelNames queryAudioChannels(unsigned int portId,
-										 ChannelDirection direction,
+										 pk::ChannelDirection direction,
 										 unsigned int numberOfChannels);
-	void queryAudioMixerChannels(ChannelDirection channelDirection);
+	void queryAudioMixerChannels(pk::ChannelDirection channelDirection);
 	void queryMixerPortParm();
 
 	// Variables

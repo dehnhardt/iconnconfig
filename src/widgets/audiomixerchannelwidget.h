@@ -18,7 +18,7 @@ class AudioMixerChannelWidget : public QFrame {
   public:
 	AudioMixerChannelWidget(Device *device, AudioPortId portId,
 							AudioChannelId channelNumber,
-							ChannelDirection channelDirection, QWidget *parent);
+							pk::ChannelDirection channelDirection, QWidget *parent);
 
 	AudioMixerChannelWidget(QWidget *parent);
 	~AudioMixerChannelWidget();
@@ -45,7 +45,7 @@ class AudioMixerChannelWidget : public QFrame {
 	QTimer *m_pUpdateTimer = nullptr;
 	QToolButton *m_pBtnSelectConnection = nullptr;
 	QMenu *m_pConnectionMenu = nullptr;
-	ChannelDirection m_channelDirection = ChannelDirection::CD_NONE;
+	pk::ChannelDirection m_channelDirection = pk::ChannelDirection::CD_NONE;
 	Device *m_pDevice = nullptr;
 	bool m_bChannelInit = false;
 	AudioPortId m_iPortId = 0;
@@ -59,7 +59,7 @@ class AudioMixerChannelWidget : public QFrame {
 
   signals:
 	void linkStatusChanged(AudioChannelId m_iMixerChannelId,
-						   ChannelDirection portDirection, bool status);
+						   pk::ChannelDirection portDirection, bool status);
 	void soloStatusChanged(bool status);
 	void soloPFLStatusChanged(bool status);
 	void invertStatusChanged(bool status);

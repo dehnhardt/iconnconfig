@@ -136,11 +136,11 @@ void AudioPortParmWidget::setCurrentAudioConfiguration() {
 void AudioPortParmWidget::setAudioDeviceParm(
 	std::shared_ptr<RetSetAudioDeviceParm> retSetAudioDeviceParm) {
 	this->m_pRetSetAudioDeviceParm = retSetAudioDeviceParm;
-	if (m_pRetSetAudioDeviceParm->getUsbDeviceHost() == UsbDeviceHost::MAC_PC) {
+	if (m_pRetSetAudioDeviceParm->getUsbDeviceHost() == pk::UsbDeviceHost::MAC_PC) {
 		this->ui->m_pChbPCConnected->setChecked(true);
 		this->ui->m_pChbIOSConnected->setChecked(false);
 	} else if (m_pRetSetAudioDeviceParm->getUsbDeviceHost() ==
-			   UsbDeviceHost::IOS) {
+			   pk::UsbDeviceHost::IOS) {
 		this->ui->m_pChbPCConnected->setChecked(false);
 		this->ui->m_pChbIOSConnected->setChecked(true);
 	} else {

@@ -10,7 +10,7 @@ void RetSetAudioChannelName::parseAnswerData() {
 	m_iCommandVersionNumber = m_pData->at(0);
 	m_iPortId = parsePortId();
 	m_iAudioChannelNumber = m_pData->at(3);
-	m_ChannelDirection = static_cast<ChannelDirection>(m_pData->at(4));
+	m_ChannelDirection = static_cast<pk::ChannelDirection>(m_pData->at(4));
 	m_iMaximumChannelNameLength = m_pData->at(5);
 	m_iNameLength = m_pData->at(6);
 	m_sChannelName =
@@ -40,6 +40,6 @@ void RetSetAudioChannelName::setAudioChannelNumber(
 }
 
 void RetSetAudioChannelName::setChannelDirection(
-	const ChannelDirection &ChannelDirection) {
-	m_ChannelDirection = ChannelDirection;
+	const pk::ChannelDirection &channelDirection) {
+	m_ChannelDirection = channelDirection;
 }

@@ -389,7 +389,7 @@ Device::getInputChannels() {
 	if (m_vInputChannels.empty()) {
 		for (AudioPortId i = 1; i <= m_iOutPortNumber; i++) {
 			AudioChannelNames acn =
-				getAudioChannelNames(i, ChannelDirection::CD_INPUT);
+				getAudioChannelNames(i, pk::ChannelDirection::CD_INPUT);
 			for (auto channel : acn)
 				m_vInputChannels.push_back(channel.second);
 		}
@@ -402,7 +402,7 @@ Device::getOutputChannels() {
 	if (m_vOutputChannels.empty()) {
 		for (AudioPortId i = 1; i <= m_iOutPortNumber; i++) {
 			AudioChannelNames acn =
-				getAudioChannelNames(i, ChannelDirection::CD_OUTPUT);
+				getAudioChannelNames(i, pk::ChannelDirection::CD_OUTPUT);
 			for (auto channel : acn)
 				m_vOutputChannels.push_back(channel.second);
 		}
@@ -429,13 +429,13 @@ void Device::queryAudioPorts() {
 		pk::AudioPortType audioPortType = retSetAudioPortParm->getAudioPortType();
 
 		AudioChannelNames acnInput =
-			queryAudioChannels(i, ChannelDirection::CD_INPUT,
+			queryAudioChannels(i, pk::ChannelDirection::CD_INPUT,
 							   retSetAudioPortParm->getInputChannels());
-		adc[ChannelDirection::CD_INPUT] = acnInput;
+		adc[pk::ChannelDirection::CD_INPUT] = acnInput;
 		AudioChannelNames acnOutput =
-			queryAudioChannels(i, ChannelDirection::CD_OUTPUT,
+			queryAudioChannels(i, pk::ChannelDirection::CD_OUTPUT,
 							   retSetAudioPortParm->getOutputChannels());
-		adc[ChannelDirection::CD_OUTPUT] = acnOutput;
+		adc[pk::ChannelDirection::CD_OUTPUT] = acnOutput;
 		try {
 			audioPorts = m_pAudioPortParms->at(audioPortType);
 		} catch (const std::out_of_range __attribute__((unused)) & oor) {
@@ -454,7 +454,7 @@ void Device::queryAudioPorts() {
 }
 
 AudioChannelNames Device::queryAudioChannels(unsigned int portId,
-											 ChannelDirection direction,
+											 pk::ChannelDirection direction,
 											 unsigned int numberOfChannels) {
 	AudioChannelNames audioChannelNames;
 	std::unique_ptr<GetAudioChannelName> getAudioChannelName =
@@ -472,12 +472,12 @@ AudioChannelNames Device::queryAudioChannels(unsigned int portId,
 	return audioChannelNames;
 }
 
-void Device::queryAudioMixerChannels(ChannelDirection channelDirection) {
+void Device::queryAudioMixerChannels(pk::ChannelDirection channelDirection) {
 	std::shared_ptr<RetSetMixerPortParm> mixerPortParm = getMixerPortParm();
 	std::map<unsigned int, AudioPortMixerBlock> audioPortMixerBlocks =
 		mixerPortParm->getAudioPortMixerBlocks();
 
-	if ((channelDirection == ChannelDirection::CD_INPUT) &&
+	if ((channelDirection == pk::ChannelDirection::CD_INPUT) &&
 		!m_pAudioMixerInputChannels) {
 		m_pAudioMixerInputChannels =
 			std::make_shared<AudioMixerInputChannels>();
@@ -507,7 +507,7 @@ void Device::queryAudioMixerChannels(ChannelDirection channelDirection) {
 						channelId, mixerInputParm));
 			}
 		}
-	} else if ((channelDirection == ChannelDirection::CD_OUTPUT) &&
+	} else if ((channelDirection == pk::ChannelDirection::CD_OUTPUT) &&
 			   !m_pAudioMixerOutputChannels) {
 		m_pAudioMixerOutputChannels =
 			std::make_shared<AudioMixerOutputChannels>();
@@ -552,7 +552,7 @@ Device::getAudioMixerOutputChannels(bool refresh) {
 	if (!m_pAudioMixerOutputChannels || refresh) {
 		if (refresh)
 			m_pAudioMixerOutputChannels = nullptr;
-		queryAudioMixerChannels(ChannelDirection::CD_OUTPUT);
+		queryAudioMixerChannels(pk::ChannelDirection::CD_OUTPUT);
 	}
 	return m_pAudioMixerOutputChannels;
 }
@@ -562,7 +562,7 @@ Device::getAudioMixerInputChannels(bool refresh) {
 	if (!m_pAudioMixerInputChannels || refresh) {
 		if (refresh)
 			m_pAudioMixerInputChannels = nullptr;
-		queryAudioMixerChannels(ChannelDirection::CD_INPUT);
+		queryAudioMixerChannels(pk::ChannelDirection::CD_INPUT);
 	}
 	return m_pAudioMixerInputChannels;
 }
@@ -604,7 +604,7 @@ Device::getAudioDirectionChannels(AudioPortId audioPortId) {
 
 AudioChannelNames
 Device::getAudioChannelNames(AudioPortId audioPortId,
-							 ChannelDirection channelDirection) {
+							 pk::ChannelDirection channelDirection) {
 	return getAudioDirectionChannels(audioPortId)[channelDirection];
 }
 

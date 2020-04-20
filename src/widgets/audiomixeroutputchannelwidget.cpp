@@ -12,7 +12,7 @@
 
 AudioMixerOutputChannelWidget::AudioMixerOutputChannelWidget(
 	Device *device, unsigned int portId, unsigned int channelNumber,
-	ChannelDirection channelDirection, QWidget *parent)
+	pk::ChannelDirection channelDirection, QWidget *parent)
 	: AudioMixerChannelWidget(device, portId, channelNumber, channelDirection,
 							  parent) {
 
@@ -232,7 +232,7 @@ void AudioMixerOutputChannelWidget::createOutputMenu() {
 				continue;
 			AudioChannelNames::iterator channelIt;
 			AudioChannelNames channelNames = m_pDevice->getAudioChannelNames(
-				portId, ChannelDirection::CD_OUTPUT);
+				portId, pk::ChannelDirection::CD_OUTPUT);
 			for (channelIt = channelNames.begin();
 				 channelIt != channelNames.end(); ++channelIt) {
 				unsigned int channelId = channelIt->first;
@@ -272,7 +272,7 @@ void AudioMixerOutputChannelWidget::setOutput(
 					} else {
 						AudioChannelNames channelNames =
 							m_pDevice->getAudioChannelNames(
-								m_iPortId, ChannelDirection::CD_OUTPUT);
+								m_iPortId, pk::ChannelDirection::CD_OUTPUT);
 						std::shared_ptr<RetSetAudioChannelName> channelName =
 							channelNames[channel];
 						setOutputName(m_iPortId, "none", channel,

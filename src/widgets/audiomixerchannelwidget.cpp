@@ -7,7 +7,7 @@
 
 AudioMixerChannelWidget::AudioMixerChannelWidget(
 	Device *device, AudioPortId portId, AudioChannelId channelNumber,
-	ChannelDirection channelDirection, QWidget *parent)
+	pk::ChannelDirection channelDirection, QWidget *parent)
 	: QFrame(parent), ui(new Ui::AudioChannelFeatureWidget),
 	  m_channelDirection(channelDirection), m_pDevice(device),
 	  m_iPortId(portId), m_iMixerChannelId(channelNumber) {

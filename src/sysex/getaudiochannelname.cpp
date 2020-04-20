@@ -21,7 +21,7 @@ void GetAudioChannelName::setChannelNumber(unsigned int iChannelNumber) {
 }
 
 void GetAudioChannelName::setChannelDirection(
-	const ChannelDirection &channelDirection) {
+	const pk::ChannelDirection &channelDirection) {
 	m_channelDirection = channelDirection;
 }
 

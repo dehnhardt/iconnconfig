@@ -139,13 +139,13 @@ void AudioMixerWidget::mixerConfigurationChanged(
 						AudioMixerInputChannelWidget *amcw =
 							new AudioMixerInputChannelWidget(
 								m_pDevice, portId, audioInputChannelId,
-								ChannelDirection::CD_INPUT);
+								pk::ChannelDirection::CD_INPUT);
 						amcw->setMixerInputControl(retMixerInputControl);
 						amcw->setConnectedOutputChannel(audioOutputChannelId);
 						connect(
 							mpw, &MixerPortWidget::inMeterValueChanged, amcw,
 							&AudioMixerInputChannelWidget::changeMeterVolume);
-						mpw->addMixerPanel(amcw, ChannelDirection::CD_INPUT,
+						mpw->addMixerPanel(amcw, pk::ChannelDirection::CD_INPUT,
 										   audioInputChannelId);
 					}
 				}
@@ -154,11 +154,11 @@ void AudioMixerWidget::mixerConfigurationChanged(
 					AudioMixerOutputChannelWidget *amcw =
 						new AudioMixerOutputChannelWidget(
 							m_pDevice, portId, audioOutputChannelId,
-							ChannelDirection::CD_OUTPUT);
+							pk::ChannelDirection::CD_OUTPUT);
 					amcw->setMixerOutputControl(retMixerOutputControl);
 					connect(mpw, &MixerPortWidget::outMeterValueChanged, amcw,
 							&AudioMixerOutputChannelWidget::changeMeterVolume);
-					mpw->addMixerPanel(amcw, ChannelDirection::CD_OUTPUT,
+					mpw->addMixerPanel(amcw, pk::ChannelDirection::CD_OUTPUT,
 									   audioOutputChannelId);
 					if (j == 0) {
 						// Use the name of the first output from evey output

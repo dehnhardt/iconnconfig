@@ -86,7 +86,7 @@ void AudioRoutingWidget::loadHeaderStructure() {
 			audioPortMixerBlocksMap.at(audioPortId);
 
 		for (auto audioDirections : audioDirectionChannels) {
-			ChannelDirection channelDirection = audioDirections.first;
+			pk::ChannelDirection channelDirection = audioDirections.first;
 			auto audioChannels = audioDirections.second;
 			std::shared_ptr<RetSetAudioPortParm> retSetAudioPortParm =
 				m_pDevice->getAudioPort(audioPortId);
@@ -103,9 +103,10 @@ void AudioRoutingWidget::loadHeaderStructure() {
 					audioChannel.second;
 				QStandardItem *channelItem = new QStandardItem(
 					audioChannelName->getChannelName().c_str());
-				if (channelDirection == CD_INPUT) {
+				if (channelDirection == pk::ChannelDirection::CD_INPUT) {
 					m_vRows.push_back(channelIndex);
-				} else if (channelDirection == CD_OUTPUT) {
+				} else if (channelDirection ==
+						   pk::ChannelDirection::CD_OUTPUT) {
 					channelItem->setData(1, Qt::UserRole);
 					m_vColumns.push_back(channelIndex);
 				}
@@ -113,7 +114,7 @@ void AudioRoutingWidget::loadHeaderStructure() {
 				portItem->appendColumn(channelsList);
 				channelsList.clear();
 			} // end for audioChannels
-			if (channelDirection == CD_INPUT) {
+			if (channelDirection == pk::ChannelDirection::CD_INPUT) {
 				// push back audio port channels
 				inputPortList.push_back(portItem);
 				inputRootItem->appendColumn(inputPortList);
@@ -148,7 +149,7 @@ void AudioRoutingWidget::loadHeaderStructure() {
 					inputPortList.clear();
 				}
 			}
-			if (channelDirection == CD_OUTPUT) {
+			if (channelDirection == pk::ChannelDirection::CD_OUTPUT) {
 				// push back audio port channels
 				outputPortList.push_back(portItem);
 				outputRootItem->appendColumn(outputPortList);
@@ -327,7 +328,7 @@ bool AudioRoutingWidget::modifyPhysicalPortConnection(
 		m_pDevice->getAudioChannelStructure();
 	AudioDirectionChannels adc = ass->at(sinkChannel->audioPortId);
 
-	for (auto channel : adc.at(ChannelDirection::CD_OUTPUT)) {
+	for (auto channel : adc.at(pk::ChannelDirection::CD_OUTPUT)) {
 		std::map<AudioPortChannelId, bool> sourceChannels;
 		AudioChannelId channelId = channel.first;
 		AudioPortChannelId out = channelIndex(

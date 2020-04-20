@@ -26,7 +26,7 @@ void RetSetAudioControlDetail::parseAnswerData() {
 			m_pData->begin() + static_cast<long>(offset) + m_iNameLenght);
 		break;
 	case pk::AudioControllerType::CT_FEATUERE:
-		m_channelDirection = static_cast<ChannelDirection>(m_pData->at(offset));
+		m_channelDirection = static_cast<pk::ChannelDirection>(m_pData->at(offset));
 		offset++;
 		m_iChannnelNumber = m_pData->at(offset);
 		offset++;
@@ -87,7 +87,7 @@ void RetSetAudioControlDetail::parseVolumeValues(std::vector<unsigned char> *v,
 	offset += 3;
 }
 
-ChannelDirection RetSetAudioControlDetail::getChannelDirection() const {
+pk::ChannelDirection RetSetAudioControlDetail::getChannelDirection() const {
 	return m_channelDirection;
 }
 

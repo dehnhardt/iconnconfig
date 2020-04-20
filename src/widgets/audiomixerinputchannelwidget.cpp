@@ -13,7 +13,7 @@
 
 AudioMixerInputChannelWidget::AudioMixerInputChannelWidget(
 	Device *device, unsigned int portId, unsigned int channelNumber,
-	ChannelDirection channelDirection, QWidget *parent)
+	pk::ChannelDirection channelDirection, QWidget *parent)
 	: AudioMixerChannelWidget(device, portId, channelNumber, channelDirection,
 							  parent) {
 	ui->setupUi(this);
@@ -203,7 +203,7 @@ void AudioMixerInputChannelWidget::createInputMenu() {
 			portMenu->setFont(menuFont);
 			AudioChannelNames::iterator channelIt;
 			AudioChannelNames channelNames = m_pDevice->getAudioChannelNames(
-				portId, ChannelDirection::CD_INPUT);
+				portId, pk::ChannelDirection::CD_INPUT);
 			for (channelIt = channelNames.begin();
 				 channelIt != channelNames.end(); ++channelIt) {
 				unsigned int channelId = channelIt->first;
@@ -243,7 +243,7 @@ void AudioMixerInputChannelWidget::setInput(
 			if (audioSourcePortId == app->getPortId()) {
 				AudioChannelNames channelNames =
 					m_pDevice->getAudioChannelNames(audioSourcePortId,
-													ChannelDirection::CD_INPUT);
+													pk::ChannelDirection::CD_INPUT);
 				std::shared_ptr<RetSetAudioChannelName> channelName =
 					channelNames[audioSourceChannelNumber];
 				setInputName(audioSourcePortId, app->getPortName(),

@@ -8,7 +8,7 @@ class RetSetAudioControlDetail : public PortSysExMessage {
 	RetSetAudioControlDetail(Device *m_pDevice);
 
 	RetSetAudioControlDetail(Command cmd, BYTE_VECTOR *message, Device *device)
-	    : PortSysExMessage(cmd, message, device) {}
+		: PortSysExMessage(cmd, message, device) {}
 
 	virtual ~RetSetAudioControlDetail() override;
 	void parseAnswerData() override;
@@ -38,7 +38,7 @@ class RetSetAudioControlDetail : public PortSysExMessage {
 	unsigned char getControllerNumber() const;
 	unsigned char getDetailNumber() const;
 
-	ChannelDirection getChannelDirection() const;
+	pk::ChannelDirection getChannelDirection() const;
 
   private:
 	void parseExistFlags(unsigned char exist_flags);
@@ -49,7 +49,7 @@ class RetSetAudioControlDetail : public PortSysExMessage {
 	unsigned char m_iControllerNumber = 0;
 	unsigned char m_iDetailNumber = 0;
 	pk::AudioControllerType m_controllerType = pk::AudioControllerType::CT_NONE;
-	ChannelDirection m_channelDirection = CD_NONE;
+	pk::ChannelDirection m_channelDirection = pk::ChannelDirection::CD_NONE;
 	unsigned int m_iChannnelNumber = 0;
 	unsigned int m_iNameLenght = 0;
 	std::string m_sSelectInputName;

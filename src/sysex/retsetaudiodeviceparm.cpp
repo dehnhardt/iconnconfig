@@ -15,7 +15,7 @@ void RetSetAudioDeviceParm::parseAnswerData() {
 	unsigned long offset = 5;
 	switch (m_AudioPortType) {
 	case pk::AudioPortType::APT_USB_DEVICE:
-		m_usbDeviceHost = static_cast<UsbDeviceHost>(m_pData->at(offset));
+		m_usbDeviceHost = static_cast<pk::UsbDeviceHost>(m_pData->at(offset));
 		offset++;
 		m_iHostNameLength = m_pData->at(offset);
 		offset++;
@@ -55,6 +55,6 @@ void RetSetAudioDeviceParm::setPortReservedForVendorProduct(
 
 std::string RetSetAudioDeviceParm::getHostName() const { return m_sHostName; }
 
-UsbDeviceHost RetSetAudioDeviceParm::getUsbDeviceHost() const {
+pk::UsbDeviceHost RetSetAudioDeviceParm::getUsbDeviceHost() const {
 	return m_usbDeviceHost;
 }

@@ -24,7 +24,7 @@ class AudioMixerInputChannelWidget : public AudioMixerChannelWidget {
   public:
 	explicit AudioMixerInputChannelWidget(Device *device, unsigned int portId,
 										  unsigned int channelNumber,
-										  ChannelDirection channelDirection,
+										  pk::ChannelDirection channelDirection,
 										  QWidget *parent = nullptr);
 	explicit AudioMixerInputChannelWidget(QWidget *parent = nullptr);
 

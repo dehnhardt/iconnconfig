@@ -18,11 +18,11 @@ MixerPortWidget::~MixerPortWidget() { delete m_pVolumeTimer; }
 void MixerPortWidget::setName(QString name) { m_pPortNameLabel->setText(name); }
 
 void MixerPortWidget::addMixerPanel(AudioMixerChannelWidget *mixerPanel,
-									ChannelDirection portDirection,
+									pk::ChannelDirection portDirection,
 									unsigned int mixerChannelNumber) {
-	if (portDirection == ChannelDirection::CD_INPUT) {
+	if (portDirection == pk::ChannelDirection::CD_INPUT) {
 		m_MapAttachedInputChannels[mixerChannelNumber] = mixerPanel;
-	} else if (portDirection == ChannelDirection::CD_OUTPUT) {
+	} else if (portDirection == pk::ChannelDirection::CD_OUTPUT) {
 		m_MapAttachedOutputChannels[mixerChannelNumber] = mixerPanel;
 	}
 	m_pMixerPanelLayout->addWidget(mixerPanel);
@@ -121,28 +121,28 @@ void MixerPortWidget::hideEvent(QHideEvent *event) {
 }
 
 void MixerPortWidget::linkStatusChanged(AudioChannelId mixerChannelId,
-										ChannelDirection channelDirection,
+										pk::ChannelDirection channelDirection,
 										bool status) {
 	AudioMixerChannelWidget *master = nullptr;
 	AudioMixerChannelWidget *slave = nullptr;
 	if (mixerChannelId < 1)
 		return;
 	if (mixerChannelId % 2) {
-		if (channelDirection == ChannelDirection::CD_INPUT) {
+		if (channelDirection == pk::ChannelDirection::CD_INPUT) {
 			master = this->m_MapAttachedInputChannels[mixerChannelId];
 			slave = this->m_MapAttachedInputChannels[mixerChannelId + 1];
 		}
-		if (channelDirection == ChannelDirection::CD_OUTPUT) {
+		if (channelDirection == pk::ChannelDirection::CD_OUTPUT) {
 			master = this->m_MapAttachedOutputChannels[mixerChannelId];
 			slave = this->m_MapAttachedOutputChannels[mixerChannelId + 1];
 		}
 		master->changeLinkStatus(status);
 	} else {
-		if (channelDirection == ChannelDirection::CD_INPUT) {
+		if (channelDirection == pk::ChannelDirection::CD_INPUT) {
 			master = this->m_MapAttachedInputChannels[mixerChannelId - 1];
 			slave = this->m_MapAttachedInputChannels[mixerChannelId];
 		}
-		if (channelDirection == ChannelDirection::CD_OUTPUT) {
+		if (channelDirection == pk::ChannelDirection::CD_OUTPUT) {
 			master = this->m_MapAttachedOutputChannels[mixerChannelId - 1];
 			slave = this->m_MapAttachedOutputChannels[mixerChannelId];
 		}
@@ -151,7 +151,7 @@ void MixerPortWidget::linkStatusChanged(AudioChannelId mixerChannelId,
 	master->setMaster(status, slave->getChannelName());
 	slave->setSlave(status);
 	slave->setVisible(!status);
-	if (channelDirection == ChannelDirection::CD_INPUT) {
+	if (channelDirection == pk::ChannelDirection::CD_INPUT) {
 		if (status) {
 			/*connect(master, &AudioMixerChannelWidget::volumeChanged, slave,
 					&AudioMixerChannelWidget::changeVolume);

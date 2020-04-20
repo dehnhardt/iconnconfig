@@ -53,7 +53,7 @@ void AudioControlDetailFeatureWidget::getDetails() {
 				}
 				lastLinkStatus = audiochannelFeatureWidget->getLinkStatus();
 				switch (retSetAudioControlDetail->getChannelDirection()) {
-				case ChannelDirection::CD_INPUT:
+				case pk::ChannelDirection::CD_INPUT:
 					audiochannelFeatureWidget->setChannelId(INPUT);
 					INPUT++;
 					connect(
@@ -62,7 +62,7 @@ void AudioControlDetailFeatureWidget::getDetails() {
 						audiochannelFeatureWidget,
 						&AudioChannelFeatureWidget::changeMeterVolume);
 					break;
-				case ChannelDirection::CD_OUTPUT:
+				case pk::ChannelDirection::CD_OUTPUT:
 					audiochannelFeatureWidget->setChannelId(OUTPUT);
 					OUTPUT++;
 					connect(

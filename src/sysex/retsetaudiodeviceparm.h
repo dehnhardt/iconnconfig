@@ -22,7 +22,7 @@ class RetSetAudioDeviceParm : public PortSysExMessage {
 	bool hastHostName() { return m_iHostNameLength > 0; }
 	std::string getHostName() const;
 
-	UsbDeviceHost getUsbDeviceHost() const;
+	pk::UsbDeviceHost getUsbDeviceHost() const;
 
   private:
 	pk::AudioPortType m_AudioPortType = pk::AudioPortType::APT_NONE;
@@ -31,7 +31,7 @@ class RetSetAudioDeviceParm : public PortSysExMessage {
 	// USB Device & Host Parameters
 
 	// USB Device Parameters
-	UsbDeviceHost m_usbDeviceHost = UsbDeviceHost::NO_HOST;
+	pk::UsbDeviceHost m_usbDeviceHost = pk::UsbDeviceHost::NO_HOST;
 	unsigned int m_iHostNameLength = 0;
 	std::string m_sHostName;
 
