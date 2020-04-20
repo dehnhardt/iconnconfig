@@ -36,6 +36,10 @@
 	WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 /**********************************************************************/
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wweak-vtables"
+#pragma GCC diagnostic ignored "-Wdeprecated-dynamic-exception-spec"
+#pragma GCC diagnostic ignored "-Wold-style-cast"
 
 #include "RtMidi.h"
 #include <sstream>
@@ -281,7 +285,9 @@ RtMidi ::~RtMidi() {
 	rtapi_ = nullptr;
 }
 
-std::string RtMidi ::getVersion(void) { return std::string(RTMIDI_VERSION); }
+std::string RtMidi ::getVersion(void) throw() {
+	return std::string(RTMIDI_VERSION);
+}
 
 // Define API names and display names.
 // Must be in same order as API enum.
@@ -337,19 +343,19 @@ class StaticAssertions {
 	}
 };
 
-void RtMidi ::getCompiledApi(std::vector<RtMidi::Api> &apis) {
+void RtMidi ::getCompiledApi(std::vector<RtMidi::Api> &apis) throw() {
 	apis = std::vector<RtMidi::Api>(
 		rtmidi_compiled_apis, rtmidi_compiled_apis + rtmidi_num_compiled_apis);
 }
 
 std::string RtMidi ::getApiName(RtMidi::Api api) {
-	if (api >= RtMidi::NUM_APIS)
+	if (api < 0 || api >= RtMidi::NUM_APIS)
 		return "";
 	return rtmidi_api_names[api][0];
 }
 
 std::string RtMidi ::getApiDisplayName(RtMidi::Api api) {
-	if (api >= RtMidi::NUM_APIS)
+	if (api < 0 || api >= RtMidi::NUM_APIS)
 		return "Unknown";
 	return rtmidi_api_names[api][1];
 }
@@ -440,7 +446,7 @@ RTMIDI_DLL_PUBLIC RtMidiIn ::RtMidiIn(RtMidi::Api api,
 	throw(RtMidiError(errorText, RtMidiError::UNSPECIFIED));
 }
 
-RtMidiIn ::~RtMidiIn() {}
+RtMidiIn ::~RtMidiIn() throw() {}
 
 //*********************************************************************//
 //  RtMidiOut Definitions
@@ -509,7 +515,7 @@ RTMIDI_DLL_PUBLIC RtMidiOut ::RtMidiOut(RtMidi::Api api,
 	throw(RtMidiError(errorText, RtMidiError::UNSPECIFIED));
 }
 
-RtMidiOut ::~RtMidiOut() {}
+RtMidiOut ::~RtMidiOut() throw() {}
 
 //*********************************************************************//
 //  Common MidiApi Definitions
@@ -1508,16 +1514,16 @@ void MidiOutCore ::sendMessage(const unsigned char *message, size_t size) {
 // implementation.
 struct AlsaMidiData {
 	snd_seq_t *seq;
-	int portNum;
+	unsigned int portNum;
 	int vport;
 	snd_seq_port_subscribe_t *subscription;
 	snd_midi_event_t *coder;
 	unsigned int bufferSize;
-	int queue_id; // an input queue is needed to get timestamped events
 	unsigned char *buffer;
 	pthread_t thread;
 	pthread_t dummy_thread_id;
 	snd_seq_real_time_t lastTime;
+	int queue_id; // an input queue is needed to get timestamped events
 	int trigger_fds[2];
 };
 
@@ -1551,8 +1557,7 @@ static void *alsaMidiHandler(void *ptr) {
 					 "event parser!\n\n";
 		return nullptr;
 	}
-	unsigned char *buffer =
-		static_cast<unsigned char *>(malloc(apiData->bufferSize));
+	unsigned char *buffer = (unsigned char *)malloc(apiData->bufferSize);
 	if (buffer == nullptr) {
 		data->doInput = false;
 		snd_midi_event_free(apiData->coder);
@@ -1566,10 +1571,8 @@ static void *alsaMidiHandler(void *ptr) {
 							 1); // suppress running status messages
 
 	poll_fd_count = snd_seq_poll_descriptors_count(apiData->seq, POLLIN) + 1;
-	poll_fds = static_cast<struct pollfd *>(alloca(
-		static_cast<unsigned long>(poll_fd_count) * sizeof(struct pollfd)));
-	snd_seq_poll_descriptors(apiData->seq, poll_fds + 1,
-							 static_cast<unsigned int>(poll_fd_count) - 1,
+	poll_fds = (struct pollfd *)alloca(poll_fd_count * sizeof(struct pollfd));
+	snd_seq_poll_descriptors(apiData->seq, poll_fds + 1, poll_fd_count - 1,
 							 POLLIN);
 	poll_fds[0].fd = apiData->trigger_fds[0];
 	poll_fds[0].events = POLLIN;
@@ -1578,11 +1581,10 @@ static void *alsaMidiHandler(void *ptr) {
 
 		if (snd_seq_event_input_pending(apiData->seq, 1) == 0) {
 			// No data pending
-			if (poll(poll_fds, static_cast<unsigned int>(poll_fd_count), -1) >=
-				0) {
+			if (poll(poll_fds, poll_fd_count, -1) >= 0) {
 				if (poll_fds[0].revents & POLLIN) {
 					bool dummy;
-					long res = read(poll_fds[0].fd, &dummy, sizeof(dummy));
+					int res = read(poll_fds[0].fd, &dummy, sizeof(dummy));
 					(void)res;
 				}
 			}
@@ -1653,8 +1655,7 @@ static void *alsaMidiHandler(void *ptr) {
 			if (ev->data.ext.len > apiData->bufferSize) {
 				apiData->bufferSize = ev->data.ext.len;
 				free(buffer);
-				buffer =
-					static_cast<unsigned char *>(malloc(apiData->bufferSize));
+				buffer = (unsigned char *)malloc(apiData->bufferSize);
 				if (buffer == nullptr) {
 					data->doInput = false;
 					std::cerr << "\nMidiInAlsa::alsaMidiHandler: error "
@@ -1711,22 +1712,20 @@ static void *alsaMidiHandler(void *ptr) {
 					y.tv_nsec = apiData->lastTime.tv_nsec;
 					y.tv_sec = apiData->lastTime.tv_sec;
 					if (x.tv_nsec < y.tv_nsec) {
-						int nsec = static_cast<int>(y.tv_nsec - x.tv_nsec) /
-									   1000000000 +
-								   1;
+						int nsec =
+							(y.tv_nsec - (int)x.tv_nsec) / 1000000000 + 1;
 						y.tv_nsec -= 1000000000 * nsec;
 						y.tv_sec += nsec;
 					}
 					if (x.tv_nsec - y.tv_nsec > 1000000000) {
-						int nsec = static_cast<int>(x.tv_nsec - y.tv_nsec) /
-								   1000000000;
+						int nsec = ((int)x.tv_nsec - y.tv_nsec) / 1000000000;
 						y.tv_nsec += 1000000000 * nsec;
 						y.tv_sec -= nsec;
 					}
 
 					// Compute the time difference.
-					time = static_cast<int>(x.tv_sec) - y.tv_sec +
-						   (static_cast<int>(x.tv_nsec) - y.tv_nsec) * 1e-9;
+					time = (int)x.tv_sec - y.tv_sec +
+						   ((int)x.tv_nsec - y.tv_nsec) * 1e-9;
 
 					apiData->lastTime = ev->time.time;
 
@@ -1749,7 +1748,7 @@ static void *alsaMidiHandler(void *ptr) {
 
 		if (data->usingCallback) {
 			RtMidiIn::RtMidiCallback callback =
-				static_cast<RtMidiIn::RtMidiCallback>(data->userCallback);
+				(RtMidiIn::RtMidiCallback)data->userCallback;
 			callback(message.timeStamp, &message.bytes, data->userData);
 		} else {
 			// As long as we haven't reached our queue size limit, push the
@@ -1781,8 +1780,8 @@ MidiInAlsa ::~MidiInAlsa() {
 	AlsaMidiData *data = static_cast<AlsaMidiData *>(apiData_);
 	if (inputData_.doInput) {
 		inputData_.doInput = false;
-		long res = write(data->trigger_fds[1], &inputData_.doInput,
-						 sizeof(inputData_.doInput));
+		int res = write(data->trigger_fds[1], &inputData_.doInput,
+						sizeof(inputData_.doInput));
 		(void)res;
 		if (!pthread_equal(data->thread, data->dummy_thread_id))
 			pthread_join(data->thread, nullptr);
@@ -1816,7 +1815,7 @@ void MidiInAlsa ::initialize(const std::string &clientName) {
 	snd_seq_set_client_name(seq, clientName.c_str());
 
 	// Save our api-specific connection information.
-	AlsaMidiData *data = static_cast<AlsaMidiData *>(new AlsaMidiData);
+	AlsaMidiData *data = (AlsaMidiData *)new AlsaMidiData;
 	data->seq = seq;
 	data->portNum = -1;
 	data->vport = -1;
@@ -1825,8 +1824,8 @@ void MidiInAlsa ::initialize(const std::string &clientName) {
 	data->thread = data->dummy_thread_id;
 	data->trigger_fds[0] = -1;
 	data->trigger_fds[1] = -1;
-	apiData_ = static_cast<void *>(data);
-	inputData_.apiData = static_cast<void *>(data);
+	apiData_ = (void *)data;
+	inputData_.apiData = (void *)data;
 
 	if (pipe(data->trigger_fds) == -1) {
 		errorString_ = "MidiInAlsa::initialize: error creating pipe objects.";
@@ -1882,7 +1881,7 @@ unsigned int portInfo(snd_seq_t *seq, snd_seq_port_info_t *pinfo,
 
 	// If a negative portNumber was used, return the port count.
 	if (portNumber < 0)
-		return static_cast<unsigned int>(count);
+		return count;
 	return 0;
 }
 
@@ -1905,7 +1904,7 @@ std::string MidiInAlsa ::getPortName(unsigned int portNumber) {
 	AlsaMidiData *data = static_cast<AlsaMidiData *>(apiData_);
 	if (portInfo(data->seq, pinfo,
 				 SND_SEQ_PORT_CAP_READ | SND_SEQ_PORT_CAP_SUBS_READ,
-				 static_cast<int>(portNumber))) {
+				 (int)portNumber)) {
 		int cnum = snd_seq_port_info_get_client(pinfo);
 		snd_seq_get_any_client_info(data->seq, cnum, cinfo);
 		std::ostringstream os;
@@ -1949,7 +1948,7 @@ void MidiInAlsa ::openPort(unsigned int portNumber,
 	AlsaMidiData *data = static_cast<AlsaMidiData *>(apiData_);
 	if (portInfo(data->seq, src_pinfo,
 				 SND_SEQ_PORT_CAP_READ | SND_SEQ_PORT_CAP_SUBS_READ,
-				 static_cast<int>(portNumber)) == 0) {
+				 (int)portNumber) == 0) {
 		std::ostringstream ost;
 		ost << "MidiInAlsa::openPort: the 'portNumber' argument (" << portNumber
 			<< ") is invalid.";
@@ -1959,11 +1958,9 @@ void MidiInAlsa ::openPort(unsigned int portNumber,
 	}
 
 	snd_seq_addr_t sender, receiver;
-	sender.client =
-		static_cast<unsigned char>(snd_seq_port_info_get_client(src_pinfo));
-	sender.port =
-		static_cast<unsigned char>(snd_seq_port_info_get_port(src_pinfo));
-	receiver.client = static_cast<unsigned char>(snd_seq_client_id(data->seq));
+	sender.client = snd_seq_port_info_get_client(src_pinfo);
+	sender.port = snd_seq_port_info_get_port(src_pinfo);
+	receiver.client = snd_seq_client_id(data->seq);
 
 	snd_seq_port_info_t *pinfo;
 	snd_seq_port_info_alloca(&pinfo);
@@ -1992,7 +1989,7 @@ void MidiInAlsa ::openPort(unsigned int portNumber,
 		data->vport = snd_seq_port_info_get_port(pinfo);
 	}
 
-	receiver.port = static_cast<unsigned char>(data->vport);
+	receiver.port = data->vport;
 
 	if (!data->subscription) {
 		// Make subscription
@@ -2074,10 +2071,11 @@ void MidiInAlsa ::openVirtualPort(const std::string &portName) {
 
 	if (inputData_.doInput == false) {
 		// Wait for old thread to stop, if still running
-		if (!pthread_equal(data->thread, data->dummy_thread_id))
+		if (!pthread_equal(data->thread, data->dummy_thread_id)) {
 			pthread_join(data->thread, nullptr);
+		}
 
-			// Start the input queue
+		// Start the input queue
 #ifndef AVOID_TIMESTAMPING
 		snd_seq_start_queue(data->seq, data->queue_id, NULL);
 		snd_seq_drain_output(data->seq);
@@ -2128,8 +2126,8 @@ void MidiInAlsa ::closePort(void) {
 	// to be closed
 	if (inputData_.doInput) {
 		inputData_.doInput = false;
-		long res = write(data->trigger_fds[1], &inputData_.doInput,
-						 sizeof(inputData_.doInput));
+		int res = write(data->trigger_fds[1], &inputData_.doInput,
+						sizeof(inputData_.doInput));
 		(void)res;
 		if (!pthread_equal(data->thread, data->dummy_thread_id))
 			pthread_join(data->thread, nullptr);
@@ -2192,7 +2190,7 @@ void MidiOutAlsa ::initialize(const std::string &clientName) {
 	snd_seq_set_client_name(seq, clientName.c_str());
 
 	// Save our api-specific connection information.
-	AlsaMidiData *data = static_cast<AlsaMidiData *>(new AlsaMidiData);
+	AlsaMidiData *data = (AlsaMidiData *)new AlsaMidiData;
 	data->seq = seq;
 	data->portNum = -1;
 	data->vport = -1;
@@ -2207,7 +2205,7 @@ void MidiOutAlsa ::initialize(const std::string &clientName) {
 		error(RtMidiError::DRIVER_ERROR, errorString_);
 		return;
 	}
-	data->buffer = static_cast<unsigned char *>(malloc(data->bufferSize));
+	data->buffer = (unsigned char *)malloc(data->bufferSize);
 	if (data->buffer == nullptr) {
 		delete data;
 		errorString_ =
@@ -2216,7 +2214,7 @@ void MidiOutAlsa ::initialize(const std::string &clientName) {
 		return;
 	}
 	snd_midi_event_init(data->coder);
-	apiData_ = static_cast<void *>(data);
+	apiData_ = (void *)data;
 }
 
 unsigned int MidiOutAlsa ::getPortCount() {
@@ -2238,7 +2236,7 @@ std::string MidiOutAlsa ::getPortName(unsigned int portNumber) {
 	AlsaMidiData *data = static_cast<AlsaMidiData *>(apiData_);
 	if (portInfo(data->seq, pinfo,
 				 SND_SEQ_PORT_CAP_WRITE | SND_SEQ_PORT_CAP_SUBS_WRITE,
-				 static_cast<int>(portNumber))) {
+				 (int)portNumber)) {
 		int cnum = snd_seq_port_info_get_client(pinfo);
 		snd_seq_get_any_client_info(data->seq, cnum, cinfo);
 		std::ostringstream os;
@@ -2282,7 +2280,7 @@ void MidiOutAlsa ::openPort(unsigned int portNumber,
 	AlsaMidiData *data = static_cast<AlsaMidiData *>(apiData_);
 	if (portInfo(data->seq, pinfo,
 				 SND_SEQ_PORT_CAP_WRITE | SND_SEQ_PORT_CAP_SUBS_WRITE,
-				 static_cast<int>(portNumber)) == 0) {
+				 (int)portNumber) == 0) {
 		std::ostringstream ost;
 		ost << "MidiOutAlsa::openPort: the 'portNumber' argument ("
 			<< portNumber << ") is invalid.";
@@ -2292,11 +2290,9 @@ void MidiOutAlsa ::openPort(unsigned int portNumber,
 	}
 
 	snd_seq_addr_t sender, receiver;
-	receiver.client =
-		static_cast<unsigned char>(snd_seq_port_info_get_client(pinfo));
-	receiver.port =
-		static_cast<unsigned char>(snd_seq_port_info_get_port(pinfo));
-	sender.client = static_cast<unsigned char>(snd_seq_client_id(data->seq));
+	receiver.client = snd_seq_port_info_get_client(pinfo);
+	receiver.port = snd_seq_port_info_get_port(pinfo);
+	sender.client = snd_seq_client_id(data->seq);
 
 	if (data->vport < 0) {
 		data->vport = snd_seq_create_simple_port(
@@ -2311,7 +2307,7 @@ void MidiOutAlsa ::openPort(unsigned int portNumber,
 		}
 	}
 
-	sender.port = static_cast<unsigned char>(data->vport);
+	sender.port = data->vport;
 
 	// Make subscription
 	if (snd_seq_port_subscribe_malloc(&data->subscription) < 0) {
@@ -2378,7 +2374,7 @@ void MidiOutAlsa ::openVirtualPort(const std::string &portName) {
 }
 
 void MidiOutAlsa ::sendMessage(const unsigned char *message, size_t size) {
-	long result;
+	int result;
 	AlsaMidiData *data = static_cast<AlsaMidiData *>(apiData_);
 	unsigned int nBytes = static_cast<unsigned int>(size);
 	if (nBytes > data->bufferSize) {
@@ -2391,7 +2387,7 @@ void MidiOutAlsa ::sendMessage(const unsigned char *message, size_t size) {
 			return;
 		}
 		free(data->buffer);
-		data->buffer = static_cast<unsigned char *>(malloc(data->bufferSize));
+		data->buffer = (unsigned char *)malloc(data->bufferSize);
 		if (data->buffer == nullptr) {
 			errorString_ =
 				"MidiOutAlsa::initialize: error allocating buffer memory!\n\n";
@@ -2407,9 +2403,9 @@ void MidiOutAlsa ::sendMessage(const unsigned char *message, size_t size) {
 	snd_seq_ev_set_direct(&ev);
 	for (unsigned int i = 0; i < nBytes; ++i)
 		data->buffer[i] = message[i];
-	result = snd_midi_event_encode(data->coder, data->buffer,
-								   static_cast<long>(nBytes), &ev);
-	if (result < static_cast<int>(nBytes)) {
+	result =
+		snd_midi_event_encode(data->coder, data->buffer, (long)nBytes, &ev);
+	if (result < (int)nBytes) {
 		errorString_ = "MidiOutAlsa::sendMessage: event parsing error!";
 		error(RtMidiError::WARNING, errorString_);
 		return;
@@ -3553,3 +3549,4 @@ void MidiOutJack ::sendMessage(const unsigned char *message, size_t size) {
 }
 
 #endif // __UNIX_JACK__
+#pragma GCC diagnostic pop
