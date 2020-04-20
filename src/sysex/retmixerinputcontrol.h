@@ -7,7 +7,7 @@ class RetMixerInputControl : public PortSysExMessage {
   public:
 	RetMixerInputControl(Device *device);
 	RetMixerInputControl(Command cmd, BYTE_VECTOR *message, Device *device)
-	    : PortSysExMessage(cmd, message, device) {}
+		: PortSysExMessage(cmd, message, device) {}
 	virtual ~RetMixerInputControl() override;
 	void parseAnswerData() override;
 
@@ -54,7 +54,7 @@ class RetMixerInputControl : public PortSysExMessage {
 
 	int m_iMaxPanValue = 0;
 	unsigned int m_iNumberOfPanCurves = 0;
-	std::vector<PanCurve> m_vPanCurves;
+	std::vector<pk::PanCurve> m_vPanCurves;
 	int m_iMinimumVolumeValue = 0;
 	int m_iMaximumVolumeValue = 0;
 	int m_iVolumeResolution = 0;

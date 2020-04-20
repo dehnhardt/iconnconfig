@@ -41,7 +41,7 @@ void RetSetMixerOutputControlValue::parseAnswerData() {
 	if (m_bHasPanControl) {
 		m_iPan = MIDI::bytesToSignedInt(m_pData, offset, 3);
 		offset += 3;
-		m_iPanCurve = static_cast<PanCurve>(m_pData->at(offset));
+		m_iPanCurve = static_cast<pk::PanCurve>(m_pData->at(offset));
 	}
 }
 

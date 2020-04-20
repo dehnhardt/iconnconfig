@@ -2,7 +2,7 @@
 
 RetMixerInputControl::RetMixerInputControl(Device *device)
 	: PortSysExMessage(RET_MIXER_INPUT_CONTROL, SysExMessage::QUERY, device) {
-	// m_vPanCurves = std::vector<PanCurve>();
+	// m_vPanCurves = std::vector<pk::PanCurve>();
 }
 
 RetMixerInputControl::~RetMixerInputControl() {}
@@ -21,7 +21,7 @@ void RetMixerInputControl::parseAnswerData() {
 		m_iNumberOfPanCurves = m_pData->at(offset);
 		offset++;
 		for (unsigned int i = 1; i <= m_iNumberOfPanCurves; i++) {
-			m_vPanCurves.push_back(PanCurve(m_pData->at(offset)));
+			m_vPanCurves.push_back(pk::PanCurve(m_pData->at(offset)));
 			offset++;
 		}
 	}
@@ -62,13 +62,9 @@ bool RetMixerInputControl::hasVolumeControl() const {
 	return m_bHasVolumeControl;
 }
 
-bool RetMixerInputControl::hasMuteControl() const {
-	return m_bHasMuteControl;
-}
+bool RetMixerInputControl::hasMuteControl() const { return m_bHasMuteControl; }
 
-bool RetMixerInputControl::hasSoloControl() const {
-	return m_bHasSoloControl;
-}
+bool RetMixerInputControl::hasSoloControl() const { return m_bHasSoloControl; }
 
 bool RetMixerInputControl::hasSoloPFLControl() const {
 	return m_bHasSoloPFLControl;

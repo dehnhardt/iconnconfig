@@ -90,7 +90,7 @@ class RetSetMixerOutputControlValue : public PortSysExMessage {
 	bool m_bSteroLink = false;
 	bool m_bInvert = false;
 
-	PanCurve m_iPanCurve = PanCurve::NO_CURVE;
+	pk::PanCurve m_iPanCurve = pk::PanCurve::NO_CURVE;
 
 	int m_iVolume = 0;
 	int m_iPan = 0;

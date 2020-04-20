@@ -2,7 +2,7 @@
 
 RetMixerOutputControl::RetMixerOutputControl(Device *device)
 	: PortSysExMessage(RET_MIXER_OUTPUT_CONTROL, SysExMessage::QUERY, device) {
-	// m_vPanCurves = std::vector<PanCurve>();
+	// m_vPanCurves = std::vector<pk::PanCurve>();
 }
 
 RetMixerOutputControl::~RetMixerOutputControl() {}
@@ -21,7 +21,7 @@ void RetMixerOutputControl::parseAnswerData() {
 		m_iNumberOfPanCurves = m_pData->at(offset);
 		offset++;
 		for (unsigned int i = 1; i <= m_iNumberOfPanCurves; i++) {
-			m_vPanCurves.push_back(PanCurve(m_pData->at(offset)));
+			m_vPanCurves.push_back(pk::PanCurve(m_pData->at(offset)));
 			offset++;
 		}
 	}
@@ -62,13 +62,9 @@ bool RetMixerOutputControl::hasVolumeControl() const {
 	return m_bHasVolumeControl;
 }
 
-bool RetMixerOutputControl::hasMuteControl() const {
-	return m_bHasMuteControl;
-}
+bool RetMixerOutputControl::hasMuteControl() const { return m_bHasMuteControl; }
 
-bool RetMixerOutputControl::hasSoloControl() const {
-	return m_bHasSoloControl;
-}
+bool RetMixerOutputControl::hasSoloControl() const { return m_bHasSoloControl; }
 
 bool RetMixerOutputControl::hasSoloPFLControl() const {
 	return m_bHasSoloPFLControl;
@@ -82,9 +78,7 @@ bool RetMixerOutputControl::hasInvertControl() const {
 	return m_bHasInvertControl;
 }
 
-bool RetMixerOutputControl::hasPanControl() const {
-	return m_bHasPanControl;
-}
+bool RetMixerOutputControl::hasPanControl() const { return m_bHasPanControl; }
 
 bool RetMixerOutputControl::getVolumeControlEditable() const {
 	return m_bVolumeControlEditable;

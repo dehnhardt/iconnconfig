@@ -168,8 +168,6 @@ enum AudioControllerType {
 	CT_CLOCK_SOURCE = 10
 };
 
-} // namespace pk
-
 enum PanCurve {
 	NO_CURVE = 0,
 	CENTER_AT_0,
@@ -178,6 +176,8 @@ enum PanCurve {
 	CENTER_AT_M_4_5,
 	CENTER_AT_M_6
 };
+
+} // namespace pk
 
 enum UsbDeviceHost { NO_HOST = 0, MAC_PC = 1, IOS = 2 };
 enum ChannelDirection { CD_NONE = 0, CD_INPUT, CD_OUTPUT };
