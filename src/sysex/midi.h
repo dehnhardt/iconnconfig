@@ -10,7 +10,7 @@
 // Platform-dependent sleep routines.
 #if defined(__WINDOWS_MM__)
 #include <windows.h>
-#define uint16_t u_int16_t
+#define u_int16_t uint16_t
 #define SLEEP(milliseconds) Sleep((DWORD)milliseconds)
 #else // Unix variants
 #include <unistd.h>
