@@ -179,10 +179,9 @@ enum PanCurve {
 
 enum UsbDeviceHost { NO_HOST = 0, MAC_PC = 1, IOS = 2 };
 enum ChannelDirection { CD_NONE = 0, CD_INPUT, CD_OUTPUT };
+enum AudioPortClass { PHYSICAL_PORT = 0, MIXER_PORT };
 
 } // namespace pk
-
-enum AudioPortClass { PHYSICAL_PORT = 0, MIXER_PORT };
 
 typedef unsigned int AudioPortId;
 typedef unsigned int AudioChannelId;

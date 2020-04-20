@@ -164,7 +164,7 @@ void AudioMixerWidget::mixerConfigurationChanged(
 						// Use the name of the first output from evey output
 						// pair as the panel name
 						AudioPortChannelId audioPortChannelId =
-							channelIndex(portId, AudioPortClass::MIXER_PORT,
+							channelIndex(portId, pk::AudioPortClass::MIXER_PORT,
 										 audioOutputChannelId);
 						try {
 							portName = m_pDevice->getAudioMixerOutputChannels()

@@ -98,7 +98,7 @@ void AudioRoutingWidget::loadHeaderStructure() {
 			for (auto audioChannel : audioChannels) {
 				AudioChannelId channelId = audioChannel.first;
 				AudioPortChannelId channelIndex = channelIndex(
-					audioPortId, AudioPortClass::PHYSICAL_PORT, channelId);
+					audioPortId, pk::AudioPortClass::PHYSICAL_PORT, channelId);
 				std::shared_ptr<RetSetAudioChannelName> audioChannelName =
 					audioChannel.second;
 				QStandardItem *channelItem = new QStandardItem(
@@ -134,7 +134,7 @@ void AudioRoutingWidget::loadHeaderStructure() {
 						 channelId <= audioPortMixerBlock.numberOfMixerOutputs;
 						 ++channelId) {
 						AudioPortChannelId channelIndex = channelIndex(
-							audioPortId, AudioPortClass::MIXER_PORT, channelId);
+							audioPortId, pk::AudioPortClass::MIXER_PORT, channelId);
 						std::shared_ptr<RetSetMixerOutputParm> mixerOutputParm =
 							audioMixerOutputChannels->at(channelIndex);
 						QStandardItem *mixerChannelItem =
@@ -166,7 +166,7 @@ void AudioRoutingWidget::loadHeaderStructure() {
 						 channelId <= audioPortMixerBlock.numberOfMixerInputs;
 						 ++channelId) {
 						AudioPortChannelId channelIndex = channelIndex(
-							audioPortId, AudioPortClass::MIXER_PORT, channelId);
+							audioPortId, pk::AudioPortClass::MIXER_PORT, channelId);
 						QStandardItem *mixerChannelItem =
 							new QStandardItem(QString::number(channelId));
 						mixerChannelItem->setData(1, Qt::UserRole);
@@ -226,7 +226,7 @@ void AudioRoutingWidget::loadTableData() {
 		unsigned int mixerSourceChannel =
 			mixerInput->getAudioSourceChannelNumber();
 		AudioPortChannelId sourceAudioPortChannelId = channelIndex(
-			mixerSorcePort, AudioPortClass::PHYSICAL_PORT, mixerSourceChannel);
+			mixerSorcePort, pk::AudioPortClass::PHYSICAL_PORT, mixerSourceChannel);
 		portSources[sourceAudioPortChannelId] = true;
 		mixerConnections->insert(
 			std::pair<AudioPortChannelId, std::map<AudioPortChannelId, bool>>(
@@ -241,13 +241,13 @@ void AudioRoutingWidget::loadTableData() {
 		unsigned int sinkChannelNumber =
 			mixerOutput->getMixerSinkChannelNumber();
 		AudioPortChannelId sinkAudioPortChannelId = channelIndex(
-			sinkPortId, AudioPortClass::MIXER_PORT, sinkChannelNumber);
+			sinkPortId, pk::AudioPortClass::MIXER_PORT, sinkChannelNumber);
 		std::vector<unsigned int> mixerSourceChannels =
 			mixerOutput->getAudioSourceChannelNumbers();
 		std::map<AudioPortChannelId, bool> portSources;
 		for (unsigned int mixerSourceChannel : mixerSourceChannels) {
 			AudioPortChannelId sourceAudioPortChannelId = channelIndex(
-				sinkPortId, AudioPortClass::PHYSICAL_PORT, mixerSourceChannel);
+				sinkPortId, pk::AudioPortClass::PHYSICAL_PORT, mixerSourceChannel);
 			portSources[sinkAudioPortChannelId] = true;
 			mixerConnections->insert(
 				std::pair<AudioPortChannelId,
@@ -271,15 +271,15 @@ bool AudioRoutingWidget::modelDataChanged(__attribute__((unused))
 
 	// If both audio port classes are physical ports, use
 	// RetSetAudioPatchbayParm
-	if ((sinkChannel->audioPortClass == AudioPortClass::PHYSICAL_PORT) &&
-		(sourceChannel->audioPortClass == AudioPortClass::PHYSICAL_PORT)) {
+	if ((sinkChannel->audioPortClass == pk::AudioPortClass::PHYSICAL_PORT) &&
+		(sourceChannel->audioPortClass == pk::AudioPortClass::PHYSICAL_PORT)) {
 		return modifyPhysicalPortConnection(sinkChannel);
-	} else if ((sinkChannel->audioPortClass == AudioPortClass::MIXER_PORT) &&
+	} else if ((sinkChannel->audioPortClass == pk::AudioPortClass::MIXER_PORT) &&
 			   (sourceChannel->audioPortClass ==
-				AudioPortClass::PHYSICAL_PORT)) {
+				pk::AudioPortClass::PHYSICAL_PORT)) {
 		return modifyMixerSinkConnection(sourceChannel, sink, value);
-	} else if ((sinkChannel->audioPortClass == AudioPortClass::PHYSICAL_PORT) &&
-			   (sourceChannel->audioPortClass == AudioPortClass::MIXER_PORT) &&
+	} else if ((sinkChannel->audioPortClass == pk::AudioPortClass::PHYSICAL_PORT) &&
+			   (sourceChannel->audioPortClass == pk::AudioPortClass::MIXER_PORT) &&
 			   (sourceChannel->audioPortId == sinkChannel->audioPortId)) {
 		return modifyMixerSourceConnection(source, sinkChannel, value);
 	}
@@ -332,7 +332,7 @@ bool AudioRoutingWidget::modifyPhysicalPortConnection(
 		std::map<AudioPortChannelId, bool> sourceChannels;
 		AudioChannelId channelId = channel.first;
 		AudioPortChannelId out = channelIndex(
-			sinkChannel->audioPortId, AudioPortClass::PHYSICAL_PORT, channelId);
+			sinkChannel->audioPortId, pk::AudioPortClass::PHYSICAL_PORT, channelId);
 		bool connected = false;
 		for (int row = 0; row < m_pRoutingTableModel->rowCount(QModelIndex());
 			 row++) {
@@ -517,10 +517,10 @@ bool RoutingTableModel::checkConnectionValid(AudioPortChannelId source,
 		decodeRoutingChannel(source);
 	std::shared_ptr<AudioRoutingChannel> sinkChannel =
 		decodeRoutingChannel(sink);
-	if (sourceChannel->audioPortClass == AudioPortClass::PHYSICAL_PORT)
+	if (sourceChannel->audioPortClass == pk::AudioPortClass::PHYSICAL_PORT)
 		return true;
-	if ((sourceChannel->audioPortClass == AudioPortClass::MIXER_PORT) &&
-		(sinkChannel->audioPortClass == AudioPortClass::PHYSICAL_PORT) &&
+	if ((sourceChannel->audioPortClass == pk::AudioPortClass::MIXER_PORT) &&
+		(sinkChannel->audioPortClass == pk::AudioPortClass::PHYSICAL_PORT) &&
 		(sourceChannel->audioPortId == sinkChannel->audioPortId))
 		return true;
 	return false;
@@ -530,7 +530,7 @@ std::shared_ptr<AudioRoutingChannel>
 decodeRoutingChannel(AudioPortChannelId audioPortChannelId) {
 	std::shared_ptr<AudioRoutingChannel> channel =
 		std::make_shared<AudioRoutingChannel>();
-	channel->audioPortClass = AudioPortClass((audioPortChannelId / 100) % 10);
+	channel->audioPortClass = pk::AudioPortClass((audioPortChannelId / 100) % 10);
 	channel->audioPortId =
 		(audioPortChannelId / 100 - channel->audioPortClass) / 10;
 	channel->auioChannelId = audioPortChannelId % 100;

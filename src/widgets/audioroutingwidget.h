@@ -15,7 +15,7 @@ typedef std::map<AudioPortChannelId, bool> MixerSource;
 typedef std::map<AudioPortChannelId, MixerSource> MixerSink;
 
 typedef struct {
-	AudioPortClass audioPortClass;
+	pk::AudioPortClass audioPortClass;
 	AudioPortId audioPortId;
 	AudioChannelId auioChannelId;
 } AudioRoutingChannel;

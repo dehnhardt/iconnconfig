@@ -496,7 +496,7 @@ void Device::queryAudioMixerChannels(pk::ChannelDirection channelDirection) {
 				getMixerInputParm->setPortId(audioMixerPortId);
 				getMixerInputParm->setMixerInputNumber(audioMixerChannelId);
 				AudioPortChannelId channelId =
-					channelIndex(audioMixerPortId, AudioPortClass::MIXER_PORT,
+					channelIndex(audioMixerPortId, pk::AudioPortClass::MIXER_PORT,
 								 audioMixerChannelId);
 				std::shared_ptr<RetSetMixerInputParm> mixerInputParm =
 					std::dynamic_pointer_cast<RetSetMixerInputParm>(
@@ -527,7 +527,7 @@ void Device::queryAudioMixerChannels(pk::ChannelDirection channelDirection) {
 				getMixerOutputParm->setPortId(audioMixerPortId);
 				getMixerOutputParm->setMixerOutputNumber(audioMixerChannelId);
 				AudioPortChannelId channelId =
-					channelIndex(audioMixerPortId, AudioPortClass::MIXER_PORT,
+					channelIndex(audioMixerPortId, pk::AudioPortClass::MIXER_PORT,
 								 audioMixerChannelId);
 				std::shared_ptr<RetSetMixerOutputParm> mixerOutputParm =
 					std::dynamic_pointer_cast<RetSetMixerOutputParm>(

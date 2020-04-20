@@ -34,10 +34,10 @@ void RetSetAudioPatchbayParm::parseAnswerData() {
 		if ((apConfig.sourcePortId != 0) &&
 			(apConfig.sourceChannelNumber != 0)) {
 			AudioPortChannelId sinkKey =
-				channelIndex(m_iPortId, AudioPortClass::PHYSICAL_PORT,
+				channelIndex(m_iPortId, pk::AudioPortClass::PHYSICAL_PORT,
 							 apConfig.sinkChannelNumber);
 			AudioPortChannelId sourceKey = channelIndex(
-				apConfig.sourcePortId, AudioPortClass::PHYSICAL_PORT,
+				apConfig.sourcePortId, pk::AudioPortClass::PHYSICAL_PORT,
 				apConfig.sourceChannelNumber);
 			std::map<AudioPortChannelId, bool> sources;
 			try {
@@ -94,8 +94,8 @@ std::vector<unsigned char> *RetSetAudioPatchbayParm::getMessageData() {
 		for (auto singleConfig : configPairs.second) {
 			if (singleConfig.second) {
 				AudioPortChannelId sourcePortChannelId = singleConfig.first;
-				AudioPortClass sourcePortClass =
-					AudioPortClass((sourcePortChannelId / 100) % 10);
+				pk::AudioPortClass sourcePortClass =
+					pk::AudioPortClass((sourcePortChannelId / 100) % 10);
 				AudioPortId sourcePortId =
 					(sourcePortChannelId / 100 - sourcePortClass) / 10;
 				AudioChannelId sourceChannelId = sourcePortChannelId % 100;
