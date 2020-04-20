@@ -62,9 +62,6 @@ class MioMain : public QMainWindow {
 
 	void readConfigurationFromFile();
 	void writeConfigurtionToFile();
-	// signalling
-	static void handleSignal(int);
-	bool installSignalHandlers();
 
   private:
 	// Members
@@ -102,8 +99,17 @@ class MioMain : public QMainWindow {
 	void storeToDevice();
 	void restoreFromDevice();
 	void resetToFactoryDefaults();
-	void signalAction(int);
 	void openAboutDialog();
+
+#ifdef __LINUX_SESSION_MANAGEMENT__
+
+	// signalling
+	static void handleSignal(int);
+	bool installSignalHandlers();
+  private slots:
+	void signalAction(int);
+
+#endif
 };
 
 void switchTranslator(QTranslator &translator, const QString &filename);

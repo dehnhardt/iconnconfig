@@ -38,7 +38,7 @@ build_deb {
 DEFINES += QT_DEPRECATED_WARNINGS
 
 # RTMidi defines
-unix:!macx: DEFINES += __LINUX_ALSA__
+unix:!macx: DEFINES += __LINUX_ALSA__  __LINUX_SESSION_MANAGEMENT__
 macx: DEFINES += __MACOSX_CORE__
 win32: DEFINES += __WINDOWS_MM__
 

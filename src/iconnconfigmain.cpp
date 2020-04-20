@@ -509,6 +509,11 @@ void MioMain::on_actionQuit_triggered() { close(); }
 // kind of singleton reference.
 MioMain *MioMain::getMainWin() { return pMainWindow; }
 
+CentralWidget *MioMain::getCentralDeviceWidget() const {
+	return m_pCentralDeviceWidget;
+}
+
+#ifdef __LINUX_SESSION_MANAGEMENT__
 /******************************************************************************
  *************** Methods for handling ladish events ***************************
  *****************************************************************************/
@@ -551,10 +556,6 @@ bool MioMain::installSignalHandlers() {
 	return true;
 }
 
-CentralWidget *MioMain::getCentralDeviceWidget() const {
-	return m_pCentralDeviceWidget;
-}
-
 /* Slot to give response to the incoming pipe message;
 e.g.: save current file */
 void MioMain::signalAction(int fd) {
@@ -575,6 +576,7 @@ void MioMain::signalAction(int fd) {
 		break;
 	}
 }
+#endif
 
 void MioMain::openAboutDialog() {
 	AboutDialog *aboutDialog = new AboutDialog(this);
