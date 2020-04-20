@@ -161,14 +161,14 @@ enum AudioPortType {
 	APT_ANALOGUE
 };
 
-} // namespace pk
-
 enum AudioControllerType {
 	CT_NONE = 0,
 	CT_SELECTOR = 5,
 	CT_FEATUERE = 6,
 	CT_CLOCK_SOURCE = 10
 };
+
+} // namespace pk
 
 enum PanCurve {
 	NO_CURVE = 0,

@@ -33,9 +33,9 @@ class AudioControlParmWidget : public QWidget {
 	std::shared_ptr<RetSetAudioDeviceParm> m_pRetSetAudioDeviceParm = nullptr;
 	QLayout *m_pLayout = nullptr;
 	QTabWidget *m_pFeatureTabWidget = nullptr;
-	QString getFeatureName(AudioControllerType audioControllerType);
+	QString getFeatureName(pk::AudioControllerType audioControllerType);
 
-	QMap<AudioControllerType, QVector<std::shared_ptr<RetSetAudioControlParm>>
+	QMap<pk::AudioControllerType, QVector<std::shared_ptr<RetSetAudioControlParm>>
 								  *> *m_pAudioControlParms = nullptr;
 };
 

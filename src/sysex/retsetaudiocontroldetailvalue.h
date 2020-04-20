@@ -58,7 +58,7 @@ class RetSetAudioControlDetailValue : public PortSysExMessage {
   private:
 	unsigned char m_iControllerNumber = 0;
 	unsigned char m_iDetailNumber = 0;
-	AudioControllerType m_controllerType = CT_NONE;
+	pk::AudioControllerType m_controllerType = pk::AudioControllerType::CT_NONE;
 	unsigned int m_iNameLenght = 0;
 	std::string m_sClockSourceName;
 

@@ -72,7 +72,7 @@ class RetSetMixerOutputControlValue : public PortSysExMessage {
 
   private:
 	unsigned char m_iMixerOutputNumber = 0;
-	AudioControllerType m_controllerType = CT_NONE;
+	pk::AudioControllerType m_controllerType = pk::AudioControllerType::CT_NONE;
 	unsigned int m_iNameLenght = 0;
 	std::string m_sClockSourceName;
 

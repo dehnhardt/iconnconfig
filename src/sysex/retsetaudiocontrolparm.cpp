@@ -8,19 +8,19 @@ void RetSetAudioControlParm::parseAnswerData() {
 	m_iCommandVersionNumber = m_pData->at(0);
 	m_iPortId = static_cast<unsigned int>(MIDI::byteJoin7bit(m_pData, 1, 2));
 	m_iControllerNumber = m_pData->at(3);
-	m_iControllerType = static_cast<AudioControllerType>(m_pData->at(4));
+	m_iControllerType = static_cast<pk::AudioControllerType>(m_pData->at(4));
 	unsigned long offset = 0;
 	switch (m_iControllerType) {
-	case CT_SELECTOR:
+	case pk::AudioControllerType::CT_SELECTOR:
 		m_iCurrentSelectorInput = m_pData->at(5);
 		m_iNumberOfSelectorInputs = m_pData->at(6);
 		offset = 7;
 		break;
-	case CT_FEATUERE:
+	case pk::AudioControllerType::CT_FEATUERE:
 		m_iNumberOfFeatureChannels = m_pData->at(5);
 		offset = 6;
 		break;
-	case CT_CLOCK_SOURCE:
+	case pk::AudioControllerType::CT_CLOCK_SOURCE:
 		m_iCurrenClockSourceInput = m_pData->at(5);
 		m_iNumberOfClockSourceInputs = m_pData->at(6);
 		offset = 7;
@@ -49,12 +49,12 @@ void RetSetAudioControlParm::setControllerName(
 	m_sControllerName = sControllerName;
 }
 
-AudioControllerType RetSetAudioControlParm::getControllerType() const {
+pk::AudioControllerType RetSetAudioControlParm::getControllerType() const {
 	return m_iControllerType;
 }
 
 void RetSetAudioControlParm::setControllerType(
-	const AudioControllerType &iControllerType) {
+	const pk::AudioControllerType &iControllerType) {
 	m_iControllerType = iControllerType;
 }
 

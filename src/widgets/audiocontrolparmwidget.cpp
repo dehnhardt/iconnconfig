@@ -13,7 +13,7 @@ AudioControlParmWidget::AudioControlParmWidget(
 	: QWidget(parent), m_pDevice(device), m_iPortId(portId),
 	  m_pRetSetAudioDeviceParm(retSetAudioDeviceParm) {
 	m_pAudioControlParms =
-		new QMap<AudioControllerType,
+		new QMap<pk::AudioControllerType,
 				 QVector<std::shared_ptr<RetSetAudioControlParm>> *>();
 	createLayout();
 	loadAudioControlParms();
@@ -51,7 +51,7 @@ void AudioControlParmWidget::loadAudioControlParms() {
 
 void AudioControlParmWidget::addAudioControlParm(
 	std::shared_ptr<RetSetAudioControlParm> retSetAudioControlParm) {
-	AudioControllerType controllerType =
+	pk::AudioControllerType controllerType =
 		retSetAudioControlParm->getControllerType();
 	QVector<std::shared_ptr<RetSetAudioControlParm>> *v =
 		m_pAudioControlParms->value(controllerType);
@@ -63,13 +63,13 @@ void AudioControlParmWidget::addAudioControlParm(
 }
 
 void AudioControlParmWidget::addAudioControllerSections() {
-	QMap<AudioControllerType,
+	QMap<pk::AudioControllerType,
 		 QVector<std::shared_ptr<RetSetAudioControlParm>> *>::iterator i;
 	for (i = m_pAudioControlParms->begin(); i != m_pAudioControlParms->end();
 		 ++i) {
-		AudioControllerType type = i.key();
+		pk::AudioControllerType type = i.key();
 		switch (type) {
-		case CT_FEATUERE: {
+		case pk::AudioControllerType::CT_FEATUERE: {
 			AudioControlParmFeaturesWidget *featureWidget =
 				new AudioControlParmFeaturesWidget(m_pDevice, i.value());
 			this->m_pFeatureTabWidget->addTab(featureWidget,
@@ -82,15 +82,15 @@ void AudioControlParmWidget::addAudioControllerSections() {
 }
 
 QString AudioControlParmWidget::getFeatureName(
-	AudioControllerType audioControllerType) {
+	pk::AudioControllerType audioControllerType) {
 	switch (audioControllerType) {
-	case CT_FEATUERE:
+	case pk::AudioControllerType::CT_FEATUERE:
 		return tr("Features");
-	case CT_SELECTOR:
+	case pk::AudioControllerType::CT_SELECTOR:
 		return tr("Selector");
-	case CT_CLOCK_SOURCE:
+	case pk::AudioControllerType::CT_CLOCK_SOURCE:
 		return tr("ClockSource");
-	case CT_NONE:
+	case pk::AudioControllerType::CT_NONE:
 		return tr("Unknown");
 	}
 	return "";

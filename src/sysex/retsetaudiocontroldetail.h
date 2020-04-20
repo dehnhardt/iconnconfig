@@ -48,7 +48,7 @@ class RetSetAudioControlDetail : public PortSysExMessage {
   private:
 	unsigned char m_iControllerNumber = 0;
 	unsigned char m_iDetailNumber = 0;
-	AudioControllerType m_controllerType = AudioControllerType::CT_NONE;
+	pk::AudioControllerType m_controllerType = pk::AudioControllerType::CT_NONE;
 	ChannelDirection m_channelDirection = CD_NONE;
 	unsigned int m_iChannnelNumber = 0;
 	unsigned int m_iNameLenght = 0;

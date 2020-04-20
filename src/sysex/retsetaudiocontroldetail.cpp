@@ -15,17 +15,17 @@ void RetSetAudioControlDetail::parseAnswerData() {
 	m_iPortId = static_cast<unsigned int>(MIDI::byteJoin7bit(m_pData, 1, 2));
 	m_iControllerNumber = m_pData->at(3);
 	m_iDetailNumber = m_pData->at(4);
-	m_controllerType = static_cast<AudioControllerType>(m_pData->at(5));
+	m_controllerType = static_cast<pk::AudioControllerType>(m_pData->at(5));
 	offset = 6;
 	switch (m_controllerType) {
-	case CT_SELECTOR:
+	case pk::AudioControllerType::CT_SELECTOR:
 		m_iNameLenght = m_pData->at(offset);
 		offset++;
 		m_sSelectInputName = std::string(
 			m_pData->begin() + static_cast<long>(offset),
 			m_pData->begin() + static_cast<long>(offset) + m_iNameLenght);
 		break;
-	case CT_FEATUERE:
+	case pk::AudioControllerType::CT_FEATUERE:
 		m_channelDirection = static_cast<ChannelDirection>(m_pData->at(offset));
 		offset++;
 		m_iChannnelNumber = m_pData->at(offset);
@@ -41,7 +41,7 @@ void RetSetAudioControlDetail::parseAnswerData() {
 			m_pData->begin() + static_cast<long>(offset),
 			m_pData->begin() + static_cast<long>(offset) + m_iNameLenght);
 		break;
-	case CT_CLOCK_SOURCE:
+	case pk::AudioControllerType::CT_CLOCK_SOURCE:
 		m_iNameLenght = m_pData->at(offset);
 		offset++;
 		m_sClockSourceName = std::string(

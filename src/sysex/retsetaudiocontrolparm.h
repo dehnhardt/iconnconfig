@@ -20,8 +20,8 @@ class RetSetAudioControlParm : public PortSysExMessage {
 	std::string getControllerName() const;
 	void setControllerName(const std::string &sControllerName);
 
-	AudioControllerType getControllerType() const;
-	void setControllerType(const AudioControllerType &iControllerType);
+	pk::AudioControllerType getControllerType() const;
+	void setControllerType(const pk::AudioControllerType &iControllerType);
 
 	unsigned int getControllerNumber() const;
 	void setControllerNumber(unsigned int iControllerNumber);
@@ -46,7 +46,7 @@ class RetSetAudioControlParm : public PortSysExMessage {
 
   private: // members
 	unsigned int m_iControllerNumber = 0;
-	AudioControllerType m_iControllerType = CT_NONE;
+	pk::AudioControllerType m_iControllerType = pk::AudioControllerType::CT_NONE;
 	unsigned int m_iControllerNameLength = 0;
 	std::string m_sControllerName;
 
