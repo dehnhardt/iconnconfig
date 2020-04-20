@@ -34,12 +34,12 @@ void AudioPortParmWidget::setData() {
 	ui->m_pEditPortNumber->setText(
 		QString::number(m_pRetSetAudioPortParm->getDeviceSpecficPortNumber()));
 	switch (m_pRetSetAudioPortParm->getAudioPortType()) {
-	case APT_ANALOGUE:
+	case pk::AudioPortType::APT_ANALOGUE:
 		ui->m_pGbUSBDevice->setVisible(false);
 		ui->m_pLblJackSpecificDeviceNumber->setVisible(false);
 		ui->m_pEditJackSpecificDeviceNumber->setVisible(false);
 		break;
-	case APT_USB_DEVICE:
+	case pk::AudioPortType::APT_USB_DEVICE:
 		ui->m_pLblJackSpecificDeviceNumber->setVisible(false);
 		ui->m_pEditJackSpecificDeviceNumber->setVisible(false);
 		ui->m_pGbUSBDevice->setVisible(true);
@@ -78,21 +78,21 @@ void AudioPortParmWidget::setData() {
 		ui->m_pChbIOSEnabled->setChecked(
 			m_pRetSetAudioPortParm->getPortIOSEnabled());
 		break;
-	case APT_USB_HOST:
+	case pk::AudioPortType::APT_USB_HOST:
 		ui->m_pLblJackSpecificDeviceNumber->setVisible(true);
 		ui->m_pEditJackSpecificDeviceNumber->setVisible(true);
 		ui->m_pEditJackSpecificDeviceNumber->setText(QString::number(
 			m_pRetSetAudioPortParm->getJackSpecificDeviceNumber()));
 		ui->m_pGbUSBDevice->setVisible(false);
 		break;
-	case APT_ETHERNET:
+	case pk::AudioPortType::APT_ETHERNET:
 		ui->m_pLblJackSpecificDeviceNumber->setVisible(true);
 		ui->m_pEditJackSpecificDeviceNumber->setVisible(true);
 		ui->m_pEditJackSpecificDeviceNumber->setText(QString::number(
 			m_pRetSetAudioPortParm->getJackSpecificDeviceNumber()));
 		ui->m_pGbUSBDevice->setVisible(false);
 		break;
-	case APT_NONE:
+	case pk::AudioPortType::APT_NONE:
 		ui->m_pGbUSBDevice->setVisible(false);
 		break;
 	}

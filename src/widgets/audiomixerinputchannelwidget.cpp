@@ -178,16 +178,16 @@ void AudioMixerInputChannelWidget::createInputMenu() {
 	QAction *qANone = m_pConnectionMenu->addAction(tr(" - none - "));
 	connect(qANone, &QAction::triggered, [=]() {
 		std::cout << "Audio port selected" << std::endl;
-		changeInput(0, "", 0, "", AudioPortType::APT_NONE);
+		changeInput(0, "", 0, "", pk::AudioPortType::APT_NONE);
 	});
 	AudioPortStructure::iterator itPortType;
 	for (itPortType = aps->begin(); itPortType != aps->end(); ++itPortType) {
 		int section = itPortType->first;
-		AudioPortType audioPortType = static_cast<AudioPortType>(section);
+		pk::AudioPortType audioPortType = static_cast<pk::AudioPortType>(section);
 		std::string portTypeName =
 			PortDisplayHelper::getAudioPortTypeName(audioPortType);
 		QIcon portIcon =
-			PortDisplayHelper::getAudioPortIcon(AudioPortType(section));
+			PortDisplayHelper::getAudioPortIcon(pk::AudioPortType(section));
 		QMenu *audioPortTypeMenu =
 			m_pConnectionMenu->addMenu(portIcon, tr(portTypeName.c_str()));
 		audioPortTypeMenu->setFont(menuFont);
@@ -216,7 +216,7 @@ void AudioMixerInputChannelWidget::createInputMenu() {
 					std::cout << "Audio port selected" << std::endl;
 					changeInput(portId, app->getPortName(), channelId,
 								channelName->getChannelName(),
-								AudioPortType(section));
+								pk::AudioPortType(section));
 				});
 			}
 		}
@@ -226,7 +226,7 @@ void AudioMixerInputChannelWidget::createInputMenu() {
 void AudioMixerInputChannelWidget::setInput(
 	unsigned int audioSourcePortId, unsigned int audioSourceChannelNumber) {
 	if (audioSourcePortId == 0 || audioSourceChannelNumber == 0) {
-		setInputName(0, "", 0, "", AudioPortType::APT_NONE);
+		setInputName(0, "", 0, "", pk::AudioPortType::APT_NONE);
 	}
 	m_iSourcePortId = audioSourcePortId;
 	m_iSourceChannelId = audioSourceChannelNumber;
@@ -249,7 +249,7 @@ void AudioMixerInputChannelWidget::setInput(
 				setInputName(audioSourcePortId, app->getPortName(),
 							 audioSourceChannelNumber,
 							 channelName->getChannelName(),
-							 static_cast<AudioPortType>(section));
+							 static_cast<pk::AudioPortType>(section));
 				return;
 			}
 		}
@@ -259,7 +259,7 @@ void AudioMixerInputChannelWidget::setInput(
 void AudioMixerInputChannelWidget::setInputName(
 	unsigned int audioSourcePortId, std::string audioSourcePortName,
 	unsigned int audioSourceChannelNumber, std::string audioSourceChannelName,
-	AudioPortType audioPortType) {
+	pk::AudioPortType audioPortType) {
 	if (audioSourcePortId == 0 || audioSourceChannelNumber == 0) {
 		m_pBtnSelectConnection->setToolTip(tr("none"));
 		m_pBtnSelectConnection->setText(tr("none"));
@@ -280,7 +280,7 @@ void AudioMixerInputChannelWidget::setInputName(
 void AudioMixerInputChannelWidget::changeInput(
 	unsigned int audioSourcePortId, std::string audioSourcePortName,
 	unsigned int audioSourceChannelNumber, std::string audioSourceChannelName,
-	AudioPortType audioPortType) {
+	pk::AudioPortType audioPortType) {
 
 	m_pMixerInputParm->setAudioSourcePortId(audioSourcePortId);
 	m_pMixerInputParm->setAudioSourceChannelNumber(audioSourceChannelNumber);

@@ -54,39 +54,39 @@ class PortDisplayHelper : public QObject {
 		return icon;
 	}
 
-	static std::string getAudioPortTypeName(AudioPortType audioPortType) {
+	static std::string getAudioPortTypeName(pk::AudioPortType audioPortType) {
 		std::string midiPortTypeName;
 		switch (audioPortType) {
-		case APT_NONE:
+		case pk::AudioPortType::APT_NONE:
 			break;
-		case APT_ANALOGUE:
+		case pk::AudioPortType::APT_ANALOGUE:
 			midiPortTypeName = "Analog-Port";
 			break;
-		case APT_USB_DEVICE:
+		case pk::AudioPortType::APT_USB_DEVICE:
 			midiPortTypeName = "USB-Device-Port";
 			break;
-		case APT_USB_HOST:
+		case pk::AudioPortType::APT_USB_HOST:
 			midiPortTypeName = "USB-Host-Port";
 			break;
-		case APT_ETHERNET:
+		case pk::AudioPortType::APT_ETHERNET:
 			midiPortTypeName = "Ethernet-Port";
 			break;
 		}
 		return midiPortTypeName;
 	}
-	static QIcon getAudioPortIcon(AudioPortType audioPortType) {
+	static QIcon getAudioPortIcon(pk::AudioPortType audioPortType) {
 		QIcon icon;
 		switch (audioPortType) {
-		case APT_ANALOGUE:
+		case pk::AudioPortType::APT_ANALOGUE:
 			icon = QIcon(":/pixmaps/xlrjack");
 			break;
-		case APT_ETHERNET:
+		case pk::AudioPortType::APT_ETHERNET:
 			icon = QIcon(":/pixmaps/ethernetjack");
 			break;
-		case APT_USB_DEVICE:
+		case pk::AudioPortType::APT_USB_DEVICE:
 			icon = QIcon(":/pixmaps/usbjack");
 			break;
-		case APT_USB_HOST:
+		case pk::AudioPortType::APT_USB_HOST:
 			icon = QIcon(":/pixmaps/usbhostjack");
 			break;
 		default:

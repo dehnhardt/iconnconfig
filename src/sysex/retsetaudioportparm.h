@@ -17,7 +17,7 @@ class RetSetAudioPortParm : public PortSysExMessage {
   public:
 	RetSetAudioPortParm(Device *device);
 	RetSetAudioPortParm(Command cmd, BYTE_VECTOR *message, Device *device)
-	    : PortSysExMessage(cmd, message, device) {}
+		: PortSysExMessage(cmd, message, device) {}
 
 	~RetSetAudioPortParm() override;
 
@@ -29,7 +29,7 @@ class RetSetAudioPortParm : public PortSysExMessage {
 	// SysExMessage interface
 	std::vector<unsigned char> *getMessageData() override;
 
-	std::string getAudioPortTypeName(AudioPortType audioPortType);
+	std::string getAudioPortTypeName(pk::AudioPortType audioPortType);
 	std::string getAudioPortTypeName();
 
 	bool getPortNameWritable();
@@ -38,7 +38,7 @@ class RetSetAudioPortParm : public PortSysExMessage {
 	std::string getCurrentAudioConfigurationString();
 
 	// Getter & Setter
-	AudioPortType getAudioPortType() const;
+	pk::AudioPortType getAudioPortType() const;
 
 	std::string getPortName() const;
 	void setPortName(const std::string &sPortName);
@@ -68,7 +68,7 @@ class RetSetAudioPortParm : public PortSysExMessage {
 	int getNumberOfPortConfigurationBlocks() const;
 
   private:
-	AudioPortType m_audioPortType = APT_NONE;
+	pk::AudioPortType m_audioPortType = pk::AudioPortType::APT_NONE;
 	unsigned int m_iInputChannels = 0;
 	unsigned int m_iOutputChannels = 0;
 	int m_iNumberOfPortConfigurationBlocks = 0;

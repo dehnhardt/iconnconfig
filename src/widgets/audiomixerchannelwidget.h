@@ -49,7 +49,7 @@ class AudioMixerChannelWidget : public QFrame {
 	Device *m_pDevice = nullptr;
 	bool m_bChannelInit = false;
 	AudioPortId m_iPortId = 0;
-	AudioPortType m_iPortType = AudioPortType::APT_NONE;
+	pk::AudioPortType m_iPortType = pk::AudioPortType::APT_NONE;
 	AudioChannelId m_iMixerChannelId = 0;
 	bool m_bIsMaster = false;
 	bool m_bIsSlave = false;

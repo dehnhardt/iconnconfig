@@ -47,7 +47,7 @@ enum Command {
 					device */
 	/* MIDI Commands */
 	GET_MIDI_INFO =
-	    0x20,           /*!< Queueries information about the midi parameters */
+		0x20,           /*!< Queueries information about the midi parameters */
 	RET_SET_MIDI_INFO,  /*!< Returns information about the midi parameters */
 	GET_MIDI_PORT_INFO, /*!< Queuery the information about a specific MIDI
 						Port */
@@ -80,7 +80,7 @@ enum Command {
 								  channel */
 
 	GET_AUDIO_GLOBAL_PARM =
-	    0x40, /*!< query global params for the audio section of an device */
+		0x40, /*!< query global params for the audio section of an device */
 	RET_SET_AUDIO_GLOBAL_PARM, /*!< retieve or set global params for the audio
 								 section of an device */
 	GET_AUDIO_PORT_PARM,       /*!< query the parameters for an audio port */
@@ -152,7 +152,6 @@ enum Command {
 
 namespace pk {
 enum PortDirection { INPUT = 1, OUTPUT, BOTH };
-}
 
 enum AudioPortType {
 	APT_NONE = 0,
@@ -161,6 +160,8 @@ enum AudioPortType {
 	APT_ETHERNET,
 	APT_ANALOGUE
 };
+
+} // namespace pk
 
 enum AudioControllerType {
 	CT_NONE = 0,

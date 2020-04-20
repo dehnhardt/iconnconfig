@@ -53,7 +53,7 @@ class AudioMixerOutputChannelWidget : public AudioMixerChannelWidget {
 					   std::string audioSourcePortName,
 					   unsigned int audioSourceChannelNumber,
 					   std::string audioSourceChannelName,
-					   AudioPortType audioPortType);
+					   pk::AudioPortType audioPortType);
 
 	void queryOutputValues();
 	void setOutputValues(std::shared_ptr<RetSetMixerOutputControlValue>

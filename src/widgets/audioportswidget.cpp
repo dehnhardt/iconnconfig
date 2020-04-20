@@ -57,7 +57,7 @@ void AudioPortsWidget::getAudioPortSections() {
 	for (it = m_pAudioPortParms->begin(); it != m_pAudioPortParms->end();
 		 ++it) {
 		int section = it->first;
-		AudioPortType audioPortType = static_cast<AudioPortType>(section);
+		pk::AudioPortType audioPortType = static_cast<pk::AudioPortType>(section);
 		std::string portTypeName =
 			PortDisplayHelper::getAudioPortTypeName(audioPortType);
 		m_pInfoSections->push_back(

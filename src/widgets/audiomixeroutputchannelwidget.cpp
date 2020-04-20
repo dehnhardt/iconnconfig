@@ -216,12 +216,12 @@ void AudioMixerOutputChannelWidget::createOutputMenu() {
 	AudioPortStructure::iterator itPortType;
 	for (itPortType = aps->begin(); itPortType != aps->end(); ++itPortType) {
 		int section = itPortType->first;
-		AudioPortType audioPortType = static_cast<AudioPortType>(section);
+		pk::AudioPortType audioPortType = static_cast<pk::AudioPortType>(section);
 
 		std::string portTypeName =
 			PortDisplayHelper::getAudioPortTypeName(audioPortType);
 		QIcon portIcon =
-			PortDisplayHelper::getAudioPortIcon(AudioPortType(section));
+			PortDisplayHelper::getAudioPortIcon(pk::AudioPortType(section));
 		std::vector<std::shared_ptr<RetSetAudioPortParm>>::iterator itPort;
 		std::vector<std::shared_ptr<RetSetAudioPortParm>> *ports =
 			itPortType->second;
@@ -256,9 +256,9 @@ void AudioMixerOutputChannelWidget::createOutputMenu() {
 void AudioMixerOutputChannelWidget::setOutput(
 	std::vector<unsigned int> audioSinkChannelNumbers) {
 	if (audioSinkChannelNumbers.size() == 0) {
-		setOutputName(0, "none", 0, "", AudioPortType::APT_NONE);
+		setOutputName(0, "none", 0, "", pk::AudioPortType::APT_NONE);
 	} else if (audioSinkChannelNumbers.size() > 1) {
-		setOutputName(0, "multiple", 0, "", AudioPortType::APT_NONE);
+		setOutputName(0, "multiple", 0, "", pk::AudioPortType::APT_NONE);
 	}
 	for (QAction *action : m_pConnectionMenu->actions()) {
 		bool found = false;
@@ -268,7 +268,7 @@ void AudioMixerOutputChannelWidget::setOutput(
 				if (audioSinkChannelNumbers.size() == 1) {
 					if (channel == 0) {
 						setOutputName(0, "none", 0, "",
-									  AudioPortType::APT_NONE);
+									  pk::AudioPortType::APT_NONE);
 					} else {
 						AudioChannelNames channelNames =
 							m_pDevice->getAudioChannelNames(
@@ -289,7 +289,7 @@ void AudioMixerOutputChannelWidget::setOutput(
 void AudioMixerOutputChannelWidget::setOutputName(
 	unsigned int audioSinkPortId, std::string audioSinkPortName,
 	unsigned int audioSinkChannelNumber, std::string audioSinkChannelName,
-	AudioPortType audioPortType) {
+	pk::AudioPortType audioPortType) {
 	if (audioSinkPortId == 0 || audioSinkChannelNumber == 0) {
 		if (audioSinkPortName == "none") {
 			m_pBtnSelectConnection->setToolTip(tr("none"));

@@ -25,7 +25,7 @@ class RetSetAudioDeviceParm : public PortSysExMessage {
 	UsbDeviceHost getUsbDeviceHost() const;
 
   private:
-	AudioPortType m_AudioPortType = AudioPortType::APT_NONE;
+	pk::AudioPortType m_AudioPortType = pk::AudioPortType::APT_NONE;
 	unsigned int m_iMaxControllers = 0;
 
 	// USB Device & Host Parameters

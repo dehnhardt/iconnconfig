@@ -17,7 +17,7 @@ RetSetAudioPortParm::~RetSetAudioPortParm() {
 void RetSetAudioPortParm::parseAnswerData() {
 	m_iCommandVersionNumber = m_pData->at(0);
 	m_iPortId = static_cast<unsigned int>(MIDI::byteJoin7bit(m_pData, 1, 2));
-	m_audioPortType = static_cast<AudioPortType>(m_pData->at(3));
+	m_audioPortType = static_cast<pk::AudioPortType>(m_pData->at(3));
 	m_iOutputChannels = m_pData->at(4);
 	m_iInputChannels = m_pData->at(5);
 	m_iNumberOfPortConfigurationBlocks = m_pData->at(6);
@@ -54,15 +54,15 @@ void RetSetAudioPortParm::parseAnswerData() {
 	offset += 1;
 	unsigned char c;
 	switch (m_audioPortType) {
-	case APT_USB_DEVICE:
+	case pk::AudioPortType::APT_USB_DEVICE:
 		c = m_pData->at(offset);
 		m_bPortSupportsIOS = (c & 1) != 0;
 		m_bPortSupportsPC = (c & 2) != 0;
 		m_bPortIOSEnabled = (c & 4) != 0;
 		m_bPortPCEnabled = (c & 8) != 0;
 		break;
-	case APT_USB_HOST:
-	case APT_ETHERNET:
+	case pk::AudioPortType::APT_USB_HOST:
+	case pk::AudioPortType::APT_ETHERNET:
 		c = m_pData->at(offset);
 		m_iJackSpecificDeviceNumber = c;
 		break;
@@ -89,7 +89,7 @@ std::vector<unsigned char> *RetSetAudioPortParm::getMessageData() {
 	data->push_back(static_cast<unsigned char>(m_iDeviceSpecficPortNumer));
 	unsigned char c = 0;
 	switch (m_audioPortType) {
-	case APT_USB_DEVICE:
+	case pk::AudioPortType::APT_USB_DEVICE:
 		if (m_bPortSupportsIOS)
 			c += 1;
 		if (m_bPortSupportsPC)
@@ -100,8 +100,8 @@ std::vector<unsigned char> *RetSetAudioPortParm::getMessageData() {
 			c += 8;
 		data->push_back(c);
 		break;
-	case APT_USB_HOST:
-	case APT_ETHERNET:
+	case pk::AudioPortType::APT_USB_HOST:
+	case pk::AudioPortType::APT_ETHERNET:
 		data->push_back(static_cast<unsigned char>(m_iDeviceSpecficPortNumer));
 		break;
 	default:
@@ -112,17 +112,17 @@ std::vector<unsigned char> *RetSetAudioPortParm::getMessageData() {
 }
 
 std::string
-RetSetAudioPortParm::getAudioPortTypeName(AudioPortType audioPortType) {
+RetSetAudioPortParm::getAudioPortTypeName(pk::AudioPortType audioPortType) {
 	switch (audioPortType) {
-	case APT_NONE:
+	case pk::AudioPortType::APT_NONE:
 		return "none";
-	case APT_USB_DEVICE:
+	case pk::AudioPortType::APT_USB_DEVICE:
 		return "USB Device";
-	case APT_USB_HOST:
+	case pk::AudioPortType::APT_USB_HOST:
 		return "USB Host";
-	case APT_ETHERNET:
+	case pk::AudioPortType::APT_ETHERNET:
 		return "Network Device";
-	case APT_ANALOGUE:
+	case pk::AudioPortType::APT_ANALOGUE:
 		return "Analogue";
 	}
 	return "none";
@@ -149,7 +149,7 @@ std::string RetSetAudioPortParm::getCurrentAudioConfigurationString() {
 	return m_pDevice->getAudioGlobalParm()->getAudioConfigurationString();
 }
 
-AudioPortType RetSetAudioPortParm::getAudioPortType() const {
+pk::AudioPortType RetSetAudioPortParm::getAudioPortType() const {
 	return m_audioPortType;
 }
 
