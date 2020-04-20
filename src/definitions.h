@@ -150,6 +150,10 @@ enum Command {
 							 */
 };
 
+namespace pk {
+enum PortDirection { INPUT = 1, OUTPUT, BOTH };
+}
+
 enum AudioPortType {
 	APT_NONE = 0,
 	APT_USB_DEVICE = 2,

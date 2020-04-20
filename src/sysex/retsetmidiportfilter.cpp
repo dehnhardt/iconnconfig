@@ -20,7 +20,7 @@ void RetSetMidiPortFilter::parseAnswerData() {
 	m_iCommandVersionNumber = m_pData->at(0);
 	m_iPortId = MIDI::byteJoin7bit(m_pData, 1, 2);
 	m_pMidiPortFilter->portFilterDirection =
-		m_pData->at(3) == 1 ? PortDirection::INPUT : PortDirection::OUTPUT;
+		m_pData->at(3) == 1 ? pk::PortDirection::INPUT : pk::PortDirection::OUTPUT;
 	m_pMidiPortFilter->numberOfControllerFilters = m_pData->at(4);
 	m_pMidiPortFilter->midiControllerFilter = new MIDIControllerFilter
 		*[m_pMidiPortFilter->numberOfControllerFilters];

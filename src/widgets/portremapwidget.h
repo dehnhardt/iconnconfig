@@ -21,7 +21,7 @@ class PortRemapWidget : public QWidget {
   signals:
 
   public slots:
-	void midiPortRemapUpdated(PortDirection direction);
+	void midiPortRemapUpdated(pk::PortDirection direction);
   protected slots:
 	void updateInRemap();
 	void updateOutRemap();

@@ -10,6 +10,7 @@
 // Platform-dependent sleep routines.
 #if defined(__WINDOWS_MM__)
 #include <windows.h>
+#define uint16_t u_int16_t
 #define SLEEP(milliseconds) Sleep((DWORD)milliseconds)
 #else // Unix variants
 #include <unistd.h>
@@ -45,20 +46,20 @@ class MIDI {
 	static BYTE_VECTOR *byteSplit8bit(long val);
 	static long
 	byteJoin7bit(std::shared_ptr<std::vector<unsigned char>> message,
-	             unsigned long start, unsigned long length);
+				 unsigned long start, unsigned long length);
 	static long
 	byteJoin7bit(std::shared_ptr<std::vector<unsigned char>> message);
 	static long byteJoin7bit(BYTE_VECTOR *message);
 	static long byteJoin7bit(BYTE_VECTOR *message, unsigned long start,
-	                         unsigned long end);
+							 unsigned long end);
 	static long
 	byteJoin8bit(std::shared_ptr<std::vector<unsigned char>> message,
-	             unsigned long start, unsigned long length);
+				 unsigned long start, unsigned long length);
 	static long
 	byteJoin8bit(std::shared_ptr<std::vector<unsigned char>> message);
 	static long byteJoin8bit(BYTE_VECTOR *message);
 	static long byteJoin8bit(BYTE_VECTOR *message, unsigned long start,
-	                         unsigned long end);
+							 unsigned long end);
 
 	static std::string decodeIp(BYTE_VECTOR *data, unsigned long offset);
 	static BYTE_VECTOR *encodeIpAddress(std::string ipAddress);
@@ -86,30 +87,30 @@ class MIDI {
 	// static device specific methods
 
 	static int bytesToSignedInt(std::shared_ptr<BYTE_VECTOR> v,
-	                            unsigned long offset, unsigned long bytes) {
+								unsigned long offset, unsigned long bytes) {
 		return bytesToSignedInt(v.get(), offset, bytes);
 	}
 
 	static int bytesToSignedInt(BYTE_VECTOR *v, unsigned long offset,
-	                            unsigned long bytes) {
+								unsigned long bytes) {
 		u_int16_t minValueU = static_cast<u_int16_t>(
-		    MIDI::byteJoin7bit(v, offset, bytes) & 0xFFFF);
+			MIDI::byteJoin7bit(v, offset, bytes) & 0xFFFF);
 		return MIDI::calc2sComplement(minValueU);
 	}
 
 	static RtMidiIn *createMidiIn(
-	    const std::string clientName = std::string("MioConfig Input Client"));
+		const std::string clientName = std::string("MioConfig Input Client"));
 	static RtMidiOut *createMidiOut(
-	    const std::string clientName = std::string("MioConfig Output Client"));
+		const std::string clientName = std::string("MioConfig Output Client"));
 	static std::string
 	decodeIp(std::shared_ptr<std::vector<unsigned char>> data,
-	         unsigned long offset);
+			 unsigned long offset);
 };
 
 class MIDISysexValue {
   public:
 	MIDISysexValue(long val, unsigned long length)
-	    : m_iLongValue(val), m_iByteLength(length) {}
+		: m_iLongValue(val), m_iByteLength(length) {}
 	MIDISysexValue(long val) : m_iLongValue(val) {}
 	// TODO setting the byte value does not set the correct long value
 	MIDISysexValue(BYTE_VECTOR *val) {
@@ -124,7 +125,7 @@ class MIDISysexValue {
 	BYTE_VECTOR *getByteValue() {
 		if (m_pByteValue == nullptr)
 			m_pByteValue = MIDI::byteSplit7bit(
-			    static_cast<unsigned long>(m_iLongValue), m_iByteLength);
+				static_cast<unsigned long>(m_iLongValue), m_iByteLength);
 		return m_pByteValue;
 	}
 

@@ -23,12 +23,12 @@ PortRemapWidget::~PortRemapWidget() {
 	m_pUpdateTimerOutRemap->deleteLater();
 }
 
-void PortRemapWidget::midiPortRemapUpdated(PortDirection direction) {
+void PortRemapWidget::midiPortRemapUpdated(pk::PortDirection direction) {
 	switch (direction) {
-	case PortDirection::INPUT:
+	case pk::PortDirection::INPUT:
 		m_pUpdateTimerInRemap->start(1000);
 		break;
-	case PortDirection::OUTPUT:
+	case pk::PortDirection::OUTPUT:
 		m_pUpdateTimerOutRemap->start(1000);
 		break;
 	default:
@@ -77,9 +77,9 @@ void PortRemapWidget::createWidgets() {
 	m_pRemapDirectionTabWidget = new QTabWidget(this);
 	m_pRemapDirectionTabWidget->setTabPosition(QTabWidget::West);
 	m_pInputRemapWidget =
-		new PortRemapSettingsWidget(PortDirection::INPUT, this);
+		new PortRemapSettingsWidget(pk::PortDirection::INPUT, this);
 	m_pOutputRemapWidget =
-		new PortRemapSettingsWidget(PortDirection::OUTPUT, this);
+		new PortRemapSettingsWidget(pk::PortDirection::OUTPUT, this);
 	m_pRemapDirectionTabWidget->addTab(m_pInputRemapWidget, tr("Input Remap"));
 	m_pRemapDirectionTabWidget->addTab(m_pOutputRemapWidget,
 									   tr("Output Remap"));
@@ -91,12 +91,12 @@ void PortRemapWidget::retrieveData() {
 		std::make_unique<GetMidiPortRemap>(device);
 	getMidiPortRemap->setDebug(false);
 	getMidiPortRemap->setPortNumer(static_cast<unsigned int>(portNumber));
-	getMidiPortRemap->setPortRemapDirection(PortDirection::INPUT);
+	getMidiPortRemap->setPortRemapDirection(pk::PortDirection::INPUT);
 	getMidiPortRemap->setDebug(false);
 	getMidiPortRemap->setCmdflags(0x40);
 	m_pMidiPortRemapIn = std::dynamic_pointer_cast<RetSetMidiPortRemap>(
 		getMidiPortRemap->querySmart());
-	getMidiPortRemap->setPortRemapDirection(PortDirection::OUTPUT);
+	getMidiPortRemap->setPortRemapDirection(pk::PortDirection::OUTPUT);
 	m_pMidiPortRemapOut = std::dynamic_pointer_cast<RetSetMidiPortRemap>(
 		getMidiPortRemap->querySmart());
 }

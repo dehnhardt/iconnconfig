@@ -12,8 +12,6 @@
 typedef std::vector<int> AcceptedAnswers;
 typedef std::map<int, AcceptedAnswers> CommandAcceptedAnswers;
 
-enum PortDirection { INPUT = 1, OUTPUT, BOTH };
-
 /**
  * @brief The SysExMessage class
  */

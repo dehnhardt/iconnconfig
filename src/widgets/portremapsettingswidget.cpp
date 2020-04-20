@@ -5,7 +5,7 @@
 
 #include <QLabel>
 
-PortRemapSettingsWidget::PortRemapSettingsWidget(PortDirection direction,
+PortRemapSettingsWidget::PortRemapSettingsWidget(pk::PortDirection direction,
 												 QWidget *parent)
 	: QWidget(parent), ui(new Ui::PortRemapSettingsWidget),
 	  portRemapDirection(direction) {

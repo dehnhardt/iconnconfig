@@ -21,7 +21,7 @@ class PortFilterWidget : public QWidget {
   signals:
 
   public slots:
-	void midiPortFilterUpdated(PortDirection direction);
+	void midiPortFilterUpdated(pk::PortDirection direction);
   protected slots:
 	void updateInFilter();
 	void updateOutFilter();

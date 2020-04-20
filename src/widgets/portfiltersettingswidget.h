@@ -16,7 +16,7 @@ class PortFilterSettingsWidget : public QWidget {
 	Q_OBJECT
 
   public:
-	explicit PortFilterSettingsWidget(PortDirection portFilterDirection,
+	explicit PortFilterSettingsWidget(pk::PortDirection portFilterDirection,
 									  QWidget *parent = nullptr);
 	~PortFilterSettingsWidget();
 
@@ -31,7 +31,7 @@ class PortFilterSettingsWidget : public QWidget {
 	MIDIPortFilter *getMidiPortFilter();
 
   signals:
-	void filterDataChanged(PortDirection portFilterDirection);
+	void filterDataChanged(pk::PortDirection portFilterDirection);
 
   private: // Methods
 	QTableWidgetItem *getCheckStateItem(bool checked);
@@ -40,7 +40,7 @@ class PortFilterSettingsWidget : public QWidget {
   private: // Members
 	Ui::PortFilterSettingsWidget *ui;
 	MIDISystemMessagesFilter *m_pMidiSystemMessagesFilter = nullptr;
-	PortDirection portFilterDirection;
+	pk::PortDirection portFilterDirection;
 
   private slots:
 	void checkboxUpdated(int state, QCheckBox *checkBox);

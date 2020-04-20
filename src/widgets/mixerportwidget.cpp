@@ -64,7 +64,7 @@ void MixerPortWidget::getVolumes() {
 	std::unique_ptr<GetMixerMeterValue> mmv =
 		std::make_unique<GetMixerMeterValue>(m_pDevice);
 	mmv->setPortId(m_iPortId);
-	mmv->setPortDirections(PortDirection::BOTH);
+	mmv->setPortDirections(pk::PortDirection::BOTH);
 	std::shared_ptr<RetMixerMeterValue> retMixerMeterValue =
 		std::dynamic_pointer_cast<RetMixerMeterValue>(mmv->querySmart());
 	mmv->setPortId(m_iPortId);
@@ -73,7 +73,7 @@ void MixerPortWidget::getVolumes() {
 void MixerPortWidget::timerElapsed() {
 	for (unsigned int i = 0; i < m_INumberOfOutputChannels; i++) {
 		AudioChannelId outputChannelId = m_iOutputOffset + i;
-		m_pGetMixerMeterValue->setPortDirections(PortDirection::BOTH);
+		m_pGetMixerMeterValue->setPortDirections(pk::PortDirection::BOTH);
 		m_pGetMixerMeterValue->setOutputNumber(outputChannelId);
 		std::shared_ptr<RetMixerMeterValue> rapmv =
 			std::dynamic_pointer_cast<RetMixerMeterValue>(

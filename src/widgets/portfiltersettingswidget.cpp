@@ -4,7 +4,7 @@
 
 #include <QLabel>
 
-PortFilterSettingsWidget::PortFilterSettingsWidget(PortDirection direction,
+PortFilterSettingsWidget::PortFilterSettingsWidget(pk::PortDirection direction,
 												   QWidget *parent)
 	: QWidget(parent), ui(new Ui::PortFilterSettingsWidget),
 	  portFilterDirection(direction) {

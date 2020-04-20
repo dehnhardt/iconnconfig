@@ -11,7 +11,7 @@ class GetMixerMeterValue : public PortSysExMessage {
 	void createAnswer(Command m_Command, std::vector<unsigned char> *message,
 	                  Device *m_pDevice);
 
-	void setPortDirections(PortDirection direction) {
+	void setPortDirections(pk::PortDirection direction) {
 		m_portDirection = direction;
 	}
 
@@ -24,7 +24,7 @@ class GetMixerMeterValue : public PortSysExMessage {
 
   private:
 	unsigned int m_iMixerOutoutNumber = 2;
-	PortDirection m_portDirection = BOTH;
+	pk::PortDirection m_portDirection = pk::PortDirection::BOTH;
 };
 
 #endif // GETMIXERMETERVALUE_H

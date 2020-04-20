@@ -30,7 +30,7 @@ typedef struct {
 
 typedef struct {
 	unsigned int numberOfControllerFilters;
-	PortDirection portFilterDirection;
+	pk::PortDirection portFilterDirection;
 	MIDISystemMessagesFilter *midiSystemMessagesFilter;
 	MIDIChannelMessagesFilter *midiChannelMessagesFilter[MIDI_CHANNELS];
 	MIDIControllerFilter **midiControllerFilter;

@@ -21,7 +21,7 @@ class GetMidiPortFilter : public SysExMessage {
 	void setPortNumer(unsigned int portNumber) {
 		this->m_iPortNumber = portNumber;
 	}
-	void setPortFilterDirection(PortDirection portFilterDirection) {
+	void setPortFilterDirection(pk::PortDirection portFilterDirection) {
 		this->m_iPortFilterDirection = portFilterDirection;
 	}
 
@@ -30,7 +30,7 @@ class GetMidiPortFilter : public SysExMessage {
 
   private:
 	unsigned int m_iPortNumber;
-	PortDirection m_iPortFilterDirection;
+	pk::PortDirection m_iPortFilterDirection;
 };
 
 #endif // GETMIDIPORTFILTER_H

@@ -11,7 +11,7 @@ class GetAudioPortMeterValue : public PortSysExMessage {
 	void createAnswer(Command m_Command, std::vector<unsigned char> *message,
 					  Device *m_pDevice);
 
-	void setPortDirections(PortDirection direction) {
+	void setPortDirections(pk::PortDirection direction) {
 		m_portDirection = direction;
 	}
 
@@ -19,7 +19,7 @@ class GetAudioPortMeterValue : public PortSysExMessage {
 	std::vector<unsigned char> *getMessageData();
 
   private:
-	PortDirection m_portDirection = BOTH;
+	pk::PortDirection m_portDirection = pk::PortDirection::BOTH;
 };
 
 #endif // GETAUDIOPORTMETERVALUE_H

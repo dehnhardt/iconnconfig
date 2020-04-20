@@ -21,7 +21,7 @@ typedef struct {
 
 typedef struct {
 	unsigned int numberOfControllerRemaps;
-	PortDirection portRemapDirection;
+	pk::PortDirection portRemapDirection;
 	MIDIChannelMessagesRemap *midiChannelMessagesRemap[MIDI_CHANNELS];
 	MIDIControllerRemap **midiControllerRemap;
 } MIDIPortRemap;
