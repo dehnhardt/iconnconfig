@@ -3,7 +3,10 @@
 
 #include "RtMidi.h"
 #include "device.h"
+
+#ifdef __LINUX__
 #include "libusb.h"
+#endif
 
 #include <QEvent>
 #include <QWidget>
@@ -19,7 +22,9 @@ public:
 
 private:
 
+#ifdef __LINUX__
 	libusb_device **devs;
+#endif
 
 	// Methods
 	bool isIconnectivityDevice(BYTE_VECTOR *message);
@@ -29,12 +34,13 @@ private:
 	void createMidiOut();
 	void setupMidiPorts();
 	unsigned long detectDevices();
-	double getMessage(BYTE_VECTOR *message);
+    double getMessage(BYTE_VECTOR *message);
 
+#ifdef __LINUX__
 	// USB-methods
 	bool setupUSB();
 	void printUSBDevs();
-
+#endif
 	void sendProgressEvent(unsigned int progress);
 
 	// Members

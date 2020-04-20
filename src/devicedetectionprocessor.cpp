@@ -14,14 +14,18 @@
 
 DeviceDetectionProcessor::DeviceDetectionProcessor(QWidget *gui) : m_pGui(gui) {
 	if (Configuration::getInstance().getMidiDeviceDetection())
-		setupMidiPorts();
+        setupMidiPorts();
+#ifdef __LINUX__
 	if (Configuration::getInstance().getUsbDeviceDetection())
-		setupUSB();
+        setupUSB();
+#endif
 }
 
 DeviceDetectionProcessor::~DeviceDetectionProcessor() {
+#ifdef __LINUX__
 	if (Configuration::getInstance().getUsbDeviceDetection())
-		libusb_exit(nullptr);
+        libusb_exit(nullptr);
+#endif
 	if (Configuration::getInstance().getMidiDeviceDetection()) {
 		m_pMidiin = nullptr;
 		m_pMidiout = nullptr;
@@ -247,6 +251,7 @@ void DeviceDetectionProcessor::createMidiOut() {
 #endif //__MIO_DEBUG__
 }
 
+#ifdef __LINUX__
 /* USB methods - currently not used */
 bool DeviceDetectionProcessor::setupUSB() {
 	int r;
@@ -292,3 +297,4 @@ void DeviceDetectionProcessor::printUSBDevs() {
 
 	libusb_free_device_list(devs, 1);
 }
+#endif

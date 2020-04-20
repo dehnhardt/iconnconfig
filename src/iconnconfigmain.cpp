@@ -52,9 +52,11 @@ MioMain::MioMain(QCommandLineParser *parser, QWidget *parent)
 		m_pConfiguration->setValue("ConfigName", "lala");
 		m_pConfiguration->endGroup();
 	}
-	connectSignals();
+    connectSignals();
+#ifdef __LINUX_SESSION_MANAGEMENT__
 	if (!installSignalHandlers())
-		qWarning("%s", "Signal handlers not installed!");
+        qWarning("%s", "Signal handlers not installed!");
+#endif
 	readSettings();
 	createLanguageMenu();
 	if (readDevicesFromSettings())
