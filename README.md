@@ -18,11 +18,26 @@ The extensions (Command Version Number 2) - presumably for the newer devices - a
   * Global Audio Parameter
   * Audio Port Parameter
   * Audio Input and Output Configuration
+  * Audio Mixing
+
+## Known Problems
+* Audio-Mixer
+  * The levelmeters in USB output channels do not show anything (which is the same in the vendor tool)
+* Operating Systems
+  * Windows: Its possible to compile with mingw but I can not test it because of a problem with a dll ("mincore\com\oleaut32\dispatch\ups.cpp(2125)\OLEAUT32.dll!00007FF95C363C5B: (caller: 00007FF95C363DD2) ReturnHr(1) tid(2de8) 8002801D Bibliothek nicht registriert.")
 
 ## Tested Devices
 * MIO 4
 * MIO 10
 * iConnect Audio 4+
+
+## Opereating systems
+* Linux Ubuntu
+  * Tested: 18.04 (Bionic)
+* Linux Debian
+  * Tested: 10 (Buster)
+* Windows 10
+  * It's possible to compile, I currently can not test it because of a problem with a dll.
 
 ## Status
 * (2017-03-12) nothing relevant done so far
@@ -68,3 +83,7 @@ The extensions (Command Version Number 2) - presumably for the newer devices - a
 * (2019-12-28) Create a branch with audio port settings only _Branch v0.4-beta_
 * (2020-04-07) Merged audiomixer branch into master. [Routing](https://github.com/dehnhardt/iconnconfig/wiki#audio-routing) and [mixing](https://github.com/dehnhardt/iconnconfig/wiki#audio-mixer) works. Some visual updates to controls and grids.
 * (2020-04-07) _Branch v0.4-beta_ is the release branch with all audio functions
+* (2020-04-17) Replaced the QT-Dial (which looked ugly on soe QT-Versions) with a more flexible dial. It shows a logarithmic scale and displays the value.
+* (2020-04-18) Fixed some bugs when mixer channels are linked: Input: Only valuechanges on the left channel should be sent to the device. Output: Channels are always linked, so only use the 'left' channel for all requests.
+* (2020-04-20) Enable compiling for Windows: Move enumerations to namespace "pk", because at least one enum conflicted with a windows definition. Exclude Linux-Only code with preprocessor statements. Add the Windows multimedia library when compiled for windows.
+* (2020-04-21) _Branch v0.5-beta_ Stabilisation of audio functions, improvements of some control elements, Windows compatibility
