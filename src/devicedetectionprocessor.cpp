@@ -92,7 +92,11 @@ unsigned long DeviceDetectionProcessor::detectDevices() {
 		Configuration::getInstance().getDevices();
 	// for each output signal
 	for (unsigned int i = 0; i < nOutPortCount; i++) {
+        try{
 		m_pMidiout->openPort(i);
+        } catch(...){
+            std::cerr << "failed to open output port " << i << std::endl;
+        }
 		std::string currentOutPortName = m_pMidiout->getPortName(i);
 		std::regex re("(.+) [0-9]+:[0-9]+");
 		std::cmatch mOut;
@@ -108,7 +112,12 @@ unsigned long DeviceDetectionProcessor::detectDevices() {
 				progress = (i * nInPortCount) + nInPortCount + 1;
 			}
 			sendProgressEvent(progress);
+            try{
 			m_pMidiin->openPort(j);
+            } catch(...){
+                std::cerr << "failed to open input port "<< j << std::endl;
+                continue;
+            }
 			std::string currentInputPortName = m_pMidiin->getPortName(j);
 			std::cmatch mIn;
 			std::regex_search(currentInputPortName.c_str(), mIn, re);
