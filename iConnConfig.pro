@@ -42,6 +42,8 @@ unix:!macx: DEFINES += __LINUX_ALSA__  __LINUX_SESSION_MANAGEMENT__
 macx: DEFINES += __MACOSX_CORE__
 win32: DEFINES += __WINDOWS_MM__
 
+win32: RC_ICONS += resources/iconnconfig.ico
+
 #DEFINES += __MIO_DEBUG__
 
 #DEFINES += __RTMIDI_DEBUG__
