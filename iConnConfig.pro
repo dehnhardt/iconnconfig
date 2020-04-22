@@ -321,6 +321,7 @@ DISTFILES += \
     BUILD.md \
     AUTHOR.md \
     resources/iconnconfig.desktop \
+    resources/iconnconfig.ico \
     resources/iconnconfig.png \
     resources/iconnconfig.xpm \
     tr/iconnconfig_de_DE.ts \
