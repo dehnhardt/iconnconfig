@@ -14,17 +14,17 @@
 
 DeviceDetectionProcessor::DeviceDetectionProcessor(QWidget *gui) : m_pGui(gui) {
 	if (Configuration::getInstance().getMidiDeviceDetection())
-        setupMidiPorts();
+		setupMidiPorts();
 #ifdef __LINUX__
 	if (Configuration::getInstance().getUsbDeviceDetection())
-        setupUSB();
+		setupUSB();
 #endif
 }
 
 DeviceDetectionProcessor::~DeviceDetectionProcessor() {
 #ifdef __LINUX__
 	if (Configuration::getInstance().getUsbDeviceDetection())
-        libusb_exit(nullptr);
+		libusb_exit(nullptr);
 #endif
 	if (Configuration::getInstance().getMidiDeviceDetection()) {
 		m_pMidiin = nullptr;
@@ -92,7 +92,12 @@ unsigned long DeviceDetectionProcessor::detectDevices() {
 		Configuration::getInstance().getDevices();
 	// for each output signal
 	for (unsigned int i = 0; i < nOutPortCount; i++) {
-		m_pMidiout->openPort(i);
+		try {
+			m_pMidiout->openPort(i);
+		} catch (...) {
+			std::cerr << "failed to open output port " << i << std::endl;
+			continue;
+		}
 		std::string currentOutPortName = m_pMidiout->getPortName(i);
 		std::regex re("(.+) [0-9]+:[0-9]+");
 		std::cmatch mOut;
@@ -108,7 +113,12 @@ unsigned long DeviceDetectionProcessor::detectDevices() {
 				progress = (i * nInPortCount) + nInPortCount + 1;
 			}
 			sendProgressEvent(progress);
-			m_pMidiin->openPort(j);
+			try {
+				m_pMidiin->openPort(j);
+			} catch (...) {
+				std::cerr << "failed to open input port " << j << std::endl;
+				continue;
+			}
 			std::string currentInputPortName = m_pMidiin->getPortName(j);
 			std::cmatch mIn;
 			std::regex_search(currentInputPortName.c_str(), mIn, re);
