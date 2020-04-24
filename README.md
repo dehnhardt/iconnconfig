@@ -23,8 +23,6 @@ The extensions (Command Version Number 2) - presumably for the newer devices - a
 ## Known Problems
 * Audio-Mixer
   * The levelmeters in USB output channels do not show anything (which is the same in the vendor tool)
-* Operating Systems
-  * Windows: Its possible to compile with mingw but I can not test it because of a problem with a dll ("mincore\com\oleaut32\dispatch\ups.cpp(2125)\OLEAUT32.dll!00007FF95C363C5B: (caller: 00007FF95C363DD2) ReturnHr(1) tid(2de8) 8002801D Bibliothek nicht registriert.")
 
 ## Tested Devices
 * MIO 4
@@ -36,8 +34,12 @@ The extensions (Command Version Number 2) - presumably for the newer devices - a
   * Tested: 18.04 (Bionic)
 * Linux Debian
   * Tested: 10 (Buster)
+* Windows 8
+  * drivers from iconnectivity must be installed
+  * compilation needs to be done with the mingw compiler 
 * Windows 10
-  * It's possible to compile, I currently can not test it because of a problem with a dll.
+  * drivers from iconnectivity must be installed
+  * compilation needs to be done with the mingw compiler 
 
 ## Status
 * (2017-03-12) nothing relevant done so far
