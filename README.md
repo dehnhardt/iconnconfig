@@ -1,5 +1,5 @@
 # iconnconfig
-**This repository is archived.
+**This repository is archived.***
 **Further development will be done at https://codeberg.org/dehnhardt/IConnConfig**
 
 Linux based configuration utility for IConnectivity interfaces. MIDI and Audio configuration is implemented.
